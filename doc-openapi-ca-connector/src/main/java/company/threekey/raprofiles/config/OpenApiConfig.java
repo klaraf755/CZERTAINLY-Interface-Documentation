@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.ServletContext;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class OpenApiConfig {
@@ -30,6 +32,11 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI caConnectorOpenAPI() {
+        Map<String, Object> logoExtension = new HashMap<>();
+        Map<String, Object> logoExtensionFields = new HashMap<>();
+        logoExtensionFields.put("url", "images/3keycompany.png");
+        logoExtension.put("x-logo", logoExtensionFields);
+
         return new OpenAPI()
                 .info(new Info().title("3Key RA Profiles CA Connector API")
                         .description("REST APIs for implementations of custom CA Connector")
@@ -37,10 +44,11 @@ public class OpenApiConfig {
                         .license(new License()
                                 .name("Apache License Version 2.0")
                                 .url("https://www.apache.org/licenses/LICENSE-2.0"))
-                .contact(new Contact()
-                        .name("3Key Company")
-                        .url("https://www.3key.company")
-                        .email("getinfo@3key.company")))
+                        .extensions(logoExtension)
+                        .contact(new Contact()
+                                .name("3Key Company")
+                                .url("https://www.3key.company")
+                                .email("getinfo@3key.company")))
                 .externalDocs(new ExternalDocumentation()
                         .description("3Key RA Profiles Documentation")
                         .url("https://ra-profiles.3key.company"))
