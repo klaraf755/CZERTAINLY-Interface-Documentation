@@ -1,0 +1,22 @@
+name: Test generating docs
+on:
+  push:
+    branches:
+      - develop # or the name of your main branch
+  workflow_dispatch:
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+
+      # first checkout your code
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # then use redoc-cli-github-action to generate your HTML bundle
+      - name: redoc-cli test
+        uses: seeebiii/redoc-cli-github-action@v10
+        with:
+          args: 'bundle doc-openapi-ca-connector.yaml -o doc-openapi-ca-connector.html'
