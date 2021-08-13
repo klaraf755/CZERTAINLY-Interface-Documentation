@@ -22,6 +22,12 @@ jobs:
           server-id: github # value of repository/id field of the pom.xml
           server-username: GITHUB_USER_REF
           server-password: GITHUB_TOKEN_REF
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Build with Maven
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -33,11 +39,11 @@ jobs:
       - name: redoc-cli test
         uses: seeebiii/redoc-cli-github-action@v10
         with:
-          args: 'bundle ./openapi/doc-openapi-ca-connector.yaml -o ./openapi/doc-openapi-ca-connector.html'
+          args: 'bundle ./openapi/doc-openapi-ca-connector.yaml -o ./openapi/doc-openapi-ca-connector.html --options.theme.logo.gutter=20px'
       - name: redoc-cli test
         uses: seeebiii/redoc-cli-github-action@v10
         with:
-          args: 'bundle ./openapi/doc-openapi-credential-provider.yaml -o ./openapi/doc-openapi-credential-provider.html'    
+          args: 'bundle ./openapi/doc-openapi-credential-provider.yaml -o ./openapi/doc-openapi-credential-provider.html --options.theme.logo.gutter=20px'    
       
       - name: Copy
         run: |
