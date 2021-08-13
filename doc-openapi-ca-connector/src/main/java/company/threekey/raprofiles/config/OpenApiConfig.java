@@ -39,7 +39,7 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .info(new Info().title("3Key RA Profiles CA Connector API")
-                        .description("REST APIs for implementations of custom CA Connector")
+                        .description("REST API for implementations of custom CA Connector")
                         .version("v0.0.1")
                         .license(new License()
                                 .name("Apache License Version 2.0")
