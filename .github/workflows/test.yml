@@ -58,8 +58,13 @@ jobs:
           cp ../docs/*.html ./
       - name: Commit
         run: |
-          git config --global user.name 'RA Profiles'
+          git config --global user.name 'GitHub Actions'
           git config --global user.email 'interfacese@users.noreply.github.com'
           git add -A
-          git commit -am "Automatically generated docs"
-          git push
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "there are changes";
+            git commit -am "Automatically generated docs"
+            git push
+          else
+            echo "no changes";
+          fi
