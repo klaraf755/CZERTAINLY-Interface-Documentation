@@ -15,8 +15,8 @@ RUN redoc-cli bundle /home/app/doc-openapi-credential-provider.yaml -o /home/app
 
 # production environment
 FROM nginx:stable-alpine
-COPY --from=build /home/app/index.html /usr/share/nginx/html/index.html
-COPY --from=build /home/app/images/3keycompany.png /usr/share/nginx/html/images/3keycompany.png
-COPY --from=docs /home/app /usr/share/nginx/html
+COPY --from=build /home/app/index.html /usr/share/nginx/html/docs/index.html
+COPY --from=build /home/app/images/3keycompany.png /usr/share/nginx/html/docs/images/3keycompany.png
+COPY --from=docs /home/app /usr/share/nginx/html/docs
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
