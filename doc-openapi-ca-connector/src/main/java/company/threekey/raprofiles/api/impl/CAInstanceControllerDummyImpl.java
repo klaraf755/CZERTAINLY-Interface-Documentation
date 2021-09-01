@@ -3,7 +3,7 @@ package company.threekey.raprofiles.api.impl;
 import company.threekey.raprofiles.api.exception.AlreadyExistException;
 import company.threekey.raprofiles.api.exception.NotFoundException;
 import company.threekey.raprofiles.api.interfaces.CAInstaceController;
-import company.threekey.raprofiles.api.model.CAInstanceDto;
+import company.threekey.raprofiles.api.model.ca.CAInstanceDto;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

@@ -3,9 +3,9 @@ package company.threekey.raprofiles.api.impl;
 import company.threekey.raprofiles.api.exception.AlreadyExistException;
 import company.threekey.raprofiles.api.exception.NotFoundException;
 import company.threekey.raprofiles.api.interfaces.EndEntityController;
-import company.threekey.raprofiles.api.model.AddEndEntityRequestDto;
-import company.threekey.raprofiles.api.model.EditEndEntityRequestDto;
-import company.threekey.raprofiles.api.model.EndEntityDto;
+import company.threekey.raprofiles.api.model.ca.AddEndEntityRequestDto;
+import company.threekey.raprofiles.api.model.ca.EditEndEntityRequestDto;
+import company.threekey.raprofiles.api.model.ca.EndEntityDto;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

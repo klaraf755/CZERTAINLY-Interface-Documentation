@@ -1,8 +1,8 @@
 package company.threekey.raprofiles.api.impl;
 
 import company.threekey.raprofiles.api.interfaces.InfoController;
-import company.threekey.raprofiles.api.model.EndpointDto;
-import company.threekey.raprofiles.api.model.FunctionGroupCode;
+import company.threekey.raprofiles.api.model.connector.EndpointDto;
+import company.threekey.raprofiles.api.model.connector.FunctionGroupCode;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
