@@ -2,14 +2,16 @@ package company.threekey.raprofiles.api.impl;
 
 import company.threekey.raprofiles.api.exception.AlreadyExistException;
 import company.threekey.raprofiles.api.exception.NotFoundException;
-import company.threekey.raprofiles.api.interfaces.CAInstaceController;
+import company.threekey.raprofiles.api.exception.ValidationException;
+import company.threekey.raprofiles.api.interfaces.CAInstanceController;
+import company.threekey.raprofiles.api.model.AttributeDefinition;
 import company.threekey.raprofiles.api.model.ca.CAInstanceDto;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-public class CAInstanceControllerDummyImpl implements CAInstaceController {
+public class CAInstanceControllerDummyImpl implements CAInstanceController {
 
     @Override
     public List<CAInstanceDto> listCAInstances() {
@@ -39,6 +41,16 @@ public class CAInstanceControllerDummyImpl implements CAInstaceController {
     @Override
     public void getConnection(Long aLong) throws NotFoundException {
 
+    }
+
+    @Override
+    public List<AttributeDefinition> listRAProfileAttributes(Long authorityId) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public boolean validateRAProfileAttributes(Long authorityId, List<AttributeDefinition> attributes) throws ValidationException, NotFoundException {
+        return false;
     }
 
 }
