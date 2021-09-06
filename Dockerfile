@@ -17,7 +17,8 @@ RUN redoc-cli bundle /home/app/doc-openapi-discovery-provider.yaml -o /home/app/
 # production environment
 FROM nginx:stable-alpine
 COPY --from=build /home/app/index.html /usr/share/nginx/html/docs/index.html
-COPY --from=build /home/app/images/3keycompany.png /usr/share/nginx/html/docs/images/3keycompany.png
+COPY --from=build /home/app/style.css /usr/share/nginx/html/docs/style.css
+COPY --from=build /home/app/images/czertainly_color_H.svg /usr/share/nginx/html/docs/images/czertainly_color_H.svg
 COPY --from=docs /home/app /usr/share/nginx/html/docs
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

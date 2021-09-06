@@ -34,11 +34,11 @@ public class OpenApiConfig {
     public OpenAPI credentialProviderOpenAPI() {
         Map<String, Object> logoExtension = new HashMap<>();
         Map<String, Object> logoExtensionFields = new HashMap<>();
-        logoExtensionFields.put("url", "images/3keycompany.png");
+        logoExtensionFields.put("url", "images/czertainly_color_H.svg");
         logoExtension.put("x-logo", logoExtensionFields);
 
         return new OpenAPI()
-                .info(new Info().title("3Key RA Profiles Discovery Provider Connector API")
+                .info(new Info().title("Czertainly Discovery Provider Connector API")
                         .description("REST API for implementations of custom Discovery Provider")
                         .version("v0.0.1")
                         .license(new License()
