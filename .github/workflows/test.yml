@@ -44,18 +44,26 @@ jobs:
         uses: seeebiii/redoc-cli-github-action@v10
         with:
           args: 'bundle ./openapi/doc-openapi-credential-provider.yaml -o ./openapi/doc-openapi-credential-provider.html --options.theme.logo.gutter=20px'    
-      
+      - name: redoc-cli doc-openapi-credential-provider
+        uses: seeebiii/redoc-cli-github-action@v10
+        with:
+          args: 'bundle ./openapi/doc-openapi-discovery-provider.yaml -o ./openapi/doc-openapi-discovery-provider.html --options.theme.logo.gutter=20px'
+          
       - name: Copy
         run: |
           mkdir ../docs
           cp ./openapi/*.html ../docs
+          cp ./index.html ../docs
+          cp ./style.css ../docs
+          mkdir ../docs/images
+          cp ./images/czertainly_color_H.svg ../docs/images
       - name: Checkout
         uses: actions/checkout@v2
         with:
           ref: test
       - name: Copy back
         run: |
-          cp ../docs/*.html ./
+          cp -r ../docs/* ./
       - name: Commit
         run: |
           git config --global user.name 'GitHub Actions'
