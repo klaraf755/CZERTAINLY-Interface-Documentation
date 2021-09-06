@@ -38,7 +38,7 @@ public class OpenApiConfig {
         logoExtension.put("x-logo", logoExtensionFields);
 
         return new OpenAPI()
-                .info(new Info().title("Czertainly CA Connector API")
+                .info(new Info().title("CZERTAINLY CA Connector API")
                         .description("REST API for implementations of custom CA Connector")
                         .version("v0.0.1")
                         .license(new License()

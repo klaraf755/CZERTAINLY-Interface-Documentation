@@ -38,7 +38,7 @@ public class OpenApiConfig {
         logoExtension.put("x-logo", logoExtensionFields);
 
         return new OpenAPI()
-                .info(new Info().title("Czertainly Credential Provider Connector API")
+                .info(new Info().title("CZERTAINLY Credential Provider Connector API")
                         .description("REST API for implementations of custom Credential Provider")
                         .version("v0.0.1")
                         .license(new License()
