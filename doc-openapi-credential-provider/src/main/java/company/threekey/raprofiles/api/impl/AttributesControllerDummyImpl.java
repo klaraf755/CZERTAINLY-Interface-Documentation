@@ -11,12 +11,12 @@ import java.util.List;
 public class AttributesControllerDummyImpl implements AttributesController {
 
     @Override
-    public List<AttributeDefinition> listAttributeDefinitions() {
+    public List<AttributeDefinition> listAttributeDefinitions(String kind) {
         return null;
     }
 
     @Override
-    public boolean validateAttributes(List<AttributeDefinition> list) throws ValidationException {
+    public boolean validateAttributes(String kind, List<AttributeDefinition> list) throws ValidationException {
         return false;
     }
 
