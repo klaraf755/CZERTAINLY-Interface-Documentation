@@ -1,9 +1,14 @@
 package com.czertainly.api.impl;
 
-import com.czertainly.api.core.interfaces.client.ClientOperationController;
+import com.czertainly.api.core.v2.interfaces.ClientOperationController;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.ca.*;
+import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.AttributeDefinition;
+import com.czertainly.api.v2.model.ca.CertRevocationDto;
+import com.czertainly.api.v2.model.ca.CertificateDataResponseDto;
+import com.czertainly.api.v2.model.ca.CertificateRenewRequestDto;
+import com.czertainly.api.v2.model.ca.CertificateSignRequestDto;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.cert.CertificateException;
@@ -13,42 +18,37 @@ import java.util.List;
 public class ClientOperationControllerDummyImpl implements ClientOperationController {
 
     @Override
-    public CertificateSignResponseDto issueCertificate(String s, CertificateSignRequestDto certificateSignRequestDto) throws NotFoundException, CertificateException, AlreadyExistException {
+    public List<AttributeDefinition> listIssueCertificateAttributes(String s) throws NotFoundException {
         return null;
     }
 
     @Override
-    public void revokeCertificate(String s, CertRevocationDto certRevocationDto) throws NotFoundException {
-
+    public boolean validateIssueCertificateAttributes(String s, List<AttributeDefinition> list) throws NotFoundException, ValidationException {
+        return false;
     }
 
     @Override
-    public List<EndEntityDto> listEntities(String s) throws NotFoundException {
+    public CertificateDataResponseDto issueCertificate(String s, CertificateSignRequestDto certificateSignRequestDto) throws NotFoundException, AlreadyExistException, CertificateException {
         return null;
     }
 
     @Override
-    public void addEndEntity(String s, AddEndEntityRequestDto addEndEntityRequestDto) throws NotFoundException, AlreadyExistException {
-
-    }
-
-    @Override
-    public EndEntityDto getEndEntity(String s, String s1) throws NotFoundException {
+    public CertificateDataResponseDto renewCertificate(String s, String s1, CertificateRenewRequestDto certificateRenewRequestDto) throws NotFoundException, AlreadyExistException, CertificateException {
         return null;
     }
 
     @Override
-    public void editEndEntity(String s, String s1, EditEndEntityRequestDto editEndEntityRequestDto) throws NotFoundException {
-
+    public List<AttributeDefinition> listRevokeCertificateAttributes(String s) throws NotFoundException {
+        return null;
     }
 
     @Override
-    public void revokeAndDeleteEndEntity(String s, String s1) throws NotFoundException {
-
+    public boolean validateRevokeCertificateAttributes(String s, List<AttributeDefinition> list) throws NotFoundException, ValidationException {
+        return false;
     }
 
     @Override
-    public void resetPassword(String s, String s1) throws NotFoundException {
+    public void revokeCertificate(String s, String s1, CertRevocationDto certRevocationDto) throws NotFoundException {
 
     }
 }
