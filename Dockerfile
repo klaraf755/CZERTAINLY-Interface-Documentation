@@ -13,6 +13,8 @@ COPY --from=build /home/app/openapi /home/app
 RUN redoc-cli bundle /home/app/doc-openapi-ca-connector.yaml -o /home/app/doc-openapi-ca-connector.html --options.theme.logo.gutter=20px
 RUN redoc-cli bundle /home/app/doc-openapi-credential-provider.yaml -o /home/app/doc-openapi-credential-provider.html --options.theme.logo.gutter=20px
 RUN redoc-cli bundle /home/app/doc-openapi-discovery-provider.yaml -o /home/app/doc-openapi-discovery-provider.html --options.theme.logo.gutter=20px
+RUN redoc-cli bundle /home/app/doc-openapi-client-operations.yaml -o /home/app/doc-openapi-client-operations.html --options.theme.logo.gutter=20px
+RUN redoc-cli bundle /home/app/doc-openapi-legacy-client-operations.yaml -o /home/app/doc-openapi-legacy-client-operations.html --options.theme.logo.gutter=20px
 
 # production environment
 FROM nginx:stable-alpine
