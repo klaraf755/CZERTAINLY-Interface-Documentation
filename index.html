@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>CZERTAINLY API Docs</title>
+  <link rel="icon" href="images/czertainly_sign_color.svg"/>
 
   <!-- Bootstrap CSS CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -23,8 +24,13 @@
     <ul class="list-unstyled components">
 <!--      <p>Connector APIs</p>-->
       <li class="active">
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Connector APIs</a>
-        <ul class="collapse list-unstyled" id="homeSubmenu">
+        <a href="#coreApiSubmenu" data-toggle="collapse" aria-expanded="false">Core APIs</a>
+        <ul class="collapse list-unstyled" id="coreApiSubmenu">
+        </ul>
+      </li>
+      <li class="active">
+        <a href="#connectorApiSubmenu" data-toggle="collapse" aria-expanded="false">Connector APIs</a>
+        <ul class="collapse list-unstyled" id="connectorApiSubmenu">
         </ul>
       </li>
     </ul>
@@ -47,7 +53,18 @@
 
   <script>
     // list of APIS
-    var apis = [
+    var coreApis = [
+      {
+        name: "Client Operations",
+        url: "doc-openapi-client-operations.html",
+      },
+      {
+        name: "Legacy Client Operations",
+        url: "doc-openapi-legacy-client-operations.html",
+      },
+    ];
+
+    var connectorApis = [
       {
         name: "Credential Provider",
         url: "doc-openapi-credential-provider.html",
@@ -61,9 +78,10 @@
         url: "doc-openapi-discovery-provider.html",
       },
     ];
+
     // initially render first API
     var iframe = document.getElementById("showapi");
-    iframe.src = apis[1].url;
+    iframe.src = connectorApis[1].url;
     window.addEventListener("resize", onResize)
 
     function onResize() {
@@ -78,9 +96,24 @@
       var url = this.getAttribute("data-link");
       document.getElementById("showapi").src = url;
     }
+
     // dynamically building navigation items
-    var $list = document.getElementById("homeSubmenu");
-    apis.forEach(function (api) {
+    var $list = document.getElementById("coreApiSubmenu");
+    coreApis.forEach(function (api) {
+      var $listitem = document.createElement("li");
+      $listitem.setAttribute("data-link", api.url);
+      $listitem.setAttribute("class", "dropdown-item");
+      //$listitem.innerText = api.name;
+      $listitem.addEventListener("click", onClick);
+      var $lista = document.createElement("a");
+      $lista.setAttribute("href", "#");
+      $lista.innerText = api.name;
+      $listitem.appendChild($lista);
+      $list.appendChild($listitem);
+    });
+
+    var $list = document.getElementById("connectorApiSubmenu");
+    connectorApis.forEach(function (api) {
       var $listitem = document.createElement("li");
       $listitem.setAttribute("data-link", api.url);
       $listitem.setAttribute("class", "dropdown-item");
