@@ -38,8 +38,8 @@ public class OpenApiConfig {
         logoExtension.put("x-logo", logoExtensionFields);
 
         return new OpenAPI()
-                .info(new Info().title("CZERTAINLY CA Connector API")
-                        .description("REST API for implementations of custom CA Connector")
+                .info(new Info().title("CZERTAINLY CA Connector v2 API")
+                        .description("REST API for implementations of custom v2 CA Connector")
                         .version("v0.0.1")
                         .license(new License()
                                 .name("Apache License Version 2.0")
