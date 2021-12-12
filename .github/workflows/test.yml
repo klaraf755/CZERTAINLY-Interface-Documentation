@@ -1,4 +1,4 @@
-name: Test generating docs
+name: Generate OpenAPI Docs
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ on:
 jobs:
   test_job:
     runs-on: ubuntu-latest
-    name: Test
+    name: Generate
     steps:
 
       # first checkout your code
@@ -34,20 +34,30 @@ jobs:
           GITHUB_USER_REF: ${{ secrets.GH_PACKAGE_REPO_USERNAME }}
           GITHUB_TOKEN_REF: ${{ secrets.GH_PACKAGE_REPO_PASSWORD }}
         run: mvn --batch-mode --update-snapshots install
-
+      - name: Setup npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Install redoc-cli
+        run: |
+          yarn global add redoc-cli
+      - name: Bundle yaml files
+        run: |
+          ./bundle.sh
+          
       # then use redoc-cli-github-action to generate your HTML bundle
-      - name: redoc-cli doc-openapi-ca-connector
-        uses: seeebiii/redoc-cli-github-action@v10
-        with:
-          args: 'bundle ./openapi/doc-openapi-ca-connector.yaml -o ./openapi/doc-openapi-ca-connector.html --options.theme.logo.gutter=20px'
-      - name: redoc-cli doc-openapi-credential-provider
-        uses: seeebiii/redoc-cli-github-action@v10
-        with:
-          args: 'bundle ./openapi/doc-openapi-credential-provider.yaml -o ./openapi/doc-openapi-credential-provider.html --options.theme.logo.gutter=20px'    
-      - name: redoc-cli doc-openapi-credential-provider
-        uses: seeebiii/redoc-cli-github-action@v10
-        with:
-          args: 'bundle ./openapi/doc-openapi-discovery-provider.yaml -o ./openapi/doc-openapi-discovery-provider.html --options.theme.logo.gutter=20px'
+      #- name: redoc-cli doc-openapi-ca-connector
+      #  uses: seeebiii/redoc-cli-github-action@v10
+      #  with:
+      #    args: 'bundle ./openapi/doc-openapi-ca-connector.yaml -o ./openapi/doc-openapi-ca-connector.html --options.theme.logo.gutter=20px'
+      #- name: redoc-cli doc-openapi-credential-provider
+      #  uses: seeebiii/redoc-cli-github-action@v10
+      #  with:
+      #    args: 'bundle ./openapi/doc-openapi-credential-provider.yaml -o ./openapi/doc-openapi-credential-provider.html --options.theme.logo.gutter=20px'    
+      #- name: redoc-cli doc-openapi-credential-provider
+      #  uses: seeebiii/redoc-cli-github-action@v10
+      #  with:
+      #    args: 'bundle ./openapi/doc-openapi-discovery-provider.yaml -o ./openapi/doc-openapi-discovery-provider.html --options.theme.logo.gutter=20px'
           
       - name: Copy
         run: |
@@ -57,6 +67,8 @@ jobs:
           cp ./style.css ../docs
           mkdir ../docs/images
           cp ./images/czertainly_color_H.svg ../docs/images
+          cp ./images/czertainly_white_H.svg ../docs/images
+          cp ./images/czertainly_sign_color.svg ../docs/images
       - name: Checkout
         uses: actions/checkout@v2
         with:
