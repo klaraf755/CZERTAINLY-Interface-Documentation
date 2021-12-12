@@ -23,7 +23,7 @@ public class OpenApiConfig {
     @Bean
     public GroupedOpenApi credentialProviderApis() {
         return GroupedOpenApi.builder()
-        		.group("credential-provider")
+        		.group("local")
                 .packagesToScan("com.czertainly.api.impl")
                 //.pathsToMatch("/v1/**")
                 .build()
@@ -38,8 +38,8 @@ public class OpenApiConfig {
         logoExtension.put("x-logo", logoExtensionFields);
 
         return new OpenAPI()
-                .info(new Info().title("CZERTAINLY Credential Provider Connector API")
-                        .description("REST API for implementations of custom Credential Provider")
+                .info(new Info().title("CZERTAINLY Local API")
+                        .description("REST API for local administration operations without authentication")
                         .version("1.0.1")
                         .license(new License()
                                 .name("MIT License")
