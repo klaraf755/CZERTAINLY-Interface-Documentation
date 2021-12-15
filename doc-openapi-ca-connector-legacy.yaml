@@ -1,0 +1,1097 @@
+openapi: 3.0.1
+info:
+  title: CZERTAINLY CA Connector Legacy API
+  description: REST API for implementations of custom Legacy CA Connector
+  contact:
+    name: CZERTAINLY
+    url: https://www.czertainly.com
+    email: getinfo@czertainly.com
+  license:
+    name: MIT License
+    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  version: 1.0.1
+  x-logo:
+    url: images/czertainly_color_H.svg
+externalDocs:
+  description: CZERTAINLY Documentation
+  url: https://www.czertainly.com
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Info API
+  description: "Connector Information API. Each connector may have multiple functions\
+    \ represented by FunctionGroupCode. For each FunctionGroupCode there is a list\
+    \ of implemented end points. These endpoints must be according the specified interface,\
+    \ this is validated by the core. You can also implement helper end points that\
+    \ are used for callbacks and other relevant operations specific to implementation."
+- name: Certification Authority API
+  description: Certification Authority API
+- name: Certificate Management API
+  description: Certificate Management API
+- name: End Entity Profiles API
+  description: End Entity Profiles API
+- name: End Entity Management API
+  description: End Entity Management API
+- name: Health check API
+  description: "Connector health check API. Connector returns own status and in some\
+    \ cases can return status of services on which it depends like database, HSM and\
+    \ so on."
+- name: Attributes API
+  description: Connector Attributes API. Provides information about supported attributes
+    of the connector. Attributes are specific to implementation and gives information
+    about the data that can be exchanged and properly parsed by the connector. Part
+    of this API is validation of the attributes.
+paths:
+  /v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/endEntities/{endEntityName}/resetPassword:
+    put:
+      tags:
+      - End Entity Management API
+      summary: Reset End Entity password
+      description: Method for resetting password for existing End Entity.
+      operationId: resetPassword
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: s1
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: End Entity password reset
+  /v1/{functionalGroup}/{kind}/attributes/validate:
+    post:
+      tags:
+      - Attributes API
+      summary: Validate attributes
+      description: Returns true if the validation of attributes is successful
+      operationId: validateAttributes
+      parameters:
+      - name: kind
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttributeDefinition'
+        required: true
+      responses:
+        "200":
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /v1/caConnector/authorities:
+    get:
+      tags:
+      - Certification Authority API
+      summary: List CA instances
+      description: Method for listing all CA instances managed by CA connector.
+      operationId: listCAInstances
+      responses:
+        "200":
+          description: CA instances retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CAInstanceDto'
+    post:
+      tags:
+      - Certification Authority API
+      summary: Create CA instance
+      description: Method for creating new CA instance to be managed by CA connector.
+      operationId: createCAInstance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CAInstanceDto'
+        required: true
+      responses:
+        "200":
+          description: CA instance created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CAInstanceDto'
+        "400":
+          description: Bad Request
+  /v1/caConnector/authorities/{authorityId}:
+    get:
+      tags:
+      - Certification Authority API
+      summary: Get CA instance
+      description: Method for retrieving detail of CA instance managed by CA connector.
+      operationId: getCAInstance
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: CA instance retrieved
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CAInstanceDto'
+    post:
+      tags:
+      - Certification Authority API
+      summary: Update CA instance
+      description: Method for updating existing CA instance managed by CA connector.
+      operationId: updateCAInstance
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CAInstanceDto'
+        required: true
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: CA instance updated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CAInstanceDto'
+        "400":
+          description: Bad Request
+    delete:
+      tags:
+      - Certification Authority API
+      summary: Remove CA instance
+      description: Method for removing existing CA instance managed by CA connector.
+      operationId: removeCAInstance
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: CA instance removed
+  /v1/caConnector/authorities/{authorityId}/raProfiles/attributes/validate:
+    post:
+      tags:
+      - Certification Authority API
+      summary: Validate RA profile attributes
+      description: Method for validating RA profile attributes.
+      operationId: validateRAProfileAttributes
+      parameters:
+      - name: authorityId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttributeDefinition'
+        required: true
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: CA instance updated
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        "400":
+          description: Bad Request
+  /v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/endEntities:
+    get:
+      tags:
+      - End Entity Management API
+      summary: List End Entities
+      description: Method for listing all End Entities managed by CA.
+      operationId: listEndEntities
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: End Entities retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EndEntityDto'
+    post:
+      tags:
+      - End Entity Management API
+      summary: Create End Entity
+      description: Method for creating new End Entity.
+      operationId: createEndEntity
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddEndEntityRequestDto'
+        required: true
+      responses:
+        "200":
+          description: End Entity created
+        "400":
+          description: Bad Request
+  /v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/endEntities/{endEntityName}:
+    get:
+      tags:
+      - End Entity Management API
+      summary: Get End Entity
+      description: Method for retrieving detail of End Entity managed by CA.
+      operationId: getEndEntity
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: s1
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: End Entity retrieved
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EndEntityDto'
+    post:
+      tags:
+      - End Entity Management API
+      summary: Update End Entity
+      description: Method for updating existing End Entity managed by CA.
+      operationId: updateEndEntity
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: s1
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditEndEntityRequestDto'
+        required: true
+      responses:
+        "404":
+          description: Not found
+        "400":
+          description: Bad Request
+        "200":
+          description: End Entity updated
+    delete:
+      tags:
+      - End Entity Management API
+      summary: Remove End Entity
+      description: Method for removing existing End Entity.
+      operationId: removeEndEntity
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: s1
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: End Entity removed
+  /v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/certificates/revoke:
+    post:
+      tags:
+      - Certificate Management API
+      summary: Revoke certificate
+      description: Method for revoking existing certificates by given request.
+      operationId: revokeCertificate
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertRevocationDto'
+        required: true
+      responses:
+        "200":
+          description: Certificate revoked
+        "404":
+          description: Not found
+        "400":
+          description: Bad Request
+  /v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/certificates/issue:
+    post:
+      tags:
+      - Certificate Management API
+      summary: Issue certificate
+      description: Method for issuing certificates based on given request.
+      operationId: issueCertificate
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateSignRequestDto'
+        required: true
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: Certificate issued
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CertificateSignResponseDto'
+        "400":
+          description: Bad Request
+  /v1/{functionalGroup}/{kind}/attributes:
+    get:
+      tags:
+      - Attributes API
+      summary: List available attributes
+      description: Returns attribute definition used for the connector
+      operationId: listAttributeDefinitions
+      parameters:
+      - name: kind
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+  /v1/health:
+    get:
+      tags:
+      - Health check API
+      summary: Checks the health of the connector
+      description: Returns current health overall status of the connector and it's
+        arbitrary parts
+      operationId: checkHealth
+      responses:
+        "200":
+          description: Health checked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
+  /v1/caConnector/authorities/{authorityId}/raProfiles/attributes:
+    get:
+      tags:
+      - Certification Authority API
+      summary: List RA profile attributes
+      description: Method for listing RA profile attributes needed to create RA profile.
+      operationId: listRAProfileAttributes
+      parameters:
+      - name: authorityId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: CA instance updated
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+  /v1/caConnector/authorities/{authorityId}/endEntityProfiles:
+    get:
+      tags:
+      - End Entity Profiles API
+      summary: List available end entity profiles
+      operationId: listEntityProfiles
+      parameters:
+      - name: authorityId
+        in: path
+        description: Authority Instance Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: End entities retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameAndIdDto'
+        "400":
+          description: Invalid request
+  /v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileId}/certificateprofiles:
+    get:
+      tags:
+      - End Entity Profiles API
+      summary: List available certificate profiles for given end entity profile
+      operationId: listCertificateProfiles
+      parameters:
+      - name: authorityId
+        in: path
+        description: Authority Instance Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: endEntityProfileId
+        in: path
+        description: End Entity Profile Id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: Certificate profiles retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameAndIdDto'
+        "400":
+          description: Invalid request
+  /v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileId}/cas:
+    get:
+      tags:
+      - End Entity Profiles API
+      summary: List available certification authorities for given end entity profile
+      operationId: listCAsInProfile
+      parameters:
+      - name: authorityId
+        in: path
+        description: Authority Instance Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: endEntityProfileId
+        in: path
+        description: End Entity Profile Id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+        "200":
+          description: CAs retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameAndIdDto'
+  /v1/caConnector/authorities/{authorityId}/connect:
+    get:
+      tags:
+      - Certification Authority API
+      operationId: getConnection
+      parameters:
+      - name: aLong
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+  /v1:
+    get:
+      tags:
+      - Info API
+      summary: List supported functions of the connector
+      description: Returns map of functional code and implemented end points
+      operationId: listSupportedFunctions
+      responses:
+        "200":
+          description: Functions found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InfoResponse'
+components:
+  schemas:
+    AttributeCallback:
+      required:
+      - callbackContext
+      - callbackMethod
+      - mappings
+      type: object
+      properties:
+        callbackContext:
+          type: string
+          description: Context part of callback URL
+        callbackMethod:
+          type: string
+          description: HTTP method of the callback
+        mappings:
+          uniqueItems: true
+          type: array
+          description: Mappings for the callback method
+          items:
+            $ref: '#/components/schemas/AttributeCallbackMapping'
+        pathVariables:
+          type: object
+          additionalProperties:
+            type: object
+            description: Map of path variables supported by the callback method
+          description: Map of path variables supported by the callback method
+        queryParameters:
+          type: object
+          additionalProperties:
+            type: object
+            description: Map of the query parameters supported by the callback method
+          description: Map of the query parameters supported by the callback method
+        requestBody:
+          type: object
+          additionalProperties:
+            type: object
+            description: Request body for the callback method
+          description: Request body for the callback method
+      description: Optional definition of callback for helper methods
+    AttributeCallbackMapping:
+      required:
+      - targets
+      - to
+      type: object
+      properties:
+        from:
+          type: string
+          description: Name of the attribute whose value is to be used as value of
+            path variable or request param or body field.It is optional and must be
+            set only if value is not set.
+        attributeType:
+          type: string
+          description: Type of the attribute. It is optional and must be set only
+            if special behaviour is needed.
+          enum:
+          - STRING
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        to:
+          type: string
+          description: Name of the path variable or request param or body field which
+            is to be used to assign value of attribute
+        targets:
+          uniqueItems: true
+          type: array
+          description: Set of targets for propagating value.
+          items:
+            type: string
+            description: Set of targets for propagating value.
+            enum:
+            - PATH_VARIABLE
+            - REQUEST_PARAMETER
+            - BODY
+        value:
+          type: object
+          description: Static value to be propagated to targets. It is optional and
+            is set only if the value is known at attribute creation time.
+      description: Mappings for the callback method
+    AttributeDefinition:
+      required:
+      - editable
+      - id
+      - label
+      - multiValue
+      - name
+      - readOnly
+      - required
+      - type
+      - visible
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Identifier of attribute, should by unique"
+          example: "1"
+        name:
+          type: string
+          description: Name of the attribute
+          example: attribute
+        label:
+          type: string
+          description: Label of the attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the attribute
+          enum:
+          - STRING
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        required:
+          type: boolean
+          description: Boolean determining that attribute is required
+          default: false
+        readOnly:
+          type: boolean
+          description: Boolean determining that attribute is read only
+          default: false
+        editable:
+          type: boolean
+          description: Boolean determining that attribute is editable
+          default: true
+        visible:
+          type: boolean
+          description: Boolean determining that attribute is visible and can be displayed
+          default: true
+        multiValue:
+          type: boolean
+          description: Boolean determining that attribute has value composed from
+            multiple items
+          default: false
+        description:
+          type: string
+          description: "Optional description of attribute, should contain help for\
+            \ setting proper value"
+        validationRegex:
+          type: string
+          description: Optional regular expression used for validating attribute value
+        dependsOn:
+          type: array
+          description: Optional list of other attribute names and values on which
+            this attribute depends on
+          items:
+            $ref: '#/components/schemas/AttributeDependency'
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+        value:
+          type: object
+          description: Value of attribute
+    AttributeDependency:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of depending attribute
+        value:
+          type: object
+          description: "Value of depending attribute, which should be matched"
+      description: Optional list of other attribute names and values on which this
+        attribute depends on
+    CAInstanceDto:
+      required:
+      - authorityType
+      - connectorName
+      - connectorUuid
+      - name
+      - status
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of CA instance
+          format: int64
+        uuid:
+          type: string
+          description: UUID of CA instance
+        name:
+          type: string
+          description: CA instance name
+        status:
+          type: string
+          description: CA instance name
+        connectorUuid:
+          type: string
+          description: UUID of CA connector
+        connectorName:
+          type: string
+          description: Name of CA connector
+        authorityType:
+          type: string
+          description: CA instance type
+          example: "Ejbca, AdCs, etc"
+    AddEndEntityRequestDto:
+      required:
+      - password
+      - raProfile
+      - subjectDN
+      - username
+      type: object
+      properties:
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        password:
+          type: string
+          description: End Entity password
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        username:
+          type: string
+          description: End Entity name
+    EndEntityExtendedInfoDto:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      description: End Entity extension data
+    RaProfileDto:
+      required:
+      - caInstanceName
+      - caInstanceUuid
+      - enabled
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of RA profile
+          format: int64
+        uuid:
+          type: string
+          description: UUID of RA profile
+        name:
+          type: string
+          description: RA profile name
+        description:
+          type: string
+          description: Detailed description
+        caInstanceUuid:
+          type: string
+          description: Identifier of CA instance reference
+        caInstanceName:
+          type: string
+          description: Name of CA instance
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+      description: RA profile related to End Entity
+    EditEndEntityRequestDto:
+      required:
+      - password
+      - raProfile
+      - status
+      - subjectDN
+      type: object
+      properties:
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        password:
+          type: string
+          description: End Entity password
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        status:
+          type: string
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
+    CertRevocationDto:
+      required:
+      - certificateSN
+      - issuerDN
+      - reason
+      type: object
+      properties:
+        certificateSN:
+          type: string
+          description: Certificate serial number
+        issuerDN:
+          type: string
+          description: Issuer domain name
+        reason:
+          type: string
+          description: Revocation reason
+          enum:
+          - UNSPECIFIED
+          - KEY_COMPROMISE
+          - CA_COMPROMISE
+          - AFFILIATION_CHANGED
+          - SUPERSEDED
+          - CESSATION_OF_OPERATION
+          - CERTIFICATE_HOLD
+          - REMOVE_FROM_CRL
+          - PRIVILEGES_WITHDRAWN
+          - AA_COMPROMISE
+    CertificateSignRequestDto:
+      required:
+      - password
+      - pkcs10
+      - username
+      type: object
+      properties:
+        password:
+          type: string
+          description: End Entity password
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+        username:
+          type: string
+          description: End Entity username
+    CertificateSignResponseDto:
+      required:
+      - certificateData
+      type: object
+      properties:
+        certificateData:
+          type: string
+          description: Date of signed certificate
+    HealthDto:
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Current connector operational status
+          enum:
+          - OK
+          - NOK
+          - UNKNOWN
+        description:
+          type: string
+          description: Detailed status description
+        parts:
+          type: object
+          description: "Nested statuses of services on which connector depends like\
+            \ database, HSM and so on"
+    NameAndIdDto:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Object identifier
+          format: int32
+        name:
+          type: string
+          description: Object name
+    EndEntityDto:
+      required:
+      - status
+      - subjectDN
+      - username
+      type: object
+      properties:
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        status:
+          type: string
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
+        username:
+          type: string
+          description: End Entity name
+    InfoResponse:
+      required:
+      - functionGroupCode
+      type: object
+      properties:
+        functionGroupCode:
+          type: string
+          description: Enumerated code of functional group
+          enum:
+          - credentialProvider
+          - legacyCaConnector
+          - caConnector
+          - discoveryProvider

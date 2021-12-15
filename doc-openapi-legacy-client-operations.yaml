@@ -1,0 +1,428 @@
+openapi: 3.0.1
+info:
+  title: CZERTAINLY Legacy Client Operations API
+  description: REST API for legacy client operations
+  contact:
+    name: CZERTAINLY
+    url: https://www.czertainly.com
+    email: getinfo@czertainly.com
+  license:
+    name: MIT License
+    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  version: 1.0.1
+  x-logo:
+    url: images/czertainly_color_H.svg
+externalDocs:
+  description: CZERTAINLY Documentation
+  url: https://www.czertainly.com
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Client Operations API
+  description: Client API for managing End Entities and Certificates
+paths:
+  /v1/operations/{raProfileName}/endentity/{username}/resetPassword:
+    put:
+      tags:
+      - Client Operations API
+      summary: Reset password for End Entity
+      operationId: resetPassword
+      parameters:
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: s1
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid request
+        "200":
+          description: End Entity password reset
+        "404":
+          description: Not found
+  /v1/operations/{raProfileName}/endentity/{username}:
+    get:
+      tags:
+      - Client Operations API
+      summary: Get End Entity information
+      operationId: getEndEntity
+      parameters:
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: s1
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "200":
+          description: End Entity detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientEndEntityDto'
+    post:
+      tags:
+      - Client Operations API
+      summary: Edit End Entity
+      operationId: editEndEntity
+      parameters:
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: s1
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "200":
+          description: End Entity edited
+    delete:
+      tags:
+      - Client Operations API
+      summary: Revoke all Certificates and delete End Entity
+      operationId: revokeAndDeleteEndEntity
+      parameters:
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: s1
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "200":
+          description: End Entity revoked and deleted
+  /v1/operations/{raProfileName}/endentity:
+    get:
+      tags:
+      - Client Operations API
+      summary: List all End Entities
+      operationId: listEntities
+      parameters:
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of entities retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientEndEntityDto'
+        "400":
+          description: Invalid request
+    post:
+      tags:
+      - Client Operations API
+      summary: Add End Entity
+      operationId: addEndEntity
+      parameters:
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "200":
+          description: End Entity added
+  /v1/operations/{raProfileName}/certificate/revoke:
+    post:
+      tags:
+      - Client Operations API
+      summary: Revoke Certificate
+      operationId: revokeCertificate
+      parameters:
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateRevocationDto'
+        required: true
+      responses:
+        "200":
+          description: Certificate revoked
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/operations/{raProfileName}/certificate/issue:
+    post:
+      tags:
+      - Client Operations API
+      summary: Issue Certificate
+      operationId: issueCertificate
+      parameters:
+      - name: s
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateSignRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
+components:
+  schemas:
+    ClientEditEndEntityRequestDto:
+      required:
+      - password
+      - raProfile
+      - status
+      - subjectDN
+      type: object
+      properties:
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        password:
+          type: string
+          description: End Entity password
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        status:
+          type: string
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
+    EndEntityExtendedInfoDto:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      description: End Entity extension data
+    RaProfileDto:
+      required:
+      - caInstanceName
+      - caInstanceUuid
+      - enabled
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of RA profile
+          format: int64
+        uuid:
+          type: string
+          description: UUID of RA profile
+        name:
+          type: string
+          description: RA profile name
+        description:
+          type: string
+          description: Detailed description
+        caInstanceUuid:
+          type: string
+          description: Identifier of CA instance reference
+        caInstanceName:
+          type: string
+          description: Name of CA instance
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+      description: RA profile related to End Entity
+    ClientAddEndEntityRequestDto:
+      required:
+      - password
+      - raProfile
+      - subjectDN
+      - username
+      type: object
+      properties:
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        password:
+          type: string
+          description: End Entity password
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        username:
+          type: string
+          description: End Entity name
+    ClientCertificateRevocationDto:
+      required:
+      - certificateSN
+      - issuerDN
+      - reason
+      type: object
+      properties:
+        certificateSN:
+          type: string
+          description: Certificate serial number
+        issuerDN:
+          type: string
+          description: Issuer domain name
+        reason:
+          type: string
+          description: Revocation reason
+          enum:
+          - UNSPECIFIED
+          - KEY_COMPROMISE
+          - CA_COMPROMISE
+          - AFFILIATION_CHANGED
+          - SUPERSEDED
+          - CESSATION_OF_OPERATION
+          - CERTIFICATE_HOLD
+          - REMOVE_FROM_CRL
+          - PRIVILEGES_WITHDRAWN
+          - AA_COMPROMISE
+    ClientCertificateSignRequestDto:
+      required:
+      - password
+      - pkcs10
+      - username
+      type: object
+      properties:
+        password:
+          type: string
+          description: End Entity password
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+        username:
+          type: string
+          description: End Entity username
+    ClientCertificateSignResponseDto:
+      required:
+      - certificateData
+      type: object
+      properties:
+        certificateData:
+          type: string
+          description: Date of signed certificate
+    ClientEndEntityDto:
+      required:
+      - status
+      - subjectDN
+      - username
+      type: object
+      properties:
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        status:
+          type: string
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
+        username:
+          type: string
+          description: End Entity name
