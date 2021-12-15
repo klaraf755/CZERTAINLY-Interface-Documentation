@@ -63,6 +63,7 @@ jobs:
         run: |
           mkdir ../docs
           cp ./openapi/*.html ../docs
+          cp ./openapi/*.yaml ../docs
           cp ./index.html ../docs
           cp ./style.css ../docs
           mkdir ../docs/images
@@ -91,3 +92,24 @@ jobs:
           else
             echo "no changes";
           fi
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: openapi
+      - name: Copy back
+        run: |
+          cp ../docs/*.yaml ./
+          cp ../docs/.nojekyll ./
+          cp ../docs/CNAME ./
+      - name: Commit
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'interfacese@users.noreply.github.com'
+          git add -A
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "there are changes";
+            git commit -am "Automatically generated docs"
+            git push
+          else
+            echo "no changes";
+          fi    
