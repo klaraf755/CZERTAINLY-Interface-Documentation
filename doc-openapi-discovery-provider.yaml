@@ -1,0 +1,470 @@
+openapi: 3.0.1
+info:
+  title: CZERTAINLY Discovery Provider Connector API
+  description: REST API for implementations of custom Discovery Provider
+  contact:
+    name: CZERTAINLY
+    url: https://www.czertainly.com
+    email: getinfo@czertainly.com
+  license:
+    name: MIT License
+    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  version: 1.0.1
+  x-logo:
+    url: images/czertainly_color_H.svg
+externalDocs:
+  description: CZERTAINLY Documentation
+  url: https://www.czertainly.com
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Info API
+  description: "Connector Information API. Each connector may have multiple functions\
+    \ represented by FunctionGroupCode. For each FunctionGroupCode there is a list\
+    \ of implemented end points. These endpoints must be according the specified interface,\
+    \ this is validated by the core. You can also implement helper end points that\
+    \ are used for callbacks and other relevant operations specific to implementation."
+- name: Discovery API
+  description: "Discovery Provider API. Used to schedule and establish certificate\
+    \ discovery process. Once the discovery process is started, the progress and the\
+    \ history of the certificate discovery can be requested. Discovery provides information\
+    \ about discovered certificates and meta data that are specific to implementation\
+    \ of the discovery connector."
+- name: Health check API
+  description: "Connector health check API. Connector returns own status and in some\
+    \ cases can return status of services on which it depends like database, HSM and\
+    \ so on."
+- name: Attributes API
+  description: Connector Attributes API. Provides information about supported attributes
+    of the connector. Attributes are specific to implementation and gives information
+    about the data that can be exchanged and properly parsed by the connector. Part
+    of this API is validation of the attributes.
+paths:
+  /v1/{functionalGroup}/{kind}/attributes/validate:
+    post:
+      tags:
+      - Attributes API
+      summary: Validate attributes
+      description: Returns true if the validation of attributes is successful
+      operationId: validateAttributes
+      parameters:
+      - name: kind
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttributeDefinition'
+        required: true
+      responses:
+        "200":
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /v1/discoveryProvider/discover:
+    post:
+      tags:
+      - Discovery API
+      summary: Schedule new certificate discovery and get information
+      description: "Once the certificate discovery is scheduled, information about\
+        \ discovered certificates, summary, and meta dataare returned."
+      operationId: discoverCertificate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscoveryProviderDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Functions found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscoveryProviderDto'
+  /v1/{functionalGroup}/{kind}/attributes:
+    get:
+      tags:
+      - Attributes API
+      summary: List available attributes
+      description: Returns attribute definition used for the connector
+      operationId: listAttributeDefinitions
+      parameters:
+      - name: kind
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+  /v1/health:
+    get:
+      tags:
+      - Health check API
+      summary: Checks the health of the connector
+      description: Returns current health overall status of the connector and it's
+        arbitrary parts
+      operationId: checkHealth
+      responses:
+        "200":
+          description: Health checked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
+  /v1:
+    get:
+      tags:
+      - Info API
+      summary: List supported functions of the connector
+      description: Returns map of functional code and implemented end points
+      operationId: listSupportedFunctions
+      responses:
+        "200":
+          description: Functions found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InfoResponse'
+components:
+  schemas:
+    AttributeCallback:
+      required:
+      - callbackContext
+      - callbackMethod
+      - mappings
+      type: object
+      properties:
+        callbackContext:
+          type: string
+          description: Context part of callback URL
+        callbackMethod:
+          type: string
+          description: HTTP method of the callback
+        mappings:
+          uniqueItems: true
+          type: array
+          description: Mappings for the callback method
+          items:
+            $ref: '#/components/schemas/AttributeCallbackMapping'
+        pathVariables:
+          type: object
+          additionalProperties:
+            type: object
+            description: Map of path variables supported by the callback method
+          description: Map of path variables supported by the callback method
+        queryParameters:
+          type: object
+          additionalProperties:
+            type: object
+            description: Map of the query parameters supported by the callback method
+          description: Map of the query parameters supported by the callback method
+        requestBody:
+          type: object
+          additionalProperties:
+            type: object
+            description: Request body for the callback method
+          description: Request body for the callback method
+      description: Optional definition of callback for helper methods
+    AttributeCallbackMapping:
+      required:
+      - targets
+      - to
+      type: object
+      properties:
+        from:
+          type: string
+          description: Name of the attribute whose value is to be used as value of
+            path variable or request param or body field.It is optional and must be
+            set only if value is not set.
+        attributeType:
+          type: string
+          description: Type of the attribute. It is optional and must be set only
+            if special behaviour is needed.
+          enum:
+          - STRING
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        to:
+          type: string
+          description: Name of the path variable or request param or body field which
+            is to be used to assign value of attribute
+        targets:
+          uniqueItems: true
+          type: array
+          description: Set of targets for propagating value.
+          items:
+            type: string
+            description: Set of targets for propagating value.
+            enum:
+            - PATH_VARIABLE
+            - REQUEST_PARAMETER
+            - BODY
+        value:
+          type: object
+          description: Static value to be propagated to targets. It is optional and
+            is set only if the value is known at attribute creation time.
+      description: Mappings for the callback method
+    AttributeDefinition:
+      required:
+      - editable
+      - id
+      - label
+      - multiValue
+      - name
+      - readOnly
+      - required
+      - type
+      - visible
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Identifier of attribute, should by unique"
+          example: "1"
+        name:
+          type: string
+          description: Name of the attribute
+          example: attribute
+        label:
+          type: string
+          description: Label of the attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the attribute
+          enum:
+          - STRING
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        required:
+          type: boolean
+          description: Boolean determining that attribute is required
+          default: false
+        readOnly:
+          type: boolean
+          description: Boolean determining that attribute is read only
+          default: false
+        editable:
+          type: boolean
+          description: Boolean determining that attribute is editable
+          default: true
+        visible:
+          type: boolean
+          description: Boolean determining that attribute is visible and can be displayed
+          default: true
+        multiValue:
+          type: boolean
+          description: Boolean determining that attribute has value composed from
+            multiple items
+          default: false
+        description:
+          type: string
+          description: "Optional description of attribute, should contain help for\
+            \ setting proper value"
+        validationRegex:
+          type: string
+          description: Optional regular expression used for validating attribute value
+        dependsOn:
+          type: array
+          description: Optional list of other attribute names and values on which
+            this attribute depends on
+          items:
+            $ref: '#/components/schemas/AttributeDependency'
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+        value:
+          type: object
+          description: Value of attribute
+    AttributeDependency:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of depending attribute
+        value:
+          type: object
+          description: "Value of depending attribute, which should be matched"
+      description: Optional list of other attribute names and values on which this
+        attribute depends on
+    CredentialDto:
+      required:
+      - connectorName
+      - connectorUuid
+      - credentialType
+      - enabled
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of credential
+          format: int64
+        uuid:
+          type: string
+          description: UUID of credential
+        name:
+          type: string
+          description: Credential name
+        credentialType:
+          type: string
+          description: Credential type
+          example: "SoftKeyStore, Basic, ApiKey, etc"
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        connectorUuid:
+          type: string
+          description: UUID of credential provider connector
+        connectorName:
+          type: string
+          description: Name of credential provider connector
+      description: Credential to authorize certificate discovery
+    DiscoveryProviderCertificateDataDto:
+      required:
+      - base64Content
+      - discoverySource
+      - id
+      - meta
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique id of the certificate
+          format: int64
+        base64Content:
+          type: string
+          description: PEM Certificate centent in base64
+        discoverySource:
+          type: string
+          description: Source of the discovery
+        meta:
+          type: object
+          additionalProperties:
+            type: object
+            description: Metadata for the certificate
+          description: Metadata for the certificate
+      description: Certificate data. (100 per page)
+    DiscoveryProviderDto:
+      required:
+      - attributes
+      - certificateData
+      - connectorUuid
+      - id
+      - meta
+      - name
+      - status
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Id of the discovery
+          format: int64
+        name:
+          type: string
+          description: Name of the discovery
+          example: Test discovery
+        status:
+          type: string
+          description: Status of discovery
+          enum:
+          - IN_PROGRESS
+          - FAILED
+          - COMPLETED
+          - WARNING
+        totalCertificatesDiscovered:
+          type: integer
+          description: Total number of certificates that are discovered
+          format: int32
+          default: 0
+        pageNumber:
+          type: integer
+          description: Current Page Number
+          format: int32
+          default: 0
+        totalPages:
+          type: integer
+          description: Total number of pages
+          format: int32
+          default: 0
+        certificateData:
+          $ref: '#/components/schemas/DiscoveryProviderCertificateDataDto'
+        meta:
+          type: object
+          description: Certificate Meta Data
+        attributes:
+          $ref: '#/components/schemas/AttributeDefinition'
+        connectorUuid:
+          type: string
+          description: Discovery Provider Connector UUID
+        credential:
+          $ref: '#/components/schemas/CredentialDto'
+    ErrorMessageDto:
+      type: object
+      properties:
+        message:
+          type: string
+    HealthDto:
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Current connector operational status
+          enum:
+          - OK
+          - NOK
+          - UNKNOWN
+        description:
+          type: string
+          description: Detailed status description
+        parts:
+          type: object
+          description: "Nested statuses of services on which connector depends like\
+            \ database, HSM and so on"
+    InfoResponse:
+      required:
+      - functionGroupCode
+      type: object
+      properties:
+        functionGroupCode:
+          type: string
+          description: Enumerated code of functional group
+          enum:
+          - credentialProvider
+          - legacyCaConnector
+          - caConnector
+          - discoveryProvider
