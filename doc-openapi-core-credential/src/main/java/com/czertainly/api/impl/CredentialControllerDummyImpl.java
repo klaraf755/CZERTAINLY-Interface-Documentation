@@ -1,0 +1,62 @@
+package com.czertainly.api.impl;
+
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.core.web.CredentialController;
+import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
+import com.czertainly.api.model.core.credential.CredentialDto;
+import com.czertainly.api.model.core.credential.CredentialRequestDto;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
+public class CredentialControllerDummyImpl implements CredentialController {
+
+    @Override
+    public List<CredentialDto> listCredentials() {
+        return null;
+    }
+
+    @Override
+    public CredentialDto getCredential(String uuid) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> createCredential(CredentialRequestDto request) throws AlreadyExistException, NotFoundException, ConnectorException {
+        return null;
+    }
+
+    @Override
+    public CredentialDto updateCredential(String uuid, CredentialRequestDto request) throws NotFoundException, ConnectorException {
+        return null;
+    }
+
+    @Override
+    public void removeCredential(String uuid) throws NotFoundException {
+
+    }
+
+    @Override
+    public void enableCredential(String uuid) throws NotFoundException {
+
+    }
+
+    @Override
+    public void disableCredential(String uuid) throws NotFoundException {
+
+    }
+
+    @Override
+    public List<ForceDeleteMessageDto> bulkRemoveCredential(List<String> uuids) throws NotFoundException, ValidationException {
+        return null;
+    }
+
+    @Override
+    public void bulkForceRemoveCredential(List<String> uuids) throws NotFoundException, ValidationException {
+
+    }
+
+}
