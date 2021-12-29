@@ -1,0 +1,89 @@
+openapi: 3.0.1
+info:
+  title: CZERTAINLY Local API
+  description: REST API for local administration operations without authentication
+  contact:
+    name: CZERTAINLY
+    url: https://www.czertainly.com
+    email: getinfo@czertainly.com
+  license:
+    name: MIT License
+    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  x-logo:
+    url: images/czertainly_color_H.svg
+externalDocs:
+  description: CZERTAINLY Documentation
+  url: https://docs.czertainly.com
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Local API
+  description: API only accessible from localhost
+paths:
+  /v1/local/admins:
+    post:
+      tags:
+      - Local API
+      summary: Create Administrator
+      operationId: addAdmin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddAdminRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Admin created
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+components:
+  schemas:
+    AddAdminRequestDto:
+      required:
+      - description
+      - email
+      - enabled
+      - name
+      - role
+      - surname
+      - username
+      type: object
+      properties:
+        adminCertificate:
+          type: string
+          description: Base64 Content of the admin certificate
+        certificateUuid:
+          type: string
+          description: UUID of the existing certificate in the Inventory
+        username:
+          type: string
+          description: Username of the administrator
+        name:
+          type: string
+          description: Name of the administrator
+        surname:
+          type: string
+          description: Surname of the administrator
+        email:
+          type: string
+          description: Email of the administrator
+        role:
+          type: string
+          description: Role of the administrator
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+        enabled:
+          type: boolean
+          description: "Enabled flag. true = enabled, false = disabled"
+        description:
+          type: string
+          description: Description for the administrator

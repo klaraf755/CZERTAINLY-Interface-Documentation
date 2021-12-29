@@ -1,0 +1,630 @@
+openapi: 3.0.1
+info:
+  title: CZERTAINLY Client Operations v2 API
+  description: REST API for v2 Client Operations
+  contact:
+    name: CZERTAINLY
+    url: https://www.czertainly.com
+    email: getinfo@czertainly.com
+  license:
+    name: MIT License
+    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  x-logo:
+    url: images/czertainly_color_H.svg
+externalDocs:
+  description: CZERTAINLY Documentation
+  url: https://docs.czertainly.com
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Client Operation API
+  description: Client Operation API
+paths:
+  /v2/operations/{raProfileName}/{certificateId}/revoke:
+    post:
+      tags:
+      - Client Operation API
+      summary: Revoke Certificate
+      operationId: revokeCertificate
+      parameters:
+      - name: raProfileName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: certificateId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateRevocationDto'
+        required: true
+      responses:
+        "204":
+          description: Certificate revoked
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v2/operations/{raProfileName}/{certificateId}/renew:
+    post:
+      tags:
+      - Client Operation API
+      summary: Renew Certificate
+      operationId: renewCertificate
+      parameters:
+      - name: raProfileName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: certificateId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateRenewRequestDto'
+        required: true
+      responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+        "200":
+          description: Certificate renewed
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+  /v2/operations/{raProfileName}/revoke/attributes/validate:
+    post:
+      tags:
+      - Client Operation API
+      summary: Validate revocation Attributes
+      operationId: validateRevokeCertificateAttributes
+      parameters:
+      - name: raProfileName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
+        "200":
+          description: Attributes validated
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v2/operations/{raProfileName}/issue:
+    post:
+      tags:
+      - Client Operation API
+      summary: Issue Certificate
+      operationId: issueCertificate
+      parameters:
+      - name: raProfileName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateSignRequestDto'
+        required: true
+      responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+        "404":
+          description: Not found
+        "200":
+          description: Certificate issued
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+        "400":
+          description: Invalid request
+  /v2/operations/{raProfileName}/issue/attributes/validate:
+    post:
+      tags:
+      - Client Operation API
+      summary: Validate issue Certificate Attributes
+      operationId: validateIssueCertificateAttributes
+      parameters:
+      - name: raProfileName
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+        "200":
+          description: Attributes validated
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v2/operations/{raProfileName}/revoke/attributes:
+    get:
+      tags:
+      - Client Operation API
+      summary: Get revocation Attributes
+      operationId: listRevokeCertificateAttributes
+      parameters:
+      - name: raProfileName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not found
+        "200":
+          description: Attributes obtained
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "400":
+          description: Invalid request
+  /v2/operations/{raProfileName}/issue/attributes:
+    get:
+      tags:
+      - Client Operation API
+      summary: Get list of all Attributes for Certificate
+      operationId: listIssueCertificateAttributes
+      parameters:
+      - name: raProfileName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Attributes list obtained
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+components:
+  schemas:
+    ClientCertificateRevocationDto:
+      required:
+      - attributes
+      - reason
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Reason for revocation
+          enum:
+          - UNSPECIFIED
+          - KEY_COMPROMISE
+          - CA_COMPROMISE
+          - AFFILIATION_CHANGED
+          - SUPERSEDED
+          - CESSATION_OF_OPERATION
+          - CERTIFICATE_HOLD
+          - REMOVE_FROM_CRL
+          - PRIVILEGES_WITHDRAWN
+          - AA_COMPROMISE
+        attributes:
+          type: array
+          description: List of Attributes to revoke Certificate
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+    RequestAttributeDto:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        value:
+          type: object
+          description: Value of the Attribute
+      description: List of Attributes to revoke Certificate
+    ClientCertificateRenewRequestDto:
+      required:
+      - pkcs10
+      type: object
+      properties:
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+    ValidationError:
+      type: object
+      properties:
+        errorDescription:
+          type: string
+    ValidationException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  className:
+                    type: string
+                  nativeMethod:
+                    type: boolean
+            message:
+              type: string
+            suppressed:
+              type: array
+              items:
+                type: object
+                properties:
+                  stackTrace:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        classLoaderName:
+                          type: string
+                        moduleName:
+                          type: string
+                        moduleVersion:
+                          type: string
+                        methodName:
+                          type: string
+                        fileName:
+                          type: string
+                        lineNumber:
+                          type: integer
+                          format: int32
+                        className:
+                          type: string
+                        nativeMethod:
+                          type: boolean
+                  message:
+                    type: string
+                  localizedMessage:
+                    type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    ClientCertificateDataResponseDto:
+      required:
+      - certificateData
+      - uuid
+      type: object
+      properties:
+        certificateData:
+          type: string
+          description: Base64 encoded Certificate content
+        uuid:
+          type: string
+          description: UUID of Certificate
+    ClientCertificateSignRequestDto:
+      required:
+      - attributes
+      - pkcs10
+      type: object
+      properties:
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+        attributes:
+          type: array
+          description: List of Attributes to issue Certificate
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+    AttributeCallback:
+      required:
+      - callbackContext
+      - callbackMethod
+      - mappings
+      type: object
+      properties:
+        callbackContext:
+          type: string
+          description: Context part of callback URL
+        callbackMethod:
+          type: string
+          description: HTTP method of the callback
+        mappings:
+          uniqueItems: true
+          type: array
+          description: Mappings for the callback method
+          items:
+            $ref: '#/components/schemas/AttributeCallbackMapping'
+        pathVariables:
+          type: object
+          additionalProperties:
+            type: object
+            description: Map of path variables supported by the callback method
+          description: Map of path variables supported by the callback method
+        queryParameters:
+          type: object
+          additionalProperties:
+            type: object
+            description: Map of the query parameters supported by the callback method
+          description: Map of the query parameters supported by the callback method
+        requestBody:
+          type: object
+          additionalProperties:
+            type: object
+            description: Request body for the callback method
+          description: Request body for the callback method
+      description: Optional definition of callback for helper methods
+    AttributeCallbackMapping:
+      required:
+      - targets
+      - to
+      type: object
+      properties:
+        from:
+          type: string
+          description: Name of the attribute whose value is to be used as value of
+            path variable or request param or body field.It is optional and must be
+            set only if value is not set.
+        attributeType:
+          type: string
+          description: Type of the attribute. It is optional and must be set only
+            if special behaviour is needed.
+          enum:
+          - STRING
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        to:
+          type: string
+          description: Name of the path variable or request param or body field which
+            is to be used to assign value of attribute
+        targets:
+          uniqueItems: true
+          type: array
+          description: Set of targets for propagating value.
+          items:
+            type: string
+            description: Set of targets for propagating value.
+            enum:
+            - PATH_VARIABLE
+            - REQUEST_PARAMETER
+            - BODY
+        value:
+          type: object
+          description: Static value to be propagated to targets. It is optional and
+            is set only if the value is known at attribute creation time.
+      description: Mappings for the callback method
+    AttributeDefinition:
+      required:
+      - editable
+      - label
+      - multiValue
+      - name
+      - readOnly
+      - required
+      - type
+      - uuid
+      - visible
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        required:
+          type: boolean
+          description: Boolean determining if the Attribute is required
+          default: false
+        readOnly:
+          type: boolean
+          description: Boolean determining if the Attribute is read only
+          default: false
+        editable:
+          type: boolean
+          description: Boolean determining if the Attribute is editable
+          default: true
+        visible:
+          type: boolean
+          description: Boolean determining if the Attribute is visible and can be
+            displayed
+          default: true
+        multiValue:
+          type: boolean
+          description: Boolean determining if the Attribute has value composed from
+            multiple items
+          default: false
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain help\
+            \ for setting proper value"
+        validationRegex:
+          type: string
+          description: Optional regular expression used for validating the Attribute
+            value
+        dependsOn:
+          type: array
+          description: Optional list of other Attribute names and values on which
+            it depends on
+          items:
+            $ref: '#/components/schemas/AttributeDependency'
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+        value:
+          type: object
+          description: Value of the Attribute
+    AttributeDependency:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of depending attribute
+        value:
+          type: object
+          description: "Value of depending attribute, which should be matched"
+      description: Optional list of other Attribute names and values on which it depends
+        on
