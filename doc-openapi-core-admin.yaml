@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY RA Profile API
-  description: REST API for managing RA Profiles in the platform
+  title: CZERTAINLY Administrator API
+  description: REST API for managing Administrators in the platform
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -18,15 +18,17 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: RA Profile Management API
-  description: RA Profile Management API
+- name: Admin Management API
+  description: "Admin Management API. Provides to Information regarding the Administrators\
+    \ in the platform With the Admin API, operations like addition, removal, enable\
+    \ etc... operations can be performed "
 paths:
-  /v1/raprofiles/{uuid}/enable:
+  /v1/admins/{uuid}/enable:
     put:
       tags:
-      - RA Profile Management API
-      summary: Enable RA Profiles
-      operationId: enableRaProfile
+      - Admin Management API
+      summary: Enable Administrator
+      operationId: enableAdmin
       parameters:
       - name: uuid
         in: path
@@ -34,18 +36,18 @@ paths:
         schema:
           type: string
       responses:
+        "200":
+          description: Enable administrator success
         "400":
           description: Invalid request
-        "204":
-          description: RA Profile enabled
         "404":
           description: Not found
-  /v1/raprofiles/{uuid}/disable:
+  /v1/admins/{uuid}/disable:
     put:
       tags:
-      - RA Profile Management API
-      summary: Disable RA Profiles
-      operationId: disableRaProfile
+      - Admin Management API
+      summary: Disable Administrator
+      operationId: disableAdmin
       parameters:
       - name: uuid
         in: path
@@ -53,18 +55,18 @@ paths:
         schema:
           type: string
       responses:
+        "200":
+          description: Disable administrator success
         "400":
           description: Invalid request
-        "204":
-          description: RA Profile disabled
         "404":
           description: Not found
-  /v1/raprofiles/enable:
+  /v1/admins/enable:
     put:
       tags:
-      - RA Profile Management API
-      summary: Enable multiple RA Profiles
-      operationId: bulkEnableRaProfile
+      - Admin Management API
+      summary: Enable Multiple Administrator
+      operationId: bulkEnableAdmin
       requestBody:
         content:
           application/json:
@@ -75,17 +77,17 @@ paths:
         required: true
       responses:
         "204":
-          description: RA Profiles enabled
+          description: Enable administrator success
         "400":
           description: Invalid request
         "404":
           description: Not found
-  /v1/raprofiles/disable:
+  /v1/admins/disable:
     put:
       tags:
-      - RA Profile Management API
-      summary: Disable multiple RA Profiles
-      operationId: bulkDisableRaProfile
+      - Admin Management API
+      summary: Disable Multiple Administrator
+      operationId: bulkDisableAdmin
       requestBody:
         content:
           application/json:
@@ -95,18 +97,18 @@ paths:
                 type: string
         required: true
       responses:
-        "204":
-          description: RA Profiles disabled
         "400":
           description: Invalid request
         "404":
           description: Not found
-  /v1/raprofiles/{uuid}:
+        "204":
+          description: Disable administrator success
+  /v1/admins/{uuid}:
     get:
       tags:
-      - RA Profile Management API
-      summary: Details of RA Profile
-      operationId: getRaProfile
+      - Admin Management API
+      summary: Get details of an Administrator
+      operationId: getAdmin
       parameters:
       - name: uuid
         in: path
@@ -114,21 +116,21 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
         "200":
-          description: RA Profile details retrieved
+          description: Administrator details retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RaProfileDto'
+                $ref: '#/components/schemas/AdminDto'
+        "400":
+          description: Invalid request
         "404":
           description: Not found
     post:
       tags:
-      - RA Profile Management API
-      summary: Edit RA Profile
-      operationId: editRaProfile
+      - Admin Management API
+      summary: Edit Administrator
+      operationId: editAdmin
       parameters:
       - name: uuid
         in: path
@@ -139,26 +141,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EditRaProfileRequestDto'
+              $ref: '#/components/schemas/EditAdminRequestDto'
         required: true
       responses:
-        "204":
-          description: RA Profile updated
+        "200":
+          description: Administrator edit success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RaProfileDto'
-        "422":
-          description: Unprocessible Entity
+                $ref: '#/components/schemas/AdminDto'
         "400":
           description: Invalid request
         "404":
           description: Not found
     delete:
       tags:
-      - RA Profile Management API
-      summary: Delete RA Profile
-      operationId: removeRaProfile
+      - Admin Management API
+      summary: Remove Administrator
+      operationId: removeAdmin
       parameters:
       - name: uuid
         in: path
@@ -166,66 +166,64 @@ paths:
         schema:
           type: string
       responses:
-        "204":
-          description: RA Profile deleted
         "400":
           description: Invalid request
         "404":
           description: Not found
-  /v1/raprofiles:
+        "204":
+          description: Administrator removed
+  /v1/admins:
     get:
       tags:
-      - RA Profile Management API
-      summary: List of available RA Profiles by Status
-      operationId: listRaProfiles_1
-      parameters:
-      - name: isEnabled
-        in: query
-        required: true
-        schema:
-          type: boolean
+      - Admin Management API
+      summary: List available administrators
+      operationId: listAdmins
       responses:
-        "400":
-          description: Invalid request
         "200":
-          description: RA Profiles retrieved
+          description: List of administrator
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RaProfileDto'
+                  $ref: '#/components/schemas/AdminDto'
+        "400":
+          description: Invalid request
         "404":
           description: Not found
     post:
       tags:
-      - RA Profile Management API
-      summary: Add RA Profile
-      operationId: addRaProfile
+      - Admin Management API
+      summary: Create a new Administrators
+      operationId: addAdmin
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddRaProfileRequestDto'
+              $ref: '#/components/schemas/AddAdminRequestDto'
         required: true
       responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationException'
         "201":
-          description: RA Profile added
+          description: New administrator created
           content:
             application/json:
               schema:
                 type: object
-        "422":
-          description: Unprocessible Entity
-        "400":
-          description: Invalid request
-        "404":
-          description: Not found
     delete:
       tags:
-      - RA Profile Management API
-      summary: Delete multiple Ra Profiles
-      operationId: bulkRemoveRaProfile
+      - Admin Management API
+      summary: Remove Multiple Administrator
+      operationId: bulkRemoveAdmin
       requestBody:
         content:
           application/json:
@@ -235,79 +233,99 @@ paths:
                 type: string
         required: true
       responses:
-        "422":
-          description: Unprocessible Entity
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
         "204":
-          description: RA Profiles deleted
-        "400":
-          description: Invalid request
-        "404":
-          description: Not found
-  /v1/raprofiles/{uuid}/listclients:
-    get:
-      tags:
-      - RA Profile Management API
-      summary: List authorized Clients of RA Profile
-      operationId: listClients
-      parameters:
-      - name: uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "400":
-          description: Invalid request
-        "200":
-          description: List of clients of RA Profile
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ClientDto'
-        "404":
-          description: Not found
+          description: Administrator removed
 components:
   schemas:
-    EditRaProfileRequestDto:
+    EditAdminRequestDto:
       required:
-      - attributes
-      - authorityInstanceUuid
-      type: object
-      properties:
-        description:
-          type: string
-          description: Description of RA Profile
-        authorityInstanceUuid:
-          type: string
-          description: Authority instance UUID
-        attributes:
-          type: array
-          description: List of Attributes for RA Profile
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-    RequestAttributeDto:
-      required:
+      - certificateUuid
+      - description
+      - email
       - name
-      - value
+      - role
+      - surname
       type: object
       properties:
-        uuid:
+        adminCertificate:
           type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+          description: Base64 Content of the certificate
+        certificateUuid:
+          type: string
+          description: UUID of the existing certificate in inventory
         name:
           type: string
-          description: Name of the Attribute
-          example: Attribute
-        value:
-          type: object
-          description: Value of the Attribute
-      description: List of Attributes for RA Profile
+          description: Name of the administrator
+        surname:
+          type: string
+          description: Administrator Surname
+        email:
+          type: string
+          description: Email Id of the admin
+        role:
+          type: string
+          description: Role of the admin
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+        description:
+          type: string
+          description: Description for the administrator
+    AdminDto:
+      required:
+      - certificate
+      - description
+      - email
+      - enabled
+      - id
+      - name
+      - role
+      - serialNumber
+      - surname
+      - username
+      - uuid
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Id of the Administrator
+          format: int64
+        uuid:
+          type: string
+          description: UUID of the Administrator
+        username:
+          type: string
+          description: Administrator Username
+        certificate:
+          $ref: '#/components/schemas/CertificateDto'
+        role:
+          type: string
+          description: Role of the administrator
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+        email:
+          type: string
+          description: Administrator Email
+        serialNumber:
+          type: string
+          description: Serial Number of the administrator
+        name:
+          type: string
+          description: Username of the administrator
+        description:
+          type: string
+          description: Administrator description
+        enabled:
+          type: boolean
+          description: Is the admin enabled?
+        surname:
+          type: string
+          description: Surname of administrator
     AttributeCallback:
       required:
       - callbackContext
@@ -479,63 +497,6 @@ components:
           description: "Value of depending attribute, which should be matched"
       description: Optional list of other Attribute names and values on which it depends
         on
-    RaProfileDto:
-      required:
-      - attributes
-      - authorityInstanceName
-      - authorityInstanceUuid
-      - enabled
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-        name:
-          type: string
-          description: Object Name
-        description:
-          type: string
-          description: Description of RA Profile
-        authorityInstanceUuid:
-          type: string
-          description: UUID of Authority provider
-        authorityInstanceName:
-          type: string
-          description: Name of Authority instance
-        attributes:
-          type: array
-          description: List of RA Profiles attributes
-          items:
-            $ref: '#/components/schemas/AttributeDefinition'
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-    AddRaProfileRequestDto:
-      required:
-      - attributes
-      - authorityInstanceUuid
-      - name
-      type: object
-      properties:
-        authorityInstanceUuid:
-          type: string
-          description: UUID of the Authority instance
-        name:
-          type: string
-          description: RA Profile name
-        description:
-          type: string
-          description: RA Profile description
-        attributes:
-          type: array
-          description: List of Attributes to create RA Profile
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
     CertificateDto:
       required:
       - basicConstraints
@@ -659,7 +620,7 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/CertificateValidationDto'
           description: Certificate validation result
-      description: Client Certificate Information
+      description: Administrator Certificate Details
     CertificateEntityDto:
       required:
       - entityType
@@ -722,35 +683,207 @@ components:
         message:
           type: string
       description: Certificate validation result
-    ClientDto:
+    RaProfileDto:
       required:
-      - certificate
-      - description
+      - attributes
+      - authorityInstanceName
+      - authorityInstanceUuid
       - enabled
-      - id
       - name
-      - serialNumber
       - uuid
       type: object
       properties:
-        id:
-          type: integer
-          description: Id of the client
-          format: int64
         uuid:
           type: string
-          description: UUID of the client
-        serialNumber:
-          type: string
-          description: Client serial Number
+          description: Object identifier
         name:
           type: string
-          description: Name of the client
-        certificate:
-          $ref: '#/components/schemas/CertificateDto'
+          description: Object Name
         description:
           type: string
-          description: Client description
+          description: Description of RA Profile
+        authorityInstanceUuid:
+          type: string
+          description: UUID of Authority provider
+        authorityInstanceName:
+          type: string
+          description: Name of Authority instance
+        attributes:
+          type: array
+          description: List of RA Profiles attributes
+          items:
+            $ref: '#/components/schemas/AttributeDefinition'
         enabled:
           type: boolean
-          description: Status of the client / Is Client enabled?
+          description: Enabled flag - true = enabled; false = disabled
+      description: RA Profile associated to the Certificate
+    AddAdminRequestDto:
+      required:
+      - description
+      - email
+      - enabled
+      - name
+      - role
+      - surname
+      - username
+      type: object
+      properties:
+        adminCertificate:
+          type: string
+          description: Base64 Content of the admin certificate
+        certificateUuid:
+          type: string
+          description: UUID of the existing certificate in the Inventory
+        username:
+          type: string
+          description: Username of the administrator
+        name:
+          type: string
+          description: Name of the administrator
+        surname:
+          type: string
+          description: Surname of the administrator
+        email:
+          type: string
+          description: Email of the administrator
+        role:
+          type: string
+          description: Role of the administrator
+          enum:
+          - ADMINISTRATOR
+          - SUPERADMINISTRATOR
+        enabled:
+          type: boolean
+          description: "Enabled flag. true = enabled, false = disabled"
+        description:
+          type: string
+          description: Description for the administrator
+    ValidationError:
+      type: object
+      properties:
+        errorDescription:
+          type: string
+    ValidationException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  className:
+                    type: string
+                  nativeMethod:
+                    type: boolean
+            message:
+              type: string
+            suppressed:
+              type: array
+              items:
+                type: object
+                properties:
+                  stackTrace:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        classLoaderName:
+                          type: string
+                        moduleName:
+                          type: string
+                        moduleVersion:
+                          type: string
+                        methodName:
+                          type: string
+                        fileName:
+                          type: string
+                        lineNumber:
+                          type: integer
+                          format: int32
+                        className:
+                          type: string
+                        nativeMethod:
+                          type: boolean
+                  message:
+                    type: string
+                  localizedMessage:
+                    type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string

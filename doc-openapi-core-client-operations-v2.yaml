@@ -83,14 +83,14 @@ paths:
                 $ref: '#/components/schemas/ValidationException'
         "400":
           description: Invalid request
+        "404":
+          description: Not found
         "200":
           description: Certificate renewed
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "404":
-          description: Not found
   /v2/operations/{raProfileName}/revoke/attributes/validate:
     post:
       tags:
@@ -149,14 +149,14 @@ paths:
                 $ref: '#/components/schemas/ValidationException'
         "400":
           description: Invalid request
+        "404":
+          description: Not found
         "200":
           description: Certificate issued
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "404":
-          description: Not found
   /v2/operations/{raProfileName}/issue/attributes/validate:
     post:
       tags:
@@ -178,18 +178,18 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "200":
-          description: Attributes validated
-          content:
-            '*/*':
-              schema:
-                type: boolean
         "422":
           description: Unprocessable Entity
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ValidationException'
+        "200":
+          description: Attributes validated
+          content:
+            '*/*':
+              schema:
+                type: boolean
         "400":
           description: Invalid request
         "404":
@@ -207,8 +207,6 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: Attributes obtained
           content:
@@ -217,6 +215,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
+        "400":
+          description: Invalid request
         "404":
           description: Not found
   /v2/operations/{raProfileName}/issue/attributes:

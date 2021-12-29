@@ -1,0 +1,1104 @@
+openapi: 3.0.1
+info:
+  title: CZERTAINLY Certificate API
+  description: REST API for managing Certificates in the platform
+  contact:
+    name: CZERTAINLY
+    url: https://www.czertainly.com
+    email: getinfo@czertainly.com
+  license:
+    name: MIT License
+    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  x-logo:
+    url: images/czertainly_color_H.svg
+externalDocs:
+  description: CZERTAINLY Documentation
+  url: https://docs.czertainly.com
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Certificate Group API
+  description: Certificate Group API
+- name: Certificate Inventory API
+  description: Certificate Inventory API
+- name: Certificate Entity API
+  description: Certificate Entity API
+paths:
+  /v1/certificate/{uuid}/ra-profile:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Update RA Profile for a certificate
+      operationId: updateRaProfile
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UuidDto'
+        required: true
+      responses:
+        "204":
+          description: RA Profile updated
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/certificate/{uuid}/owner:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Update Owner for a certificate
+      operationId: updateOwner
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateOwnerRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "204":
+          description: Owner updated
+  /v1/certificate/{uuid}/group:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Update Group for a certificate
+      operationId: updateCertificateGroup
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UuidDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "204":
+          description: Group updated
+  /v1/certificate/{uuid}/entity:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Update Entity for a certificate
+      operationId: updateEntity
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UuidDto'
+        required: true
+      responses:
+        "204":
+          description: Entity updated
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/certificate/validate:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Validate Certificates of Status Unknown
+      operationId: validateAllCertificate
+      responses:
+        "204":
+          description: Certificate Validation Initiated
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/certificate/ra-profile:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Update RA Profile for multiple certificates
+      operationId: bulkUpdateRaProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdAndCertificateIdDto'
+        required: true
+      responses:
+        "204":
+          description: RA Profile updated
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/certificate/owner:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Update Owner for multiple certificates
+      operationId: bulkUpdateOwner
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateOwnerBulkUpdateDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "204":
+          description: Owner updated
+  /v1/certificate/group:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Update group for multiple certificates
+      operationId: bulkUpdateCertificateGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdAndCertificateIdDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "204":
+          description: Group updated
+  /v1/certificate/entity:
+    put:
+      tags:
+      - Certificate Inventory API
+      summary: Update Entity for multiple certificates
+      operationId: bulkUpdateEntity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdAndCertificateIdDto'
+        required: true
+      responses:
+        "204":
+          description: Entity updated
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/groups/{uuid}:
+    get:
+      tags:
+      - Certificate Group API
+      summary: Group details
+      operationId: getCertificateGroup
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Group details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateGroupDto'
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+    post:
+      tags:
+      - Certificate Group API
+      summary: Update Group
+      operationId: updateCertificateGroup_1
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateGroupRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Group updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateGroupDto'
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+    delete:
+      tags:
+      - Certificate Group API
+      summary: Remove Group
+      operationId: removeCertificateGroup
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Group removed
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/groups:
+    get:
+      tags:
+      - Certificate Group API
+      summary: List Groups
+      operationId: listCertificateGroups
+      responses:
+        "400":
+          description: Invalid request
+        "200":
+          description: list of available Group
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CertificateGroupDto'
+        "404":
+          description: Not found
+    post:
+      tags:
+      - Certificate Group API
+      summary: Create Group
+      operationId: createCertificateGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateGroupRequestDto'
+        required: true
+      responses:
+        "201":
+          description: Group created
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+    delete:
+      tags:
+      - Certificate Group API
+      summary: Remove multiple Groups
+      operationId: bulkRemoveCertificateGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "204":
+          description: Groups removed
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/entities/{uuid}:
+    get:
+      tags:
+      - Certificate Entity API
+      summary: Entity details
+      operationId: getCertificateEntity
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "200":
+          description: Entity details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateEntityDto'
+    post:
+      tags:
+      - Certificate Entity API
+      summary: Update Entity
+      operationId: updateCertificateEntity
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateEntityRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Entity updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateEntityDto'
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+    delete:
+      tags:
+      - Certificate Entity API
+      summary: Remove Entity
+      operationId: removeCertificateEntity
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Entity removed
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/entities:
+    get:
+      tags:
+      - Certificate Entity API
+      summary: List Entities
+      operationId: listCertificateEntities
+      responses:
+        "200":
+          description: list of available Entities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CertificateEntityDto'
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+    post:
+      tags:
+      - Certificate Entity API
+      summary: Create Entity
+      operationId: createCertificateEntity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateEntityRequestDto'
+        required: true
+      responses:
+        "200":
+          description: New Entity created
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+    delete:
+      tags:
+      - Certificate Entity API
+      summary: Remove multiple Entity
+      operationId: bulkRemoveCertificateEntity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "204":
+          description: Entities removed
+        "404":
+          description: Not found
+  /v1/certificate/upload:
+    post:
+      tags:
+      - Certificate Inventory API
+      summary: Upload a new Certificate
+      operationId: upload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadCertificateRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Upload a new certificate
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/certificate/delete:
+    post:
+      tags:
+      - Certificate Inventory API
+      summary: Delete multiple certificates
+      operationId: bulkRemoveCertificate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveCertificateDto'
+        required: true
+      responses:
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+        "204":
+          description: Certificates deleted
+  /v1/certificate/{uuid}/validate:
+    get:
+      tags:
+      - Certificate Inventory API
+      summary: Initiate Certificate Validation
+      operationId: check
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Certificate validated
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/certificate/{uuid}:
+    get:
+      tags:
+      - Certificate Inventory API
+      summary: Get Certificates Details
+      operationId: getCertificate
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Details of the certificates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateDto'
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+    delete:
+      tags:
+      - Certificate Inventory API
+      summary: Remove a certificate
+      operationId: removeCertificate
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Certificate deleted
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+  /v1/certificate:
+    get:
+      tags:
+      - Certificate Inventory API
+      summary: List Certificates
+      operationId: listCertificate
+      parameters:
+      - name: start
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: end
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: List of all the certificates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CertificateDto'
+        "400":
+          description: Invalid request
+        "404":
+          description: Not found
+components:
+  schemas:
+    UuidDto:
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+    CertificateOwnerRequestDto:
+      required:
+      - owner
+      type: object
+      properties:
+        owner:
+          type: string
+          description: Owner of the certificate
+    IdAndCertificateIdDto:
+      required:
+      - certificateUuids
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Object
+        certificateUuids:
+          type: array
+          description: List of UUIDs of the Certificates in Inventory
+          items:
+            type: string
+            description: List of UUIDs of the Certificates in Inventory
+    CertificateOwnerBulkUpdateDto:
+      required:
+      - certificateIds
+      - owner
+      type: object
+      properties:
+        owner:
+          type: string
+          description: Owner of the Certificates
+        certificateIds:
+          type: array
+          description: List of certifiate Ids
+          items:
+            type: string
+            description: List of certifiate Ids
+    CertificateGroupRequestDto:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Certificate Group
+        description:
+          type: string
+          description: Description of the Certificate Group
+    CertificateGroupDto:
+      required:
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+        name:
+          type: string
+          description: Object Name
+        description:
+          type: string
+          description: Description of the Certificate Group
+    CertificateEntityRequestDto:
+      required:
+      - entityType
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Entity
+        description:
+          type: string
+          description: Description of the Entity
+        entityType:
+          type: string
+          description: Type of the Entity
+          enum:
+          - SERVER
+          - ROUTER
+          - HSM
+          - SWITCH
+          - LOAD_BALANCER
+          - FIREWALL
+          - MDM
+          - CLOUD
+    CertificateEntityDto:
+      required:
+      - entityType
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+        name:
+          type: string
+          description: Object Name
+        description:
+          type: string
+          description: Description of the Entity
+        entityType:
+          type: string
+          description: Type of the Entity
+          enum:
+          - SERVER
+          - ROUTER
+          - HSM
+          - SWITCH
+          - LOAD_BALANCER
+          - FIREWALL
+          - MDM
+          - CLOUD
+    UploadCertificateRequestDto:
+      required:
+      - certificate
+      type: object
+      properties:
+        certificate:
+          type: string
+          description: Base64 Content of the Certificate
+    RemoveCertificateDto:
+      required:
+      - uuids
+      type: object
+      properties:
+        uuids:
+          type: array
+          description: UUIDs of the Certificate
+          items:
+            type: string
+            description: UUIDs of the Certificate
+    AttributeCallback:
+      required:
+      - callbackContext
+      - callbackMethod
+      - mappings
+      type: object
+      properties:
+        callbackContext:
+          type: string
+          description: Context part of callback URL
+        callbackMethod:
+          type: string
+          description: HTTP method of the callback
+        mappings:
+          uniqueItems: true
+          type: array
+          description: Mappings for the callback method
+          items:
+            $ref: '#/components/schemas/AttributeCallbackMapping'
+        pathVariables:
+          type: object
+          additionalProperties:
+            type: object
+            description: Map of path variables supported by the callback method
+          description: Map of path variables supported by the callback method
+        queryParameters:
+          type: object
+          additionalProperties:
+            type: object
+            description: Map of the query parameters supported by the callback method
+          description: Map of the query parameters supported by the callback method
+        requestBody:
+          type: object
+          additionalProperties:
+            type: object
+            description: Request body for the callback method
+          description: Request body for the callback method
+      description: Optional definition of callback for helper methods
+    AttributeCallbackMapping:
+      required:
+      - targets
+      - to
+      type: object
+      properties:
+        from:
+          type: string
+          description: Name of the attribute whose value is to be used as value of
+            path variable or request param or body field.It is optional and must be
+            set only if value is not set.
+        attributeType:
+          type: string
+          description: Type of the attribute. It is optional and must be set only
+            if special behaviour is needed.
+          enum:
+          - STRING
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        to:
+          type: string
+          description: Name of the path variable or request param or body field which
+            is to be used to assign value of attribute
+        targets:
+          uniqueItems: true
+          type: array
+          description: Set of targets for propagating value.
+          items:
+            type: string
+            description: Set of targets for propagating value.
+            enum:
+            - PATH_VARIABLE
+            - REQUEST_PARAMETER
+            - BODY
+        value:
+          type: object
+          description: Static value to be propagated to targets. It is optional and
+            is set only if the value is known at attribute creation time.
+      description: Mappings for the callback method
+    AttributeDefinition:
+      required:
+      - editable
+      - label
+      - multiValue
+      - name
+      - readOnly
+      - required
+      - type
+      - uuid
+      - visible
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        required:
+          type: boolean
+          description: Boolean determining if the Attribute is required
+          default: false
+        readOnly:
+          type: boolean
+          description: Boolean determining if the Attribute is read only
+          default: false
+        editable:
+          type: boolean
+          description: Boolean determining if the Attribute is editable
+          default: true
+        visible:
+          type: boolean
+          description: Boolean determining if the Attribute is visible and can be
+            displayed
+          default: true
+        multiValue:
+          type: boolean
+          description: Boolean determining if the Attribute has value composed from
+            multiple items
+          default: false
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain help\
+            \ for setting proper value"
+        validationRegex:
+          type: string
+          description: Optional regular expression used for validating the Attribute
+            value
+        dependsOn:
+          type: array
+          description: Optional list of other Attribute names and values on which
+            it depends on
+          items:
+            $ref: '#/components/schemas/AttributeDependency'
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+        value:
+          type: object
+          description: Value of the Attribute
+      description: List of RA Profiles attributes
+    AttributeDependency:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of depending attribute
+        value:
+          type: object
+          description: "Value of depending attribute, which should be matched"
+      description: Optional list of other Attribute names and values on which it depends
+        on
+    CertificateDto:
+      required:
+      - basicConstraints
+      - certificateContent
+      - commonName
+      - fingerprint
+      - issuerCommonName
+      - issuerDn
+      - keySize
+      - keyUsage
+      - notAfter
+      - notBefore
+      - publicKeyAlgorithm
+      - serialNumber
+      - signatureAlgorithm
+      - status
+      - subjectDn
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Certificate
+        commonName:
+          type: string
+          description: Certificate common name
+        serialNumber:
+          type: string
+          description: Certificate serial number
+        issuerCommonName:
+          type: string
+          description: Certificate issuer common name
+        certificateContent:
+          type: string
+          description: Base64 encoded Certificate content
+        issuerDn:
+          type: string
+          description: Issuer DN of the Certificate
+        subjectDn:
+          type: string
+          description: Subject DN of the Certificate
+        notBefore:
+          type: string
+          description: Certificate validity start date
+          format: date-time
+        notAfter:
+          type: string
+          description: Certificate expiration date
+          format: date-time
+        publicKeyAlgorithm:
+          type: string
+          description: Public key algorithm
+        signatureAlgorithm:
+          type: string
+          description: Certificate signature algorithm
+        keySize:
+          type: integer
+          description: Certificate key size
+          format: int32
+        extendedKeyUsage:
+          type: array
+          description: Extended key usages
+          items:
+            type: string
+            description: Extended key usages
+        keyUsage:
+          type: array
+          description: Key usages
+          items:
+            type: string
+            description: Key usages
+        basicConstraints:
+          type: string
+          description: Basic Constraints
+        meta:
+          type: object
+          additionalProperties:
+            type: object
+            description: Certificate meta data
+          description: Certificate meta data
+        status:
+          type: string
+          description: Status of the Certificate
+          enum:
+          - VALID
+          - REVOKED
+          - EXPIRED
+          - UNKNOWN
+          - EXPIRING
+          - NEW
+          - INVALID
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        fingerprint:
+          type: string
+          description: SHA256 fingerprint of the Certificate
+        subjectAlternativeNames:
+          type: object
+          additionalProperties:
+            type: object
+            description: Subject alternative names
+          description: Subject alternative names
+        entity:
+          $ref: '#/components/schemas/CertificateEntityDto'
+        group:
+          $ref: '#/components/schemas/CertificateGroupDto'
+        owner:
+          type: string
+          description: Certificate Owner
+        certificateType:
+          type: string
+          description: Certificate type
+          enum:
+          - X509
+          - SSH
+        issuerSerialNumber:
+          type: string
+          description: Serial number of the issuer
+        certificateValidationResult:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CertificateValidationDto'
+          description: Certificate validation result
+    CertificateValidationDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          - FAILED
+          - WARNING
+          - REVOKED
+          - NOT_CHECKED
+          - INVALID
+          - EXPIRING
+          - EXPIRED
+        message:
+          type: string
+      description: Certificate validation result
+    RaProfileDto:
+      required:
+      - attributes
+      - authorityInstanceName
+      - authorityInstanceUuid
+      - enabled
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+        name:
+          type: string
+          description: Object Name
+        description:
+          type: string
+          description: Description of RA Profile
+        authorityInstanceUuid:
+          type: string
+          description: UUID of Authority provider
+        authorityInstanceName:
+          type: string
+          description: Name of Authority instance
+        attributes:
+          type: array
+          description: List of RA Profiles attributes
+          items:
+            $ref: '#/components/schemas/AttributeDefinition'
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+      description: RA Profile associated to the Certificate
