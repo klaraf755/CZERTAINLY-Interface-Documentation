@@ -7,10 +7,12 @@ import com.czertainly.api.interfaces.core.web.DiscoveryController;
 import com.czertainly.api.model.client.discovery.DiscoveryDto;
 import com.czertainly.api.model.core.discovery.DiscoveryHistoryDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.cert.CertificateException;
 import java.util.List;
 
+@RestController
 public class DiscoveryControllerDummyImpl implements DiscoveryController {
 
     @Override

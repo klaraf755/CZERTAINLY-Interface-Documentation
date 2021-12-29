@@ -12,9 +12,11 @@ import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
 public class AuthorityInstanceControllerDummyImpl implements AuthorityInstanceController {
 
     @Override

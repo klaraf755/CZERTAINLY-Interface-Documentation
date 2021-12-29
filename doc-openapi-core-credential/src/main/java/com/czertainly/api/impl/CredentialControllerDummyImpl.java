@@ -9,9 +9,11 @@ import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.api.model.core.credential.CredentialRequestDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
 public class CredentialControllerDummyImpl implements CredentialController {
 
     @Override
