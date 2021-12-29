@@ -64,16 +64,16 @@ paths:
       responses:
         "200":
           description: Certificate revoked
-        "400":
-          description: Bad Request
-        "404":
-          description: Not found
         "422":
           description: Unprocessable Entity
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ValidationException'
+        "404":
+          description: Not found
+        "400":
+          description: Bad Request
   /v2/authorityProvider/authorities/{uuid}/certificates/{certificateId}/renew:
     post:
       tags:
@@ -98,8 +98,12 @@ paths:
               $ref: '#/components/schemas/CertificateRenewRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ValidationException'
         "404":
           description: Not found
         "200":
@@ -108,12 +112,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/CertificateDataResponseDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ValidationException'
+        "400":
+          description: Bad Request
   /v2/authorityProvider/authorities/{uuid}/certificates/revoke/attributes/validate:
     post:
       tags:
@@ -141,14 +141,14 @@ paths:
             '*/*':
               schema:
                 type: boolean
-        "400":
-          description: Bad Request
         "422":
           description: Unprocessable Entity
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ValidationException'
+        "400":
+          description: Bad Request
   /v2/authorityProvider/authorities/{uuid}/certificates/issue:
     post:
       tags:
@@ -168,22 +168,22 @@ paths:
               $ref: '#/components/schemas/CertificateSignRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-        "200":
-          description: Certificate issued
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/CertificateDataResponseDto'
-        "404":
-          description: Not found
         "422":
           description: Unprocessable Entity
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ValidationException'
+        "404":
+          description: Not found
+        "200":
+          description: Certificate issued
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CertificateDataResponseDto'
+        "400":
+          description: Bad Request
   /v2/authorityProvider/authorities/{uuid}/certificates/issue/attributes/validate:
     post:
       tags:
@@ -211,14 +211,14 @@ paths:
             '*/*':
               schema:
                 type: boolean
-        "400":
-          description: Bad Request
         "422":
           description: Unprocessable Entity
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ValidationException'
+        "400":
+          description: Bad Request
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
       tags:
@@ -279,14 +279,14 @@ paths:
               $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
         "200":
           description: Authority instance created
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "400":
+          description: Bad Request
   /v1/authorityProvider/authorities/{uuid}:
     get:
       tags:
@@ -332,10 +332,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "400":
-          description: Bad Request
         "404":
           description: Not found
+        "400":
+          description: Bad Request
     delete:
       tags:
       - Authority Management API
@@ -379,10 +379,10 @@ paths:
             '*/*':
               schema:
                 type: boolean
-        "400":
-          description: Bad Request
         "404":
           description: Not found
+        "400":
+          description: Bad Request
   /v2/authorityProvider/authorities/{uuid}/certificates/revoke/attributes:
     get:
       tags:
