@@ -20,6 +20,10 @@ servers:
 tags:
 - name: Connector Management API
   description: Connector Management API
+- name: Connector Authentication API
+  description: Connector Authentication API
+- name: Connector Registration API
+  description: Connector Registration API
 paths:
   /v1/connectors/{uuid}/reconnect:
     put:
@@ -34,8 +38,6 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: Reconnect to a Connector
           content:
@@ -44,10 +46,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ConnectDto'
-        "422":
-          description: Unprocessable Entity
         "404":
           description: Not found
+        "400":
+          description: Invalid request
+        "422":
+          description: Unprocessable Entity
   /v1/connectors/{uuid}:
     get:
       tags:
@@ -61,8 +65,6 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: Connector details retrieved
           content:
@@ -71,6 +73,8 @@ paths:
                 $ref: '#/components/schemas/ConnectorDto'
         "404":
           description: Not found
+        "400":
+          description: Invalid request
     put:
       tags:
       - Connector Management API
@@ -83,12 +87,12 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not found
         "400":
           description: Invalid request
         "200":
           description: Connector Approved
-        "404":
-          description: Not found
     post:
       tags:
       - Connector Management API
@@ -107,18 +111,18 @@ paths:
               $ref: '#/components/schemas/ConnectorRequestDto'
         required: true
       responses:
+        "404":
+          description: Not found
         "400":
           description: Invalid request
-        "422":
-          description: Unprocessable Entity
         "200":
           description: Connector updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConnectorDto'
-        "404":
-          description: Not found
+        "422":
+          description: Unprocessable Entity
     delete:
       tags:
       - Connector Management API
@@ -131,12 +135,12 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not found
         "400":
           description: Invalid request
         "204":
           description: Connector deleted
-        "404":
-          description: Not found
   /v1/connectors/reconnect:
     put:
       tags:
@@ -152,12 +156,12 @@ paths:
                 type: string
         required: true
       responses:
+        "404":
+          description: Not found
         "400":
           description: Invalid request
         "204":
           description: Reconnect multiple Connectors initiated
-        "404":
-          description: Not found
   /v1/connectors/connect:
     put:
       tags:
@@ -171,8 +175,8 @@ paths:
               $ref: '#/components/schemas/ConnectorDto'
         required: true
       responses:
-        "400":
-          description: Invalid request
+        "404":
+          description: Not found
         "200":
           description: Connector connected
           content:
@@ -181,10 +185,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ConnectDto'
+        "400":
+          description: Invalid request
         "422":
           description: Unprocessable Entity
-        "404":
-          description: Not found
   /v1/connectors/approve:
     put:
       tags:
@@ -200,12 +204,12 @@ paths:
                 type: string
         required: true
       responses:
+        "404":
+          description: Not found
         "400":
           description: Invalid request
         "200":
           description: Approve multiple Connectors
-        "404":
-          description: Not found
   /v1/connectors/{uuid}/{functionGroup}/{functionGroupKind}/attributes/validate:
     post:
       tags:
@@ -243,10 +247,10 @@ paths:
             application/json:
               schema:
                 type: boolean
-        "400":
-          description: Invalid request
         "404":
           description: Not found
+        "400":
+          description: Invalid request
   /v1/connectors/{uuid}/callback:
     post:
       tags:
@@ -266,8 +270,6 @@ paths:
               $ref: '#/components/schemas/AttributeCallback'
         required: true
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: Callback executed
           content:
@@ -276,6 +278,108 @@ paths:
                 type: object
         "404":
           description: Not found
+        "400":
+          description: Invalid request
+  /v1/connectors/auth/attributes/jwt/validate:
+    post:
+      tags:
+      - Connector Authentication API
+      summary: Validate JWT auth Attributes
+      operationId: validateJWTAuthAttributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
+        "200":
+          description: Attributes validated
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v1/connectors/auth/attributes/certificate/validate:
+    post:
+      tags:
+      - Connector Authentication API
+      summary: Validate certificate auth Attributes
+      operationId: validateCertificateAttributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
+        "200":
+          description: Attributes validated
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v1/connectors/auth/attributes/basic/validate:
+    post:
+      tags:
+      - Connector Authentication API
+      summary: Validate basic auth Attributes
+      operationId: validateBasicAuthAttributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
+        "200":
+          description: Attributes validated
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v1/connectors/auth/attributes/apiKey/validate:
+    post:
+      tags:
+      - Connector Authentication API
+      summary: Validate API Key Attributes
+      operationId: validateApiKeyAuthAttributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
+        "200":
+          description: Attributes validated
+          content:
+            application/json:
+              schema:
+                type: boolean
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
   /v1/connectors:
     get:
       tags:
@@ -299,6 +403,8 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not found
         "400":
           description: Invalid request
         "200":
@@ -309,8 +415,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ConnectorDto'
-        "404":
-          description: Not found
     post:
       tags:
       - Connector Management API
@@ -323,18 +427,18 @@ paths:
               $ref: '#/components/schemas/ConnectorRequestDto'
         required: true
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: New Connector created
           content:
             application/json:
               schema:
                 type: object
-        "422":
-          description: Unprocessable Entity
         "404":
           description: Not found
+        "400":
+          description: Invalid request
+        "422":
+          description: Unprocessable Entity
     delete:
       tags:
       - Connector Management API
@@ -349,10 +453,10 @@ paths:
                 type: string
         required: true
       responses:
-        "400":
-          description: Invalid request
         "422":
           description: Unprocessible Entity
+        "404":
+          description: Not found
         "200":
           description: Connector deleted
           content:
@@ -361,8 +465,31 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ForceDeleteMessageDto'
+        "400":
+          description: Invalid request
+  /v1/connector/register:
+    post:
+      tags:
+      - Connector Registration API
+      summary: Register a connector
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectorDto'
+        required: true
+      responses:
+        "200":
+          description: Connector registration initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorDto'
         "404":
           description: Not found
+        "400":
+          description: Invalid request
   /v1/connectors/{uuid}/{functionGroup}/{functionGroupKind}/attributes:
     get:
       tags:
@@ -386,8 +513,8 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
+        "404":
+          description: Not found
         "200":
           description: Attributes received
           content:
@@ -396,8 +523,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "404":
-          description: Not found
+        "400":
+          description: Invalid request
   /v1/connectors/{uuid}/health:
     get:
       tags:
@@ -411,8 +538,6 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: Health check completed
           content:
@@ -421,6 +546,8 @@ paths:
                 $ref: '#/components/schemas/HealthDto'
         "404":
           description: Not found
+        "400":
+          description: Invalid request
   /v1/connectors/{uuid}/attributes-all:
     get:
       tags:
@@ -434,8 +561,8 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
+        "404":
+          description: Not found
         "200":
           description: Attributes received
           content:
@@ -448,8 +575,110 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/AttributeDefinition'
+        "400":
+          description: Invalid request
+  /v1/connectors/auth/types:
+    get:
+      tags:
+      - Connector Authentication API
+      summary: Get list of Authentication Types
+      operationId: getAuthenticationTypes
+      responses:
         "404":
           description: Not found
+        "400":
+          description: Invalid request
+        "200":
+          description: Auth Types retrieved
+          content:
+            application/json:
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  type: string
+                  enum:
+                  - none
+                  - basic
+                  - certificate
+                  - apiKey
+                  - jwt
+  /v1/connectors/auth/attributes/jwt:
+    get:
+      tags:
+      - Connector Authentication API
+      summary: Get JWT auth Attributes
+      operationId: getJWTAuthAttributes
+      responses:
+        "200":
+          description: Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v1/connectors/auth/attributes/certificate:
+    get:
+      tags:
+      - Connector Authentication API
+      summary: Get Attributes for certificate auth
+      operationId: getCertificateAttributes
+      responses:
+        "200":
+          description: Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v1/connectors/auth/attributes/basic:
+    get:
+      tags:
+      - Connector Authentication API
+      summary: Get basic auth Attributes
+      operationId: getBasicAuthAttributes
+      responses:
+        "200":
+          description: Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
+  /v1/connectors/auth/attributes/apiKey:
+    get:
+      tags:
+      - Connector Authentication API
+      summary: Get API Key auth Attributes
+      operationId: getApiKeyAuthAttributes
+      responses:
+        "200":
+          description: Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "404":
+          description: Not found
+        "400":
+          description: Invalid request
   /v1/connectors/force:
     delete:
       tags:
@@ -465,14 +694,14 @@ paths:
                 type: string
         required: true
       responses:
-        "400":
-          description: Invalid request
         "422":
           description: Unprocessible Entity
-        "204":
-          description: Connector deleted
         "404":
           description: Not found
+        "400":
+          description: Invalid request
+        "204":
+          description: Connector deleted
 components:
   schemas:
     ConnectDto:
