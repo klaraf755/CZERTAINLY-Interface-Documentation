@@ -50,7 +50,7 @@ public class ClientOperationControllerDummyImpl implements ClientOperationContro
     }
 
     @Override
-    public void revokeCertificate(String raProfileName, String certificateId, ClientCertificateRevocationDto request) throws NotFoundException, ConnectorException {
+    public void revokeCertificate(String raProfileName, String certificateUuid, ClientCertificateRevocationDto request) throws NotFoundException, ConnectorException {
 
     }
 
