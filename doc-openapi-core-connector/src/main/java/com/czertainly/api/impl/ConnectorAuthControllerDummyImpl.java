@@ -23,8 +23,8 @@ public class ConnectorAuthControllerDummyImpl implements ConnectorAuthController
     }
 
     @Override
-    public Boolean validateBasicAuthAttributes(List<RequestAttributeDto> attributes) {
-        return null;
+    public void validateBasicAuthAttributes(List<RequestAttributeDto> attributes) {
+
     }
 
     @Override
@@ -33,8 +33,8 @@ public class ConnectorAuthControllerDummyImpl implements ConnectorAuthController
     }
 
     @Override
-    public Boolean validateCertificateAttributes(List<RequestAttributeDto> attributes) {
-        return null;
+    public void validateCertificateAttributes(List<RequestAttributeDto> attributes) {
+
     }
 
     @Override
@@ -43,8 +43,8 @@ public class ConnectorAuthControllerDummyImpl implements ConnectorAuthController
     }
 
     @Override
-    public Boolean validateApiKeyAuthAttributes(List<RequestAttributeDto> attributes) {
-        return null;
+    public void validateApiKeyAuthAttributes(List<RequestAttributeDto> attributes) {
+
     }
 
     @Override
@@ -53,8 +53,8 @@ public class ConnectorAuthControllerDummyImpl implements ConnectorAuthController
     }
 
     @Override
-    public Boolean validateJWTAuthAttributes(List<RequestAttributeDto> attributes) {
-        return null;
+    public void validateJWTAuthAttributes(List<RequestAttributeDto> attributes) {
+
     }
 
 }

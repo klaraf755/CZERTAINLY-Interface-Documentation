@@ -6,6 +6,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.AuthorityInstanceController;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
+import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
 import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
 import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.NameAndIdDto;
@@ -35,7 +36,7 @@ public class AuthorityInstanceControllerDummyImpl implements AuthorityInstanceCo
     }
 
     @Override
-    public AuthorityInstanceDto updateAuthorityInstance(String uuid, AuthorityInstanceRequestDto request) throws NotFoundException, ConnectorException {
+    public AuthorityInstanceDto updateAuthorityInstance(String uuid, AuthorityInstanceUpdateRequestDto request) throws NotFoundException, ConnectorException {
         return null;
     }
 
@@ -65,8 +66,8 @@ public class AuthorityInstanceControllerDummyImpl implements AuthorityInstanceCo
     }
 
     @Override
-    public Boolean validateRAProfileAttributes(String uuid, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException {
-        return null;
+    public void validateRAProfileAttributes(String uuid, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException {
+
     }
 
     @Override

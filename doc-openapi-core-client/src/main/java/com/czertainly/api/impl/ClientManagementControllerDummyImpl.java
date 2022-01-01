@@ -6,8 +6,8 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.ClientManagementController;
 import com.czertainly.api.model.client.client.AddClientRequestDto;
 import com.czertainly.api.model.client.client.EditClientRequestDto;
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.client.ClientDto;
-import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +48,7 @@ public class ClientManagementControllerDummyImpl implements ClientManagementCont
     }
 
     @Override
-    public List<RaProfileDto> listAuthorizations(String uuid) throws NotFoundException {
+    public List<SimplifiedRaProfileDto> listAuthorizations(String uuid) throws NotFoundException {
         return null;
     }
 

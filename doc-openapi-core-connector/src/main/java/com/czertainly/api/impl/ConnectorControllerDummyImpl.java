@@ -5,12 +5,11 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.ConnectorController;
-import com.czertainly.api.model.client.connector.ConnectDto;
-import com.czertainly.api.model.client.connector.ConnectorRequestDto;
-import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
+import com.czertainly.api.model.client.connector.*;
 import com.czertainly.api.model.common.AttributeCallback;
 import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.HealthDto;
+import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +48,7 @@ public class ConnectorControllerDummyImpl implements ConnectorController {
     }
 
     @Override
-    public ConnectorDto updateConnector(String uuid, ConnectorRequestDto request) throws ConnectorException {
+    public ConnectorDto updateConnector(String uuid, ConnectorUpdateRequestDto request) throws ConnectorException {
         return null;
     }
 
@@ -59,7 +58,7 @@ public class ConnectorControllerDummyImpl implements ConnectorController {
     }
 
     @Override
-    public List<ConnectDto> connect(ConnectorDto request) throws ValidationException, ConnectException, ConnectorException {
+    public List<ConnectDto> connect(ConnectRequestDto request) throws ValidationException, ConnectException, ConnectorException {
         return null;
     }
 
@@ -89,7 +88,7 @@ public class ConnectorControllerDummyImpl implements ConnectorController {
     }
 
     @Override
-    public List<AttributeDefinition> getAttributes(String uuid, String functionGroup, String functionGroupKind) throws NotFoundException, ConnectorException {
+    public List<AttributeDefinition> getAttributes(String uuid, String functionGroup, String kind) throws NotFoundException, ConnectorException {
         return null;
     }
 
@@ -99,8 +98,8 @@ public class ConnectorControllerDummyImpl implements ConnectorController {
     }
 
     @Override
-    public boolean validateAttributes(String uuid, String functionGroup, String functionGroupKind, List<AttributeDefinition> attributes) throws NotFoundException, ConnectorException {
-        return false;
+    public void validateAttributes(String uuid, String functionGroup, String kind, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException {
+
     }
 
     @Override

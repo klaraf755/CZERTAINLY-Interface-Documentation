@@ -17,8 +17,8 @@ public class AttributesControllerDummyImpl implements AttributesController {
     }
 
     @Override
-    public boolean validateAttributes(String kind, List<RequestAttributeDto> attributes) throws ValidationException {
-        return false;
+    public void validateAttributes(String kind, List<RequestAttributeDto> attributes) throws ValidationException {
+
     }
 
 }

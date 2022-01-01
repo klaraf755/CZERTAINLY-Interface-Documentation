@@ -3,12 +3,9 @@ package com.czertainly.api.impl;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.core.web.CertificateController;
-import com.czertainly.api.model.client.certificate.IdAndCertificateIdDto;
-import com.czertainly.api.model.client.certificate.RemoveCertificateDto;
-import com.czertainly.api.model.client.certificate.UploadCertificateRequestDto;
+import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequestDto;
-import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,17 +33,17 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public void updateRaProfile(String uuid, UuidDto request) throws NotFoundException {
+    public void updateRaProfile(String uuid, CertificateUpdateRAProfileDto request) throws NotFoundException {
 
     }
 
     @Override
-    public void updateCertificateGroup(String uuid, UuidDto request) throws NotFoundException {
+    public void updateCertificateGroup(String uuid, CertificateUpdateGroupDto request) throws NotFoundException {
 
     }
 
     @Override
-    public void updateEntity(String uuid, UuidDto request) throws NotFoundException {
+    public void updateEntity(String uuid, CertificateUpdateEntityDto request) throws NotFoundException {
 
     }
 
@@ -56,22 +53,22 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public ResponseEntity<String> check(String uuid) throws CertificateException, IOException, NotFoundException {
-        return null;
-    }
-
-    @Override
-    public void bulkUpdateRaProfile(IdAndCertificateIdDto request) throws NotFoundException {
+    public void check(String uuid) throws CertificateException, IOException, NotFoundException {
 
     }
 
     @Override
-    public void bulkUpdateCertificateGroup(IdAndCertificateIdDto request) throws NotFoundException {
+    public void bulkUpdateRaProfile(MultipleRAProfileUpdateDto request) throws NotFoundException {
 
     }
 
     @Override
-    public void bulkUpdateEntity(IdAndCertificateIdDto request) throws NotFoundException {
+    public void bulkUpdateCertificateGroup(MultipleGroupUpdateDto request) throws NotFoundException {
+
+    }
+
+    @Override
+    public void bulkUpdateEntity(MultipleEntityUpdateDto request) throws NotFoundException {
 
     }
 

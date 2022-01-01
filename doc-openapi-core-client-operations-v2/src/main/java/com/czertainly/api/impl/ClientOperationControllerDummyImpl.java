@@ -25,8 +25,8 @@ public class ClientOperationControllerDummyImpl implements ClientOperationContro
     }
 
     @Override
-    public boolean validateIssueCertificateAttributes(String raProfileName, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException {
-        return false;
+    public void validateIssueCertificateAttributes(String raProfileName, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException {
+
     }
 
     @Override
@@ -45,8 +45,8 @@ public class ClientOperationControllerDummyImpl implements ClientOperationContro
     }
 
     @Override
-    public boolean validateRevokeCertificateAttributes(String raProfileName, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException {
-        return false;
+    public void validateRevokeCertificateAttributes(String raProfileName, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException {
+
     }
 
     @Override
