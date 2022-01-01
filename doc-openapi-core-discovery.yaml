@@ -28,6 +28,8 @@ paths:
       summary: List Discovery
       operationId: listDiscovery
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: List of available Discoveries
           content:
@@ -36,14 +38,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DiscoveryHistoryDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -52,12 +58,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -74,32 +74,8 @@ paths:
               $ref: '#/components/schemas/DiscoveryDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "201":
-          description: Discovery Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -113,6 +89,30 @@ paths:
               - Error Message 2
         "503":
           description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "201":
+          description: Discovery Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -135,16 +135,22 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "204":
           description: Discoveries deleted
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -153,12 +159,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -177,14 +177,20 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -203,12 +209,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryHistoryDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Discovery Management API
@@ -222,6 +222,14 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Discovery deleted
         "404":
@@ -230,8 +238,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -240,12 +246,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -364,6 +364,7 @@ components:
             if special behaviour is needed.
           enum:
           - STRING
+          - NUMBER
           - SECRET
           - FILE
           - BOOLEAN
@@ -419,6 +420,7 @@ components:
           description: Type of the Attribute
           enum:
           - STRING
+          - NUMBER
           - SECRET
           - FILE
           - BOOLEAN
