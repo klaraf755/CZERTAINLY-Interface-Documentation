@@ -30,11 +30,13 @@ paths:
       parameters:
       - name: raProfileName
         in: path
+        description: RA Profile name
         required: true
         schema:
           type: string
       - name: certificateId
         in: path
+        description: Certificate serial number
         required: true
         schema:
           type: string
@@ -45,12 +47,34 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRevocationDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Certificate revoked
         "400":
-          description: Invalid request
-        "404":
-          description: Not found
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v2/operations/{raProfileName}/{certificateId}/renew:
     post:
       tags:
@@ -60,11 +84,13 @@ paths:
       parameters:
       - name: raProfileName
         in: path
+        description: RA Profile name
         required: true
         schema:
           type: string
       - name: certificateId
         in: path
+        description: Certificate serial number
         required: true
         schema:
           type: string
@@ -78,17 +104,44 @@ paths:
         "422":
           description: Unprocessable Entity
           content:
-            '*/*':
+            application/json:
               schema:
-                $ref: '#/components/schemas/ValidationException'
-        "400":
-          description: Invalid request
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate renewed
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/ClientCertificateDataResponseDto'
   /v2/operations/{raProfileName}/revoke/attributes/validate:
@@ -100,6 +153,7 @@ paths:
       parameters:
       - name: raProfileName
         in: path
+        description: RA Profile name
         required: true
         schema:
           type: string
@@ -114,14 +168,93 @@ paths:
       responses:
         "200":
           description: Attributes validated
-          content:
-            '*/*':
-              schema:
-                type: boolean
-        "400":
-          description: Invalid request
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/{raProfileName}/issue/attributes/validate:
+    post:
+      tags:
+      - Client Operation API
+      summary: Validate issue Certificate Attributes
+      operationId: validateIssueCertificateAttributes
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
+        "200":
+          description: Attributes validated
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v2/operations/{raProfileName}/issue:
     post:
       tags:
@@ -131,6 +264,7 @@ paths:
       parameters:
       - name: raProfileName
         in: path
+        description: RA Profile name
         required: true
         schema:
           type: string
@@ -144,56 +278,46 @@ paths:
         "422":
           description: Unprocessable Entity
           content:
-            '*/*':
+            application/json:
               schema:
-                $ref: '#/components/schemas/ValidationException'
-        "400":
-          description: Invalid request
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate issued
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-  /v2/operations/{raProfileName}/issue/attributes/validate:
-    post:
-      tags:
-      - Client Operation API
-      summary: Validate issue Certificate Attributes
-      operationId: validateIssueCertificateAttributes
-      parameters:
-      - name: raProfileName
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/RequestAttributeDto'
-        required: true
-      responses:
-        "422":
-          description: Unprocessable Entity
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ValidationException'
-        "200":
-          description: Attributes validated
-          content:
-            '*/*':
-              schema:
-                type: boolean
-        "400":
-          description: Invalid request
-        "404":
-          description: Not found
   /v2/operations/{raProfileName}/revoke/attributes:
     get:
       tags:
@@ -203,31 +327,55 @@ paths:
       parameters:
       - name: raProfileName
         in: path
+        description: RA Profile name
         required: true
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes obtained
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "400":
-          description: Invalid request
-        "404":
-          description: Not found
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v2/operations/{raProfileName}/issue/attributes:
     get:
       tags:
       - Client Operation API
-      summary: Get list of all Attributes for Certificate
+      summary: Get issue Certificate Attributes
       operationId: listIssueCertificateAttributes
       parameters:
       - name: raProfileName
         in: path
+        description: RA Profile name
         required: true
         schema:
           type: string
@@ -235,7 +383,7 @@ paths:
         "200":
           description: Attributes list obtained
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
@@ -243,13 +391,40 @@ paths:
         "422":
           description: Unprocessable Entity
           content:
-            '*/*':
+            application/json:
               schema:
-                $ref: '#/components/schemas/ValidationException'
-        "400":
-          description: Invalid request
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     ClientCertificateRevocationDto:
@@ -295,6 +470,15 @@ components:
           type: object
           description: Value of the Attribute
       description: List of Attributes to revoke Certificate
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     ClientCertificateRenewRequestDto:
       required:
       - pkcs10
@@ -303,135 +487,6 @@ components:
         pkcs10:
           type: string
           description: Certificate sign request (PKCS#10) encoded as Base64 string
-    ValidationError:
-      type: object
-      properties:
-        errorDescription:
-          type: string
-    ValidationException:
-      type: object
-      properties:
-        cause:
-          type: object
-          properties:
-            stackTrace:
-              type: array
-              items:
-                type: object
-                properties:
-                  classLoaderName:
-                    type: string
-                  moduleName:
-                    type: string
-                  moduleVersion:
-                    type: string
-                  methodName:
-                    type: string
-                  fileName:
-                    type: string
-                  lineNumber:
-                    type: integer
-                    format: int32
-                  className:
-                    type: string
-                  nativeMethod:
-                    type: boolean
-            message:
-              type: string
-            suppressed:
-              type: array
-              items:
-                type: object
-                properties:
-                  stackTrace:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        classLoaderName:
-                          type: string
-                        moduleName:
-                          type: string
-                        moduleVersion:
-                          type: string
-                        methodName:
-                          type: string
-                        fileName:
-                          type: string
-                        lineNumber:
-                          type: integer
-                          format: int32
-                        className:
-                          type: string
-                        nativeMethod:
-                          type: boolean
-                  message:
-                    type: string
-                  localizedMessage:
-                    type: string
-            localizedMessage:
-              type: string
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              className:
-                type: string
-              nativeMethod:
-                type: boolean
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-        message:
-          type: string
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    className:
-                      type: string
-                    nativeMethod:
-                      type: boolean
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
-          type: string
     ClientCertificateDataResponseDto:
       required:
       - certificateData
@@ -530,9 +585,9 @@ components:
             type: string
             description: Set of targets for propagating value.
             enum:
-            - PATH_VARIABLE
-            - REQUEST_PARAMETER
-            - BODY
+            - pathVariable
+            - requestParameter
+            - body
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and

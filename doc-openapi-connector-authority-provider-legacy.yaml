@@ -51,24 +51,39 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
       - name: endEntityProfileName
         in: path
+        description: End Entity Profile Name
         required: true
         schema:
           type: string
       - name: endEntityName
         in: path
+        description: End Entity Name
         required: true
         schema:
           type: string
       responses:
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: End Entity password reset
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
       tags:
@@ -78,6 +93,7 @@ paths:
       parameters:
       - name: kind
         in: path
+        description: Kind
         required: true
         schema:
           type: string
@@ -90,118 +106,33 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "200":
-          description: Attribute validation completed
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                type: boolean
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Attribute validation completed
         "422":
           description: Attribute validation failed
           content:
             application/json:
               schema:
-                type: boolean
-  /v1/authorityProvider/authorities:
-    get:
-      tags:
-      - Authority Management API
-      summary: List Authority instances
-      operationId: listAuthorityInstances
-      responses:
-        "200":
-          description: Authority instances retrieved
-          content:
-            '*/*':
-              schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-    post:
-      tags:
-      - Authority Management API
-      summary: Create Authority instance
-      operationId: createAuthorityInstance
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
-        required: true
-      responses:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "400":
           description: Bad Request
-        "200":
-          description: Authority instance created
           content:
-            '*/*':
+            application/json:
               schema:
-                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-  /v1/authorityProvider/authorities/{uuid}:
-    get:
-      tags:
-      - Authority Management API
-      summary: Get an Authority instance
-      operationId: getAuthorityInstance
-      parameters:
-      - name: uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Authority instance retrieved
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "404":
-          description: Not found
-    post:
-      tags:
-      - Authority Management API
-      summary: Update Authority instance
-      operationId: updateAuthorityInstance
-      parameters:
-      - name: uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
-        required: true
-      responses:
-        "200":
-          description: Authority instance updated
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "404":
-          description: Not found
-        "400":
-          description: Bad Request
-    delete:
-      tags:
-      - Authority Management API
-      summary: Remove Authority instance
-      operationId: removeAuthorityInstance
-      parameters:
-      - name: uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: Not found
-        "200":
-          description: Authority instance removed
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes/validate:
     post:
       tags:
@@ -211,6 +142,7 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
@@ -226,66 +158,23 @@ paths:
         "200":
           description: Authority instance updated
           content:
-            '*/*':
+            application/json:
               schema:
                 type: boolean
         "404":
-          description: Not found
-        "400":
-          description: Bad Request
-  /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities:
-    get:
-      tags:
-      - End Entity Management API
-      summary: List End Entities
-      operationId: listEndEntities
-      parameters:
-      - name: uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: endEntityProfileName
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: End Entities retrieved
+          description: Not Found
           content:
-            '*/*':
+            application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EndEntityDto'
-    post:
-      tags:
-      - End Entity Management API
-      summary: Create End Entity
-      operationId: createEndEntity
-      parameters:
-      - name: uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: endEntityProfileName
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddEndEntityRequestDto'
-        required: true
-      responses:
-        "200":
-          description: End Entity created
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities/{endEntityName}:
     get:
       tags:
@@ -295,28 +184,43 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
       - name: endEntityProfileName
         in: path
+        description: End Entity Profile Name
         required: true
         schema:
           type: string
       - name: endEntityName
         in: path
+        description: End Entity Name
         required: true
         schema:
           type: string
       responses:
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: End Entity retrieved
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/EndEntityDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - End Entity Management API
@@ -325,16 +229,19 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
       - name: endEntityProfileName
         in: path
+        description: End Entity Profile Name
         required: true
         schema:
           type: string
       - name: endEntityName
         in: path
+        description: End Entity Name
         required: true
         schema:
           type: string
@@ -346,11 +253,21 @@ paths:
         required: true
       responses:
         "404":
-          description: Not found
-        "400":
-          description: Bad Request
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: End Entity updated
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - End Entity Management API
@@ -359,24 +276,122 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
       - name: endEntityProfileName
         in: path
+        description: End Entity Profile Name
         required: true
         schema:
           type: string
       - name: endEntityName
         in: path
+        description: End Entity Name
         required: true
         schema:
           type: string
       responses:
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: End Entity removed
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities:
+    get:
+      tags:
+      - End Entity Management API
+      summary: List End Entities
+      operationId: listEndEntities
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      - name: endEntityProfileName
+        in: path
+        description: End Entity Profile Name
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: End Entities retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EndEntityDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    post:
+      tags:
+      - End Entity Management API
+      summary: Create End Entity
+      operationId: createEndEntity
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      - name: endEntityProfileName
+        in: path
+        description: End Entity Profile Name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddEndEntityRequestDto'
+        required: true
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: End Entity created
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates/revoke:
     post:
       tags:
@@ -386,11 +401,13 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
       - name: endEntityProfileName
         in: path
+        description: End Entity Profile Name
         required: true
         schema:
           type: string
@@ -404,9 +421,19 @@ paths:
         "200":
           description: Certificate revoked
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates/issue:
     post:
       tags:
@@ -416,11 +443,13 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
       - name: endEntityProfileName
         in: path
+        description: End Entity Profile Name
         required: true
         schema:
           type: string
@@ -432,15 +461,188 @@ paths:
         required: true
       responses:
         "404":
-          description: Not found
-        "400":
-          description: Bad Request
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Certificate issued
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/CertificateSignResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorityProvider/authorities/{uuid}:
+    get:
+      tags:
+      - Authority Management API
+      summary: Get an Authority instance
+      operationId: getAuthorityInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Authority instance retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    post:
+      tags:
+      - Authority Management API
+      summary: Update Authority instance
+      operationId: updateAuthorityInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Authority instance updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    delete:
+      tags:
+      - Authority Management API
+      summary: Remove Authority instance
+      operationId: removeAuthorityInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authority instance removed
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorityProvider/authorities:
+    get:
+      tags:
+      - Authority Management API
+      summary: List Authority instances
+      operationId: listAuthorityInstances
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authority instances retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    post:
+      tags:
+      - Authority Management API
+      summary: Create Authority instance
+      operationId: createAuthorityInstance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
+        required: true
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authority instance created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -450,10 +652,19 @@ paths:
       parameters:
       - name: kind
         in: path
+        description: Kind
         required: true
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Attributes retrieved
           content:
@@ -462,6 +673,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -469,12 +686,26 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes:
     get:
       tags:
@@ -484,6 +715,7 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
@@ -491,39 +723,25 @@ paths:
         "200":
           description: Authority instance updated
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
         "404":
-          description: Not found
-  /v1/authorityProvider/authorities/{uuid}/endEntityProfiles:
-    get:
-      tags:
-      - End Entity Profiles API
-      summary: List available end entity profiles
-      operationId: listEntityProfiles
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority Instance Id
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: End entities retrieved
+          description: Not Found
           content:
-            '*/*':
+            application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NameAndIdDto'
-        "404":
-          description: Not found
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileId}/certificateprofiles:
     get:
       tags:
@@ -533,7 +751,7 @@ paths:
       parameters:
       - name: uuid
         in: path
-        description: Authority Instance Id
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
@@ -545,18 +763,28 @@ paths:
           type: integer
           format: int32
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Certificate profiles retrieved
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/NameAndIdDto'
-        "404":
-          description: Not found
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileId}/cas:
     get:
       tags:
@@ -566,7 +794,7 @@ paths:
       parameters:
       - name: uuid
         in: path
-        description: Authority Instance Id
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
@@ -579,31 +807,93 @@ paths:
           format: int32
       responses:
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: CAs retrieved
           content:
-            '*/*':
+            application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/NameAndIdDto'
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorityProvider/authorities/{uuid}/endEntityProfiles:
+    get:
+      tags:
+      - End Entity Profiles API
+      summary: List available end entity profiles
+      operationId: listEntityProfiles
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: End entities retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NameAndIdDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/connect:
     get:
       tags:
       - Authority Management API
+      summary: Connect to Authority
       operationId: getConnection
       parameters:
       - name: uuid
         in: path
+        description: Authority Instance UUID
         required: true
         schema:
           type: string
       responses:
         "204":
-          description: No Content
+          description: Authority instance connected
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1:
     get:
       tags:
@@ -612,6 +902,14 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Functions found
           content:
@@ -620,8 +918,23 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     RequestAttributeDto:
       required:
       - name
@@ -639,24 +952,6 @@ components:
         value:
           type: object
           description: Value of the Attribute
-    AuthorityProviderInstanceRequestDto:
-      required:
-      - attributes
-      - kind
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Authority instance name
-        kind:
-          type: string
-          description: Kind of Authority instance
-        attributes:
-          type: array
-          description: List of Authority instance Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
     AttributeCallback:
       required:
       - callbackContext
@@ -729,9 +1024,9 @@ components:
             type: string
             description: Set of targets for propagating value.
             enum:
-            - PATH_VARIABLE
-            - REQUEST_PARAMETER
-            - BODY
+            - pathVariable
+            - requestParameter
+            - body
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
@@ -813,7 +1108,7 @@ components:
         value:
           type: object
           description: Value of the Attribute
-      description: List of Authority instance Attributes
+      description: List of RA Profiles attributes
     AttributeDependency:
       required:
       - name
@@ -828,30 +1123,12 @@ components:
           description: "Value of depending attribute, which should be matched"
       description: Optional list of other Attribute names and values on which it depends
         on
-    AuthorityProviderInstanceDto:
-      required:
-      - attributes
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-        name:
-          type: string
-          description: Object Name
-        attributes:
-          type: array
-          description: List of Authority instance Attributes
-          items:
-            $ref: '#/components/schemas/AttributeDefinition'
-    AddEndEntityRequestDto:
+    EditEndEntityRequestDto:
       required:
       - password
       - raProfile
+      - status
       - subjectDN
-      - username
       type: object
       properties:
         raProfile:
@@ -873,9 +1150,19 @@ components:
         subjectDN:
           type: string
           description: End Entity subject domain name
-        username:
+        status:
           type: string
-          description: End Entity name
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
     EndEntityExtendedInfoDto:
       type: object
       properties:
@@ -918,12 +1205,12 @@ components:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
       description: RA profile related to End Entity
-    EditEndEntityRequestDto:
+    AddEndEntityRequestDto:
       required:
       - password
       - raProfile
-      - status
       - subjectDN
+      - username
       type: object
       properties:
         raProfile:
@@ -945,19 +1232,9 @@ components:
         subjectDN:
           type: string
           description: End Entity subject domain name
-        status:
+        username:
           type: string
-          description: End Entity Subject domain name
-          enum:
-          - NEW
-          - FAILED
-          - INITIALIZED
-          - IN_PROCESS
-          - GENERATED
-          - REVOKED
-          - HISTORICAL
-          - KEY_RECOVERY
-          - WAITING_FOR_ADD_APPROVAL
+          description: End Entity name
     CertRevocationDto:
       required:
       - certificateSN
@@ -1009,6 +1286,42 @@ components:
         certificateData:
           type: string
           description: Base64 encoded Certificate
+    AuthorityProviderInstanceRequestDto:
+      required:
+      - attributes
+      - kind
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Authority instance name
+        kind:
+          type: string
+          description: Kind of Authority instance
+        attributes:
+          type: array
+          description: List of Authority instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+    AuthorityProviderInstanceDto:
+      required:
+      - attributes
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+        name:
+          type: string
+          description: Object Name
+        attributes:
+          type: array
+          description: List of Authority instance Attributes
+          items:
+            $ref: '#/components/schemas/AttributeDefinition'
     HealthDto:
       required:
       - status
@@ -1018,9 +1331,9 @@ components:
           type: string
           description: Current connector operational status
           enum:
-          - OK
-          - NOK
-          - UNKNOWN
+          - ok
+          - nok
+          - unknown
         description:
           type: string
           description: Detailed status description
@@ -1029,19 +1342,6 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/HealthDto'
           description: Nested status of services
-    NameAndIdDto:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Object identifier
-          format: int32
-        name:
-          type: string
-          description: Object name
     EndEntityDto:
       required:
       - status
@@ -1079,6 +1379,19 @@ components:
         username:
           type: string
           description: End Entity name
+    NameAndIdDto:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Object identifier
+          format: int32
+        name:
+          type: string
+          description: Object name
     EndpointDto:
       required:
       - context
@@ -1125,11 +1438,14 @@ components:
         kinds:
           type: array
           description: List of supported functional group kinds
-          example: "SoftKeyStore, Basic, ApiKey, etc"
+          example:
+          - SoftKeyStore
+          - Basic
+          - ApiKey
           items:
             type: string
             description: List of supported functional group kinds
-            example: "SoftKeyStore, Basic, ApiKey, etc"
+            example: "[\"SoftKeyStore\",\"Basic\",\"ApiKey\"]"
         endPoints:
           type: array
           description: List of end points related to functional group
