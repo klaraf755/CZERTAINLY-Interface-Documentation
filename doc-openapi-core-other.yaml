@@ -32,26 +32,26 @@ paths:
       summary: Profile Authorization
       operationId: profile
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Authenticate a user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthProfileDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     put:
       tags:
       - Authentication Management API
@@ -64,22 +64,22 @@ paths:
               $ref: '#/components/schemas/EditAuthProfileDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Edit Profile
         "500":
           description: Internal Server Error
+        "204":
+          description: Edit Profile
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/statistics:
     get:
       tags:
@@ -87,26 +87,26 @@ paths:
       summary: Get Dashboard/Statictics Details
       operationId: getStatistics
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatisticsDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs/statuses:
     get:
       tags:
@@ -114,8 +114,8 @@ paths:
       summary: List Status
       operationId: listOperationStatuses
       responses:
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -128,14 +128,14 @@ paths:
                 type: array
                 items:
                   type: string
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/logs/operations:
     get:
       tags:
@@ -151,12 +151,6 @@ paths:
                 type: array
                 items:
                   type: string
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -165,6 +159,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs/objects:
     get:
       tags:
@@ -172,8 +172,8 @@ paths:
       summary: List Audit Objects
       operationId: listObjects
       responses:
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -186,14 +186,14 @@ paths:
                 type: array
                 items:
                   type: string
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/logs/export:
     get:
       tags:
@@ -212,18 +212,14 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Export of audit logs
           content:
@@ -231,8 +227,12 @@ paths:
               schema:
                 type: string
                 format: binary
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs:
     get:
       tags:
@@ -251,26 +251,26 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: List of audit logs
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuditLogResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     EditAuthProfileDto:
@@ -538,13 +538,13 @@ components:
         pageSize:
           type: integer
           format: int32
-        offset:
-          type: integer
-          format: int64
         paged:
           type: boolean
         unpaged:
           type: boolean
+        offset:
+          type: integer
+          format: int64
     Sort:
       type: object
       properties:
