@@ -43,6 +43,8 @@ paths:
       responses:
         "200":
           description: Client unauthorized with given profile
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -55,8 +57,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -85,6 +85,8 @@ paths:
       responses:
         "200":
           description: Client enabled
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -97,8 +99,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -127,6 +127,8 @@ paths:
       responses:
         "200":
           description: Client disabled
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -139,8 +141,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -175,6 +175,8 @@ paths:
       responses:
         "200":
           description: Client authorized with given profile
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -187,8 +189,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -220,6 +220,10 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Client enabled
         "404":
           description: Not Found
           content:
@@ -232,16 +236,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Client enabled
         "503":
           description: Connector Communication Error
           content:
@@ -267,6 +267,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -279,8 +281,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -309,6 +309,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -321,16 +323,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -341,6 +335,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Client Management API
@@ -360,20 +360,26 @@ paths:
               $ref: '#/components/schemas/EditClientRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Client edited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -386,12 +392,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Client edited
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientDto'
     delete:
       tags:
       - Client Management API
@@ -405,6 +405,10 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Client Deleted
         "404":
           description: Not Found
           content:
@@ -417,16 +421,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Client Deleted
         "503":
           description: Connector Communication Error
           content:
@@ -448,6 +448,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClientDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -460,8 +462,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -486,26 +486,26 @@ paths:
               $ref: '#/components/schemas/AddClientRequestDto'
         required: true
       responses:
-        "200":
-          description: New client added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: New client added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -536,20 +536,22 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Clients Deleted
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -562,8 +564,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Clients Deleted
   /v1/clients/{uuid}/listauth:
     get:
       tags:
@@ -577,6 +577,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -589,16 +591,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -611,6 +605,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SimplifiedRaProfileDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     ErrorMessageDto:

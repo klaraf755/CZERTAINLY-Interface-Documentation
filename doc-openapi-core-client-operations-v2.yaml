@@ -21,6 +21,60 @@ tags:
 - name: Client Operation API
   description: Client Operation API
 paths:
+  /v2/operations/{raProfileName}/{certificateUuid}/revoke:
+    post:
+      tags:
+      - Client Operation API
+      summary: Revoke Certificate
+      operationId: revokeCertificate
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: certificateUuid
+        in: path
+        description: Certificate UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateRevocationDto'
+        required: true
+      responses:
+        "204":
+          description: Certificate revoked
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v2/operations/{raProfileName}/{certificateUuid}/renew:
     post:
       tags:
@@ -47,6 +101,30 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRenewRequestDto'
         required: true
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -58,92 +136,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate renewed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileName}/{certificateId}/revoke:
-    post:
-      tags:
-      - Client Operation API
-      summary: Revoke Certificate
-      operationId: revokeCertificate
-      parameters:
-      - name: raProfileName
-        in: path
-        description: RA Profile name
-        required: true
-        schema:
-          type: string
-      - name: certificateId
-        in: path
-        description: Certificate serial number
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientCertificateRevocationDto'
-        required: true
-      responses:
-        "204":
-          description: Certificate revoked
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v2/operations/{raProfileName}/revoke/attributes/validate:
     post:
       tags:
@@ -168,14 +168,6 @@ paths:
       responses:
         "200":
           description: Attributes validated
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "503":
           description: Connector Communication Error
           content:
@@ -194,6 +186,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v2/operations/{raProfileName}/issue/attributes/validate:
     post:
       tags:
@@ -218,25 +218,6 @@ paths:
       responses:
         "200":
           description: Attributes validated
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "503":
           description: Connector Communication Error
           content:
@@ -255,6 +236,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
   /v2/operations/{raProfileName}/issue:
     post:
       tags:
@@ -275,31 +275,6 @@ paths:
               $ref: '#/components/schemas/ClientCertificateSignRequestDto'
         required: true
       responses:
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate issued
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
         "503":
           description: Connector Communication Error
           content:
@@ -318,6 +293,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+        "500":
+          description: Internal Server Error
   /v2/operations/{raProfileName}/revoke/attributes:
     get:
       tags:
@@ -332,22 +332,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Attributes obtained
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeDefinition'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "503":
           description: Connector Communication Error
           content:
@@ -366,6 +350,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attributes obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v2/operations/{raProfileName}/issue/attributes:
     get:
       tags:
@@ -388,25 +388,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "503":
           description: Connector Communication Error
           content:
@@ -425,37 +406,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
 components:
   schemas:
-    ClientCertificateRenewRequestDto:
-      required:
-      - pkcs10
-      type: object
-      properties:
-        pkcs10:
-          type: string
-          description: Certificate sign request (PKCS#10) encoded as Base64 string
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
-    ClientCertificateDataResponseDto:
-      required:
-      - certificateData
-      - uuid
-      type: object
-      properties:
-        certificateData:
-          type: string
-          description: Base64 encoded Certificate content
-        uuid:
-          type: string
-          description: UUID of Certificate
     ClientCertificateRevocationDto:
       required:
       - attributes
@@ -499,6 +470,35 @@ components:
           type: object
           description: Value of the Attribute
       description: List of Attributes to revoke Certificate
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
+    ClientCertificateRenewRequestDto:
+      required:
+      - pkcs10
+      type: object
+      properties:
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+    ClientCertificateDataResponseDto:
+      required:
+      - certificateData
+      - uuid
+      type: object
+      properties:
+        certificateData:
+          type: string
+          description: Base64 encoded Certificate content
+        uuid:
+          type: string
+          description: UUID of Certificate
     ClientCertificateSignRequestDto:
       required:
       - attributes
