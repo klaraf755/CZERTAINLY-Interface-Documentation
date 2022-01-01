@@ -34,8 +34,6 @@ paths:
               $ref: '#/components/schemas/AddAdminRequestDto'
         required: true
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: Admin created
           content:
@@ -43,14 +41,24 @@ paths:
               schema:
                 type: object
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     AddAdminRequestDto:
       required:
-      - description
       - email
-      - enabled
       - name
       - role
       - surname
@@ -62,7 +70,8 @@ components:
           description: Base64 Content of the admin certificate
         certificateUuid:
           type: string
-          description: UUID of the existing certificate in the Inventory
+          description: UUID of the existing certificate in the Inventory. Mandatory
+            if certificate is not provided
         username:
           type: string
           description: Username of the administrator
@@ -79,11 +88,21 @@ components:
           type: string
           description: Role of the administrator
           enum:
-          - ADMINISTRATOR
-          - SUPERADMINISTRATOR
+          - administrator
+          - superAdministrator
         enabled:
           type: boolean
           description: "Enabled flag. true = enabled, false = disabled"
+          default: false
         description:
           type: string
           description: Description for the administrator
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message

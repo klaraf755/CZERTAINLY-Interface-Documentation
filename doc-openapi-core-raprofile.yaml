@@ -30,16 +30,39 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profile enabled
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/raprofiles/{uuid}/disable:
     put:
       tags:
@@ -49,16 +72,39 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profile disabled
-        "404":
-          description: Not found
+        "500":
+          description: Internal Server Error
   /v1/raprofiles/enable:
     put:
       tags:
@@ -66,20 +112,46 @@ paths:
       summary: Enable multiple RA Profiles
       operationId: bulkEnableRaProfile
       requestBody:
+        description: RA Profile UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
                 type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
         "204":
           description: RA Profiles enabled
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/raprofiles/disable:
     put:
       tags:
@@ -87,20 +159,46 @@ paths:
       summary: Disable multiple RA Profiles
       operationId: bulkDisableRaProfile
       requestBody:
+        description: RA Profile UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
                 type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
         "204":
           description: RA Profiles disabled
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/raprofiles/{uuid}:
     get:
       tags:
@@ -110,20 +208,43 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: RA Profile details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileDto'
-        "404":
-          description: Not found
     post:
       tags:
       - RA Profile Management API
@@ -132,6 +253,7 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
@@ -148,12 +270,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessible Entity
-        "400":
-          description: Invalid request
-        "404":
-          description: Not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
     delete:
       tags:
       - RA Profile Management API
@@ -162,21 +315,44 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       responses:
         "204":
           description: RA Profile deleted
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/raprofiles:
     get:
       tags:
       - RA Profile Management API
-      summary: List of available RA Profiles by Status
+      summary: List of available RA Profiles
       operationId: listRaProfiles_1
       parameters:
       - name: isEnabled
@@ -185,8 +361,12 @@ paths:
         schema:
           type: boolean
       responses:
-        "400":
-          description: Invalid request
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: RA Profiles retrieved
           content:
@@ -195,8 +375,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RaProfileDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - RA Profile Management API
@@ -209,40 +407,106 @@ paths:
               $ref: '#/components/schemas/AddRaProfileRequestDto'
         required: true
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "422":
+          description: Unprocessible Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "201":
           description: RA Profile added
           content:
             application/json:
               schema:
-                type: object
-        "422":
-          description: Unprocessible Entity
-        "400":
-          description: Invalid request
-        "404":
-          description: Not found
+                $ref: '#/components/schemas/UuidDto'
     delete:
       tags:
       - RA Profile Management API
-      summary: Delete multiple Ra Profiles
+      summary: Delete multiple RA Profiles
       operationId: bulkRemoveRaProfile
       requestBody:
+        description: RA Profile UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
                 type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "422":
-          description: Unprocessible Entity
         "204":
           description: RA Profiles deleted
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "422":
+          description: Unprocessible Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
   /v1/raprofiles/{uuid}/listclients:
     get:
       tags:
@@ -252,12 +516,17 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of clients of RA Profile
           content:
@@ -265,11 +534,38 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ClientDto'
+                  $ref: '#/components/schemas/SimplifiedClientDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     EditRaProfileRequestDto:
       required:
       - attributes
@@ -380,9 +676,9 @@ components:
             type: string
             description: Set of targets for propagating value.
             enum:
-            - PATH_VARIABLE
-            - REQUEST_PARAMETER
-            - BODY
+            - pathVariable
+            - requestParameter
+            - body
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
@@ -536,221 +832,28 @@ components:
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
-    CertificateDto:
+          default: false
+    UuidDto:
       required:
-      - basicConstraints
-      - certificateContent
-      - commonName
-      - fingerprint
-      - issuerCommonName
-      - issuerDn
-      - keySize
-      - keyUsage
-      - notAfter
-      - notBefore
-      - publicKeyAlgorithm
-      - serialNumber
-      - signatureAlgorithm
-      - status
-      - subjectDn
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Certificate
-        commonName:
-          type: string
-          description: Certificate common name
-        serialNumber:
-          type: string
-          description: Certificate serial number
-        issuerCommonName:
-          type: string
-          description: Certificate issuer common name
-        certificateContent:
-          type: string
-          description: Base64 encoded Certificate content
-        issuerDn:
-          type: string
-          description: Issuer DN of the Certificate
-        subjectDn:
-          type: string
-          description: Subject DN of the Certificate
-        notBefore:
-          type: string
-          description: Certificate validity start date
-          format: date-time
-        notAfter:
-          type: string
-          description: Certificate expiration date
-          format: date-time
-        publicKeyAlgorithm:
-          type: string
-          description: Public key algorithm
-        signatureAlgorithm:
-          type: string
-          description: Certificate signature algorithm
-        keySize:
-          type: integer
-          description: Certificate key size
-          format: int32
-        extendedKeyUsage:
-          type: array
-          description: Extended key usages
-          items:
-            type: string
-            description: Extended key usages
-        keyUsage:
-          type: array
-          description: Key usages
-          items:
-            type: string
-            description: Key usages
-        basicConstraints:
-          type: string
-          description: Basic Constraints
-        meta:
-          type: object
-          additionalProperties:
-            type: object
-            description: Certificate meta data
-          description: Certificate meta data
-        status:
-          type: string
-          description: Status of the Certificate
-          enum:
-          - VALID
-          - REVOKED
-          - EXPIRED
-          - UNKNOWN
-          - EXPIRING
-          - NEW
-          - INVALID
-        raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
-        fingerprint:
-          type: string
-          description: SHA256 fingerprint of the Certificate
-        subjectAlternativeNames:
-          type: object
-          additionalProperties:
-            type: object
-            description: Subject alternative names
-          description: Subject alternative names
-        entity:
-          $ref: '#/components/schemas/CertificateEntityDto'
-        group:
-          $ref: '#/components/schemas/CertificateGroupDto'
-        owner:
-          type: string
-          description: Certificate Owner
-        certificateType:
-          type: string
-          description: Certificate type
-          enum:
-          - X509
-          - SSH
-        issuerSerialNumber:
-          type: string
-          description: Serial number of the issuer
-        certificateValidationResult:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/CertificateValidationDto'
-          description: Certificate validation result
-      description: Client Certificate Information
-    CertificateEntityDto:
-      required:
-      - entityType
-      - name
       - uuid
       type: object
       properties:
         uuid:
           type: string
           description: Object identifier
-        name:
-          type: string
-          description: Object Name
-        description:
-          type: string
-          description: Description of the Entity
-        entityType:
-          type: string
-          description: Type of the Entity
-          enum:
-          - SERVER
-          - ROUTER
-          - HSM
-          - SWITCH
-          - LOAD_BALANCER
-          - FIREWALL
-          - MDM
-          - CLOUD
-      description: Entity associated to the Certificate
-    CertificateGroupDto:
+    SimplifiedClientDto:
       required:
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-        name:
-          type: string
-          description: Object Name
-        description:
-          type: string
-          description: Description of the Certificate Group
-      description: Group associated to the Certificate
-    CertificateValidationDto:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - SUCCESS
-          - FAILED
-          - WARNING
-          - REVOKED
-          - NOT_CHECKED
-          - INVALID
-          - EXPIRING
-          - EXPIRED
-        message:
-          type: string
-      description: Certificate validation result
-    ClientDto:
-      required:
-      - certificate
-      - description
       - enabled
-      - id
       - name
-      - serialNumber
       - uuid
       type: object
       properties:
-        id:
-          type: integer
-          description: Id of the client
-          format: int64
         uuid:
           type: string
-          description: UUID of the client
-        serialNumber:
-          type: string
-          description: Client serial Number
+          description: Object identifier
         name:
           type: string
-          description: Name of the client
-        certificate:
-          $ref: '#/components/schemas/CertificateDto'
-        description:
-          type: string
-          description: Client description
+          description: Object Name
         enabled:
           type: boolean
-          description: Status of the client / Is Client enabled?
+          description: Enabled flag - true = enabled; false = disabled

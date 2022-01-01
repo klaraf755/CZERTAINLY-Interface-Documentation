@@ -30,21 +30,45 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Client UUID
         required: true
         schema:
           type: string
       - name: raProfileUuid
         in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       responses:
         "200":
           description: Client unauthorized with given profile
-        "404":
-          description: Not found
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/clients/{uuid}/enable:
     put:
       tags:
@@ -54,16 +78,39 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Client UUID
         required: true
         schema:
           type: string
       responses:
         "200":
           description: Client enabled
-        "404":
-          description: Not found
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/clients/{uuid}/disable:
     put:
       tags:
@@ -73,16 +120,39 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Client UUID
         required: true
         schema:
           type: string
       responses:
         "200":
           description: Client disabled
-        "404":
-          description: Not found
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/clients/{uuid}/authorize/{raProfileUuid}:
     put:
       tags:
@@ -92,21 +162,45 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Client UUID
         required: true
         schema:
           type: string
       - name: raProfileUuid
         in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       responses:
         "200":
           description: Client authorized with given profile
-        "404":
-          description: Not found
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/clients/enable:
     put:
       tags:
@@ -114,20 +208,46 @@ paths:
       summary: Enable multiple client
       operationId: bulkEnableClient
       requestBody:
+        description: List of client UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
                 type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Client enabled
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
-        "400":
-          description: Invalid request
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/clients/disable:
     put:
       tags:
@@ -135,20 +255,46 @@ paths:
       summary: Disable multiple client
       operationId: bulkDisableClient
       requestBody:
+        description: List of client UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
                 type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not found
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Client disabled
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/clients/{uuid}:
     get:
       tags:
@@ -158,20 +304,43 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Client UUID
         required: true
         schema:
           type: string
       responses:
-        "404":
-          description: Not found
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Client details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Client Management API
@@ -180,6 +349,7 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Client UUID
         required: true
         schema:
           type: string
@@ -190,16 +360,38 @@ paths:
               $ref: '#/components/schemas/EditClientRequestDto'
         required: true
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Client edited
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientDto'
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
-        "400":
-          description: Invalid request
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Client Management API
@@ -208,16 +400,39 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Client UUID
         required: true
         schema:
           type: string
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Client Deleted
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
-        "400":
-          description: Invalid request
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/clients:
     get:
       tags:
@@ -233,10 +448,32 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClientDto'
-        "404":
-          description: Not found
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Client Management API
@@ -249,36 +486,84 @@ paths:
               $ref: '#/components/schemas/AddClientRequestDto'
         required: true
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: New client added
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/UuidDto'
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
-        "400":
-          description: Invalid request
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Client Management API
       summary: Remove multiple client
       operationId: bulkRemoveClient
       requestBody:
+        description: Client UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
                 type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Clients Deleted
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
-        "400":
-          description: Invalid request
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/clients/{uuid}/listauth:
     get:
       tags:
@@ -292,8 +577,24 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not found
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of authorized profiles
           content:
@@ -301,11 +602,26 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RaProfileDto'
-        "400":
-          description: Invalid request
+                  $ref: '#/components/schemas/SimplifiedRaProfileDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     EditClientRequestDto:
       type: object
       properties:
@@ -317,178 +633,8 @@ components:
           description: Base64 content of the certificate
         certificateUuid:
           type: string
-          description: UUID of the existing certificate in inventory
-    AttributeCallback:
-      required:
-      - callbackContext
-      - callbackMethod
-      - mappings
-      type: object
-      properties:
-        callbackContext:
-          type: string
-          description: Context part of callback URL
-        callbackMethod:
-          type: string
-          description: HTTP method of the callback
-        mappings:
-          uniqueItems: true
-          type: array
-          description: Mappings for the callback method
-          items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
-        pathVariables:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of path variables supported by the callback method
-          description: Map of path variables supported by the callback method
-        queryParameters:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of the query parameters supported by the callback method
-          description: Map of the query parameters supported by the callback method
-        requestBody:
-          type: object
-          additionalProperties:
-            type: object
-            description: Request body for the callback method
-          description: Request body for the callback method
-      description: Optional definition of callback for helper methods
-    AttributeCallbackMapping:
-      required:
-      - targets
-      - to
-      type: object
-      properties:
-        from:
-          type: string
-          description: Name of the attribute whose value is to be used as value of
-            path variable or request param or body field.It is optional and must be
-            set only if value is not set.
-        attributeType:
-          type: string
-          description: Type of the attribute. It is optional and must be set only
-            if special behaviour is needed.
-          enum:
-          - STRING
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - LIST
-          - CREDENTIAL
-        to:
-          type: string
-          description: Name of the path variable or request param or body field which
-            is to be used to assign value of attribute
-        targets:
-          uniqueItems: true
-          type: array
-          description: Set of targets for propagating value.
-          items:
-            type: string
-            description: Set of targets for propagating value.
-            enum:
-            - PATH_VARIABLE
-            - REQUEST_PARAMETER
-            - BODY
-        value:
-          type: object
-          description: Static value to be propagated to targets. It is optional and
-            is set only if the value is known at attribute creation time.
-      description: Mappings for the callback method
-    AttributeDefinition:
-      required:
-      - editable
-      - label
-      - multiValue
-      - name
-      - readOnly
-      - required
-      - type
-      - uuid
-      - visible
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute
-          example: Attribute
-        label:
-          type: string
-          description: Label of the the Attribute
-          example: Attribute Name
-        type:
-          type: string
-          description: Type of the Attribute
-          enum:
-          - STRING
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - LIST
-          - CREDENTIAL
-        required:
-          type: boolean
-          description: Boolean determining if the Attribute is required
-          default: false
-        readOnly:
-          type: boolean
-          description: Boolean determining if the Attribute is read only
-          default: false
-        editable:
-          type: boolean
-          description: Boolean determining if the Attribute is editable
-          default: true
-        visible:
-          type: boolean
-          description: Boolean determining if the Attribute is visible and can be
-            displayed
-          default: true
-        multiValue:
-          type: boolean
-          description: Boolean determining if the Attribute has value composed from
-            multiple items
-          default: false
-        description:
-          type: string
-          description: "Optional description of the Attribute, should contain help\
-            \ for setting proper value"
-        validationRegex:
-          type: string
-          description: Optional regular expression used for validating the Attribute
-            value
-        dependsOn:
-          type: array
-          description: Optional list of other Attribute names and values on which
-            it depends on
-          items:
-            $ref: '#/components/schemas/AttributeDependency'
-        attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
-        value:
-          type: object
-          description: Value of the Attribute
-      description: List of RA Profiles attributes
-    AttributeDependency:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of depending attribute
-        value:
-          type: object
-          description: "Value of depending attribute, which should be matched"
-      description: Optional list of other Attribute names and values on which it depends
-        on
+          description: UUID of the existing certificate in inventory. Required if
+            the Certificate is not provided
     CertificateDto:
       required:
       - basicConstraints
@@ -573,15 +719,15 @@ components:
           type: string
           description: Status of the Certificate
           enum:
-          - VALID
-          - REVOKED
-          - EXPIRED
-          - UNKNOWN
-          - EXPIRING
-          - NEW
-          - INVALID
+          - valid
+          - revoked
+          - expired
+          - unknown
+          - expiring
+          - new
+          - invalid
         raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
         fingerprint:
           type: string
           description: SHA256 fingerprint of the Certificate
@@ -592,9 +738,9 @@ components:
             description: Subject alternative names
           description: Subject alternative names
         entity:
-          $ref: '#/components/schemas/CertificateEntityDto'
+          $ref: '#/components/schemas/EntityDto'
         group:
-          $ref: '#/components/schemas/CertificateGroupDto'
+          $ref: '#/components/schemas/GroupDto'
         owner:
           type: string
           description: Certificate Owner
@@ -613,7 +759,51 @@ components:
             $ref: '#/components/schemas/CertificateValidationDto'
           description: Certificate validation result
       description: Client Certificate Information
-    CertificateEntityDto:
+    CertificateValidationDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+          - failed
+          - warning
+          - revoked
+          - not_checked
+          - invalid
+          - expiring
+          - expired
+        message:
+          type: string
+      description: Certificate validation result
+    ClientDto:
+      required:
+      - certificate
+      - description
+      - enabled
+      - name
+      - serialNumber
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+        name:
+          type: string
+          description: Object Name
+        serialNumber:
+          type: string
+          description: Client serial Number
+        certificate:
+          $ref: '#/components/schemas/CertificateDto'
+        description:
+          type: string
+          description: Client description
+        enabled:
+          type: boolean
+          description: Status of the client / Is Client enabled?
+    EntityDto:
       required:
       - entityType
       - name
@@ -633,16 +823,16 @@ components:
           type: string
           description: Type of the Entity
           enum:
-          - SERVER
-          - ROUTER
+          - server
+          - router
           - HSM
-          - SWITCH
-          - LOAD_BALANCER
-          - FIREWALL
+          - switch
+          - loadBalancer
+          - firewall
           - MDM
-          - CLOUD
+          - cloud
       description: Entity associated to the Certificate
-    CertificateGroupDto:
+    GroupDto:
       required:
       - name
       - uuid
@@ -658,60 +848,8 @@ components:
           type: string
           description: Description of the Certificate Group
       description: Group associated to the Certificate
-    CertificateValidationDto:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - SUCCESS
-          - FAILED
-          - WARNING
-          - REVOKED
-          - NOT_CHECKED
-          - INVALID
-          - EXPIRING
-          - EXPIRED
-        message:
-          type: string
-      description: Certificate validation result
-    ClientDto:
+    SimplifiedRaProfileDto:
       required:
-      - certificate
-      - description
-      - enabled
-      - id
-      - name
-      - serialNumber
-      - uuid
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Id of the client
-          format: int64
-        uuid:
-          type: string
-          description: UUID of the client
-        serialNumber:
-          type: string
-          description: Client serial Number
-        name:
-          type: string
-          description: Name of the client
-        certificate:
-          $ref: '#/components/schemas/CertificateDto'
-        description:
-          type: string
-          description: Client description
-        enabled:
-          type: boolean
-          description: Status of the client / Is Client enabled?
-    RaProfileDto:
-      required:
-      - attributes
-      - authorityInstanceName
-      - authorityInstanceUuid
       - enabled
       - name
       - uuid
@@ -723,30 +861,12 @@ components:
         name:
           type: string
           description: Object Name
-        description:
-          type: string
-          description: Description of RA Profile
-        authorityInstanceUuid:
-          type: string
-          description: UUID of Authority provider
-        authorityInstanceName:
-          type: string
-          description: Name of Authority instance
-        attributes:
-          type: array
-          description: List of RA Profiles attributes
-          items:
-            $ref: '#/components/schemas/AttributeDefinition'
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
       description: RA Profile associated to the Certificate
     AddClientRequestDto:
       required:
-      - certificateUuid
-      - clientCertificate
-      - description
-      - enabled
       - name
       type: object
       properties:
@@ -755,7 +875,8 @@ components:
           description: Base64 content of the client certificate
         certificateUuid:
           type: string
-          description: UUID of the existing certificate in the Inventory
+          description: UUID of the existing certificate in the Inventory. Required
+            if the Certificate is not provided
         name:
           type: string
           description: Name of the client
@@ -764,4 +885,13 @@ components:
           description: Description of the Client
         enabled:
           type: boolean
-          description: Is the client enabled?
+          description: "Enabled flag. true = enabled, false = disabled"
+          default: false
+    UuidDto:
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier

@@ -49,6 +49,7 @@ paths:
       parameters:
       - name: kind
         in: path
+        description: Kind
         required: true
         schema:
           type: string
@@ -61,18 +62,33 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "200":
-          description: Attribute validation completed
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                type: boolean
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Attribute validation completed
         "422":
           description: Attribute validation failed
           content:
             application/json:
               schema:
-                type: boolean
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/discoveryProvider/discover/{uuid}:
     post:
       tags:
@@ -82,6 +98,7 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Discovery UUID
         required: true
         schema:
           type: string
@@ -97,6 +114,14 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Discovery details retrieved
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/DiscoveryProviderDto'
         "400":
           description: Bad Request
@@ -104,12 +129,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Discovery details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
   /v1/discoveryProvider/discover:
     post:
       tags:
@@ -123,24 +142,37 @@ paths:
               $ref: '#/components/schemas/DiscoveryRequestDto'
         required: true
       responses:
-        "422":
-          description: Unprocessable entity
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Discovery initiated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryProviderDto'
+        "422":
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -150,10 +182,17 @@ paths:
       parameters:
       - name: kind
         in: path
+        description: Kind
         required: true
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes retrieved
           content:
@@ -162,6 +201,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -169,12 +216,26 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1:
     get:
       tags:
@@ -183,6 +244,14 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Functions found
           content:
@@ -191,6 +260,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     RequestAttributeDto:
@@ -210,6 +285,15 @@ components:
         value:
           type: object
           description: Value of the Attribute
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     DiscoveryDataRequestDto:
       required:
       - endIndex
@@ -228,11 +312,6 @@ components:
           type: integer
           description: Last index of the Certificate
           format: int32
-    ErrorMessageDto:
-      type: object
-      properties:
-        message:
-          type: string
     DiscoveryProviderCertificateDataDto:
       required:
       - base64Content
@@ -272,10 +351,10 @@ components:
           type: string
           description: Status of Discovery
           enum:
-          - IN_PROGRESS
-          - FAILED
-          - COMPLETED
-          - WARNING
+          - inProgress
+          - failed
+          - completed
+          - warning
         totalCertificatesDiscovered:
           type: integer
           description: Number of Certificates discovered
@@ -377,9 +456,9 @@ components:
             type: string
             description: Set of targets for propagating value.
             enum:
-            - PATH_VARIABLE
-            - REQUEST_PARAMETER
-            - BODY
+            - pathVariable
+            - requestParameter
+            - body
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
@@ -484,9 +563,9 @@ components:
           type: string
           description: Current connector operational status
           enum:
-          - OK
-          - NOK
-          - UNKNOWN
+          - ok
+          - nok
+          - unknown
         description:
           type: string
           description: Detailed status description
@@ -541,11 +620,14 @@ components:
         kinds:
           type: array
           description: List of supported functional group kinds
-          example: "SoftKeyStore, Basic, ApiKey, etc"
+          example:
+          - SoftKeyStore
+          - Basic
+          - ApiKey
           items:
             type: string
             description: List of supported functional group kinds
-            example: "SoftKeyStore, Basic, ApiKey, etc"
+            example: "[\"SoftKeyStore\",\"Basic\",\"ApiKey\"]"
         endPoints:
           type: array
           description: List of end points related to functional group

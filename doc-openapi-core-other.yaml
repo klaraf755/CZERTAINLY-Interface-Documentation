@@ -33,15 +33,25 @@ paths:
       operationId: profile
       responses:
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authenticate a user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthProfileDto'
+        "500":
+          description: Internal Server Error
     put:
       tags:
       - Authentication Management API
@@ -55,11 +65,21 @@ paths:
         required: true
       responses:
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Edit Profile
+        "500":
+          description: Internal Server Error
   /v1/statistics:
     get:
       tags:
@@ -67,16 +87,26 @@ paths:
       summary: Get Dashboard/Statictics Details
       operationId: getStatistics
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: Details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatisticsDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/logs/statuses:
     get:
       tags:
@@ -93,9 +123,19 @@ paths:
                 items:
                   type: string
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/logs/operations:
     get:
       tags:
@@ -112,9 +152,19 @@ paths:
                 items:
                   type: string
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/logs/objects:
     get:
       tags:
@@ -131,9 +181,19 @@ paths:
                 items:
                   type: string
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/logs/export:
     get:
       tags:
@@ -152,8 +212,6 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "400":
-          description: Invalid request
         "200":
           description: Export of audit logs
           content:
@@ -161,8 +219,20 @@ paths:
               schema:
                 type: string
                 format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/logs:
     get:
       tags:
@@ -182,22 +252,28 @@ paths:
           $ref: '#/components/schemas/Pageable'
       responses:
         "400":
-          description: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit logs
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuditLogResponseDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     EditAuthProfileDto:
-      required:
-      - email
-      - name
-      - surname
       type: object
       properties:
         name:
@@ -209,6 +285,15 @@ components:
         email:
           type: string
           description: Email Id of the User
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     StatisticsDto:
       type: object
       properties:
@@ -453,13 +538,13 @@ components:
         pageSize:
           type: integer
           format: int32
-        offset:
-          type: integer
-          format: int64
         paged:
           type: boolean
         unpaged:
           type: boolean
+        offset:
+          type: integer
+          format: int64
     Sort:
       type: object
       properties:
@@ -629,8 +714,8 @@ components:
           type: string
           description: Role of User
           enum:
-          - ADMINISTRATOR
-          - SUPERADMINISTRATOR
+          - administrator
+          - superAdministrator
         email:
           type: string
           description: Email address of the user

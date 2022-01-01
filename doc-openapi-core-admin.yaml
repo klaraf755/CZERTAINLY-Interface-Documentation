@@ -32,16 +32,27 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Administrator UUID
         required: true
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: Enable administrator success
-        "400":
-          description: Invalid request
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/admins/{uuid}/disable:
     put:
       tags:
@@ -51,16 +62,27 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Administrator UUID
         required: true
         schema:
           type: string
       responses:
         "200":
           description: Disable administrator success
-        "400":
-          description: Invalid request
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/admins/enable:
     put:
       tags:
@@ -78,10 +100,20 @@ paths:
       responses:
         "204":
           description: Enable administrator success
-        "400":
-          description: Invalid request
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/admins/disable:
     put:
       tags:
@@ -89,18 +121,32 @@ paths:
       summary: Disable Multiple Administrator
       operationId: bulkDisableAdmin
       requestBody:
+        description: Admin UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
                 type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "400":
-          description: Invalid request
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Disable administrator success
   /v1/admins/{uuid}:
@@ -112,20 +158,31 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Administrator UUID
         required: true
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: Administrator details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminDto'
-        "400":
-          description: Invalid request
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Admin Management API
@@ -134,6 +191,7 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Administrator UUID
         required: true
         schema:
           type: string
@@ -144,16 +202,26 @@ paths:
               $ref: '#/components/schemas/EditAdminRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: Administrator edit success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminDto'
-        "400":
-          description: Invalid request
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Admin Management API
@@ -162,14 +230,25 @@ paths:
       parameters:
       - name: uuid
         in: path
+        description: Administrator UUID
         required: true
         schema:
           type: string
       responses:
-        "400":
-          description: Invalid request
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Administrator removed
   /v1/admins:
@@ -179,6 +258,14 @@ paths:
       summary: List available administrators
       operationId: listAdmins
       responses:
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of administrator
           content:
@@ -188,13 +275,15 @@ paths:
                 items:
                   $ref: '#/components/schemas/AdminDto'
         "400":
-          description: Invalid request
-        "404":
-          description: Not found
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Admin Management API
-      summary: Create a new Administrators
+      summary: Create a new Administrator
       operationId: addAdmin
       requestBody:
         content:
@@ -203,52 +292,83 @@ paths:
               $ref: '#/components/schemas/AddAdminRequestDto'
         required: true
       responses:
-        "400":
-          description: Invalid request
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
-        "422":
-          description: Unprocessable Entity
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationException'
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "201":
           description: New administrator created
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/UuidDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
     delete:
       tags:
       - Admin Management API
       summary: Remove Multiple Administrator
       operationId: bulkRemoveAdmin
       requestBody:
+        description: Admin UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
                 type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "400":
-          description: Invalid request
+        "500":
+          description: Internal Server Error
         "404":
-          description: Not found
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Administrator removed
 components:
   schemas:
-    EditAdminRequestDto:
+    ErrorMessageDto:
       required:
-      - certificateUuid
-      - description
-      - email
-      - name
-      - role
-      - surname
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
+    EditAdminRequestDto:
       type: object
       properties:
         adminCertificate:
@@ -256,7 +376,8 @@ components:
           description: Base64 Content of the certificate
         certificateUuid:
           type: string
-          description: UUID of the existing certificate in inventory
+          description: UUID of the existing certificate in inventory. Mandatory if
+            the certificate is not provided.
         name:
           type: string
           description: Name of the administrator
@@ -270,8 +391,8 @@ components:
           type: string
           description: Role of the admin
           enum:
-          - ADMINISTRATOR
-          - SUPERADMINISTRATOR
+          - administrator
+          - superAdministrator
         description:
           type: string
           description: Description for the administrator
@@ -281,7 +402,6 @@ components:
       - description
       - email
       - enabled
-      - id
       - name
       - role
       - serialNumber
@@ -290,13 +410,12 @@ components:
       - uuid
       type: object
       properties:
-        id:
-          type: integer
-          description: Id of the Administrator
-          format: int64
         uuid:
           type: string
-          description: UUID of the Administrator
+          description: Object identifier
+        name:
+          type: string
+          description: Object Name
         username:
           type: string
           description: Administrator Username
@@ -306,17 +425,14 @@ components:
           type: string
           description: Role of the administrator
           enum:
-          - ADMINISTRATOR
-          - SUPERADMINISTRATOR
+          - administrator
+          - superAdministrator
         email:
           type: string
           description: Administrator Email
         serialNumber:
           type: string
           description: Serial Number of the administrator
-        name:
-          type: string
-          description: Username of the administrator
         description:
           type: string
           description: Administrator description
@@ -326,177 +442,6 @@ components:
         surname:
           type: string
           description: Surname of administrator
-    AttributeCallback:
-      required:
-      - callbackContext
-      - callbackMethod
-      - mappings
-      type: object
-      properties:
-        callbackContext:
-          type: string
-          description: Context part of callback URL
-        callbackMethod:
-          type: string
-          description: HTTP method of the callback
-        mappings:
-          uniqueItems: true
-          type: array
-          description: Mappings for the callback method
-          items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
-        pathVariables:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of path variables supported by the callback method
-          description: Map of path variables supported by the callback method
-        queryParameters:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of the query parameters supported by the callback method
-          description: Map of the query parameters supported by the callback method
-        requestBody:
-          type: object
-          additionalProperties:
-            type: object
-            description: Request body for the callback method
-          description: Request body for the callback method
-      description: Optional definition of callback for helper methods
-    AttributeCallbackMapping:
-      required:
-      - targets
-      - to
-      type: object
-      properties:
-        from:
-          type: string
-          description: Name of the attribute whose value is to be used as value of
-            path variable or request param or body field.It is optional and must be
-            set only if value is not set.
-        attributeType:
-          type: string
-          description: Type of the attribute. It is optional and must be set only
-            if special behaviour is needed.
-          enum:
-          - STRING
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - LIST
-          - CREDENTIAL
-        to:
-          type: string
-          description: Name of the path variable or request param or body field which
-            is to be used to assign value of attribute
-        targets:
-          uniqueItems: true
-          type: array
-          description: Set of targets for propagating value.
-          items:
-            type: string
-            description: Set of targets for propagating value.
-            enum:
-            - PATH_VARIABLE
-            - REQUEST_PARAMETER
-            - BODY
-        value:
-          type: object
-          description: Static value to be propagated to targets. It is optional and
-            is set only if the value is known at attribute creation time.
-      description: Mappings for the callback method
-    AttributeDefinition:
-      required:
-      - editable
-      - label
-      - multiValue
-      - name
-      - readOnly
-      - required
-      - type
-      - uuid
-      - visible
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute
-          example: Attribute
-        label:
-          type: string
-          description: Label of the the Attribute
-          example: Attribute Name
-        type:
-          type: string
-          description: Type of the Attribute
-          enum:
-          - STRING
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - LIST
-          - CREDENTIAL
-        required:
-          type: boolean
-          description: Boolean determining if the Attribute is required
-          default: false
-        readOnly:
-          type: boolean
-          description: Boolean determining if the Attribute is read only
-          default: false
-        editable:
-          type: boolean
-          description: Boolean determining if the Attribute is editable
-          default: true
-        visible:
-          type: boolean
-          description: Boolean determining if the Attribute is visible and can be
-            displayed
-          default: true
-        multiValue:
-          type: boolean
-          description: Boolean determining if the Attribute has value composed from
-            multiple items
-          default: false
-        description:
-          type: string
-          description: "Optional description of the Attribute, should contain help\
-            \ for setting proper value"
-        validationRegex:
-          type: string
-          description: Optional regular expression used for validating the Attribute
-            value
-        dependsOn:
-          type: array
-          description: Optional list of other Attribute names and values on which
-            it depends on
-          items:
-            $ref: '#/components/schemas/AttributeDependency'
-        attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
-        value:
-          type: object
-          description: Value of the Attribute
-      description: List of RA Profiles attributes
-    AttributeDependency:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of depending attribute
-        value:
-          type: object
-          description: "Value of depending attribute, which should be matched"
-      description: Optional list of other Attribute names and values on which it depends
-        on
     CertificateDto:
       required:
       - basicConstraints
@@ -581,15 +526,15 @@ components:
           type: string
           description: Status of the Certificate
           enum:
-          - VALID
-          - REVOKED
-          - EXPIRED
-          - UNKNOWN
-          - EXPIRING
-          - NEW
-          - INVALID
+          - valid
+          - revoked
+          - expired
+          - unknown
+          - expiring
+          - new
+          - invalid
         raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
         fingerprint:
           type: string
           description: SHA256 fingerprint of the Certificate
@@ -600,9 +545,9 @@ components:
             description: Subject alternative names
           description: Subject alternative names
         entity:
-          $ref: '#/components/schemas/CertificateEntityDto'
+          $ref: '#/components/schemas/EntityDto'
         group:
-          $ref: '#/components/schemas/CertificateGroupDto'
+          $ref: '#/components/schemas/GroupDto'
         owner:
           type: string
           description: Certificate Owner
@@ -621,7 +566,24 @@ components:
             $ref: '#/components/schemas/CertificateValidationDto'
           description: Certificate validation result
       description: Administrator Certificate Details
-    CertificateEntityDto:
+    CertificateValidationDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+          - failed
+          - warning
+          - revoked
+          - not_checked
+          - invalid
+          - expiring
+          - expired
+        message:
+          type: string
+      description: Certificate validation result
+    EntityDto:
       required:
       - entityType
       - name
@@ -641,16 +603,16 @@ components:
           type: string
           description: Type of the Entity
           enum:
-          - SERVER
-          - ROUTER
+          - server
+          - router
           - HSM
-          - SWITCH
-          - LOAD_BALANCER
-          - FIREWALL
+          - switch
+          - loadBalancer
+          - firewall
           - MDM
-          - CLOUD
+          - cloud
       description: Entity associated to the Certificate
-    CertificateGroupDto:
+    GroupDto:
       required:
       - name
       - uuid
@@ -666,28 +628,8 @@ components:
           type: string
           description: Description of the Certificate Group
       description: Group associated to the Certificate
-    CertificateValidationDto:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - SUCCESS
-          - FAILED
-          - WARNING
-          - REVOKED
-          - NOT_CHECKED
-          - INVALID
-          - EXPIRING
-          - EXPIRED
-        message:
-          type: string
-      description: Certificate validation result
-    RaProfileDto:
+    SimplifiedRaProfileDto:
       required:
-      - attributes
-      - authorityInstanceName
-      - authorityInstanceUuid
       - enabled
       - name
       - uuid
@@ -699,29 +641,13 @@ components:
         name:
           type: string
           description: Object Name
-        description:
-          type: string
-          description: Description of RA Profile
-        authorityInstanceUuid:
-          type: string
-          description: UUID of Authority provider
-        authorityInstanceName:
-          type: string
-          description: Name of Authority instance
-        attributes:
-          type: array
-          description: List of RA Profiles attributes
-          items:
-            $ref: '#/components/schemas/AttributeDefinition'
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
       description: RA Profile associated to the Certificate
     AddAdminRequestDto:
       required:
-      - description
       - email
-      - enabled
       - name
       - role
       - surname
@@ -733,7 +659,8 @@ components:
           description: Base64 Content of the admin certificate
         certificateUuid:
           type: string
-          description: UUID of the existing certificate in the Inventory
+          description: UUID of the existing certificate in the Inventory. Mandatory
+            if certificate is not provided
         username:
           type: string
           description: Username of the administrator
@@ -750,140 +677,20 @@ components:
           type: string
           description: Role of the administrator
           enum:
-          - ADMINISTRATOR
-          - SUPERADMINISTRATOR
+          - administrator
+          - superAdministrator
         enabled:
           type: boolean
           description: "Enabled flag. true = enabled, false = disabled"
+          default: false
         description:
           type: string
           description: Description for the administrator
-    ValidationError:
+    UuidDto:
+      required:
+      - uuid
       type: object
       properties:
-        errorDescription:
+        uuid:
           type: string
-    ValidationException:
-      type: object
-      properties:
-        cause:
-          type: object
-          properties:
-            stackTrace:
-              type: array
-              items:
-                type: object
-                properties:
-                  classLoaderName:
-                    type: string
-                  moduleName:
-                    type: string
-                  moduleVersion:
-                    type: string
-                  methodName:
-                    type: string
-                  fileName:
-                    type: string
-                  lineNumber:
-                    type: integer
-                    format: int32
-                  className:
-                    type: string
-                  nativeMethod:
-                    type: boolean
-            message:
-              type: string
-            suppressed:
-              type: array
-              items:
-                type: object
-                properties:
-                  stackTrace:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        classLoaderName:
-                          type: string
-                        moduleName:
-                          type: string
-                        moduleVersion:
-                          type: string
-                        methodName:
-                          type: string
-                        fileName:
-                          type: string
-                        lineNumber:
-                          type: integer
-                          format: int32
-                        className:
-                          type: string
-                        nativeMethod:
-                          type: boolean
-                  message:
-                    type: string
-                  localizedMessage:
-                    type: string
-            localizedMessage:
-              type: string
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              className:
-                type: string
-              nativeMethod:
-                type: boolean
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-        message:
-          type: string
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    className:
-                      type: string
-                    nativeMethod:
-                      type: boolean
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
-          type: string
+          description: Object identifier
