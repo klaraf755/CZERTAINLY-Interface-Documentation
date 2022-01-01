@@ -93,18 +93,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatisticsDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsDto'
         "500":
           description: Internal Server Error
   /v1/logs/statuses:
@@ -114,6 +114,12 @@ paths:
       summary: List Status
       operationId: listOperationStatuses
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit log status
           content:
@@ -122,12 +128,6 @@ paths:
                 type: array
                 items:
                   type: string
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -172,6 +172,12 @@ paths:
       summary: List Audit Objects
       operationId: listObjects
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit Objects
           content:
@@ -180,12 +186,6 @@ paths:
                 type: array
                 items:
                   type: string
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -218,6 +218,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Export of audit logs
           content:
@@ -225,12 +231,6 @@ paths:
               schema:
                 type: string
                 format: binary
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1/logs:
@@ -530,6 +530,8 @@ components:
     Pageable:
       type: object
       properties:
+        sort:
+          $ref: '#/components/schemas/Sort'
         pageNumber:
           type: integer
           format: int32
@@ -539,8 +541,6 @@ components:
         offset:
           type: integer
           format: int64
-        sort:
-          $ref: '#/components/schemas/Sort'
         paged:
           type: boolean
         unpaged:
