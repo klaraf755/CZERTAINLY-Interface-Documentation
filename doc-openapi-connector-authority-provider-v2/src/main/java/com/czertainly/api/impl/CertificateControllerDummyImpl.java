@@ -22,8 +22,8 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public boolean validateIssueCertificateAttributes(String uuid, List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException {
-        return false;
+    public void validateIssueCertificateAttributes(String uuid, List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException {
+
     }
 
     @Override
@@ -42,8 +42,8 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public boolean validateRevokeCertificateAttributes(String uuid, List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException {
-        return false;
+    public void validateRevokeCertificateAttributes(String uuid, List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException {
+
     }
 
     @Override

@@ -51,8 +51,8 @@ public class AuthorityInstanceControllerDummyImpl implements AuthorityInstanceCo
     }
 
     @Override
-    public boolean validateRAProfileAttributes(String uuid, List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException {
-        return false;
+    public void validateRAProfileAttributes(String uuid, List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException {
+
     }
 
 }

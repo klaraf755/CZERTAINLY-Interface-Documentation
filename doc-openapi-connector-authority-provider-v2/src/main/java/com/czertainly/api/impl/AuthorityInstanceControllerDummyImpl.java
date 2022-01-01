@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class CAInstanceControllerDummyImpl implements AuthorityInstanceController {
+public class AuthorityInstanceControllerDummyImpl implements AuthorityInstanceController {
 
     @Override
     public List<AuthorityProviderInstanceDto> listAuthorityInstances() {
@@ -51,8 +51,8 @@ public class CAInstanceControllerDummyImpl implements AuthorityInstanceControlle
     }
 
     @Override
-    public boolean validateRAProfileAttributes(String uuid, List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException {
-        return false;
+    public void validateRAProfileAttributes(String uuid, List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException {
+
     }
 
 }

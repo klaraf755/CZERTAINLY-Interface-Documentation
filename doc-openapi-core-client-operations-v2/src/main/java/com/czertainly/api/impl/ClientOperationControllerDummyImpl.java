@@ -20,37 +20,37 @@ import java.util.List;
 public class ClientOperationControllerDummyImpl implements ClientOperationController {
 
     @Override
-    public List<AttributeDefinition> listIssueCertificateAttributes(String raProfileName) throws NotFoundException, ConnectorException {
+    public List<AttributeDefinition> listIssueCertificateAttributes(String raProfileUuid) throws NotFoundException, ConnectorException {
         return null;
     }
 
     @Override
-    public void validateIssueCertificateAttributes(String raProfileName, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException {
+    public void validateIssueCertificateAttributes(String raProfileUuid, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException {
 
     }
 
     @Override
-    public ClientCertificateDataResponseDto issueCertificate(String raProfileName, ClientCertificateSignRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException {
+    public ClientCertificateDataResponseDto issueCertificate(String raProfileUuid, ClientCertificateSignRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException {
         return null;
     }
 
     @Override
-    public ClientCertificateDataResponseDto renewCertificate(String raProfileName, String certificateUuid, ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException {
+    public ClientCertificateDataResponseDto renewCertificate(String raProfileUuid, String certificateUuid, ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException {
         return null;
     }
 
     @Override
-    public List<AttributeDefinition> listRevokeCertificateAttributes(String raProfileName) throws NotFoundException, ConnectorException {
+    public List<AttributeDefinition> listRevokeCertificateAttributes(String raProfileUuid) throws NotFoundException, ConnectorException {
         return null;
     }
 
     @Override
-    public void validateRevokeCertificateAttributes(String raProfileName, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException {
+    public void validateRevokeCertificateAttributes(String raProfileUuid, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException {
 
     }
 
     @Override
-    public void revokeCertificate(String raProfileName, String certificateUuid, ClientCertificateRevocationDto request) throws NotFoundException, ConnectorException {
+    public void revokeCertificate(String raProfileUuid, String certificateUuid, ClientCertificateRevocationDto request) throws NotFoundException, ConnectorException {
 
     }
 
