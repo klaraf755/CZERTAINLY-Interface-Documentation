@@ -38,114 +38,6 @@ tags:
     \ cases can return status of services on which it depends like database, HSM and\
     \ so on."
 paths:
-  /v2/authorityProvider/authorities/{uuid}/certificates/{certificateId}/revoke:
-    post:
-      tags:
-      - Certificate Management API
-      summary: Revoke Certificate
-      operationId: revokeCertificate
-      parameters:
-      - name: uuid
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: certificateId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CertRevocationDto'
-        required: true
-      responses:
-        "200":
-          description: Certificate revoked
-        "500":
-          description: Internal Server Error
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/authorityProvider/authorities/{uuid}/certificates/{certificateId}/renew:
-    post:
-      tags:
-      - Certificate Management API
-      summary: Renew Certificate
-      operationId: renewCertificate
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority Instance UUID
-        required: true
-        schema:
-          type: string
-      - name: certificateId
-        in: path
-        description: Certificate Serial Number
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CertificateRenewRequestDto'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate renewed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CertificateDataResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v2/authorityProvider/authorities/{uuid}/certificates/revoke/attributes/validate:
     post:
       tags:
@@ -168,8 +60,6 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes validated
           content:
@@ -187,18 +77,118 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v2/authorityProvider/authorities/{uuid}/certificates/revoke:
+    post:
+      tags:
+      - Certificate Management API
+      summary: Revoke Certificate
+      operationId: revokeCertificate
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertRevocationDto'
+        required: true
+      responses:
+        "200":
+          description: Certificate revoked
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v2/authorityProvider/authorities/{uuid}/certificates/renew:
+    post:
+      tags:
+      - Certificate Management API
+      summary: Renew Certificate
+      operationId: renewCertificate
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateRenewRequestDto'
+        required: true
+      responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Certificate renewed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateDataResponseDto'
   /v2/authorityProvider/authorities/{uuid}/certificates/issue/attributes/validate:
     post:
       tags:
@@ -221,8 +211,6 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes validated
           content:
@@ -240,18 +228,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v2/authorityProvider/authorities/{uuid}/certificates/issue:
     post:
       tags:
@@ -272,8 +262,6 @@ paths:
               $ref: '#/components/schemas/CertificateSignRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -285,24 +273,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate issued
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CertificateDataResponseDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateDataResponseDto'
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
       tags:
@@ -325,6 +315,20 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attribute validation completed
         "500":
           description: Internal Server Error
         "422":
@@ -338,20 +342,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "200":
-          description: Attribute validation completed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes/validate:
     post:
       tags:
@@ -380,20 +370,20 @@ paths:
             application/json:
               schema:
                 type: boolean
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}:
     get:
       tags:
@@ -408,26 +398,26 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Authority instance retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - Authority Management API
@@ -453,20 +443,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Authority Management API
@@ -480,8 +470,12 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -490,12 +484,8 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authority instance removed
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities:
     get:
       tags:
@@ -503,8 +493,6 @@ paths:
       summary: List Authority instances
       operationId: listAuthorityInstances
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Authority instances retrieved
           content:
@@ -513,18 +501,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - Authority Management API
@@ -537,26 +527,26 @@ paths:
               $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authority instance created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
   /v2/authorityProvider/authorities/{uuid}/certificates/revoke/attributes:
     get:
       tags:
@@ -579,8 +569,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -592,18 +580,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v2/authorityProvider/authorities/{uuid}/certificates/issue/attributes:
     get:
       tags:
@@ -626,20 +616,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -654,8 +644,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes retrieved
           content:
@@ -664,18 +652,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/health:
     get:
       tags:
@@ -683,26 +673,26 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes:
     get:
       tags:
@@ -725,20 +715,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/connect:
     get:
       tags:
@@ -755,20 +745,20 @@ paths:
       responses:
         "204":
           description: Authority instance connected
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1:
     get:
       tags:
@@ -777,14 +767,20 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Functions found
           content:
@@ -793,14 +789,137 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
+    RequestAttributeDto:
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        value:
+          type: object
+          description: Value of the Attribute
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
+    CertRevocationDto:
+      required:
+      - attributes
+      - certificate
+      - raProfileAttributes
+      - reason
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Revocation reason
+          enum:
+          - UNSPECIFIED
+          - KEY_COMPROMISE
+          - CA_COMPROMISE
+          - AFFILIATION_CHANGED
+          - SUPERSEDED
+          - CESSATION_OF_OPERATION
+          - CERTIFICATE_HOLD
+          - REMOVE_FROM_CRL
+          - PRIVILEGES_WITHDRAWN
+          - AA_COMPROMISE
+        raProfileAttributes:
+          type: array
+          description: List of RA Profiles attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        attributes:
+          type: array
+          description: List of Attributes to revoke Certificate
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        certificate:
+          type: string
+          description: Base64 Certificate content. (Certificate to be revoked)
+    CertificateRenewRequestDto:
+      required:
+      - certificate
+      - pkcs10
+      - raProfileAttributes
+      type: object
+      properties:
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+        raProfileAttributes:
+          type: array
+          description: List of RA Profiles attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        certificate:
+          type: string
+          description: Base64 Certificate content. (Certificate to be renewed)
+    CertificateDataResponseDto:
+      required:
+      - certificateData
+      - uuid
+      type: object
+      properties:
+        certificateData:
+          type: string
+          description: Base64 encoded Certificate content
+        uuid:
+          type: string
+          description: UUID of Certificate
+    CertificateSignRequestDto:
+      required:
+      - attributes
+      - pkcs10
+      - raProfileAttributes
+      type: object
+      properties:
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+        raProfileAttributes:
+          type: array
+          description: List of RA Profiles attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        attributes:
+          type: array
+          description: List of Attributes to issue Certificate
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+    AuthorityProviderInstanceRequestDto:
+      required:
+      - attributes
+      - kind
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Authority instance name
+        kind:
+          type: string
+          description: Kind of Authority instance
+        attributes:
+          type: array
+          description: List of Authority instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
     AttributeCallback:
       required:
       - callbackContext
@@ -957,7 +1076,7 @@ components:
         value:
           type: object
           description: Value of the Attribute
-      description: List of RA Profiles attributes
+      description: List of Authority instance Attributes
     AttributeDependency:
       required:
       - name
@@ -972,153 +1091,6 @@ components:
           description: "Value of depending attribute, which should be matched"
       description: Optional list of other Attribute names and values on which it depends
         on
-    CertRevocationDto:
-      required:
-      - attributes
-      - raProfile
-      - reason
-      type: object
-      properties:
-        reason:
-          type: string
-          description: Revocation reason
-          enum:
-          - UNSPECIFIED
-          - KEY_COMPROMISE
-          - CA_COMPROMISE
-          - AFFILIATION_CHANGED
-          - SUPERSEDED
-          - CESSATION_OF_OPERATION
-          - CERTIFICATE_HOLD
-          - REMOVE_FROM_CRL
-          - PRIVILEGES_WITHDRAWN
-          - AA_COMPROMISE
-        raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
-        attributes:
-          type: array
-          description: List of Attributes to revoke Certificate
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-    RaProfileDto:
-      required:
-      - attributes
-      - authorityInstanceName
-      - authorityInstanceUuid
-      - enabled
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-        name:
-          type: string
-          description: Object Name
-        description:
-          type: string
-          description: Description of RA Profile
-        authorityInstanceUuid:
-          type: string
-          description: UUID of Authority provider
-        authorityInstanceName:
-          type: string
-          description: Name of Authority instance
-        attributes:
-          type: array
-          description: List of RA Profiles attributes
-          items:
-            $ref: '#/components/schemas/AttributeDefinition'
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-      description: RA Profile information
-    RequestAttributeDto:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute
-          example: Attribute
-        value:
-          type: object
-          description: Value of the Attribute
-      description: List of Attributes to revoke Certificate
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
-    CertificateRenewRequestDto:
-      required:
-      - pkcs10
-      - raProfile
-      type: object
-      properties:
-        pkcs10:
-          type: string
-          description: Certificate sign request (PKCS#10) encoded as Base64 string
-        raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
-    CertificateDataResponseDto:
-      required:
-      - certificateData
-      - uuid
-      type: object
-      properties:
-        certificateData:
-          type: string
-          description: Base64 encoded Certificate content
-        uuid:
-          type: string
-          description: UUID of Certificate
-    CertificateSignRequestDto:
-      required:
-      - attributes
-      - pkcs10
-      - raProfile
-      type: object
-      properties:
-        pkcs10:
-          type: string
-          description: Certificate sign request (PKCS#10) encoded as Base64 string
-        raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
-        attributes:
-          type: array
-          description: List of Attributes to issue Certificate
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-    AuthorityProviderInstanceRequestDto:
-      required:
-      - attributes
-      - kind
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Authority instance name
-        kind:
-          type: string
-          description: Kind of Authority instance
-        attributes:
-          type: array
-          description: List of Authority instance Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
     AuthorityProviderInstanceDto:
       required:
       - attributes
