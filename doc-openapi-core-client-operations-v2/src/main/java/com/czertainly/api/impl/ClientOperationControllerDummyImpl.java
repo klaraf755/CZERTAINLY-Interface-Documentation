@@ -35,7 +35,7 @@ public class ClientOperationControllerDummyImpl implements ClientOperationContro
     }
 
     @Override
-    public ClientCertificateDataResponseDto renewCertificate(String raProfileName, String certificateId, ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException {
+    public ClientCertificateDataResponseDto renewCertificate(String raProfileName, String certificateUuid, ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException {
         return null;
     }
 

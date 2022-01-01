@@ -32,7 +32,7 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public CertificateDataResponseDto renewCertificate(String uuid, String certificateId, CertificateRenewRequestDto request) throws NotFoundException {
+    public CertificateDataResponseDto renewCertificate(String uuid, CertificateRenewRequestDto request) throws NotFoundException {
         return null;
     }
 
@@ -47,7 +47,7 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public void revokeCertificate(String uuid, String certificateId, CertRevocationDto request) throws NotFoundException {
+    public void revokeCertificate(String uuid, CertRevocationDto request) throws NotFoundException {
 
     }
 
