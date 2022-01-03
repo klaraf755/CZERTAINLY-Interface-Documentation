@@ -35,12 +35,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -55,14 +49,20 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profile enabled
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raprofiles/{uuid}/disable:
     put:
       tags:
@@ -77,12 +77,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -95,16 +89,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profile disabled
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "204":
+          description: RA Profile disabled
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raprofiles/enable:
     put:
       tags:
@@ -124,12 +124,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profiles enabled
         "400":
@@ -144,14 +138,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raprofiles/disable:
     put:
       tags:
@@ -171,12 +171,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profiles disabled
         "400":
@@ -191,14 +185,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raprofiles/{uuid}:
     get:
       tags:
@@ -213,12 +213,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -231,20 +225,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: RA Profile details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RaProfileDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: RA Profile details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaProfileDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - RA Profile Management API
@@ -264,29 +264,12 @@ paths:
               $ref: '#/components/schemas/EditRaProfileRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profile updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileDto'
-        "422":
-          description: Unprocessible Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "400":
           description: Bad Request
           content:
@@ -299,14 +282,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "422":
+          description: Unprocessible Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - RA Profile Management API
@@ -320,12 +320,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profile deleted
         "400":
@@ -340,14 +334,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raprofiles:
     get:
       tags:
@@ -361,12 +361,6 @@ paths:
         schema:
           type: boolean
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -387,14 +381,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RaProfileDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - RA Profile Management API
@@ -407,8 +407,22 @@ paths:
               $ref: '#/components/schemas/AddRaProfileRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -430,26 +444,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - RA Profile Management API
@@ -468,8 +468,24 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not Found
+        "204":
+          description: RA Profiles deleted
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -485,28 +501,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "204":
-          description: RA Profiles deleted
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/raprofiles/{uuid}/listclients:
     get:
       tags:
@@ -521,12 +521,14 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "200":
+          description: List of clients of RA Profile
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/SimplifiedClientDto'
         "400":
           description: Bad Request
           content:
@@ -539,22 +541,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: List of clients of RA Profile
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SimplifiedClientDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     ErrorMessageDto:
@@ -604,179 +604,6 @@ components:
           type: object
           description: Value of the Attribute
       description: List of Attributes for RA Profile
-    AttributeCallback:
-      required:
-      - callbackContext
-      - callbackMethod
-      - mappings
-      type: object
-      properties:
-        callbackContext:
-          type: string
-          description: Context part of callback URL
-        callbackMethod:
-          type: string
-          description: HTTP method of the callback
-        mappings:
-          uniqueItems: true
-          type: array
-          description: Mappings for the callback method
-          items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
-        pathVariables:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of path variables supported by the callback method
-          description: Map of path variables supported by the callback method
-        queryParameters:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of the query parameters supported by the callback method
-          description: Map of the query parameters supported by the callback method
-        requestBody:
-          type: object
-          additionalProperties:
-            type: object
-            description: Request body for the callback method
-          description: Request body for the callback method
-      description: Optional definition of callback for helper methods
-    AttributeCallbackMapping:
-      required:
-      - targets
-      - to
-      type: object
-      properties:
-        from:
-          type: string
-          description: Name of the attribute whose value is to be used as value of
-            path variable or request param or body field.It is optional and must be
-            set only if value is not set.
-        attributeType:
-          type: string
-          description: Type of the attribute. It is optional and must be set only
-            if special behaviour is needed.
-          enum:
-          - STRING
-          - NUMBER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - LIST
-          - CREDENTIAL
-        to:
-          type: string
-          description: Name of the path variable or request param or body field which
-            is to be used to assign value of attribute
-        targets:
-          uniqueItems: true
-          type: array
-          description: Set of targets for propagating value.
-          items:
-            type: string
-            description: Set of targets for propagating value.
-            enum:
-            - pathVariable
-            - requestParameter
-            - body
-        value:
-          type: object
-          description: Static value to be propagated to targets. It is optional and
-            is set only if the value is known at attribute creation time.
-      description: Mappings for the callback method
-    AttributeDefinition:
-      required:
-      - editable
-      - label
-      - multiValue
-      - name
-      - readOnly
-      - required
-      - type
-      - uuid
-      - visible
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute
-          example: Attribute
-        label:
-          type: string
-          description: Label of the the Attribute
-          example: Attribute Name
-        type:
-          type: string
-          description: Type of the Attribute
-          enum:
-          - STRING
-          - NUMBER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - LIST
-          - CREDENTIAL
-        required:
-          type: boolean
-          description: Boolean determining if the Attribute is required
-          default: false
-        readOnly:
-          type: boolean
-          description: Boolean determining if the Attribute is read only
-          default: false
-        editable:
-          type: boolean
-          description: Boolean determining if the Attribute is editable
-          default: true
-        visible:
-          type: boolean
-          description: Boolean determining if the Attribute is visible and can be
-            displayed
-          default: true
-        multiValue:
-          type: boolean
-          description: Boolean determining if the Attribute has value composed from
-            multiple items
-          default: false
-        description:
-          type: string
-          description: "Optional description of the Attribute, should contain help\
-            \ for setting proper value"
-        validationRegex:
-          type: string
-          description: Optional regular expression used for validating the Attribute
-            value
-        dependsOn:
-          type: array
-          description: Optional list of other Attribute names and values on which
-            it depends on
-          items:
-            $ref: '#/components/schemas/AttributeDependency'
-        attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
-        value:
-          type: object
-          description: Value of the Attribute
-      description: List of RA Profiles attributes
-    AttributeDependency:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of depending attribute
-        value:
-          type: object
-          description: "Value of depending attribute, which should be matched"
-      description: Optional list of other Attribute names and values on which it depends
-        on
     RaProfileDto:
       required:
       - attributes
@@ -806,10 +633,45 @@ components:
           type: array
           description: List of RA Profiles attributes
           items:
-            $ref: '#/components/schemas/AttributeDefinition'
+            $ref: '#/components/schemas/ResponseAttributeDto'
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
+    ResponseAttributeDto:
+      required:
+      - label
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - NUMBER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        value:
+          type: object
+          description: Value of the Attribute
+      description: List of RA Profiles attributes
     AddRaProfileRequestDto:
       required:
       - attributes
