@@ -62,16 +62,6 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Attribute validation completed
         "422":
           description: Attribute validation failed
           content:
@@ -83,6 +73,16 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attribute validation completed
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -117,18 +117,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: Discovery details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Discovery details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscoveryProviderDto'
   /v1/discoveryProvider/discover:
     post:
       tags:
@@ -148,14 +148,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Discovery initiated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
         "422":
           description: Unprocessable entity
           content:
@@ -167,12 +159,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Discovery initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscoveryProviderDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -187,12 +187,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes retrieved
           content:
@@ -201,6 +195,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "400":
@@ -216,18 +216,18 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "400":
@@ -252,6 +252,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Functions found
           content:
@@ -260,12 +266,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     RequestAttributeDto:
@@ -403,24 +403,6 @@ components:
           description: Mappings for the callback method
           items:
             $ref: '#/components/schemas/AttributeCallbackMapping'
-        pathVariables:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of path variables supported by the callback method
-          description: Map of path variables supported by the callback method
-        queryParameters:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of the query parameters supported by the callback method
-          description: Map of the query parameters supported by the callback method
-        requestBody:
-          type: object
-          additionalProperties:
-            type: object
-            description: Request body for the callback method
-          description: Request body for the callback method
       description: Optional definition of callback for helper methods
     AttributeCallbackMapping:
       required:

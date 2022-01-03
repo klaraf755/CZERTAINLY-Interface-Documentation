@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY Authority API
-  description: REST API for managing Authorities in the platform
+  title: CZERTAINLY Client Operations API
+  description: REST API for Client Operations
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -18,19 +18,192 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Authority Management API
-  description: Authority Management API
+- name: Legacy Client Operations API
+  description: Client API for managing End Entities and Certificates
+- name: v2 Client Operations API
+  description: v2 Client Operations API
 paths:
-  /v1/authorities/{uuid}/raProfile/attributes/validate:
+  /v1/operations/{raProfileName}/endentity/{username}/resetPassword:
+    put:
+      tags:
+      - Legacy Client Operations API
+      summary: Reset password for End Entity
+      operationId: resetPassword
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity password reset
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/{raProfileUuid}/{certificateUuid}/revoke:
     post:
       tags:
-      - Authority Management API
-      summary: Validate RA Profile Attributes
-      operationId: validateRAProfileAttributes
+      - v2 Client Operations API
+      summary: Revoke Certificate
+      operationId: revokeCertificate
       parameters:
-      - name: uuid
+      - name: raProfileUuid
         in: path
-        description: Authority instance UUID
+        description: RA Profile UUID
+        required: true
+        schema:
+          type: string
+      - name: certificateUuid
+        in: path
+        description: Certificate UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateRevocationDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Certificate revoked
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/{raProfileUuid}/{certificateUuid}/renew:
+    post:
+      tags:
+      - v2 Client Operations API
+      summary: Renew Certificate
+      operationId: renewCertificate
+      parameters:
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
+        required: true
+        schema:
+          type: string
+      - name: certificateUuid
+        in: path
+        description: Certificate UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateRenewRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate renewed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+  /v2/operations/{raProfileUuid}/revoke/attributes/validate:
+    post:
+      tags:
+      - v2 Client Operations API
+      summary: Validate revocation Attributes
+      operationId: validateRevokeCertificateAttributes
+      parameters:
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
@@ -43,8 +216,10 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "200":
-          description: Attribute information validated
+          description: Attributes validated
         "400":
           description: Bad Request
           content:
@@ -57,8 +232,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -71,288 +244,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/authorities/{uuid}:
-    get:
-      tags:
-      - Authority Management API
-      summary: Details of an Authority instance
-      operationId: getAuthorityInstance
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Authority instance details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthorityInstanceDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/{raProfileUuid}/issue/attributes/validate:
     post:
       tags:
-      - Authority Management API
-      summary: Update Authority instance
-      operationId: updateAuthorityInstance
+      - v2 Client Operations API
+      summary: Validate issue Certificate Attributes
+      operationId: validateIssueCertificateAttributes
       parameters:
-      - name: uuid
+      - name: raProfileUuid
         in: path
-        description: Authority instance UUID
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthorityInstanceUpdateRequestDto'
-        required: true
-      responses:
-        "200":
-          description: Authority instance details updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthorityInstanceDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    delete:
-      tags:
-      - Authority Management API
-      summary: Remove Authority instance
-      operationId: removeAuthorityInstance
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: Authority instance deleted
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/authorities:
-    get:
-      tags:
-      - Authority Management API
-      summary: List of available Authority instances
-      operationId: listAuthorityInstances
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: List of Authority instances
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AuthorityInstanceDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    post:
-      tags:
-      - Authority Management API
-      summary: Add Authority instance
-      operationId: createAuthorityInstance
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthorityInstanceRequestDto'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "201":
-          description: New Authority instance added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    delete:
-      tags:
-      - Authority Management API
-      summary: Delete multiple Authority instances
-      operationId: bulkRemoveAuthorityInstance
-      requestBody:
-        description: Authority Instance UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+                $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "422":
-          description: Unprocessible Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+        "500":
+          description: Internal Server Error
         "200":
-          description: Authority instances deleted
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForceDeleteMessageDto'
+          description: Attributes validated
         "400":
           description: Bad Request
           content:
@@ -365,8 +282,126 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/{raProfileUuid}/issue:
+    post:
+      tags:
+      - v2 Client Operations API
+      summary: Issue Certificate
+      operationId: issueCertificate
+      parameters:
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateSignRequestDto'
+        required: true
+      responses:
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/operations/{raProfileName}/endentity/{username}:
+    get:
+      tags:
+      - Legacy Client Operations API
+      summary: Get End Entity information
+      operationId: getEndEntity
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -379,20 +414,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/authorities/{uuid}/raProfile/attributes:
-    get:
+        "200":
+          description: End Entity detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientEndEntityDto'
+    post:
       tags:
-      - Authority Management API
-      summary: List RA Profile Attributes
-      operationId: listRAProfileAttributes
+      - Legacy Client Operations API
+      summary: Edit End Entity
+      operationId: editEndEntity
       parameters:
-      - name: uuid
+      - name: raProfileName
         in: path
-        description: Authority instance UUID
+        description: RA Profile name
         required: true
         schema:
           type: string
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
+        required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -405,47 +459,334 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity edited
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    delete:
+      tags:
+      - Legacy Client Operations API
+      summary: Revoke all Certificates and delete End Entity
+      operationId: revokeAndDeleteEndEntity
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      responses:
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
-          description: Attribute information retrieved
+          description: End Entity revoked and deleted
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/operations/{raProfileName}/endentity:
+    get:
+      tags:
+      - Legacy Client Operations API
+      summary: List all End Entities
+      operationId: listEntities
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: List of entities retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientEndEntityDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    post:
+      tags:
+      - Legacy Client Operations API
+      summary: Add End Entity
+      operationId: addEndEntity
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity added
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/operations/{raProfileName}/certificate/revoke:
+    post:
+      tags:
+      - Legacy Client Operations API
+      summary: Revoke Certificate
+      operationId: revokeCertificate_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateRevocationDto'
+        required: true
+      responses:
+        "200":
+          description: Certificate revoked
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/operations/{raProfileName}/certificate/issue:
+    post:
+      tags:
+      - Legacy Client Operations API
+      summary: Issue Certificate
+      operationId: issueCertificate_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateSignRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/{raProfileUuid}/revoke/attributes:
+    get:
+      tags:
+      - v2 Client Operations API
+      summary: Get revocation Attributes
+      operationId: listRevokeCertificateAttributes
+      parameters:
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attributes obtained
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/authorities/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles:
+  /v2/operations/{raProfileUuid}/issue/attributes:
     get:
       tags:
-      - Authority Management API
-      operationId: listCertificateProfiles
+      - v2 Client Operations API
+      summary: Get issue Certificate Attributes
+      operationId: listIssueCertificateAttributes
       parameters:
-      - name: uuid
+      - name: raProfileUuid
         in: path
-        description: Authority instance UUID
+        description: RA Profile UUID
         required: true
         schema:
           type: string
-      - name: endEntityProfileId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
       responses:
+        "200":
+          description: Attributes list obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -458,121 +799,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/authorities/{uuid}/endentityprofiles/{endEntityProfileId}/cas:
-    get:
-      tags:
-      - Authority Management API
-      operationId: listCAsInProfile
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      - name: endEntityProfileId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/authorities/{uuid}/endentityprofiles:
-    get:
-      tags:
-      - Authority Management API
-      operationId: listEntityProfiles
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/authorities/force:
-    delete:
-      tags:
-      - Authority Management API
-      summary: Force delete multiple Authority instances
-      operationId: bulkForceRemoveAuthorityInstance
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-        required: true
-      responses:
         "422":
-          description: Unprocessible Entity
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -582,28 +816,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "204":
-          description: Authority instances forced to delete
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "503":
           description: Connector Communication Error
           content:
@@ -612,6 +824,40 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
+    ClientCertificateRevocationDto:
+      required:
+      - attributes
+      - reason
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Reason for revocation
+          enum:
+          - UNSPECIFIED
+          - KEY_COMPROMISE
+          - CA_COMPROMISE
+          - AFFILIATION_CHANGED
+          - SUPERSEDED
+          - CESSATION_OF_OPERATION
+          - CERTIFICATE_HOLD
+          - REMOVE_FROM_CRL
+          - PRIVILEGES_WITHDRAWN
+          - AA_COMPROMISE
+        attributes:
+          type: array
+          description: List of Attributes to revoke Certificate
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
     RequestAttributeDto:
       required:
       - name
@@ -629,33 +875,96 @@ components:
         value:
           type: object
           description: Value of the Attribute
-    ErrorMessageDto:
+      description: List of Attributes to revoke Certificate
+    ClientCertificateRenewRequestDto:
       required:
-      - message
+      - pkcs10
       type: object
       properties:
-        message:
+        pkcs10:
           type: string
-          description: Error message detail
-          example: Error message
-    AuthorityInstanceUpdateRequestDto:
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+    ClientCertificateDataResponseDto:
+      required:
+      - certificateData
+      - uuid
+      type: object
+      properties:
+        certificateData:
+          type: string
+          description: Base64 encoded Certificate content
+        uuid:
+          type: string
+          description: UUID of Certificate
+    ClientCertificateSignRequestDto:
       required:
       - attributes
+      - pkcs10
       type: object
       properties:
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
         attributes:
           type: array
-          description: List of Authority instance Attributes
+          description: List of Attributes to issue Certificate
           items:
             $ref: '#/components/schemas/RequestAttributeDto'
-    AuthorityInstanceDto:
+    ClientEditEndEntityRequestDto:
+      required:
+      - password
+      - raProfile
+      - status
+      - subjectDN
+      type: object
+      properties:
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        password:
+          type: string
+          description: End Entity password
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        status:
+          type: string
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
+    EndEntityExtendedInfoDto:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      description: End Entity extension data
+    RaProfileDto:
       required:
       - attributes
-      - connectorName
-      - connectorUuid
-      - kind
+      - authorityInstanceName
+      - authorityInstanceUuid
+      - enabled
       - name
-      - status
       - uuid
       type: object
       properties:
@@ -665,24 +974,24 @@ components:
         name:
           type: string
           description: Object Name
-        attributes:
-          type: array
-          description: List of Authority instance Attributes
-          items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
-        status:
+        description:
           type: string
-          description: Status of Authority instance
-        connectorUuid:
+          description: Description of RA Profile
+        authorityInstanceUuid:
           type: string
           description: UUID of Authority provider
-        connectorName:
+        authorityInstanceName:
           type: string
-          description: Name of Authority provider
-        kind:
-          type: string
-          description: Authority Instance Kind
-          example: "LegacyEjbca, ADCS, etc."
+          description: Name of Authority instance
+        attributes:
+          type: array
+          description: List of RA Profiles attributes
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+      description: RA profile related to End Entity
     ResponseAttributeDto:
       required:
       - label
@@ -717,38 +1026,45 @@ components:
         value:
           type: object
           description: Value of the Attribute
-      description: List of Authority instance Attributes
-    AuthorityInstanceRequestDto:
+      description: List of RA Profiles attributes
+    ClientAddEndEntityRequestDto:
       required:
-      - attributes
-      - connectorUuid
-      - kind
-      - name
+      - password
+      - raProfile
+      - subjectDN
+      - username
       type: object
       properties:
-        name:
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        email:
           type: string
-          description: Authority instance name
-        attributes:
+          description: End Entity email
+        extensionData:
           type: array
-          description: List of Authority instance Attributes
+          description: End Entity extension data
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        connectorUuid:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        password:
           type: string
-          description: UUID of Authority provider
-        kind:
+          description: End Entity password
+        subjectAltName:
           type: string
-          description: Authority instance Kind
-          example: "LegacyEjbca, ADCS, etc"
-    UuidDto:
+          description: End Entity Subject alternative name
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        username:
+          type: string
+          description: End Entity name
+    ClientCertificateSignResponseDto:
       required:
-      - uuid
+      - certificateData
       type: object
       properties:
-        uuid:
+        certificateData:
           type: string
-          description: Object identifier
+          description: Date of signed certificate
     AttributeCallback:
       required:
       - callbackContext
@@ -903,20 +1219,40 @@ components:
           description: "Value of depending attribute, which should be matched"
       description: Optional list of other Attribute names and values on which it depends
         on
-    ForceDeleteMessageDto:
+    ClientEndEntityDto:
       required:
-      - message
-      - name
-      - uuid
+      - status
+      - subjectDN
+      - username
       type: object
       properties:
-        uuid:
+        subjectDN:
           type: string
-          description: Object identifier
-        name:
+          description: End Entity subject domain name
+        email:
           type: string
-          description: Object Name
-        message:
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        subjectAltName:
           type: string
-          description: Message describing the associations of the Connector which
-            is preventing the delete operation
+          description: End Entity Subject alternative name
+        status:
+          type: string
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
+        username:
+          type: string
+          description: End Entity name

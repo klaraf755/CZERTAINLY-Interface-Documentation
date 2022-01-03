@@ -18,13 +18,13 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Client Operations API
+- name: Legacy Client Operations API
   description: Client API for managing End Entities and Certificates
 paths:
   /v1/operations/{raProfileName}/endentity/{username}/resetPassword:
     put:
       tags:
-      - Client Operations API
+      - Legacy Client Operations API
       summary: Reset password for End Entity
       operationId: resetPassword
       parameters:
@@ -41,12 +41,16 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity password reset
         "400":
           description: Bad Request
           content:
@@ -65,14 +69,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity password reset
-        "500":
-          description: Internal Server Error
   /v1/operations/{raProfileName}/endentity/{username}:
     get:
       tags:
-      - Client Operations API
+      - Legacy Client Operations API
       summary: Get End Entity information
       operationId: getEndEntity
       parameters:
@@ -89,12 +89,20 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientEndEntityDto'
         "400":
           description: Bad Request
           content:
@@ -113,17 +121,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity detail retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientEndEntityDto'
     post:
       tags:
-      - Client Operations API
+      - Legacy Client Operations API
       summary: Edit End Entity
       operationId: editEndEntity
       parameters:
@@ -146,12 +146,16 @@ paths:
               $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity edited
         "400":
           description: Bad Request
           content:
@@ -170,13 +174,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity edited
     delete:
       tags:
-      - Client Operations API
+      - Legacy Client Operations API
       summary: Revoke all Certificates and delete End Entity
       operationId: revokeAndDeleteEndEntity
       parameters:
@@ -193,12 +193,16 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity revoked and deleted
         "400":
           description: Bad Request
           content:
@@ -217,14 +221,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity revoked and deleted
   /v1/operations/{raProfileName}/endentity:
     get:
       tags:
-      - Client Operations API
+      - Legacy Client Operations API
       summary: List all End Entities
       operationId: listEntities
       parameters:
@@ -235,12 +235,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: List of entities retrieved
           content:
@@ -249,6 +245,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClientEndEntityDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -267,11 +269,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
-      - Client Operations API
+      - Legacy Client Operations API
       summary: Add End Entity
       operationId: addEndEntity
       parameters:
@@ -288,12 +288,16 @@ paths:
               $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity added
         "400":
           description: Bad Request
           content:
@@ -312,14 +316,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity added
   /v1/operations/{raProfileName}/certificate/revoke:
     post:
       tags:
-      - Client Operations API
+      - Legacy Client Operations API
       summary: Revoke Certificate
       operationId: revokeCertificate
       parameters:
@@ -338,6 +338,8 @@ paths:
       responses:
         "200":
           description: Certificate revoked
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -362,12 +364,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/operations/{raProfileName}/certificate/issue:
     post:
       tags:
-      - Client Operations API
+      - Legacy Client Operations API
       summary: Issue Certificate
       operationId: issueCertificate
       parameters:
@@ -384,12 +384,20 @@ paths:
               $ref: '#/components/schemas/ClientCertificateSignRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
         "400":
           description: Bad Request
           content:
@@ -408,14 +416,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate issued
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
 components:
   schemas:
     ErrorMessageDto:
@@ -427,179 +427,6 @@ components:
           type: string
           description: Error message detail
           example: Error message
-    AttributeCallback:
-      required:
-      - callbackContext
-      - callbackMethod
-      - mappings
-      type: object
-      properties:
-        callbackContext:
-          type: string
-          description: Context part of callback URL
-        callbackMethod:
-          type: string
-          description: HTTP method of the callback
-        mappings:
-          uniqueItems: true
-          type: array
-          description: Mappings for the callback method
-          items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
-        pathVariables:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of path variables supported by the callback method
-          description: Map of path variables supported by the callback method
-        queryParameters:
-          type: object
-          additionalProperties:
-            type: object
-            description: Map of the query parameters supported by the callback method
-          description: Map of the query parameters supported by the callback method
-        requestBody:
-          type: object
-          additionalProperties:
-            type: object
-            description: Request body for the callback method
-          description: Request body for the callback method
-      description: Optional definition of callback for helper methods
-    AttributeCallbackMapping:
-      required:
-      - targets
-      - to
-      type: object
-      properties:
-        from:
-          type: string
-          description: Name of the attribute whose value is to be used as value of
-            path variable or request param or body field.It is optional and must be
-            set only if value is not set.
-        attributeType:
-          type: string
-          description: Type of the attribute. It is optional and must be set only
-            if special behaviour is needed.
-          enum:
-          - STRING
-          - NUMBER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - LIST
-          - CREDENTIAL
-        to:
-          type: string
-          description: Name of the path variable or request param or body field which
-            is to be used to assign value of attribute
-        targets:
-          uniqueItems: true
-          type: array
-          description: Set of targets for propagating value.
-          items:
-            type: string
-            description: Set of targets for propagating value.
-            enum:
-            - pathVariable
-            - requestParameter
-            - body
-        value:
-          type: object
-          description: Static value to be propagated to targets. It is optional and
-            is set only if the value is known at attribute creation time.
-      description: Mappings for the callback method
-    AttributeDefinition:
-      required:
-      - editable
-      - label
-      - multiValue
-      - name
-      - readOnly
-      - required
-      - type
-      - uuid
-      - visible
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute
-          example: Attribute
-        label:
-          type: string
-          description: Label of the the Attribute
-          example: Attribute Name
-        type:
-          type: string
-          description: Type of the Attribute
-          enum:
-          - STRING
-          - NUMBER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - LIST
-          - CREDENTIAL
-        required:
-          type: boolean
-          description: Boolean determining if the Attribute is required
-          default: false
-        readOnly:
-          type: boolean
-          description: Boolean determining if the Attribute is read only
-          default: false
-        editable:
-          type: boolean
-          description: Boolean determining if the Attribute is editable
-          default: true
-        visible:
-          type: boolean
-          description: Boolean determining if the Attribute is visible and can be
-            displayed
-          default: true
-        multiValue:
-          type: boolean
-          description: Boolean determining if the Attribute has value composed from
-            multiple items
-          default: false
-        description:
-          type: string
-          description: "Optional description of the Attribute, should contain help\
-            \ for setting proper value"
-        validationRegex:
-          type: string
-          description: Optional regular expression used for validating the Attribute
-            value
-        dependsOn:
-          type: array
-          description: Optional list of other Attribute names and values on which
-            it depends on
-          items:
-            $ref: '#/components/schemas/AttributeDependency'
-        attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
-        value:
-          type: object
-          description: Value of the Attribute
-      description: List of RA Profiles attributes
-    AttributeDependency:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of depending attribute
-        value:
-          type: object
-          description: "Value of depending attribute, which should be matched"
-      description: Optional list of other Attribute names and values on which it depends
-        on
     ClientEditEndEntityRequestDto:
       required:
       - password
@@ -677,11 +504,46 @@ components:
           type: array
           description: List of RA Profiles attributes
           items:
-            $ref: '#/components/schemas/AttributeDefinition'
+            $ref: '#/components/schemas/ResponseAttributeDto'
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
       description: RA profile related to End Entity
+    ResponseAttributeDto:
+      required:
+      - label
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - NUMBER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - LIST
+          - CREDENTIAL
+        value:
+          type: object
+          description: Value of the Attribute
+      description: List of RA Profiles attributes
     ClientAddEndEntityRequestDto:
       required:
       - password
