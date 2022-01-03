@@ -6,7 +6,6 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.ConnectorController;
 import com.czertainly.api.model.client.connector.*;
-import com.czertainly.api.model.common.AttributeCallback;
 import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.HealthDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
@@ -100,11 +99,6 @@ public class ConnectorControllerDummyImpl implements ConnectorController {
     @Override
     public void validateAttributes(String uuid, String functionGroup, String kind, List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException {
 
-    }
-
-    @Override
-    public Object callback(String uuid, AttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException {
-        return null;
     }
 
     @Override
