@@ -17,5 +17,2732 @@ externalDocs:
 servers:
 - url: http://localhost:8080
   description: Generated server url
-paths: {}
-components: {}
+tags:
+- name: ACME API
+  description: "Interfaces used by ACME clients to request ACME related operations.\
+    \ ACME Profile defines the behaviour for the specific ACME configuration. When\
+    \ the ACME Profile contains default RA Profile, it can be used by the ACME clients\
+    \ to request operations on their specific URL."
+- name: ACME RA Profile API
+  description: Interfaces used by ACME clients to request ACME related operations
+    on top of RA Profile. ACME Profile defines the behaviour for the specific ACME
+    configuration. ACME Profile is bound with specific RA Profile and it can be used
+    by the ACME clients to request operations on their specific URL. These operations
+    are always specific only for the RA Profile.
+paths:
+  /acme/{acmeProfileName}/revoke-cert:
+    post:
+      tags:
+      - ACME API
+      summary: Revoke Certificate
+      operationId: revokeCertificate
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Certificate Revocation JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateRevocationRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Certificate revoked
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/order/{orderId}:
+    post:
+      tags:
+      - ACME API
+      summary: Get Order details
+      operationId: getOrder
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: orderId
+        in: path
+        description: Order Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Order details retrieved
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Order'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/order/{orderId}/finalize:
+    post:
+      tags:
+      - ACME API
+      summary: Finalize Order
+      operationId: finalize
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: orderId
+        in: path
+        description: Order Id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Finalize Order JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateFinalizeRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Order finalized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Order'
+  /acme/{acmeProfileName}/new-order:
+    post:
+      tags:
+      - ACME API
+      summary: Request new Order
+      operationId: newOrder
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New Order JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateIssuanceRequest'
+        required: true
+      responses:
+        "201":
+          description: New Order request created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Order'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/new-account:
+    post:
+      tags:
+      - ACME API
+      summary: Create Account
+      operationId: newAccount
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New Account JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Existing Account retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "201":
+          description: New Account created
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/key-change:
+    post:
+      tags:
+      - ACME API
+      summary: Key Rollover
+      operationId: keyRollover
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Key rollover JWS payload
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Account key updated
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict. Key already exists
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/chall/{challengeId}:
+    post:
+      tags:
+      - ACME API
+      summary: Validate Challenge
+      operationId: validateChallenge
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: challengeId
+        in: path
+        description: Challenge Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Challenge validation initiated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Challenge'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/cert/{certificateId}:
+    post:
+      tags:
+      - ACME API
+      summary: Download Certificate
+      operationId: downloadCertificate
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: certificateId
+        in: path
+        description: Certificate Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Certificate content retrieved
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/authz/{authorizationId}:
+    post:
+      tags:
+      - ACME API
+      summary: Get Authorizations for an Order
+      operationId: getAuthorizations
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: authorizationId
+        in: path
+        description: Authorization Id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authorizations retrieved
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Authorization'
+  /acme/{acmeProfileName}/acct/{accountId}:
+    post:
+      tags:
+      - ACME API
+      summary: Update Account
+      operationId: updateAccount
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New Account JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewAccountRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: ACME Account updated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/revoke-cert:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Revoke Certificate
+      operationId: revokeCertificate_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Certificate Revocation JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateRevocationRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Certificate revoked
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/order/{orderId}:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Get Order details
+      operationId: getOrder_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: orderId
+        in: path
+        description: Order Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Order details retrieved
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Order'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/order/{orderId}/finalize:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Finalize Order
+      operationId: finalize_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: orderId
+        in: path
+        description: Order Id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Finalize Order JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateFinalizeRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Order finalized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Order'
+  /acme/raProfile/{raProfileName}/new-order:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Request new Order
+      operationId: newOrder_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New Order JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateIssuanceRequest'
+        required: true
+      responses:
+        "201":
+          description: New Order request created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Order'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/new-account:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Create Account
+      operationId: newAccount_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New Account JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewAccountRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Existing Account retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "201":
+          description: New Account created
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/key-change:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Key Rollover
+      operationId: keyRollover_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Key rollover JWS payload
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Account key updated
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict. Key already exists
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/chall/{challengeId}:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Validate Challenge
+      operationId: validateChallenge_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: challengeId
+        in: path
+        description: Challenge Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Challenge validation initiated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Challenge'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/cert/{certificateId}:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Download Certificate
+      operationId: downloadCertificate_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: certificateId
+        in: path
+        description: Certificate Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Certificate content retrieved
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/authz/{authorizationId}:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Get Authorizations for an Order
+      operationId: getAuthorizations_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: authorizationId
+        in: path
+        description: Authorization Id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authorizations retrieved
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Authorization'
+  /acme/raProfile/{raProfileName}/acct/{accountId}:
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: Update Account
+      operationId: updateAccount_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New Account JWS payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewAccountRequest'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: ACME Account updated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/new-nonce:
+    get:
+      tags:
+      - ACME API
+      summary: New Nonce
+      operationId: getNonce
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - ACME API
+      summary: New Nonce
+      operationId: getNonce_5
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+      - ACME API
+      summary: New Nonce
+      operationId: getNonce_4
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+      - ACME API
+      summary: New Nonce
+      operationId: getNonce_1
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    options:
+      tags:
+      - ACME API
+      summary: New Nonce
+      operationId: getNonce_3
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    head:
+      tags:
+      - ACME API
+      summary: New Nonce
+      operationId: headNonce_2
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+      - ACME API
+      summary: New Nonce
+      operationId: getNonce_2
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/new-nonce:
+    get:
+      tags:
+      - ACME RA Profile API
+      summary: New Nonce
+      operationId: getNonce_6
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - ACME RA Profile API
+      summary: New Nonce
+      operationId: getNonce_11
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: New Nonce
+      operationId: getNonce_10
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+      - ACME RA Profile API
+      summary: New Nonce
+      operationId: getNonce_7
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    options:
+      tags:
+      - ACME RA Profile API
+      summary: New Nonce
+      operationId: getNonce_9
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    head:
+      tags:
+      - ACME RA Profile API
+      summary: New Nonce
+      operationId: headNonce_1_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+      - ACME RA Profile API
+      summary: New Nonce
+      operationId: getNonce_8
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "204":
+          description: New Nonce retrieved
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/directory:
+    get:
+      tags:
+      - ACME API
+      summary: Get Directory information
+      operationId: getDirectory
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Directory information retrieved
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Directory'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/directory:
+    get:
+      tags:
+      - ACME RA Profile API
+      summary: Get Directory information
+      operationId: getDirectory_1
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Directory information retrieved
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Directory'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/{acmeProfileName}/orders/{accountId}:
+    get:
+      tags:
+      - ACME API
+      summary: List Orders
+      operationId: listOrders
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - ACME API
+      summary: List Orders
+      operationId: listOrders_6
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+      - ACME API
+      summary: List Orders
+      operationId: listOrders_5
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+      - ACME API
+      summary: List Orders
+      operationId: listOrders_1
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    options:
+      tags:
+      - ACME API
+      summary: List Orders
+      operationId: listOrders_4
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    head:
+      tags:
+      - ACME API
+      summary: List Orders
+      operationId: listOrders_3
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    patch:
+      tags:
+      - ACME API
+      summary: List Orders
+      operationId: listOrders_2
+      parameters:
+      - name: acmeProfileName
+        in: path
+        description: ACME Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+  /acme/raProfile/{raProfileName}/orders/{accountId}:
+    get:
+      tags:
+      - ACME RA Profile API
+      summary: List Orders
+      operationId: listOrders_7
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - ACME RA Profile API
+      summary: List Orders
+      operationId: listOrders_13
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+      - ACME RA Profile API
+      summary: List Orders
+      operationId: listOrders_12
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+      - ACME RA Profile API
+      summary: List Orders
+      operationId: listOrders_8
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    options:
+      tags:
+      - ACME RA Profile API
+      summary: List Orders
+      operationId: listOrders_11
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    head:
+      tags:
+      - ACME RA Profile API
+      summary: List Orders
+      operationId: listOrders_10
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+    patch:
+      tags:
+      - ACME RA Profile API
+      summary: List Orders
+      operationId: listOrders_9
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account Id
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "200":
+          description: Orders list retrieved
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AcmeProblemDocumentException'
+        "500":
+          description: Internal Server Error
+components:
+  schemas:
+    CertificateRevocationRequest:
+      required:
+      - certificate
+      - reason
+      type: object
+      properties:
+        certificate:
+          type: string
+          description: Certificate in base64url-encoded version of DER format
+        reason:
+          type: string
+          description: Reason for revocation
+          enum:
+          - UNSPECIFIED
+          - KEY_COMPROMISE
+          - CA_COMPROMISE
+          - AFFILIATION_CHANGED
+          - SUPERSEDED
+          - CESSATION_OF_OPERATION
+          - CERTIFICATE_HOLD
+          - REMOVE_FROM_CRL
+          - PRIVILEGES_WITHDRAWN
+          - AA_COMPROMISE
+    AcmeProblemDocumentException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  className:
+                    type: string
+                  nativeMethod:
+                    type: boolean
+            message:
+              type: string
+            suppressed:
+              type: array
+              items:
+                type: object
+                properties:
+                  stackTrace:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        classLoaderName:
+                          type: string
+                        moduleName:
+                          type: string
+                        moduleVersion:
+                          type: string
+                        methodName:
+                          type: string
+                        fileName:
+                          type: string
+                        lineNumber:
+                          type: integer
+                          format: int32
+                        className:
+                          type: string
+                        nativeMethod:
+                          type: boolean
+                  message:
+                    type: string
+                  localizedMessage:
+                    type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        httpStatusCode:
+          type: integer
+          description: HTTP Status code corresponding to the error
+          format: int32
+        problemDocument:
+          $ref: '#/components/schemas/ProblemDocument'
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    ProblemDocument:
+      required:
+      - detail
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the ACME problem
+        title:
+          type: string
+          description: ACME problem title
+        detail:
+          type: string
+          description: ACME problem details
+        instance:
+          type: string
+        subproblems:
+          type: array
+          description: List of subproblems related to error
+          items:
+            $ref: '#/components/schemas/ProblemDocument'
+        algorithms:
+          type: array
+          description: List of supported algorithms
+          items:
+            type: string
+            description: List of supported algorithms
+      description: ACME Problem document described in RFC8555
+    Identifier:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the Identifier
+        value:
+          type: string
+          description: Value of Identifier
+      description: List of Identifiers for the Order
+    Order:
+      required:
+      - identifiers
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the Order
+          enum:
+          - pending
+          - ready
+          - processing
+          - valid
+          - invalid
+        expires:
+          type: string
+          description: Expiry time of the Order
+        identifiers:
+          type: array
+          description: List of Order Identifiers
+          items:
+            $ref: '#/components/schemas/Identifier'
+        notBefore:
+          type: string
+          description: Value of notBefore field in the Certificate
+        notAfter:
+          type: string
+          description: Value of notAfter field in the Certificate
+        error:
+          $ref: '#/components/schemas/ProblemDocument'
+        authorizations:
+          type: array
+          description: List of URLs to check for Authorizations
+          items:
+            type: string
+            description: List of URLs to check for Authorizations
+        finalize:
+          type: string
+          description: URL to finalize the Order. Mandatory if the Order is in ready
+            state
+        certificate:
+          type: string
+          description: URL to download the Certificate
+    CertificateFinalizeRequest:
+      required:
+      - csr
+      type: object
+      properties:
+        csr:
+          type: string
+          description: CSR in Base64url-encoded version of the DER format
+    CertificateIssuanceRequest:
+      required:
+      - identifiers
+      - notAfter
+      type: object
+      properties:
+        identifiers:
+          type: array
+          description: List of Identifiers for the Order
+          items:
+            $ref: '#/components/schemas/Identifier'
+        notBefore:
+          type: string
+          description: Requested value of notBefore field in the certificate
+        notAfter:
+          type: string
+          description: Requested value of notAfter field in the certificate
+    Account:
+      required:
+      - orders
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the ACME Account
+          enum:
+          - valid
+          - deactivated
+          - revoked
+        contact:
+          type: array
+          description: List of contacts for ACME Account
+          items:
+            type: string
+            description: List of contacts for ACME Account
+        termsOfServiceAgreed:
+          type: boolean
+          description: "Terms of Service agreed flag. Yes = true, No = false"
+        onlyReturnExisting:
+          type: boolean
+          description: "Existing Account return flag. true = Yes, false = No"
+          default: false
+        orders:
+          type: string
+          description: URL to get the list of Orders for the Account
+    Challenge:
+      required:
+      - status
+      - token
+      - type
+      - url
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of Challenge
+          enum:
+          - http-01
+          - dns-01
+        url:
+          type: string
+          description: URL to which the response can be posted after the client completes
+            the Challenge
+        status:
+          type: string
+          description: Challenge status
+          enum:
+          - pending
+          - valid
+          - invalid
+          - processing
+        validated:
+          type: string
+          description: Timestamp at which the Challenge is validated
+        error:
+          $ref: '#/components/schemas/ProblemDocument'
+        token:
+          type: string
+          description: Token for the Challenge
+    Authorization:
+      required:
+      - identifier
+      - status
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Identifier'
+        status:
+          type: string
+          description: ACME Authorization status
+          enum:
+          - pending
+          - valid
+          - invalid
+          - deactivated
+          - expired
+          - revoked
+        expires:
+          type: string
+          description: Expiry of Authorization
+        challenges:
+          type: array
+          description: List of Challenges for the client to complete
+          items:
+            $ref: '#/components/schemas/Challenge'
+        wildcard:
+          type: boolean
+    NewAccountRequest:
+      type: object
+      properties:
+        contact:
+          type: array
+          description: List of contacts for the Account. Required if the required
+            flag is set in ACME Profile
+          items:
+            type: string
+            description: List of contacts for the Account. Required if the required
+              flag is set in ACME Profile
+        termsOfServiceAgreed:
+          type: boolean
+          description: "Terms of Service agreed flag. true = Yes, false = No. Required\
+            \ if the required flag is set in ACME Profile"
+        onlyReturnExisting:
+          type: boolean
+          description: Return existing Account only flag
+          default: false
+    Directory:
+      required:
+      - keyChange
+      - meta
+      - newAccount
+      - newAuthz
+      - newNonce
+      - newOrder
+      - revokeCert
+      type: object
+      properties:
+        newNonce:
+          type: string
+          description: URL to get new Nonce
+        newAccount:
+          type: string
+          description: URL for the new Account
+        newOrder:
+          type: string
+          description: URL for the new Order
+        newAuthz:
+          type: string
+          description: URL for the new Authorization
+        revokeCert:
+          type: string
+          description: URL for revoking a certificate
+        keyChange:
+          type: string
+          description: ' URL for changing the key of an Account'
+        meta:
+          $ref: '#/components/schemas/DirectoryMeta'
+    DirectoryMeta:
+      type: object
+      properties:
+        termsOfService:
+          type: string
+          description: Terms of Service URL
+        website:
+          type: string
+          description: Website URL
+        externalAccountRequired:
+          type: boolean
+          description: External Account Binding flag
+        caaIdentities:
+          type: array
+          description: Array of CAA record validation servers
+          items:
+            type: string
+            description: Array of CAA record validation servers
+      description: Metadata for the Directory object
