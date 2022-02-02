@@ -9,12 +9,14 @@ import com.czertainly.api.model.core.acme.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
+@RestController
 public class AcmeControllerDummyImpl implements AcmeController {
 
     @Override
