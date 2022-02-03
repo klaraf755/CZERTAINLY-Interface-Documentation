@@ -35,7 +35,7 @@ public class AcmeRaProfileControllerDummyImpl implements AcmeRaProfileController
     }
 
     @Override
-    public ResponseEntity<?> newAccount(String raProfileName, String jwsBody) throws AcmeProblemDocumentException, NotFoundException {
+    public ResponseEntity<Account> newAccount(String raProfileName, String jwsBody) throws AcmeProblemDocumentException, NotFoundException {
         return null;
     }
 

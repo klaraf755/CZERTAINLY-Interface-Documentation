@@ -23,7 +23,7 @@ public class OpenApiConfig {
     @Bean
     public GroupedOpenApi raProfileApis() {
         return GroupedOpenApi.builder()
-        		.group("protocol-acme")
+        		.group("core-acme")
                 .packagesToScan("com.czertainly.api.impl")
                 //.pathsToMatch("/v1/**")
                 .build()
@@ -39,7 +39,7 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .info(new Info().title("CZERTAINLY ACME API")
-                        .description("ACME API according to the RFC 8555")
+                        .description("REST API for managing ACME Profiles and ACME Accounts in the platform")
                         //.version("1.0.1")
                         .license(new License()
                                 .name("MIT License")

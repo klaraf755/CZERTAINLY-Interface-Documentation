@@ -35,7 +35,7 @@ public class AcmeControllerDummyImpl implements AcmeController {
     }
 
     @Override
-    public ResponseEntity<?> newAccount(String acmeProfileName, String jwsBody) throws AcmeProblemDocumentException, NotFoundException {
+    public ResponseEntity<Account> newAccount(String acmeProfileName, String jwsBody) throws AcmeProblemDocumentException, NotFoundException {
         return null;
     }
 

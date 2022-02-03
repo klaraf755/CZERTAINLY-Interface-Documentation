@@ -38,6 +38,11 @@
         <ul class="collapse list-unstyled" id="connectorApiSubmenu">
         </ul>
       </li>
+      <li class="active">
+        <a href="#protocolApiSubmenu" data-toggle="collapse" aria-expanded="false">Protocol APIs</a>
+        <ul class="collapse list-unstyled" id="protocolApiSubmenu">
+        </ul>
+      </li>
     </ul>
   </nav>
 
@@ -59,6 +64,10 @@
   <script>
     // list of APIS
     var coreApis = [
+      {
+        name: "ACME",
+        url: "doc-openapi-core-acme.html",
+      },
       {
         name: "Local",
         url: "doc-openapi-core-local.html",
@@ -124,6 +133,13 @@
       },
     ];
 
+    var protocolApis = [
+      {
+        name: "ACME",
+        url: "doc-openapi-protocol-acme.html",
+      },
+    ];
+
     // initially render first API
     var iframe = document.getElementById("showapi");
     iframe.src = connectorApis[1].url;
@@ -159,6 +175,20 @@
 
     var $list = document.getElementById("connectorApiSubmenu");
     connectorApis.forEach(function (api) {
+      var $listitem = document.createElement("li");
+      $listitem.setAttribute("data-link", api.url);
+      $listitem.setAttribute("class", "dropdown-item");
+      //$listitem.innerText = api.name;
+      $listitem.addEventListener("click", onClick);
+      var $lista = document.createElement("a");
+      $lista.setAttribute("href", "#");
+      $lista.innerText = api.name;
+      $listitem.appendChild($lista);
+      $list.appendChild($listitem);
+    });
+
+    var $list = document.getElementById("protocolApiSubmenu");
+    protocolApis.forEach(function (api) {
       var $listitem = document.createElement("li");
       $listitem.setAttribute("data-link", api.url);
       $listitem.setAttribute("class", "dropdown-item");
