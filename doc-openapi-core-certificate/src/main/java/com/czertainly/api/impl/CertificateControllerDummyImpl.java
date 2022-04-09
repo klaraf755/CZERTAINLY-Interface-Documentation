@@ -2,11 +2,15 @@ package com.czertainly.api.impl;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.CertificateController;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequestDto;
+import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
+import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
+import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +22,7 @@ import java.util.List;
 public class CertificateControllerDummyImpl implements CertificateController {
 
     @Override
-    public List<CertificateDto> listCertificate(Integer start, Integer end) {
+    public CertificateResponseDto listCertificate(SearchRequestDto request) throws ValidationException {
         return null;
     }
 
@@ -78,18 +82,28 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public ResponseEntity<?> upload(UploadCertificateRequestDto request) throws AlreadyExistException, CertificateException {
+    public ResponseEntity<UuidDto> upload(UploadCertificateRequestDto request) throws AlreadyExistException, CertificateException {
         return null;
     }
 
     @Override
-    public void bulkRemoveCertificate(RemoveCertificateDto request) throws NotFoundException {
-
+    public BulkOperationResponse bulkRemoveCertificate(RemoveCertificateDto request) throws NotFoundException {
+        return null;
     }
 
     @Override
     public void validateAllCertificate() {
 
+    }
+
+    @Override
+    public List<SearchFieldDataDto> getSearchableFieldInformation() {
+        return null;
+    }
+
+    @Override
+    public List<CertificateEventHistoryDto> getCertificateEventHistory(String uuid) throws NotFoundException {
+        return null;
     }
 
 }
