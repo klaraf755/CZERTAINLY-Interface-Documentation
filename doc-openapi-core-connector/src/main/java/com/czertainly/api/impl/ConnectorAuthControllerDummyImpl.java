@@ -1,8 +1,8 @@
 package com.czertainly.api.impl;
 
 import com.czertainly.api.interfaces.core.web.ConnectorAuthController;
-import com.czertainly.api.model.common.AttributeDefinition;
-import com.czertainly.api.model.common.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.AuthType;
 import org.springframework.web.bind.annotation.RestController;
 

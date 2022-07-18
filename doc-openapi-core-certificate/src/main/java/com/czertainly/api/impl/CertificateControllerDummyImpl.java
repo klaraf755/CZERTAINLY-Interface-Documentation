@@ -10,6 +10,7 @@ import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequest
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
+import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,11 +48,6 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public void updateEntity(String uuid, CertificateUpdateEntityDto request) throws NotFoundException {
-
-    }
-
-    @Override
     public void updateOwner(String uuid, CertificateOwnerRequestDto request) throws NotFoundException {
 
     }
@@ -68,11 +64,6 @@ public class CertificateControllerDummyImpl implements CertificateController {
 
     @Override
     public void bulkUpdateCertificateGroup(MultipleGroupUpdateDto request) throws NotFoundException {
-
-    }
-
-    @Override
-    public void bulkUpdateEntity(MultipleEntityUpdateDto request) throws NotFoundException {
 
     }
 
@@ -104,6 +95,16 @@ public class CertificateControllerDummyImpl implements CertificateController {
     @Override
     public List<CertificateEventHistoryDto> getCertificateEventHistory(String uuid) throws NotFoundException {
         return null;
+    }
+
+    @Override
+    public List<LocationDto> listLocations(String certificateUuid) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public void checkCompliance(CertificateComplianceCheckDto request) throws NotFoundException {
+
     }
 
 }

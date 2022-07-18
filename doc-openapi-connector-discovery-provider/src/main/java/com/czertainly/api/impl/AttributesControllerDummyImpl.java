@@ -2,8 +2,8 @@ package com.czertainly.api.impl;
 
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.connector.AttributesController;
-import com.czertainly.api.model.common.AttributeDefinition;
-import com.czertainly.api.model.common.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

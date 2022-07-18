@@ -22,4 +22,8 @@ public class DiscoveryControllerDummyImpl implements DiscoveryController {
 		return null;
 	}
 
+	@Override
+	public void deleteDiscovery(String uuid) throws IOException, NotFoundException {
+
+	}
 }
