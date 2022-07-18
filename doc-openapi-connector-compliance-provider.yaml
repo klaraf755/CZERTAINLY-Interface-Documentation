@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY Credential Provider API
-  description: REST API for implementations of custom Credential Provider
+  title: CZERTAINLY Compliance Provider API
+  description: REST API for implementations of custom Compliance Provider
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -24,6 +24,12 @@ tags:
     \ of implemented end points. These endpoints must be according the specified interface,\
     \ this is validated by the core. You can also implement helper end points that\
     \ are used for callbacks and other relevant operations specific to implementation."
+- name: Compliance Rules API
+  description: "Compliance Provider rules API. Used to get the list of rules provided\
+    \ by the connector. These rules will be made available for the users to choose\
+    \ from the list.To check for the compliance of a certificate, the Connector accepts\
+    \ certificate content and the list of rule references. Once the values are received,\
+    \ compliance is checked based on the rules."
 - name: Attributes API
   description: Connector Attributes API. Provides information about supported Attributes
     of the connector. Attributes are specific to implementation and gives information
@@ -33,6 +39,13 @@ tags:
   description: "Connector Health check API. Connector returns own status and in some\
     \ cases can return status of services on which it depends like database, HSM and\
     \ so on."
+- name: Compliance API
+  description: "Compliance Provider API. Used to check the compliance of a certificate.\
+    \ The provider contains the list of rules for checking the compliance. The user\
+    \ can choose the list of compliance checks has to be performed. To check for the\
+    \ compliance of a certificate, the Connector accepts certificate content and the\
+    \ list of rule references. Once the values are received, compliance is checked\
+    \ and status will be returned"
 paths:
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
@@ -56,12 +69,6 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "404":
@@ -83,6 +90,63 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/complianceProvider/{kind}/compliance:
+    post:
+      tags:
+      - Compliance API
+      summary: Check certificate compliance
+      operationId: checkCompliance
+      parameters:
+      - name: kind
+        in: path
+        description: Connector Kind
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Compliance check completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceResponseDto'
+        "422":
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -97,14 +161,14 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes retrieved
           content:
@@ -113,8 +177,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -126,26 +190,140 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: Health check completed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/complianceProvider/{kind}/rules:
+    get:
+      tags:
+      - Compliance Rules API
+      summary: Get list of rules
+      operationId: getRules
+      parameters:
+      - name: kind
+        in: path
+        description: Connector kind
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Rules retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/complianceProvider/{kind}/groups/{uuid}:
+    get:
+      tags:
+      - Compliance Rules API
+      summary: Get list of rules for a group
+      operationId: getGroupRules
+      parameters:
+      - name: kind
+        in: path
+        description: Connector kind
+        required: true
+        schema:
+          type: string
+      - name: uuid
+        in: path
+        description: Group kind
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Rules retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/complianceProvider/{kind}/groups:
+    get:
+      tags:
+      - Compliance Rules API
+      summary: Get list of groups
+      operationId: getGroups
+      parameters:
+      - name: kind
+        in: path
+        description: Connector kind
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Groups retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComplianceGroupsResponseDto'
   /v1:
     get:
       tags:
@@ -154,16 +332,16 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -204,6 +382,76 @@ components:
           type: string
           description: Error message detail
           example: Error message
+    ComplianceRequestDto:
+      required:
+      - certificate
+      type: object
+      properties:
+        certificate:
+          type: string
+          description: Base64 encoded Certificate content
+        rules:
+          type: array
+          description: List of UUIDs of Compliance rules
+          items:
+            $ref: '#/components/schemas/ComplianceRequestRulesDto'
+    ComplianceRequestRulesDto:
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the rule
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        attributes:
+          type: array
+          description: Attributes for the rule
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+      description: List of UUIDs of Compliance rules
+    ComplianceResponseDto:
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the compliance check
+          example: ok
+          enum:
+          - ok
+          - nok
+          - na
+        rules:
+          type: array
+          description: List of rules applied and their status
+          items:
+            $ref: '#/components/schemas/ComplianceResponseRulesDto'
+    ComplianceResponseRulesDto:
+      required:
+      - name
+      - status
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the rule
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the rule
+          example: Rule1
+        status:
+          type: string
+          description: Rule status
+          example: ok
+          enum:
+          - ok
+          - nok
+          - na
+      description: List of rules applied and their status
     AttributeCallback:
       required:
       - callbackContext
@@ -376,6 +624,59 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/HealthDto'
           description: Nested status of services
+    ComplianceRulesResponseDto:
+      required:
+      - certificateType
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the rule
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        groupUuid:
+          type: string
+          description: UUID of the group to which the rule belongs to
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the rule
+          example: Rule1
+        certificateType:
+          type: string
+          description: Type of the certificate to which this rule can be applied
+          example: X509
+          enum:
+          - X509
+          - SSH
+        attributes:
+          type: array
+          description: Rule attributes
+          items:
+            $ref: '#/components/schemas/AttributeDefinition'
+        description:
+          type: string
+          description: Description of the rule
+          example: Sample rule description
+    ComplianceGroupsResponseDto:
+      required:
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the group
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the group
+          example: RFC
+        description:
+          type: string
+          description: Description of the group
+          example: Sample description of the group
     EndpointDto:
       required:
       - context

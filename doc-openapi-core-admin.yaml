@@ -37,16 +37,16 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Enable administrator success
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Enable administrator success
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -67,6 +67,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: Disable administrator success
         "404":
@@ -75,8 +77,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -100,14 +100,14 @@ paths:
       responses:
         "204":
           description: Enable administrator success
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -133,22 +133,22 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Disable administrator success
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Disable administrator success
   /v1/admins/{uuid}:
     get:
       tags:
@@ -163,6 +163,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -175,8 +177,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -202,6 +202,8 @@ paths:
               $ref: '#/components/schemas/EditAdminRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -214,8 +216,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -235,14 +235,14 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -258,14 +258,14 @@ paths:
       summary: List available administrators
       operationId: listAdmins
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: List of administrator
           content:
@@ -292,6 +292,26 @@ paths:
               $ref: '#/components/schemas/AddAdminRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "201":
+          description: New administrator created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -303,26 +323,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "201":
-          description: New administrator created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Admin Management API
@@ -341,14 +341,14 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -444,6 +444,35 @@ components:
         surname:
           type: string
           description: Surname of administrator
+    CertificateComplianceResultDto:
+      required:
+      - connectorName
+      - ruleDescription
+      - ruleName
+      - status
+      type: object
+      properties:
+        connectorName:
+          type: string
+          description: Name of the Compliance Provider
+          example: Provider1
+        ruleName:
+          type: string
+          description: Name of the rule
+          example: RuleName
+        ruleDescription:
+          type: string
+          description: Description of the rule
+          example: Description sample
+        status:
+          type: string
+          description: Status of the rule
+          example: nok
+          enum:
+          - ok
+          - nok
+          - na
+      description: Certificate compliance check result
     CertificateDto:
       required:
       - basicConstraints
@@ -546,8 +575,12 @@ components:
             type: object
             description: Subject alternative names
           description: Subject alternative names
-        entity:
-          $ref: '#/components/schemas/EntityDto'
+        locations:
+          uniqueItems: true
+          type: array
+          description: Locations associated to the Certificate
+          items:
+            $ref: '#/components/schemas/LocationDto'
         group:
           $ref: '#/components/schemas/GroupDto'
         owner:
@@ -567,7 +600,57 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/CertificateValidationDto'
           description: Certificate validation result
+        nonCompliantRules:
+          type: array
+          description: Certificate compliance check result
+          items:
+            $ref: '#/components/schemas/CertificateComplianceResultDto'
+        complianceStatus:
+          type: string
+          description: Certificate compliance status
+          enum:
+          - ok
+          - nok
+          - na
       description: Administrator Certificate Details
+    CertificateInLocationDto:
+      required:
+      - certificateUuid
+      - commonName
+      - metadata
+      - serialNumber
+      type: object
+      properties:
+        certificateUuid:
+          type: string
+          description: UUID of the Certificate
+        commonName:
+          type: string
+          description: Common Name of the Subject DN field of the Certificate
+        serialNumber:
+          type: string
+          description: Serial number in HEX of the Certificate
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Metadata of the Certificate in Location
+          description: Metadata of the Certificate in Location
+        pushAttributes:
+          type: array
+          description: Applied push attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        csrAttributes:
+          type: array
+          description: Applied issue attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        withKey:
+          type: boolean
+          description: If the Certificate in Location has associated private key
+          default: false
+      description: List of Certificates in Location
     CertificateValidationDto:
       type: object
       properties:
@@ -585,37 +668,6 @@ components:
         message:
           type: string
       description: Certificate validation result
-    EntityDto:
-      required:
-      - entityType
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Entity
-        entityType:
-          type: string
-          description: Type of the Entity
-          enum:
-          - server
-          - router
-          - HSM
-          - switch
-          - loadBalancer
-          - firewall
-          - MDM
-          - cloud
-      description: Entity associated to the Certificate
     GroupDto:
       required:
       - name
@@ -634,6 +686,121 @@ components:
           type: string
           description: Description of the Certificate Group
       description: Group associated to the Certificate
+    LocationDto:
+      required:
+      - attributes
+      - certificates
+      - enabled
+      - entityInstanceName
+      - entityInstanceUuid
+      - name
+      - supportKeyManagement
+      - supportMultipleEntries
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the Location
+        entityInstanceUuid:
+          type: string
+          description: UUID of Entity instance
+        entityInstanceName:
+          type: string
+          description: Name of Entity instance
+        attributes:
+          type: array
+          description: List of Location attributes
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        supportMultipleEntries:
+          type: boolean
+          description: If the location supports multiple Certificates
+          default: false
+        supportKeyManagement:
+          type: boolean
+          description: If the location supports key management operations
+          default: false
+        certificates:
+          type: array
+          description: List of Certificates in Location
+          items:
+            $ref: '#/components/schemas/CertificateInLocationDto'
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Location metadata
+          description: Location metadata
+      description: Locations associated to the Certificate
+    RequestAttributeDto:
+      required:
+      - content
+      - name
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        content:
+          type: object
+          description: Content of the Attribute
+      description: Applied issue attributes
+    ResponseAttributeDto:
+      required:
+      - label
+      - name
+      - type
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - INTEGER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
+        content:
+          type: object
+          description: Content of the Attribute
+      description: List of Location attributes
     SimplifiedRaProfileDto:
       required:
       - enabled

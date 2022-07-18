@@ -22,8 +22,6 @@ tags:
   description: Certificate Group API
 - name: Certificate Inventory API
   description: Certificate Inventory API
-- name: Certificate Entity API
-  description: Certificate Entity API
 paths:
   /v1/certificate/{uuid}/ra-profile:
     put:
@@ -45,22 +43,22 @@ paths:
               $ref: '#/components/schemas/CertificateUpdateRAProfileDto'
         required: true
       responses:
+        "204":
+          description: RA Profile updated
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profile updated
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate/{uuid}/owner:
     put:
       tags:
@@ -87,16 +85,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Owner updated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Owner updated
   /v1/certificate/{uuid}/group:
     put:
       tags:
@@ -123,52 +121,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "204":
           description: Group updated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/{uuid}/entity:
-    put:
-      tags:
-      - Certificate Inventory API
-      summary: Update Entity for a Certificate
-      operationId: updateEntity
-      parameters:
-      - name: uuid
-        in: path
-        description: Certificate UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CertificateUpdateEntityDto'
-        required: true
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Entity updated
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/certificate/validate:
     put:
       tags:
@@ -176,22 +138,22 @@ paths:
       summary: Validate Certificates of Status Unknown
       operationId: validateAllCertificate
       responses:
+        "204":
+          description: Certificate Validation Initiated
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Certificate Validation Initiated
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate/ra-profile:
     put:
       tags:
@@ -212,22 +174,22 @@ paths:
               $ref: '#/components/schemas/MultipleRAProfileUpdateDto'
         required: true
       responses:
+        "204":
+          description: RA Profile updated
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profile updated
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate/owner:
     put:
       tags:
@@ -254,16 +216,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Owner updated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Owner updated
   /v1/certificate/group:
     put:
       tags:
@@ -290,52 +252,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "204":
           description: Group updated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/entity:
-    put:
-      tags:
-      - Certificate Inventory API
-      summary: Update Entity for multiple Certificates
-      description: "In this operation, when the list of Certificate UUIDs are provided\
-        \ and the filter is left as null or undefined, then the change will be applied\
-        \ only to the list of Certificate UUIDs provided. When the filter is provided\
-        \ in the request, the list of UUIDs will be ignored and the change will be\
-        \ applied for the all the certificates that matches the filter criteria. To\
-        \ apply this change for all the Certificates in the inventory, provide an\
-        \ empty array \"[]\" for the value of \"filters\" in the request body"
-      operationId: bulkUpdateEntity
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MultipleEntityUpdateDto'
-        required: true
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Entity updated
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/groups/{uuid}:
     get:
       tags:
@@ -349,26 +275,26 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Group details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - Certificate Group API
@@ -388,26 +314,26 @@ paths:
               $ref: '#/components/schemas/GroupRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Group updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Certificate Group API
@@ -421,22 +347,22 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: Group removed
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Group removed
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/groups:
     get:
       tags:
@@ -446,6 +372,12 @@ paths:
       responses:
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -460,12 +392,6 @@ paths:
                   $ref: '#/components/schemas/GroupDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Certificate Group API
@@ -484,6 +410,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "201":
           description: Group created
           content:
@@ -492,12 +424,6 @@ paths:
                 $ref: '#/components/schemas/UuidDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Certificate Group API
@@ -516,219 +442,22 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Groups removed
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/entities/{uuid}:
-    get:
-      tags:
-      - Certificate Entity API
-      summary: Entity details
-      operationId: getEntity
-      parameters:
-      - name: uuid
-        in: path
-        description: Entity UUID
-        required: true
-        schema:
-          type: string
-      responses:
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Entity details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EntityDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-    post:
-      tags:
-      - Certificate Entity API
-      summary: Update Entity
-      operationId: updateEntity_1
-      parameters:
-      - name: uuid
-        in: path
-        description: Entity UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EntityRequestDto'
-        required: true
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Entity updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EntityDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    delete:
-      tags:
-      - Certificate Entity API
-      summary: Remove Entity
-      operationId: removeEntity
-      parameters:
-      - name: uuid
-        in: path
-        description: Entity UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Entity removed
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/entities:
-    get:
-      tags:
-      - Certificate Entity API
-      summary: List Entities
-      operationId: listEntities
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: list of available Entities
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EntityDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    post:
-      tags:
-      - Certificate Entity API
-      summary: Create Entity
-      operationId: createEntity
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EntityRequestDto'
-        required: true
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: New Entity created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    delete:
-      tags:
-      - Certificate Entity API
-      summary: Remove multiple Entity
-      operationId: bulkRemoveEntity
-      requestBody:
-        description: Entity UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
-        required: true
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Entities removed
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/certificate/upload:
     post:
       tags:
@@ -742,26 +471,26 @@ paths:
               $ref: '#/components/schemas/UploadCertificateRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "201":
           description: Certificate uploaded
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate/delete:
     post:
       tags:
@@ -788,20 +517,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificates deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BulkOperationResponse'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificates deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationResponse'
+        "500":
+          description: Internal Server Error
+  /v1/certificate/compliance:
+    post:
+      tags:
+      - Certificate Inventory API
+      summary: Initiate Certificate Compliance Check
+      operationId: checkCompliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateComplianceCheckDto'
+        required: true
+      responses:
+        "204":
+          description: Compliance check initiated
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate:
     post:
       tags:
@@ -815,26 +573,26 @@ paths:
               $ref: '#/components/schemas/SearchRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of all the certificates
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateResponseDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate/{uuid}/validate:
     get:
       tags:
@@ -857,14 +615,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate validation initiated
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate/{uuid}/history:
     get:
       tags:
@@ -893,14 +651,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CertificateEventHistoryDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate/{uuid}:
     get:
       tags:
@@ -915,26 +673,26 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate detail retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Certificate Inventory API
@@ -948,22 +706,58 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: Certificate deleted
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Certificate deleted
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/certificate/{certificateUuid}/locations:
+    get:
+      tags:
+      - Certificate Inventory API
+      summary: List of available Locations for the Certificate
+      operationId: listLocations
+      parameters:
+      - name: certificateUuid
+        in: path
+        description: Certificate UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Locations retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificate/search:
     get:
       tags:
@@ -971,12 +765,6 @@ paths:
       summary: Get Certificate searchable fields information
       operationId: getSearchableFieldInformation
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate searchable field information retrieved
           content:
@@ -985,14 +773,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SearchFieldDataDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     CertificateUpdateRAProfileDto:
@@ -1028,14 +822,6 @@ components:
         groupUuid:
           type: string
           description: Group UUID
-    CertificateUpdateEntityDto:
-      required:
-      - entityUuid
-      type: object
-      properties:
-        entityUuid:
-          type: string
-          description: Entity UUID
     MultipleRAProfileUpdateDto:
       required:
       - uuid
@@ -1149,25 +935,6 @@ components:
           description: Certificate filter input
           items:
             $ref: '#/components/schemas/SearchFilterRequestDto'
-    MultipleEntityUpdateDto:
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of Entity
-        certificateUuids:
-          type: array
-          description: List of Certificate UUIDs
-          items:
-            type: string
-            description: List of Certificate UUIDs
-        filters:
-          type: array
-          description: Certificate filter input
-          items:
-            $ref: '#/components/schemas/SearchFilterRequestDto'
     GroupRequestDto:
       required:
       - name
@@ -1204,60 +971,6 @@ components:
         uuid:
           type: string
           description: Object identifier
-    EntityRequestDto:
-      required:
-      - entityType
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the Entity
-        description:
-          type: string
-          description: Description of the Entity
-        entityType:
-          type: string
-          description: Type of the Entity
-          enum:
-          - server
-          - router
-          - HSM
-          - switch
-          - loadBalancer
-          - firewall
-          - MDM
-          - cloud
-    EntityDto:
-      required:
-      - entityType
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Entity
-        entityType:
-          type: string
-          description: Type of the Entity
-          enum:
-          - server
-          - router
-          - HSM
-          - switch
-          - loadBalancer
-          - firewall
-          - MDM
-          - cloud
     UploadCertificateRequestDto:
       required:
       - certificate
@@ -1301,6 +1014,15 @@ components:
         message:
           type: string
           description: Message for the action
+    CertificateComplianceCheckDto:
+      type: object
+      properties:
+        certificateUuids:
+          type: array
+          description: List of UUIDs of the Certificates
+          items:
+            type: string
+            description: List of UUIDs of the Certificates
     SearchRequestDto:
       type: object
       properties:
@@ -1320,6 +1042,35 @@ components:
           description: Page number for the request
           format: int32
           default: 1
+    CertificateComplianceResultDto:
+      required:
+      - connectorName
+      - ruleDescription
+      - ruleName
+      - status
+      type: object
+      properties:
+        connectorName:
+          type: string
+          description: Name of the Compliance Provider
+          example: Provider1
+        ruleName:
+          type: string
+          description: Name of the rule
+          example: RuleName
+        ruleDescription:
+          type: string
+          description: Description of the rule
+          example: Description sample
+        status:
+          type: string
+          description: Status of the rule
+          example: nok
+          enum:
+          - ok
+          - nok
+          - na
+      description: Certificate compliance check result
     CertificateDto:
       required:
       - basicConstraints
@@ -1422,8 +1173,12 @@ components:
             type: object
             description: Subject alternative names
           description: Subject alternative names
-        entity:
-          $ref: '#/components/schemas/EntityDto'
+        locations:
+          uniqueItems: true
+          type: array
+          description: Locations associated to the Certificate
+          items:
+            $ref: '#/components/schemas/LocationDto'
         group:
           $ref: '#/components/schemas/GroupDto'
         owner:
@@ -1443,7 +1198,57 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/CertificateValidationDto'
           description: Certificate validation result
+        nonCompliantRules:
+          type: array
+          description: Certificate compliance check result
+          items:
+            $ref: '#/components/schemas/CertificateComplianceResultDto'
+        complianceStatus:
+          type: string
+          description: Certificate compliance status
+          enum:
+          - ok
+          - nok
+          - na
       description: Certificates
+    CertificateInLocationDto:
+      required:
+      - certificateUuid
+      - commonName
+      - metadata
+      - serialNumber
+      type: object
+      properties:
+        certificateUuid:
+          type: string
+          description: UUID of the Certificate
+        commonName:
+          type: string
+          description: Common Name of the Subject DN field of the Certificate
+        serialNumber:
+          type: string
+          description: Serial number in HEX of the Certificate
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Metadata of the Certificate in Location
+          description: Metadata of the Certificate in Location
+        pushAttributes:
+          type: array
+          description: Applied push attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        csrAttributes:
+          type: array
+          description: Applied issue attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        withKey:
+          type: boolean
+          description: If the Certificate in Location has associated private key
+          default: false
+      description: List of Certificates in Location
     CertificateResponseDto:
       required:
       - certificates
@@ -1491,6 +1296,121 @@ components:
         message:
           type: string
       description: Certificate validation result
+    LocationDto:
+      required:
+      - attributes
+      - certificates
+      - enabled
+      - entityInstanceName
+      - entityInstanceUuid
+      - name
+      - supportKeyManagement
+      - supportMultipleEntries
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the Location
+        entityInstanceUuid:
+          type: string
+          description: UUID of Entity instance
+        entityInstanceName:
+          type: string
+          description: Name of Entity instance
+        attributes:
+          type: array
+          description: List of Location attributes
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        supportMultipleEntries:
+          type: boolean
+          description: If the location supports multiple Certificates
+          default: false
+        supportKeyManagement:
+          type: boolean
+          description: If the location supports key management operations
+          default: false
+        certificates:
+          type: array
+          description: List of Certificates in Location
+          items:
+            $ref: '#/components/schemas/CertificateInLocationDto'
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Location metadata
+          description: Location metadata
+      description: Locations associated to the Certificate
+    RequestAttributeDto:
+      required:
+      - content
+      - name
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        content:
+          type: object
+          description: Content of the Attribute
+      description: Applied issue attributes
+    ResponseAttributeDto:
+      required:
+      - label
+      - name
+      - type
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - INTEGER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
+        content:
+          type: object
+          description: Content of the Attribute
+      description: List of Location attributes
     SimplifiedRaProfileDto:
       required:
       - enabled
@@ -1548,6 +1468,7 @@ components:
           - Update Owner
           - Upload Certificate
           - Certificate Discovered
+          - Update Location
         status:
           type: string
           description: Event result
@@ -1560,7 +1481,7 @@ components:
         additionalInformation:
           type: object
           additionalProperties:
-            type: string
+            type: object
             description: Additional information for the event
           description: Additional information for the event
     SearchFieldDataDto:

@@ -32,6 +32,12 @@ paths:
       summary: Profile Authorization
       operationId: profile
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -40,12 +46,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authenticate a user
           content:
@@ -64,6 +64,12 @@ paths:
               $ref: '#/components/schemas/EditAuthProfileDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -72,12 +78,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Edit Profile
   /v1/statistics:
@@ -87,8 +87,8 @@ paths:
       summary: Get Dashboard/Statictics Details
       operationId: getStatistics
       responses:
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -99,14 +99,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatisticsDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/logs/statuses:
     get:
       tags:
@@ -114,6 +114,12 @@ paths:
       summary: List Status
       operationId: listOperationStatuses
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit log status
           content:
@@ -130,12 +136,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs/operations:
     get:
       tags:
@@ -151,6 +151,12 @@ paths:
                 type: array
                 items:
                   type: string
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -159,12 +165,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs/objects:
     get:
       tags:
@@ -172,6 +172,12 @@ paths:
       summary: List Audit Objects
       operationId: listObjects
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit Objects
           content:
@@ -188,12 +194,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs/export:
     get:
       tags:
@@ -212,8 +212,8 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -225,14 +225,14 @@ paths:
               schema:
                 type: string
                 format: binary
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/logs:
     get:
       tags:
@@ -251,6 +251,12 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -259,12 +265,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit logs
           content:
@@ -305,10 +305,6 @@ components:
           type: integer
           description: Number of Groups
           format: int64
-        totalEntities:
-          type: integer
-          description: Number of Entities
-          format: int64
         totalDiscoveries:
           type: integer
           description: Number of Discoveries triggered
@@ -344,13 +340,6 @@ components:
             description: Map of Certificate count by Group
             format: int64
           description: Map of Certificate count by Group
-        entityStatByCertificateCount:
-          type: object
-          additionalProperties:
-            type: integer
-            description: Map of Certificate count by Entity
-            format: int64
-          description: Map of Certificate count by Entity
         raProfileStatByCertificateCount:
           type: object
           additionalProperties:
@@ -477,6 +466,9 @@ components:
           - STATISTICS
           - ACME_PROFILE
           - ACME_ACCOUNT
+          - COMPLIANCE_PROFILE
+          - COMPLIANCE_RULE
+          - COMPLIANCE_GROUP
           - LOCALHOST
         affected:
           type: string
@@ -505,6 +497,9 @@ components:
           - STATISTICS
           - ACME_PROFILE
           - ACME_ACCOUNT
+          - COMPLIANCE_PROFILE
+          - COMPLIANCE_RULE
+          - COMPLIANCE_GROUP
           - LOCALHOST
         objectIdentifier:
           type: string
@@ -542,13 +537,13 @@ components:
         pageSize:
           type: integer
           format: int32
-        unpaged:
-          type: boolean
-        paged:
-          type: boolean
         offset:
           type: integer
           format: int64
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
     Sort:
       type: object
       properties:
@@ -618,6 +613,9 @@ components:
           - STATISTICS
           - ACME_PROFILE
           - ACME_ACCOUNT
+          - COMPLIANCE_PROFILE
+          - COMPLIANCE_RULE
+          - COMPLIANCE_GROUP
           - LOCALHOST
         affected:
           type: string
@@ -646,6 +644,9 @@ components:
           - STATISTICS
           - ACME_PROFILE
           - ACME_ACCOUNT
+          - COMPLIANCE_PROFILE
+          - COMPLIANCE_RULE
+          - COMPLIANCE_GROUP
           - LOCALHOST
         objectIdentifier:
           type: string

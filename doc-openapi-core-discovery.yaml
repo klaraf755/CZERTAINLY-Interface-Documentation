@@ -28,6 +28,14 @@ paths:
       summary: List Discovery
       operationId: listDiscovery
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: List of available Discoveries
           content:
@@ -36,14 +44,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DiscoveryHistoryDto'
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -74,25 +74,14 @@ paths:
               $ref: '#/components/schemas/DiscoveryDto'
         required: true
       responses:
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "201":
           description: Discovery Created
           content:
@@ -111,6 +100,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
           description: Not Found
           content:
@@ -135,16 +135,16 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "204":
-          description: Discoveries deleted
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Discoveries deleted
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -177,14 +177,14 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -222,14 +222,14 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Discovery deleted
         "400":
@@ -276,8 +276,8 @@ components:
           description: Discovery Kind
     RequestAttributeDto:
       required:
+      - content
       - name
-      - value
       type: object
       properties:
         uuid:
@@ -288,9 +288,9 @@ components:
           type: string
           description: Name of the Attribute
           example: Attribute
-        value:
+        content:
           type: object
-          description: Value of the Attribute
+          description: Content of the Attribute
       description: List of Attributes for Discovery
     ErrorMessageDto:
       required:
@@ -426,7 +426,6 @@ components:
       - label
       - name
       - type
-      - uuid
       type: object
       properties:
         uuid:
@@ -446,13 +445,18 @@ components:
           description: Type of the Attribute
           enum:
           - STRING
-          - NUMBER
+          - INTEGER
           - SECRET
           - FILE
           - BOOLEAN
-          - LIST
           - CREDENTIAL
-        value:
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
+        content:
           type: object
-          description: Value of the Attribute
+          description: Content of the Attribute
       description: List of Discovery Attributes

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY Client API
-  description: REST API for managing Clients in the platform
+  title: CZERTAINLY Location API
+  description: REST API for managing Locations in the platform
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -18,293 +18,19 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Client Management API
-  description: Client Management API
+- name: Location Management API
+  description: Location Management API
 paths:
-  /v1/clients/{uuid}/unauthorize/{raProfileUuid}:
+  /v1/locations/{locationUuid}/sync:
     put:
       tags:
-      - Client Management API
-      summary: Unauthorize Client
-      operationId: unauthorizeClient
+      - Location Management API
+      summary: Update and sync Location content
+      operationId: updateLocationContent
       parameters:
-      - name: uuid
+      - name: locationUuid
         in: path
-        description: Client UUID
-        required: true
-        schema:
-          type: string
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Client unauthorized with given profile
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/clients/{uuid}/enable:
-    put:
-      tags:
-      - Client Management API
-      summary: Enable a client
-      operationId: enableClient
-      parameters:
-      - name: uuid
-        in: path
-        description: Client UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Client enabled
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/clients/{uuid}/disable:
-    put:
-      tags:
-      - Client Management API
-      summary: Disable a client
-      operationId: disableClient
-      parameters:
-      - name: uuid
-        in: path
-        description: Client UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Client disabled
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/clients/{uuid}/authorize/{raProfileUuid}:
-    put:
-      tags:
-      - Client Management API
-      summary: Authorize a client
-      operationId: authorizeClient
-      parameters:
-      - name: uuid
-        in: path
-        description: Client UUID
-        required: true
-        schema:
-          type: string
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Client authorized with given profile
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/clients/enable:
-    put:
-      tags:
-      - Client Management API
-      summary: Enable multiple client
-      operationId: bulkEnableClient
-      requestBody:
-        description: List of client UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Client enabled
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/clients/disable:
-    put:
-      tags:
-      - Client Management API
-      summary: Disable multiple client
-      operationId: bulkDisableClient
-      requestBody:
-        description: List of client UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Client disabled
-  /v1/clients/{uuid}:
-    get:
-      tags:
-      - Client Management API
-      summary: Get the details of a client
-      operationId: getClient
-      parameters:
-      - name: uuid
-        in: path
-        description: Client UUID
+        description: Location UUID
         required: true
         schema:
           type: string
@@ -336,20 +62,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
-          description: Client details retrieved
+          description: Content updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientDto'
+                $ref: '#/components/schemas/LocationDto'
+  /v1/locations/{locationUuid}/push/{certificateUuid}:
     post:
       tags:
-      - Client Management API
-      summary: Edit a client
-      operationId: editClient
+      - Location Management API
+      summary: Push Certificate to Location
+      operationId: pushCertificate
       parameters:
-      - name: uuid
+      - name: locationUuid
         in: path
-        description: Client UUID
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      - name: certificateUuid
+        in: path
+        description: Certificate UUID
         required: true
         schema:
           type: string
@@ -357,11 +90,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EditClientRequestDto'
+              $ref: '#/components/schemas/PushToLocationRequestDto'
         required: true
       responses:
         "500":
           description: Internal Server Error
+        "200":
+          description: Certificate pushed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
         "503":
           description: Connector Communication Error
           content:
@@ -380,30 +119,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Client edited
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-    delete:
+  /v1/locations/{locationUuid}/issue:
+    post:
       tags:
-      - Client Management API
-      summary: Remove a client
-      operationId: removeClient
+      - Location Management API
+      summary: Issue Certificate for Location
+      operationId: issueCertificate
       parameters:
-      - name: uuid
+      - name: locationUuid
         in: path
-        description: Client UUID
+        description: Location UUID
         required: true
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueToLocationRequestDto'
+        required: true
       responses:
         "500":
           description: Internal Server Error
@@ -413,6 +153,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
         "400":
           description: Bad Request
           content:
@@ -425,31 +171,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Client Deleted
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/clients:
+  /v1/locations:
     get:
       tags:
-      - Client Management API
-      summary: Get the list of all clients
-      operationId: listClients
+      - Location Management API
+      summary: List of available Locations
+      operationId: listLocations
+      parameters:
+      - name: enabled
+        in: query
+        required: false
+        schema:
+          type: boolean
       responses:
         "500":
           description: Internal Server Error
         "200":
-          description: Client list retrieved
+          description: Locations retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ClientDto'
+                  $ref: '#/components/schemas/LocationDto'
         "503":
           description: Connector Communication Error
           content:
@@ -476,68 +226,35 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
-      - Client Management API
-      summary: Add a new client
-      operationId: addClient
+      - Location Management API
+      summary: Add Location
+      operationId: addLocation
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddClientRequestDto'
+              $ref: '#/components/schemas/AddLocationRequestDto'
         required: true
       responses:
         "500":
           description: Internal Server Error
-        "503":
-          description: Connector Communication Error
+        "422":
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: New client added
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "201":
+          description: Location added
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    delete:
-      tags:
-      - Client Management API
-      summary: Remove multiple client
-      operationId: bulkRemoveClient
-      requestBody:
-        description: Client UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
@@ -556,29 +273,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Clients Deleted
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForceDeleteMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/clients/{uuid}/listauth:
-    get:
+  /v1/locations/{locationUuid}/renew/{certificateUuid}:
+    patch:
       tags:
-      - Client Management API
-      summary: Get Authorized profiles
-      operationId: listAuthorizations
+      - Location Management API
+      summary: Automatically renew Certificate in the Location
+      operationId: renewCertificateInLocation
       parameters:
-      - name: uuid
+      - name: locationUuid
         in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      - name: certificateUuid
+        in: path
+        description: Certificate UUID
         required: true
         schema:
           type: string
@@ -610,13 +326,392 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
-          description: List of authorized profiles
+          description: Content updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
+  /v1/locations/{locationUuid}/enable:
+    patch:
+      tags:
+      - Location Management API
+      summary: Enable Location
+      operationId: enableLocation
+      parameters:
+      - name: locationUuid
+        in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Location enabled
+  /v1/locations/{locationUuid}/disable:
+    patch:
+      tags:
+      - Location Management API
+      summary: Disable Location
+      operationId: disableLocation
+      parameters:
+      - name: locationUuid
+        in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Location disabled
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/locations/{locationUuid}:
+    get:
+      tags:
+      - Location Management API
+      summary: Get information about the Location
+      operationId: getLocation
+      parameters:
+      - name: locationUuid
+        in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Location detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    delete:
+      tags:
+      - Location Management API
+      summary: Delete Location
+      operationId: removeLocation
+      parameters:
+      - name: locationUuid
+        in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Location deleted
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    patch:
+      tags:
+      - Location Management API
+      summary: Edit Location
+      operationId: editLocation
+      parameters:
+      - name: locationUuid
+        in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditLocationRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SimplifiedRaProfileDto'
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Location updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
+  /v1/locations/{locationUuid}/push/attributes:
+    get:
+      tags:
+      - Location Management API
+      summary: Get push Attributes
+      operationId: listPushAttributes
+      parameters:
+      - name: locationUuid
+        in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Attributes list obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/locations/{locationUuid}/issue/attributes:
+    get:
+      tags:
+      - Location Management API
+      summary: Get CSR generate Attributes
+      operationId: listCsrAttributes
+      parameters:
+      - name: locationUuid
+        in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Attributes list obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/locations/{locationUuid}/remove/{certificateUuid}:
+    delete:
+      tags:
+      - Location Management API
+      summary: Remove Certificate from Location
+      operationId: removeCertificate
+      parameters:
+      - name: locationUuid
+        in: path
+        description: Location UUID
+        required: true
+        schema:
+          type: string
+      - name: certificateUuid
+        in: path
+        description: Certificate UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Certificate removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     ErrorMessageDto:
@@ -628,188 +723,6 @@ components:
           type: string
           description: Error message detail
           example: Error message
-    EditClientRequestDto:
-      type: object
-      properties:
-        description:
-          type: string
-          description: Description of the client
-        clientCertificate:
-          type: string
-          description: Base64 content of the certificate
-        certificateUuid:
-          type: string
-          description: UUID of the existing certificate in inventory. Required if
-            the Certificate is not provided
-    CertificateComplianceResultDto:
-      required:
-      - connectorName
-      - ruleDescription
-      - ruleName
-      - status
-      type: object
-      properties:
-        connectorName:
-          type: string
-          description: Name of the Compliance Provider
-          example: Provider1
-        ruleName:
-          type: string
-          description: Name of the rule
-          example: RuleName
-        ruleDescription:
-          type: string
-          description: Description of the rule
-          example: Description sample
-        status:
-          type: string
-          description: Status of the rule
-          example: nok
-          enum:
-          - ok
-          - nok
-          - na
-      description: Certificate compliance check result
-    CertificateDto:
-      required:
-      - basicConstraints
-      - certificateContent
-      - commonName
-      - fingerprint
-      - issuerCommonName
-      - issuerDn
-      - keySize
-      - keyUsage
-      - notAfter
-      - notBefore
-      - publicKeyAlgorithm
-      - serialNumber
-      - signatureAlgorithm
-      - status
-      - subjectDn
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Certificate
-        commonName:
-          type: string
-          description: Certificate common name
-        serialNumber:
-          type: string
-          description: Certificate serial number
-        issuerCommonName:
-          type: string
-          description: Certificate issuer common name
-        certificateContent:
-          type: string
-          description: Base64 encoded Certificate content
-        issuerDn:
-          type: string
-          description: Issuer DN of the Certificate
-        subjectDn:
-          type: string
-          description: Subject DN of the Certificate
-        notBefore:
-          type: string
-          description: Certificate validity start date
-          format: date-time
-        notAfter:
-          type: string
-          description: Certificate expiration date
-          format: date-time
-        publicKeyAlgorithm:
-          type: string
-          description: Public key algorithm
-        signatureAlgorithm:
-          type: string
-          description: Certificate signature algorithm
-        keySize:
-          type: integer
-          description: Certificate key size
-          format: int32
-        extendedKeyUsage:
-          type: array
-          description: Extended key usages
-          items:
-            type: string
-            description: Extended key usages
-        keyUsage:
-          type: array
-          description: Key usages
-          items:
-            type: string
-            description: Key usages
-        basicConstraints:
-          type: string
-          description: Basic Constraints
-        meta:
-          type: object
-          additionalProperties:
-            type: object
-            description: Certificate meta data
-          description: Certificate meta data
-        status:
-          type: string
-          description: Status of the Certificate
-          enum:
-          - valid
-          - revoked
-          - expired
-          - unknown
-          - expiring
-          - new
-          - invalid
-        raProfile:
-          $ref: '#/components/schemas/SimplifiedRaProfileDto'
-        fingerprint:
-          type: string
-          description: SHA256 fingerprint of the Certificate
-        subjectAlternativeNames:
-          type: object
-          additionalProperties:
-            type: object
-            description: Subject alternative names
-          description: Subject alternative names
-        locations:
-          uniqueItems: true
-          type: array
-          description: Locations associated to the Certificate
-          items:
-            $ref: '#/components/schemas/LocationDto'
-        group:
-          $ref: '#/components/schemas/GroupDto'
-        owner:
-          type: string
-          description: Certificate Owner
-        certificateType:
-          type: string
-          description: Certificate type
-          enum:
-          - X509
-          - SSH
-        issuerSerialNumber:
-          type: string
-          description: Serial number of the issuer
-        certificateValidationResult:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/CertificateValidationDto'
-          description: Certificate validation result
-        nonCompliantRules:
-          type: array
-          description: Certificate compliance check result
-          items:
-            $ref: '#/components/schemas/CertificateComplianceResultDto'
-        complianceStatus:
-          type: string
-          description: Certificate compliance status
-          enum:
-          - ok
-          - nok
-          - na
-      description: Client Certificate Information
     CertificateInLocationDto:
       required:
       - certificateUuid
@@ -848,70 +761,6 @@ components:
           description: If the Certificate in Location has associated private key
           default: false
       description: List of Certificates in Location
-    CertificateValidationDto:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - success
-          - failed
-          - warning
-          - revoked
-          - not_checked
-          - invalid
-          - expiring
-          - expired
-        message:
-          type: string
-      description: Certificate validation result
-    ClientDto:
-      required:
-      - certificate
-      - description
-      - enabled
-      - name
-      - serialNumber
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        serialNumber:
-          type: string
-          description: Client serial Number
-        certificate:
-          $ref: '#/components/schemas/CertificateDto'
-        description:
-          type: string
-          description: Client description
-        enabled:
-          type: boolean
-          description: Status of the client / Is Client enabled?
-    GroupDto:
-      required:
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Certificate Group
-      description: Group associated to the Certificate
     LocationDto:
       required:
       - attributes
@@ -969,7 +818,6 @@ components:
             type: object
             description: Location metadata
           description: Location metadata
-      description: Locations associated to the Certificate
     RequestAttributeDto:
       required:
       - content
@@ -1027,46 +875,60 @@ components:
           type: object
           description: Content of the Attribute
       description: List of Location attributes
-    SimplifiedRaProfileDto:
+    PushToLocationRequestDto:
       required:
-      - enabled
-      - name
-      - uuid
+      - attributes
       type: object
       properties:
-        uuid:
+        attributes:
+          type: array
+          description: List of push Attributes for Location
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+    IssueToLocationRequestDto:
+      required:
+      - csrAttributes
+      - issueAttributes
+      - raProfileUuid
+      type: object
+      properties:
+        raProfileUuid:
           type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+          description: RA Profile UUID
+        csrAttributes:
+          type: array
+          description: List of CSR Attributes for Location
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        issueAttributes:
+          type: array
+          description: List of certificate issue Attributes for RA Profile
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+    AddLocationRequestDto:
+      required:
+      - attributes
+      - entityInstanceUuid
+      - name
+      type: object
+      properties:
+        entityInstanceUuid:
+          type: string
+          description: UUID of the Entity instance
         name:
           type: string
-          description: Object Name
-          example: Name
+          description: Location name
+        description:
+          type: string
+          description: Location description
+        attributes:
+          type: array
+          description: List of Attributes to register Location
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
-      description: RA Profile associated to the Certificate
-    AddClientRequestDto:
-      required:
-      - name
-      type: object
-      properties:
-        clientCertificate:
-          type: string
-          description: Base64 content of the client certificate
-        certificateUuid:
-          type: string
-          description: UUID of the existing certificate in the Inventory. Required
-            if the Certificate is not provided
-        name:
-          type: string
-          description: Name of the client
-        description:
-          type: string
-          description: Description of the Client
-        enabled:
-          type: boolean
-          description: "Enabled flag. true = enabled, false = disabled"
           default: false
     UuidDto:
       required:
@@ -1076,23 +938,175 @@ components:
         uuid:
           type: string
           description: Object identifier
-    ForceDeleteMessageDto:
+    EditLocationRequestDto:
       required:
-      - message
+      - attributes
+      - entityInstanceUuid
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the Location
+        entityInstanceUuid:
+          type: string
+          description: Entity instance UUID
+        attributes:
+          type: array
+          description: List of Attributes for Location
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+    AttributeCallback:
+      required:
+      - callbackContext
+      - callbackMethod
+      - mappings
+      type: object
+      properties:
+        callbackContext:
+          type: string
+          description: Context part of callback URL
+        callbackMethod:
+          type: string
+          description: HTTP method of the callback
+        mappings:
+          uniqueItems: true
+          type: array
+          description: Mappings for the callback method
+          items:
+            $ref: '#/components/schemas/AttributeCallbackMapping'
+      description: Optional definition of callback for getting the content of the
+        Attribute based on the action
+    AttributeCallbackMapping:
+      required:
+      - targets
+      - to
+      type: object
+      properties:
+        from:
+          type: string
+          description: Name of the attribute whose value is to be used as value of
+            path variable or request param or body field.It is optional and must be
+            set only if value is not set.
+        attributeType:
+          type: string
+          description: Type of the attribute. It is optional and must be set only
+            if special behaviour is needed.
+          enum:
+          - STRING
+          - INTEGER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
+        to:
+          type: string
+          description: Name of the path variable or request param or body field which
+            is to be used to assign value of attribute
+        targets:
+          uniqueItems: true
+          type: array
+          description: Set of targets for propagating value.
+          items:
+            type: string
+            description: Set of targets for propagating value.
+            enum:
+            - pathVariable
+            - requestParameter
+            - body
+        value:
+          type: object
+          description: Static value to be propagated to targets. It is optional and
+            is set only if the value is known at attribute creation time.
+      description: Mappings for the callback method
+    AttributeDefinition:
+      required:
+      - label
+      - list
+      - multiSelect
       - name
+      - readOnly
+      - required
+      - type
       - uuid
+      - visible
       type: object
       properties:
         uuid:
           type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
         name:
           type: string
-          description: Object Name
-          example: Name
-        message:
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        content:
+          type: object
+          description: Content of the Attribute
+        label:
           type: string
-          description: Message describing the associations of the Connector which
-            is preventing the delete operation
-          example: Object is associated with other items
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - INTEGER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
+        required:
+          type: boolean
+          description: "Boolean determining if the Attribute is required. If true,\
+            \ the Attribute must be provided."
+          default: false
+        readOnly:
+          type: boolean
+          description: "Boolean determining if the Attribute is read only. If true,\
+            \ the Attribute content cannot be changed."
+          default: false
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        list:
+          type: boolean
+          description: Boolean determining if the Attribute contains list of values
+            in the content
+          default: false
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        validationRegex:
+          type: string
+          description: Optional regular expression used for validating the Attribute
+            content
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+        multiSelect:
+          type: boolean
+          description: Boolean determining if the Attribute can have multiple values
+          default: false
+        group:
+          type: string
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
