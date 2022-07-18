@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY Client Operations v2 API
-  description: REST API for v2 Client Operations
+  title: CZERTAINLY Entity API
+  description: REST API for managing Entities in the platform
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -18,25 +18,19 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: v2 Client Operations API
-  description: v2 Client Operations API
+- name: Entity Management API
+  description: Entity Management API
 paths:
-  /v2/operations/{raProfileUuid}/{certificateUuid}/revoke:
+  /v1/entities/{entityUuid}/location/attributes/validate:
     post:
       tags:
-      - v2 Client Operations API
-      summary: Revoke Certificate
-      operationId: revokeCertificate
+      - Entity Management API
+      summary: Validate Location Attributes
+      operationId: validateLocationAttributes
       parameters:
-      - name: raProfileUuid
+      - name: entityUuid
         in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      - name: certificateUuid
-        in: path
-        description: Certificate UUID
+        description: Entity instance UUID
         required: true
         schema:
           type: string
@@ -44,17 +38,81 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientCertificateRevocationDto'
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attributes validated
+        "500":
+          description: Internal Server Error
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/entities:
+    get:
+      tags:
+      - Entity Management API
+      summary: List available Entity instances
+      operationId: listEntityInstances
+      responses:
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: List of Entity instances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityInstanceDto'
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -63,34 +121,159 @@ paths:
           description: Connector Error
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    post:
+      tags:
+      - Entity Management API
+      summary: Add Entity instance
+      operationId: createEntityInstance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityInstanceRequestDto'
+        required: true
+      responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "201":
+          description: Entity instance created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/entities/{entityUuid}:
+    get:
+      tags:
+      - Entity Management API
+      summary: Details of Entity instance
+      operationId: getEntityInstance
+      parameters:
+      - name: entityUuid
+        in: path
+        description: Entity instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authority instance details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityInstanceDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    delete:
+      tags:
+      - Entity Management API
+      summary: Remove Entity instance
+      operationId: removeEntityInstance
+      parameters:
+      - name: entityUuid
+        in: path
+        description: Entity instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
-          description: Certificate revoked
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileUuid}/{certificateUuid}/renew:
-    post:
+          description: Entity instance deleted
+    patch:
       tags:
-      - v2 Client Operations API
-      summary: Renew Certificate
-      operationId: renewCertificate
+      - Entity Management API
+      summary: Update Entity instance
+      operationId: updateEntityInstance
       parameters:
-      - name: raProfileUuid
+      - name: entityUuid
         in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      - name: certificateUuid
-        in: path
-        description: Certificate UUID
+        description: Entity instance UUID
         required: true
         schema:
           type: string
@@ -98,27 +281,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientCertificateRenewRequestDto'
+              $ref: '#/components/schemas/EntityInstanceUpdateRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authority instance details updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/EntityInstanceDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -130,52 +309,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate renewed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-  /v2/operations/{raProfileUuid}/revoke/attributes/validate:
-    post:
-      tags:
-      - v2 Client Operations API
-      summary: Validate revocation Attributes
-      operationId: validateRevokeCertificateAttributes
-      parameters:
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/RequestAttributeDto'
-        required: true
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes validated
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -186,272 +327,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileUuid}/issue/attributes/validate:
-    post:
-      tags:
-      - v2 Client Operations API
-      summary: Validate issue Certificate Attributes
-      operationId: validateIssueCertificateAttributes
-      parameters:
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/RequestAttributeDto'
-        required: true
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileUuid}/issue:
-    post:
-      tags:
-      - v2 Client Operations API
-      summary: Issue Certificate
-      operationId: issueCertificate
-      parameters:
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientCertificateSignRequestDto'
-        required: true
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate issued
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileUuid}/revoke/attributes:
+  /v1/entities/{entityUuid}/location/attributes:
     get:
       tags:
-      - v2 Client Operations API
-      summary: Get revocation Attributes
-      operationId: listRevokeCertificateAttributes
+      - Entity Management API
+      summary: List Location Attributes
+      operationId: listLocationAttributes
       parameters:
-      - name: raProfileUuid
+      - name: entityUuid
         in: path
-        description: RA Profile UUID
+        description: Entity instance UUID
         required: true
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
-          description: Attributes obtained
+          description: Attributes retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileUuid}/issue/attributes:
-    get:
-      tags:
-      - v2 Client Operations API
-      summary: Get issue Certificate Attributes
-      operationId: listIssueCertificateAttributes
-      parameters:
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Attributes list obtained
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeDefinition'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
-    ClientCertificateRevocationDto:
-      required:
-      - attributes
-      - reason
-      type: object
-      properties:
-        reason:
-          type: string
-          description: Reason for revocation
-          enum:
-          - UNSPECIFIED
-          - KEY_COMPROMISE
-          - CA_COMPROMISE
-          - AFFILIATION_CHANGED
-          - SUPERSEDED
-          - CESSATION_OF_OPERATION
-          - CERTIFICATE_HOLD
-          - REMOVE_FROM_CRL
-          - PRIVILEGES_WITHDRAWN
-          - AA_COMPROMISE
-        attributes:
-          type: array
-          description: List of Attributes to revoke Certificate
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
     RequestAttributeDto:
       required:
       - content
@@ -469,7 +394,6 @@ components:
         content:
           type: object
           description: Content of the Attribute
-      description: List of Attributes to revoke Certificate
     ErrorMessageDto:
       required:
       - message
@@ -479,44 +403,123 @@ components:
           type: string
           description: Error message detail
           example: Error message
-    ClientCertificateRenewRequestDto:
+    EntityInstanceRequestDto:
       required:
-      - pkcs10
+      - attributes
+      - connectorUuid
+      - kind
+      - name
       type: object
       properties:
-        pkcs10:
+        name:
           type: string
-          description: Certificate sign request (PKCS#10) encoded as Base64 string
-        replaceInLocations:
-          type: boolean
-          description: True to replace renewed certificate in the associated locations
-          default: false
-    ClientCertificateDataResponseDto:
+          description: Entity instance name
+        attributes:
+          type: array
+          description: List of Entity instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        connectorUuid:
+          type: string
+          description: UUID of Entity Provider
+        kind:
+          type: string
+          description: Entity instance Kind
+          example: "Keystore, etc."
+    UuidDto:
       required:
-      - certificateData
       - uuid
       type: object
       properties:
-        certificateData:
-          type: string
-          description: Base64 encoded Certificate content
         uuid:
           type: string
-          description: UUID of Certificate
-    ClientCertificateSignRequestDto:
+          description: Object identifier
+    EntityInstanceUpdateRequestDto:
       required:
       - attributes
-      - pkcs10
       type: object
       properties:
-        pkcs10:
-          type: string
-          description: Certificate sign request (PKCS#10) encoded as Base64 string
         attributes:
           type: array
-          description: List of Attributes to issue Certificate
+          description: List of Entity instance Attributes
           items:
             $ref: '#/components/schemas/RequestAttributeDto'
+    EntityInstanceDto:
+      required:
+      - attributes
+      - connectorName
+      - connectorUuid
+      - kind
+      - name
+      - status
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        attributes:
+          type: array
+          description: List of Entity instance Attributes
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        status:
+          type: string
+          description: Status of Entity instance
+        connectorUuid:
+          type: string
+          description: UUID of Entity Provider
+        connectorName:
+          type: string
+          description: Name of Entity Provider
+        kind:
+          type: string
+          description: Entity instance Kind
+          example: "Keystore, etc."
+    ResponseAttributeDto:
+      required:
+      - label
+      - name
+      - type
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - INTEGER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
+        content:
+          type: object
+          description: Content of the Attribute
+      description: List of Entity instance Attributes
     AttributeCallback:
       required:
       - callbackContext

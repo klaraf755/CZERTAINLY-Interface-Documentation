@@ -62,20 +62,6 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attribute validation completed
         "422":
           description: Attribute validation failed
           content:
@@ -87,6 +73,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attribute validation completed
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1/discoveryProvider/discover/{uuid}:
@@ -129,6 +129,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryProviderDto'
+    delete:
+      tags:
+      - Discovery API
+      summary: Delete Discovery
+      operationId: deleteDiscovery
+      parameters:
+      - name: uuid
+        in: path
+        description: Discovery UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Discovery information deleted
   /v1/discoveryProvider/discover:
     post:
       tags:
@@ -148,6 +177,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
           description: Not Found
           content:
@@ -162,17 +202,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryProviderDto'
-        "422":
-          description: Unprocessable entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -187,6 +216,14 @@ paths:
         schema:
           type: string
       responses:
+        "200":
+          description: Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeDefinition'
         "400":
           description: Bad Request
           content:
@@ -199,14 +236,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeDefinition'
         "500":
           description: Internal Server Error
   /v1/health:
@@ -216,6 +245,12 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
         "400":
           description: Bad Request
           content:
@@ -228,12 +263,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Health check completed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthDto'
         "500":
           description: Internal Server Error
   /v1:
@@ -270,8 +299,8 @@ components:
   schemas:
     RequestAttributeDto:
       required:
+      - content
       - name
-      - value
       type: object
       properties:
         uuid:
@@ -282,9 +311,9 @@ components:
           type: string
           description: Name of the Attribute
           example: Attribute
-        value:
+        content:
           type: object
-          description: Value of the Attribute
+          description: Content of the Attribute
     ErrorMessageDto:
       required:
       - message
@@ -297,6 +326,7 @@ components:
     DiscoveryDataRequestDto:
       required:
       - endIndex
+      - kind
       - name
       - startIndex
       type: object
@@ -304,6 +334,9 @@ components:
         name:
           type: string
           description: Name of the Discovery
+        kind:
+          type: string
+          description: Discovery Kind
         startIndex:
           type: integer
           description: Starting index of the Certificate
@@ -375,12 +408,16 @@ components:
           description: Certificate Metadata
     DiscoveryRequestDto:
       required:
+      - kind
       - name
       type: object
       properties:
         name:
           type: string
           description: Name of the Discovery
+        kind:
+          type: string
+          description: Discovery Kind
         attributes:
           type: array
           description: Discovery Provider Attributes. Mandatory for creating new Discovery
@@ -405,7 +442,8 @@ components:
           description: Mappings for the callback method
           items:
             $ref: '#/components/schemas/AttributeCallbackMapping'
-      description: Optional definition of callback for helper methods
+      description: Optional definition of callback for getting the content of the
+        Attribute based on the action
     AttributeCallbackMapping:
       required:
       - targets
@@ -423,12 +461,17 @@ components:
             if special behaviour is needed.
           enum:
           - STRING
-          - NUMBER
+          - INTEGER
           - SECRET
           - FILE
           - BOOLEAN
-          - LIST
           - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -451,9 +494,9 @@ components:
       description: Mappings for the callback method
     AttributeDefinition:
       required:
-      - editable
       - label
-      - multiValue
+      - list
+      - multiSelect
       - name
       - readOnly
       - required
@@ -464,82 +507,74 @@ components:
       properties:
         uuid:
           type: string
-          description: UUID of the Attribute
+          description: UUID of the Attribute for unique identification
           example: 166b5cf52-63f2-11ec-90d6-0242ac120003
         name:
           type: string
-          description: Name of the Attribute
+          description: Name of the Attribute that is used for identification
           example: Attribute
+        content:
+          type: object
+          description: Content of the Attribute
         label:
           type: string
-          description: Label of the the Attribute
+          description: Friendly name of the the Attribute
           example: Attribute Name
         type:
           type: string
           description: Type of the Attribute
           enum:
           - STRING
-          - NUMBER
+          - INTEGER
           - SECRET
           - FILE
           - BOOLEAN
-          - LIST
           - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
         required:
           type: boolean
-          description: Boolean determining if the Attribute is required
+          description: "Boolean determining if the Attribute is required. If true,\
+            \ the Attribute must be provided."
           default: false
         readOnly:
           type: boolean
-          description: Boolean determining if the Attribute is read only
+          description: "Boolean determining if the Attribute is read only. If true,\
+            \ the Attribute content cannot be changed."
           default: false
-        editable:
-          type: boolean
-          description: Boolean determining if the Attribute is editable
-          default: true
         visible:
           type: boolean
-          description: Boolean determining if the Attribute is visible and can be
-            displayed
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
           default: true
-        multiValue:
+        list:
           type: boolean
-          description: Boolean determining if the Attribute has value composed from
-            multiple items
+          description: Boolean determining if the Attribute contains list of values
+            in the content
           default: false
         description:
           type: string
-          description: "Optional description of the Attribute, should contain help\
-            \ for setting proper value"
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
         validationRegex:
           type: string
           description: Optional regular expression used for validating the Attribute
-            value
-        dependsOn:
-          type: array
-          description: Optional list of other Attribute names and values on which
-            it depends on
-          items:
-            $ref: '#/components/schemas/AttributeDependency'
+            content
         attributeCallback:
           $ref: '#/components/schemas/AttributeCallback'
-        value:
-          type: object
-          description: Value of the Attribute
-    AttributeDependency:
-      required:
-      - name
-      - value
-      type: object
-      properties:
-        name:
+        multiSelect:
+          type: boolean
+          description: Boolean determining if the Attribute can have multiple values
+          default: false
+        group:
           type: string
-          description: Name of depending attribute
-        value:
-          type: object
-          description: "Value of depending attribute, which should be matched"
-      description: Optional list of other Attribute names and values on which it depends
-        on
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
     HealthDto:
       required:
       - status
@@ -605,6 +640,8 @@ components:
           - legacyAuthorityProvider
           - authorityProvider
           - discoveryProvider
+          - entityProvider
+          - complianceProvider
         kinds:
           type: array
           description: List of supported functional group kinds
