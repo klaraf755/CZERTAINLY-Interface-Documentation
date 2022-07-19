@@ -75,7 +75,7 @@ public class AcmeRaProfileControllerDummyImpl implements AcmeRaProfileController
     }
 
     @Override
-    public ResponseEntity<Order> finalize(String raProfileName, String orderId, String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException {
+    public ResponseEntity<Order> finalizeOrder(String raProfileName, String orderId, String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException {
         return null;
     }
 
@@ -88,5 +88,4 @@ public class AcmeRaProfileControllerDummyImpl implements AcmeRaProfileController
     public ResponseEntity<?> revokeCertificate(String raProfileName, String jwsBody) throws AcmeProblemDocumentException, ConnectorException, CertificateException {
         return null;
     }
-
 }

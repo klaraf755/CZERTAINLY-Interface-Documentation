@@ -75,7 +75,7 @@ public class AcmeControllerDummyImpl implements AcmeController {
     }
 
     @Override
-    public ResponseEntity<Order> finalize(String acmeProfileName, String orderId, String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException {
+    public ResponseEntity<Order> finalizeOrder(String acmeProfileName, String orderId, String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException {
         return null;
     }
 
