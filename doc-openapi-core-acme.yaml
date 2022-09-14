@@ -43,10 +43,10 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: RA Profile updated
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -105,14 +105,14 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "200":
+          description: ACME Profile disabled
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: ACME Profile disabled
         "400":
           description: Bad Request
           content:
@@ -174,18 +174,18 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: ACME Profile updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AcmeProfileDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -207,12 +207,6 @@ paths:
       responses:
         "204":
           description: ACME Profile deleted
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForceDeleteMessageDto'
         "500":
           description: Internal Server Error
         "404":
@@ -313,14 +307,14 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "204":
+          description: ACME Account enabled
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: ACME Account enabled
         "400":
           description: Bad Request
           content:
@@ -341,10 +335,10 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "204":
           description: ACME Account disabled
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -448,14 +442,14 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "204":
+          description: ACME Accounts disabled
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: ACME Accounts disabled
         "400":
           description: Bad Request
           content:
@@ -469,8 +463,6 @@ paths:
       summary: Get list of ACME Profiles
       operationId: listAcmeProfile
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: ACME Profile list retrieved
           content:
@@ -479,6 +471,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AcmeProfileListDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -505,18 +499,18 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "201":
           description: ACME Profile created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -537,14 +531,14 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: ACME Account details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AcmeAccountResponseDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -634,8 +628,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "204":
-          description: ACME Profiles forced to delete
         "500":
           description: Internal Server Error
         "404":
@@ -661,6 +653,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profiles forced to delete
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkActionMessageDto'
   /v1/acmeProfiles/delete:
     delete:
       tags:
@@ -688,12 +688,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: ACME Profiles deleted
           content:
@@ -701,7 +695,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ForceDeleteMessageDto'
+                  $ref: '#/components/schemas/BulkActionMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     ErrorMessageDto:
@@ -884,6 +884,128 @@ components:
           description: List of Attributes to revoke a Certificate
           items:
             $ref: '#/components/schemas/ResponseAttributeDto'
+    ComplianceConnectorAndGroupsDto:
+      type: object
+      properties:
+        connectorName:
+          type: string
+          description: Name of the Compliance Provider
+        connectorUuid:
+          type: string
+          description: UUID of the Compliance Provider
+        kind:
+          type: string
+          description: Kind of the Compliance Provider
+        groups:
+          type: array
+          description: Groups associated
+          items:
+            $ref: '#/components/schemas/ComplianceGroupsDto'
+      description: List of groups
+    ComplianceConnectorAndRulesDto:
+      type: object
+      properties:
+        connectorName:
+          type: string
+          description: Name of the Compliance Provider
+        connectorUuid:
+          type: string
+          description: UUID of the Compliance Provider
+        kind:
+          type: string
+          description: Kind of the Compliance Provider
+        rules:
+          type: array
+          description: Rules associated
+          items:
+            $ref: '#/components/schemas/ComplianceRulesDto'
+      description: List of rules
+    ComplianceGroupsDto:
+      required:
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the group
+          example: Sample group description
+      description: Groups associated
+    ComplianceProfileDto:
+      required:
+      - groups
+      - name
+      - rules
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the Compliance Profile
+        rules:
+          type: array
+          description: List of rules
+          items:
+            $ref: '#/components/schemas/ComplianceConnectorAndRulesDto'
+        groups:
+          type: array
+          description: List of groups
+          items:
+            $ref: '#/components/schemas/ComplianceConnectorAndGroupsDto'
+        raProfiles:
+          type: array
+          description: List of associated RA Profiles
+          items:
+            $ref: '#/components/schemas/SimplifiedRaProfileDto'
+      description: Compliance Profiles
+    ComplianceRulesDto:
+      required:
+      - certificateType
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the rule
+          example: Sample rule description
+        certificateType:
+          type: string
+          description: Certificate type for the rule
+          example: X509
+          enum:
+          - X509
+          - SSH
+        attributes:
+          type: array
+          description: Attributes of the rule
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+      description: Rules associated
     RaProfileDto:
       required:
       - attributes
@@ -925,14 +1047,11 @@ components:
           items:
             type: string
             description: List of protocols enabled
-        complianceProfileName:
-          type: string
-          description: Compliance Profile Name
-          example: Compliance Profile 1
-        complianceProfileUuid:
-          type: string
-          description: Compliance Profile UUID
-          example: c35bc88c-d0ef-11ec-9d64-0242ac120003
+        complianceProfiles:
+          type: array
+          description: Compliance Profiles
+          items:
+            $ref: '#/components/schemas/ComplianceProfileDto'
       description: RA Profile
     ResponseAttributeDto:
       required:
@@ -973,6 +1092,25 @@ components:
           type: object
           description: Content of the Attribute
       description: List of Attributes to revoke a Certificate
+    SimplifiedRaProfileDto:
+      required:
+      - enabled
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+      description: List of associated RA Profiles
     AcmeProfileRequestDto:
       required:
       - issueCertificateAttributes
@@ -1227,7 +1365,7 @@ components:
           type: string
           description: Name of the ACME Profile
           example: ACMEProfile1
-    ForceDeleteMessageDto:
+    BulkActionMessageDto:
       required:
       - message
       - name
@@ -1244,6 +1382,6 @@ components:
           example: Name
         message:
           type: string
-          description: Message describing the associations of the Connector which
-            is preventing the delete operation
+          description: Message describing the associations of the Objects which is
+            preventing the delete operation
           example: Object is associated with other items
