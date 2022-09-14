@@ -6,6 +6,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.ConnectorController;
 import com.czertainly.api.model.client.connector.*;
+import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.HealthDto;
 import com.czertainly.api.model.common.attribute.RequestAttributeDto;
@@ -102,13 +103,12 @@ public class ConnectorControllerDummyImpl implements ConnectorController {
     }
 
     @Override
-    public List<ForceDeleteMessageDto> bulkRemoveConnector(List<String> uuids) throws NotFoundException, ValidationException, ConnectorException {
+    public List<BulkActionMessageDto> bulkRemoveConnector(List<String> uuids) throws NotFoundException, ValidationException, ConnectorException {
         return null;
     }
 
     @Override
-    public void bulkForceRemoveConnector(List<String> uuids) throws NotFoundException, ValidationException {
-
+    public List<BulkActionMessageDto> bulkForceRemoveConnector(List<String> uuids) throws NotFoundException, ValidationException {
+        return null;
     }
-
 }

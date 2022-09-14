@@ -10,6 +10,7 @@ import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequest
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
+import com.czertainly.api.model.core.certificate.CertificateValidationDto;
 import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CertificateControllerDummyImpl implements CertificateController {
@@ -107,4 +109,8 @@ public class CertificateControllerDummyImpl implements CertificateController {
 
     }
 
+    @Override
+    public Map<String, CertificateValidationDto> getCertificateValidationResult(String uuid) throws NotFoundException, CertificateException, IOException {
+        return null;
+    }
 }

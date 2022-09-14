@@ -24,6 +24,11 @@ public class AuditLogControllerDummyImpl implements AuditLogController {
     }
 
     @Override
+    public void purgeAuditLogs(AuditLogFilter filter, Pageable pageable) {
+
+    }
+
+    @Override
     public List<String> listObjects() {
         return null;
     }
@@ -37,5 +42,4 @@ public class AuditLogControllerDummyImpl implements AuditLogController {
     public List<String> listOperationStatuses() {
         return null;
     }
-
 }

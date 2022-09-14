@@ -6,8 +6,8 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.ClientManagementController;
 import com.czertainly.api.model.client.client.AddClientRequestDto;
 import com.czertainly.api.model.client.client.EditClientRequestDto;
-import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
+import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.core.client.ClientDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +44,7 @@ public class ClientManagementControllerDummyImpl implements ClientManagementCont
     }
 
     @Override
-    public ResponseEntity<List<ForceDeleteMessageDto>> bulkRemoveClient(List<String> clientUuids) throws NotFoundException {
+    public ResponseEntity<List<BulkActionMessageDto>> bulkRemoveClient(List<String> clientUuids) throws NotFoundException {
         return null;
     }
 
@@ -82,5 +82,4 @@ public class ClientManagementControllerDummyImpl implements ClientManagementCont
     public void unauthorizeClient(String uuid, String raProfileUuid) throws NotFoundException {
 
     }
-
 }

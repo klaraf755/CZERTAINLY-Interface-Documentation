@@ -6,8 +6,8 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.ComplianceProfileController;
 import com.czertainly.api.model.client.compliance.*;
-import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
+import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import com.czertainly.api.model.core.compliance.ComplianceProfileDto;
@@ -76,13 +76,13 @@ public class ComplianceProfileControllerDummyImpl implements ComplianceProfileCo
     }
 
     @Override
-    public List<ForceDeleteMessageDto> bulkRemoveComplianceProfiles(List<String> uuids) throws NotFoundException, ValidationException {
+    public List<BulkActionMessageDto> bulkRemoveComplianceProfiles(List<String> uuids) throws NotFoundException, ValidationException {
         return null;
     }
 
     @Override
-    public void bulkForceRemoveComplianceProfiles(List<String> uuids) throws NotFoundException, ValidationException {
-
+    public List<BulkActionMessageDto> bulkForceRemoveComplianceProfiles(List<String> uuids) throws NotFoundException, ValidationException {
+        return null;
     }
 
     @Override
