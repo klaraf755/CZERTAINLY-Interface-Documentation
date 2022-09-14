@@ -41,14 +41,14 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Client unauthorized with given profile
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Client unauthorized with given profile
         "400":
           description: Bad Request
           content:
@@ -61,14 +61,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/clients/{uuid}/enable:
     put:
       tags:
@@ -83,14 +83,14 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Client enabled
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Client enabled
         "400":
           description: Bad Request
           content:
@@ -103,14 +103,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/clients/{uuid}/disable:
     put:
       tags:
@@ -125,8 +125,6 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Client disabled
         "404":
           description: Not Found
           content:
@@ -145,14 +143,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Client disabled
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/clients/{uuid}/authorize/{raProfileUuid}:
     put:
       tags:
@@ -173,14 +173,14 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Client authorized with given profile
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Client authorized with given profile
         "400":
           description: Bad Request
           content:
@@ -193,14 +193,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/clients/enable:
     put:
       tags:
@@ -226,8 +226,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Client enabled
         "400":
           description: Bad Request
           content:
@@ -240,14 +238,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "204":
+          description: Client enabled
   /v1/clients/disable:
     put:
       tags:
@@ -285,14 +285,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: Client disabled
   /v1/clients/{uuid}:
@@ -327,14 +327,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Client details retrieved
           content:
@@ -378,20 +378,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Client edited
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: Client edited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDto'
     delete:
       tags:
       - Client Management API
@@ -423,16 +423,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Client Deleted
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: Client Deleted
   /v1/clients:
     get:
       tags:
@@ -440,14 +440,6 @@ paths:
       summary: Get the list of all clients
       operationId: listClients
       responses:
-        "200":
-          description: Client list retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ClientDto'
         "404":
           description: Not Found
           content:
@@ -466,14 +458,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Client list retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Client Management API
@@ -492,12 +492,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: New client added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
         "400":
           description: Bad Request
           content:
@@ -510,14 +504,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: New client added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
     delete:
       tags:
       - Client Management API
@@ -554,6 +554,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Clients Deleted
           content:
@@ -561,15 +569,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ForceDeleteMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                  $ref: '#/components/schemas/BulkActionMessageDto'
   /v1/clients/{uuid}/listauth:
     get:
       tags:
@@ -601,6 +601,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
@@ -615,8 +617,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SimplifiedRaProfileDto'
-        "500":
-          description: Internal Server Error
 components:
   schemas:
     ErrorMessageDto:
@@ -669,6 +669,11 @@ components:
           - ok
           - nok
           - na
+        attributes:
+          type: array
+          description: Attributes of the rule
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
       description: Certificate compliance check result
     CertificateDto:
       required:
@@ -792,11 +797,6 @@ components:
         issuerSerialNumber:
           type: string
           description: Serial number of the issuer
-        certificateValidationResult:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/CertificateValidationDto'
-          description: Certificate validation result
         nonCompliantRules:
           type: array
           description: Certificate compliance check result
@@ -848,23 +848,6 @@ components:
           description: If the Certificate in Location has associated private key
           default: false
       description: List of Certificates in Location
-    CertificateValidationDto:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - success
-          - failed
-          - warning
-          - revoked
-          - not_checked
-          - invalid
-          - expiring
-          - expired
-        message:
-          type: string
-      description: Certificate validation result
     ClientDto:
       required:
       - certificate
@@ -1026,7 +1009,7 @@ components:
         content:
           type: object
           description: Content of the Attribute
-      description: List of Location attributes
+      description: Attributes of the rule
     SimplifiedRaProfileDto:
       required:
       - enabled
@@ -1076,7 +1059,7 @@ components:
         uuid:
           type: string
           description: Object identifier
-    ForceDeleteMessageDto:
+    BulkActionMessageDto:
       required:
       - message
       - name
@@ -1093,6 +1076,6 @@ components:
           example: Name
         message:
           type: string
-          description: Message describing the associations of the Connector which
-            is preventing the delete operation
+          description: Message describing the associations of the Objects which is
+            preventing the delete operation
           example: Object is associated with other items
