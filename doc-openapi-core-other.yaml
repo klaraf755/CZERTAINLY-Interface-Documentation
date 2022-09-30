@@ -40,18 +40,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authenticate a user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthProfileDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     put:
       tags:
       - Authentication Management API
@@ -72,14 +72,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "204":
+          description: Edit Profile
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Edit Profile
   /v1/statistics:
     get:
       tags:
@@ -95,18 +95,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatisticsDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs/statuses:
     get:
       tags:
@@ -120,14 +120,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit log status
           content:
@@ -136,6 +128,14 @@ paths:
                 type: array
                 items:
                   type: string
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs/purge:
     get:
       tags:
@@ -154,14 +154,14 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
+        "204":
+          description: Audit logs purged
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Audit logs purged
         "500":
           description: Internal Server Error
         "404":
@@ -212,14 +212,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit Objects
           content:
@@ -228,6 +220,14 @@ paths:
                 type: array
                 items:
                   type: string
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs/export:
     get:
       tags:
@@ -254,12 +254,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Export of audit logs
           content:
@@ -267,6 +261,12 @@ paths:
               schema:
                 type: string
                 format: binary
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/logs:
     get:
       tags:
@@ -578,13 +578,13 @@ components:
         pageNumber:
           type: integer
           format: int32
-        offset:
-          type: integer
-          format: int64
         paged:
           type: boolean
         unpaged:
           type: boolean
+        offset:
+          type: integer
+          format: int64
     Sort:
       type: object
       properties:

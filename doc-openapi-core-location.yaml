@@ -25,7 +25,7 @@ paths:
     put:
       tags:
       - Location Management API
-      summary: Update and sync Location content
+      summary: Sync Location content
       operationId: updateLocationContent
       parameters:
       - name: locationUuid
@@ -35,20 +35,6 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -61,12 +47,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Content updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/locations/{locationUuid}/push/{certificateUuid}:
     post:
       tags:
@@ -93,26 +93,6 @@ paths:
               $ref: '#/components/schemas/PushToLocationRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate pushed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LocationDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -125,11 +105,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate pushed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/locations/{locationUuid}/issue:
     post:
       tags:
       - Location Management API
-      summary: Issue Certificate for Location
+      summary: Issue Certificate to Location
       operationId: issueCertificate
       parameters:
       - name: locationUuid
@@ -145,8 +145,20 @@ paths:
               $ref: '#/components/schemas/IssueToLocationRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -159,20 +171,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -181,7 +181,7 @@ paths:
     get:
       tags:
       - Location Management API
-      summary: List of available Locations
+      summary: List Locations
       operationId: listLocations
       parameters:
       - name: enabled
@@ -190,8 +190,14 @@ paths:
         schema:
           type: boolean
       responses:
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -204,22 +210,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LocationDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -236,37 +236,6 @@ paths:
               $ref: '#/components/schemas/AddLocationRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "201":
-          description: Location added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -279,11 +248,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "201":
+          description: Location added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/locations/{locationUuid}/renew/{certificateUuid}:
     patch:
       tags:
       - Location Management API
-      summary: Automatically renew Certificate in the Location
+      summary: Renew Certificate in Location
       operationId: renewCertificateInLocation
       parameters:
       - name: locationUuid
@@ -299,20 +299,6 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -325,12 +311,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Content updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/locations/{locationUuid}/enable:
     patch:
       tags:
@@ -345,20 +345,6 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -371,8 +357,22 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Location enabled
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/locations/{locationUuid}/disable:
     patch:
       tags:
@@ -387,22 +387,6 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Location disabled
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -415,11 +399,27 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Location disabled
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/locations/{locationUuid}:
     get:
       tags:
       - Location Management API
-      summary: Get information about the Location
+      summary: Get Location Details
       operationId: getLocation
       parameters:
       - name: locationUuid
@@ -429,8 +429,20 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -443,20 +455,8 @@ paths:
                 $ref: '#/components/schemas/LocationDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -474,22 +474,6 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Location deleted
         "400":
           description: Bad Request
           content:
@@ -498,6 +482,22 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Location deleted
+        "503":
+          description: Connector Communication Error
           content:
             '*/*':
               schema:
@@ -521,20 +521,6 @@ paths:
               $ref: '#/components/schemas/EditLocationRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -547,12 +533,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Location updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LocationDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -564,6 +544,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Location updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/locations/{locationUuid}/push/attributes:
     get:
       tags:
@@ -586,20 +586,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -612,11 +598,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/locations/{locationUuid}/issue/attributes:
     get:
       tags:
       - Location Management API
-      summary: Get CSR generate Attributes
+      summary: Get CSR Attributes
       operationId: listCsrAttributes
       parameters:
       - name: locationUuid
@@ -634,20 +634,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -656,6 +642,20 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -680,8 +680,20 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -694,20 +706,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
