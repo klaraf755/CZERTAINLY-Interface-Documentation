@@ -41,6 +41,8 @@ paths:
               $ref: '#/components/schemas/ComplianceRuleAdditionRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -52,16 +54,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "204":
-          description: New rule is deleted from the profile
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: New rule added to the profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceProfileRuleDto'
         "400":
           description: Bad Request
           content:
@@ -74,8 +78,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -101,6 +105,8 @@ paths:
       responses:
         "204":
           description: New group is added to the profile
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -112,10 +118,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -132,8 +136,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -160,6 +164,8 @@ paths:
       responses:
         "204":
           description: New group is deleted from the profile
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -171,10 +177,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -191,8 +195,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -218,6 +222,8 @@ paths:
       responses:
         "204":
           description: New rule is added to the profile
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -229,10 +235,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -249,8 +253,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -262,18 +266,24 @@ paths:
       summary: Initiate Certificate Compliance Check
       operationId: checkCompliance
       requestBody:
+        description: RA Profile UUIDs
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ComplianceProfileComplianceCheckDto'
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "204":
-          description: Compliance check initiated
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "204":
+          description: Compliance check initiated
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -290,8 +300,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -305,8 +315,8 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -319,6 +329,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -331,12 +347,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceProfilesListDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Compliance Profile Management API
@@ -349,6 +359,8 @@ paths:
               $ref: '#/components/schemas/ComplianceProfileRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -360,20 +372,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "201":
           description: New Compliance profile added
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -386,8 +396,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -396,7 +406,7 @@ paths:
       tags:
       - Compliance Profile Management API
       summary: Delete multiple Compliance Profiles
-      operationId: bulkRemoveComplianceProfiles
+      operationId: bulkDeleteComplianceProfiles
       requestBody:
         description: Compliance Profile UUIDs
         content:
@@ -412,12 +422,6 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Compliance Profiles deleted
           content:
@@ -426,6 +430,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BulkActionMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -434,6 +444,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -449,13 +465,7 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/complianceProfiles/{uuid}/raprofile/disassociate:
+  /v1/complianceProfiles/{uuid}/raProfiles/disassociate:
     patch:
       tags:
       - Compliance Profile Management API
@@ -475,6 +485,10 @@ paths:
               $ref: '#/components/schemas/RaProfileAssociationRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: RA Profile disassociation successful
         "422":
           description: Unprocessable Entity
           content:
@@ -486,12 +500,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "200":
-          description: RA Profile disassociation successful
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -508,13 +518,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/complianceProfiles/{uuid}/raprofile/associate:
+  /v1/complianceProfiles/{uuid}/raProfiles/associate:
     patch:
       tags:
       - Compliance Profile Management API
@@ -534,6 +544,8 @@ paths:
               $ref: '#/components/schemas/RaProfileAssociationRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -545,16 +557,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "200":
+          description: RA Profile association successful
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: RA Profile association successful
         "400":
           description: Bad Request
           content:
@@ -567,13 +577,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/complianceProfiles/{uuid}/raprofiles:
+  /v1/complianceProfiles/{uuid}/raProfiles:
     get:
       tags:
       - Compliance Profile Management API
@@ -597,8 +607,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SimplifiedRaProfileDto'
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -615,8 +625,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -637,8 +647,8 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -661,8 +671,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -670,8 +680,8 @@ paths:
     delete:
       tags:
       - Compliance Profile Management API
-      summary: Remove Compliance Profile
-      operationId: removeComplianceProfile
+      summary: Delete Compliance Profile
+      operationId: deleteComplianceProfile
       parameters:
       - name: uuid
         in: path
@@ -680,12 +690,12 @@ paths:
         schema:
           type: string
       responses:
-        "204":
-          description: Compliance Profile deleted
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "204":
+          description: Compliance Profile deleted
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -702,8 +712,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -736,6 +746,8 @@ paths:
             - X509
             - SSH
       responses:
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -747,10 +759,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -767,6 +777,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Compliance rules retrieved
           content:
@@ -775,12 +791,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesListResponseDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProfiles/groups:
     get:
       tags:
@@ -807,6 +817,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsListResponseDto'
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -818,10 +830,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -838,8 +848,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -849,7 +859,7 @@ paths:
       tags:
       - Compliance Profile Management API
       summary: Force delete Compliance Profiles
-      operationId: bulkForceRemoveComplianceProfiles
+      operationId: forceDeleteComplianceProfiles
       requestBody:
         content:
           application/json:
@@ -861,8 +871,8 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -887,6 +897,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -898,12 +914,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     ComplianceRuleAdditionRequestDto:
@@ -957,6 +967,100 @@ components:
           type: string
           description: Error message detail
           example: Error message
+    ComplianceProfileRuleDto:
+      required:
+      - attributes
+      - certificateType
+      - complianceProfileName
+      - complianceProfileUuid
+      - connectorName
+      - connectorUuid
+      - kind
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the rule
+          example: Sample rule description
+        connectorName:
+          type: string
+          description: Connector Name
+        connectorUuid:
+          type: string
+          description: Connector UUID
+        kind:
+          type: string
+          description: Connector Kind
+        groupUuid:
+          type: string
+          description: Group UUID
+        certificateType:
+          type: string
+          description: Certificate type for the rule
+          example: X509
+          enum:
+          - X509
+          - SSH
+        attributes:
+          type: array
+          description: List of attributes for the rule
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        complianceProfileUuid:
+          type: string
+          description: UUID of the Compliance Profile
+        complianceProfileName:
+          type: string
+          description: Name of the Compliance Profile
+    ResponseAttributeDto:
+      required:
+      - label
+      - name
+      - type
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - INTEGER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
+        content:
+          type: object
+          description: Content of the Attribute
+      description: List of attributes for the rule
     ComplianceGroupRequestDto:
       required:
       - connectorUuid
@@ -976,15 +1080,6 @@ components:
           type: string
           description: UUID of the group
           example: 1212a-34dddf34-4334f-34ddfvfdg1y3
-    ComplianceProfileComplianceCheckDto:
-      type: object
-      properties:
-        complianceProfileUuids:
-          type: array
-          description: List of UUIDs of the Compliance Profiles
-          items:
-            type: string
-            description: List of UUIDs of the Compliance Profiles
     ComplianceProfileRequestDto:
       required:
       - name
@@ -1088,6 +1183,9 @@ components:
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
+        authorityInstanceUuid:
+          type: string
+          description: Authority Instance UUID
     ComplianceConnectorAndGroupsDto:
       type: object
       properties:

@@ -41,22 +41,22 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity password reset
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: End Entity password reset
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -89,20 +89,20 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -146,22 +146,22 @@ paths:
               $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: End Entity edited
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -193,22 +193,22 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: End Entity revoked and deleted
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -235,8 +235,10 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -249,14 +251,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClientEndEntityDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -288,22 +288,22 @@ paths:
               $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: End Entity added
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -338,20 +338,20 @@ paths:
       responses:
         "200":
           description: Certificate revoked
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -384,26 +384,26 @@ paths:
               $ref: '#/components/schemas/ClientCertificateSignRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Certificate issued
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientCertificateSignResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -467,128 +467,6 @@ components:
           - HISTORICAL
           - KEY_RECOVERY
           - WAITING_FOR_ADD_APPROVAL
-    ComplianceConnectorAndGroupsDto:
-      type: object
-      properties:
-        connectorName:
-          type: string
-          description: Name of the Compliance Provider
-        connectorUuid:
-          type: string
-          description: UUID of the Compliance Provider
-        kind:
-          type: string
-          description: Kind of the Compliance Provider
-        groups:
-          type: array
-          description: Groups associated
-          items:
-            $ref: '#/components/schemas/ComplianceGroupsDto'
-      description: List of groups
-    ComplianceConnectorAndRulesDto:
-      type: object
-      properties:
-        connectorName:
-          type: string
-          description: Name of the Compliance Provider
-        connectorUuid:
-          type: string
-          description: UUID of the Compliance Provider
-        kind:
-          type: string
-          description: Kind of the Compliance Provider
-        rules:
-          type: array
-          description: Rules associated
-          items:
-            $ref: '#/components/schemas/ComplianceRulesDto'
-      description: List of rules
-    ComplianceGroupsDto:
-      required:
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the group
-          example: Sample group description
-      description: Groups associated
-    ComplianceProfileDto:
-      required:
-      - groups
-      - name
-      - rules
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Compliance Profile
-        rules:
-          type: array
-          description: List of rules
-          items:
-            $ref: '#/components/schemas/ComplianceConnectorAndRulesDto'
-        groups:
-          type: array
-          description: List of groups
-          items:
-            $ref: '#/components/schemas/ComplianceConnectorAndGroupsDto'
-        raProfiles:
-          type: array
-          description: List of associated RA Profiles
-          items:
-            $ref: '#/components/schemas/SimplifiedRaProfileDto'
-      description: Compliance Profiles
-    ComplianceRulesDto:
-      required:
-      - certificateType
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the rule
-          example: Sample rule description
-        certificateType:
-          type: string
-          description: Certificate type for the rule
-          example: X509
-          enum:
-          - X509
-          - SSH
-        attributes:
-          type: array
-          description: Attributes of the rule
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-      description: Rules associated
     EndEntityExtendedInfoDto:
       type: object
       properties:
@@ -638,30 +516,7 @@ components:
           items:
             type: string
             description: List of protocols enabled
-        complianceProfiles:
-          type: array
-          description: Compliance Profiles
-          items:
-            $ref: '#/components/schemas/ComplianceProfileDto'
       description: RA profile related to End Entity
-    RequestAttributeDto:
-      required:
-      - content
-      - name
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute
-          example: Attribute
-        content:
-          type: object
-          description: Content of the Attribute
-      description: Attributes of the rule
     ResponseAttributeDto:
       required:
       - label
@@ -701,25 +556,6 @@ components:
           type: object
           description: Content of the Attribute
       description: List of RA Profiles attributes
-    SimplifiedRaProfileDto:
-      required:
-      - enabled
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-      description: List of associated RA Profiles
     ClientAddEndEntityRequestDto:
       required:
       - password

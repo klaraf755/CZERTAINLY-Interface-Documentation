@@ -26,10 +26,18 @@ paths:
       tags:
       - Discovery Management API
       summary: List Discovery
-      operationId: listDiscovery
+      operationId: listDiscoveries
       responses:
-        "404":
-          description: Not Found
+        "200":
+          description: List of available Discoveries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscoveryHistoryDto'
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -46,18 +54,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: List of available Discoveries
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DiscoveryHistoryDto'
         "500":
           description: Internal Server Error
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -74,18 +74,18 @@ paths:
               $ref: '#/components/schemas/DiscoveryDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "201":
           description: Discovery Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -111,8 +111,8 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -121,7 +121,7 @@ paths:
       tags:
       - Discovery Management API
       summary: Delete Multiple Discoveries
-      operationId: bulkRemoveDiscovery
+      operationId: bulkDeleteDiscovery
       requestBody:
         description: Discovery UUIDs
         content:
@@ -135,14 +135,14 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not Found
+        "204":
+          description: Discoveries deleted
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Discoveries deleted
         "400":
           description: Bad Request
           content:
@@ -157,8 +157,8 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -177,8 +177,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -203,8 +203,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryHistoryDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -213,7 +213,7 @@ paths:
       tags:
       - Discovery Management API
       summary: Delete Discovery
-      operationId: removeDiscovery
+      operationId: deleteDiscovery
       parameters:
       - name: uuid
         in: path
@@ -222,12 +222,14 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Discovery deleted
         "400":
           description: Bad Request
           content:
@@ -240,12 +242,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Discovery deleted
         "500":
           description: Internal Server Error
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -292,6 +292,14 @@ components:
           type: object
           description: Content of the Attribute
       description: List of Attributes for Discovery
+    UuidDto:
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
     ErrorMessageDto:
       required:
       - message
@@ -301,14 +309,6 @@ components:
           type: string
           description: Error message detail
           example: Error message
-    UuidDto:
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
     DiscoveryCertificatesDto:
       required:
       - certificateContent

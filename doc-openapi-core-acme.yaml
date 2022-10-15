@@ -23,102 +23,6 @@ tags:
 - name: ACME Profile Management API
   description: ACME Profile Management API
 paths:
-  /v1/acmeProfiles/{uuid}/raprofile/{raProfileUuid}:
-    put:
-      tags:
-      - ACME Profile Management API
-      summary: Update RA Profile for ACME Profile
-      operationId: updateRaProfile
-      parameters:
-      - name: uuid
-        in: path
-        description: ACME Profile UUID
-        required: true
-        schema:
-          type: string
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: RA Profile updated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/acmeProfiles/{uuid}/enable:
-    put:
-      tags:
-      - ACME Profile Management API
-      summary: Enable ACME Profile
-      operationId: enableAcmeProfile
-      parameters:
-      - name: uuid
-        in: path
-        description: ACME Profile UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: ACME Profile enabled
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/acmeProfiles/{uuid}/disable:
-    put:
-      tags:
-      - ACME Profile Management API
-      summary: Disable ACME Profile
-      operationId: disableAcmeProfile
-      parameters:
-      - name: uuid
-        in: path
-        description: ACME Profile UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: ACME Profile disabled
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/acmeProfiles/{uuid}:
     get:
       tags:
@@ -139,14 +43,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AcmeProfileDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -156,8 +60,8 @@ paths:
     put:
       tags:
       - ACME Profile Management API
-      summary: Update ACME Profile
-      operationId: updateAcmeProfile
+      summary: Edit ACME Profile
+      operationId: editAcmeProfile
       parameters:
       - name: uuid
         in: path
@@ -172,26 +76,26 @@ paths:
               $ref: '#/components/schemas/AcmeProfileEditRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: ACME Profile updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AcmeProfileDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcmeProfileDto'
     delete:
       tags:
       - ACME Profile Management API
@@ -207,144 +111,14 @@ paths:
       responses:
         "204":
           description: ACME Profile deleted
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/acmeProfiles/enable:
-    put:
-      tags:
-      - ACME Profile Management API
-      summary: Enable multiple ACME Profiles
-      operationId: bulkEnableAcmeProfile
-      requestBody:
-        description: ACME Profile UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: ACME Profiles enabled
-  /v1/acmeProfiles/disable:
-    put:
-      tags:
-      - ACME Profile Management API
-      summary: Disable multiple ACME Profile
-      operationId: bulkDisableAcmeProfile
-      requestBody:
-        description: ACME Profile UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
-        required: true
-      responses:
-        "200":
-          description: ACME Profiles disabled
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/acmeAccounts/{uuid}/enable:
-    put:
-      tags:
-      - ACME Account Management API
-      summary: Enable ACME Account
-      operationId: enableAcmeAccount
-      parameters:
-      - name: uuid
-        in: path
-        description: ACME Account UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: ACME Account enabled
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/acmeAccounts/{uuid}/disable:
-    put:
-      tags:
-      - ACME Account Management API
-      summary: Disable ACME Account
-      operationId: disableAcmeAccount
-      parameters:
-      - name: uuid
-        in: path
-        description: ACME Account UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: ACME Account disabled
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -370,14 +144,14 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -386,70 +160,75 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: ACME Accounts revoked
-  /v1/acmeAccounts/enable:
-    put:
+  /v1/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}:
+    get:
       tags:
       - ACME Account Management API
-      summary: Enable multiple ACME Accounts
-      operationId: bulkEnableAcmeAccount
-      requestBody:
-        description: ACME Account UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+      summary: Details of ACME Account
+      operationId: getAcmeAccount
+      parameters:
+      - name: acmeProfileUuid
+        in: path
+        description: ACME Profile UUID
         required: true
+        schema:
+          type: string
+      - name: acmeAccountUuid
+        in: path
+        description: ACME Account UUID
+        required: true
+        schema:
+          type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: ACME Account details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcmeAccountResponseDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: ACME Accounts enabled
-  /v1/acmeAccounts/disable:
-    put:
+    post:
       tags:
       - ACME Account Management API
-      summary: Disable multiple ACME Accounts
-      operationId: bulkDisableAcmeAccount
-      requestBody:
-        description: ACME Account UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+      summary: Revoke ACME Account
+      operationId: revokeAcmeAccount
+      parameters:
+      - name: acmeProfileUuid
+        in: path
+        description: ACME Profile UUID
         required: true
+        schema:
+          type: string
+      - name: acmeAccountUuid
+        in: path
+        description: ACME Account UUID
+        required: true
+        schema:
+          type: string
       responses:
+        "204":
+          description: ACME Account revoked
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: ACME Accounts disabled
         "404":
           description: Not Found
           content:
@@ -461,8 +240,16 @@ paths:
       tags:
       - ACME Profile Management API
       summary: Get list of ACME Profiles
-      operationId: listAcmeProfile
+      operationId: listAcmeProfiles
       responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: ACME Profile list retrieved
           content:
@@ -471,14 +258,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AcmeProfileListDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -497,96 +276,343 @@ paths:
               $ref: '#/components/schemas/AcmeProfileRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "201":
           description: ACME Profile created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/acmeAccounts/{uuid}:
-    get:
+  /v1/acmeProfiles/{uuid}/raprofile/{raProfileUuid}:
+    patch:
       tags:
-      - ACME Account Management API
-      summary: Details of ACME Account
-      operationId: getAcmeAccount
+      - ACME Profile Management API
+      summary: Update RA Profile for ACME Profile
+      operationId: updateRaProfile
       parameters:
       - name: uuid
         in: path
-        description: ACME Account UUID
+        description: ACME Profile UUID
+        required: true
+        schema:
+          type: string
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
         required: true
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
-          description: ACME Account details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AcmeAccountResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+          description: RA Profile updated
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-    delete:
+  /v1/acmeProfiles/{uuid}/enable:
+    patch:
       tags:
-      - ACME Account Management API
-      summary: Revoke ACME Account
-      operationId: revokeAcmeAccount
+      - ACME Profile Management API
+      summary: Enable ACME Profile
+      operationId: enableAcmeProfile
       parameters:
       - name: uuid
+        in: path
+        description: ACME Profile UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profile enabled
+  /v1/acmeProfiles/{uuid}/disable:
+    patch:
+      tags:
+      - ACME Profile Management API
+      summary: Disable ACME Profile
+      operationId: disableAcmeProfile
+      parameters:
+      - name: uuid
+        in: path
+        description: ACME Profile UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profile disabled
+  /v1/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}/enable:
+    patch:
+      tags:
+      - ACME Account Management API
+      summary: Enable ACME Account
+      operationId: enableAcmeAccount
+      parameters:
+      - name: acmeProfileUuid
+        in: path
+        description: ACME Profile UUID
+        required: true
+        schema:
+          type: string
+      - name: acmeAccountUuid
         in: path
         description: ACME Account UUID
         required: true
         schema:
           type: string
       responses:
-        "204":
-          description: ACME Account revoked
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME Account enabled
+  /v1/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}/disable:
+    patch:
+      tags:
+      - ACME Account Management API
+      summary: Disable ACME Account
+      operationId: disableAcmeAccount
+      parameters:
+      - name: acmeProfileUuid
+        in: path
+        description: ACME Profile UUID
+        required: true
+        schema:
+          type: string
+      - name: acmeAccountUuid
+        in: path
+        description: ACME Account UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME Account disabled
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/acmeProfiles/enable:
+    patch:
+      tags:
+      - ACME Profile Management API
+      summary: Enable multiple ACME Profiles
+      operationId: bulkEnableAcmeProfile
+      requestBody:
+        description: ACME Profile UUIDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profiles enabled
+  /v1/acmeProfiles/disable:
+    patch:
+      tags:
+      - ACME Profile Management API
+      summary: Disable multiple ACME Profile
+      operationId: bulkDisableAcmeProfile
+      requestBody:
+        description: ACME Profile UUIDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profiles disabled
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/acmeAccounts/enable:
+    patch:
+      tags:
+      - ACME Account Management API
+      summary: Enable multiple ACME Accounts
+      operationId: bulkEnableAcmeAccount
+      requestBody:
+        description: ACME Account UUIDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME Accounts enabled
+  /v1/acmeAccounts/disable:
+    patch:
+      tags:
+      - ACME Account Management API
+      summary: Disable multiple ACME Accounts
+      operationId: bulkDisableAcmeAccount
+      requestBody:
+        description: ACME Account UUIDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME Accounts disabled
   /v1/acmeAccounts:
     get:
       tags:
       - ACME Account Management API
       summary: List ACME Accounts
-      operationId: listAcmeAccount
+      operationId: listAcmeAccounts
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: ACME Accounts list retrieved
           content:
@@ -601,8 +627,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -614,7 +638,7 @@ paths:
       tags:
       - ACME Profile Management API
       summary: Force delete multiple ACME Profiles
-      operationId: bulkForceRemoveACMEProfiles
+      operationId: forceDeleteACMEProfiles
       requestBody:
         description: ACME Profile UUIDs
         content:
@@ -628,14 +652,20 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -647,12 +677,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: ACME Profiles forced to delete
           content:
@@ -680,14 +704,20 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: ACME Profiles deleted
           content:
@@ -696,23 +726,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BulkActionMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     AcmeProfileEditRequestDto:
       required:
       - issueCertificateAttributes
@@ -804,6 +819,15 @@ components:
           type: object
           description: Content of the Attribute
       description: List of Attributes to revoke Certificate
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     AcmeProfileDto:
       required:
       - enabled
@@ -884,128 +908,6 @@ components:
           description: List of Attributes to revoke a Certificate
           items:
             $ref: '#/components/schemas/ResponseAttributeDto'
-    ComplianceConnectorAndGroupsDto:
-      type: object
-      properties:
-        connectorName:
-          type: string
-          description: Name of the Compliance Provider
-        connectorUuid:
-          type: string
-          description: UUID of the Compliance Provider
-        kind:
-          type: string
-          description: Kind of the Compliance Provider
-        groups:
-          type: array
-          description: Groups associated
-          items:
-            $ref: '#/components/schemas/ComplianceGroupsDto'
-      description: List of groups
-    ComplianceConnectorAndRulesDto:
-      type: object
-      properties:
-        connectorName:
-          type: string
-          description: Name of the Compliance Provider
-        connectorUuid:
-          type: string
-          description: UUID of the Compliance Provider
-        kind:
-          type: string
-          description: Kind of the Compliance Provider
-        rules:
-          type: array
-          description: Rules associated
-          items:
-            $ref: '#/components/schemas/ComplianceRulesDto'
-      description: List of rules
-    ComplianceGroupsDto:
-      required:
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the group
-          example: Sample group description
-      description: Groups associated
-    ComplianceProfileDto:
-      required:
-      - groups
-      - name
-      - rules
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Compliance Profile
-        rules:
-          type: array
-          description: List of rules
-          items:
-            $ref: '#/components/schemas/ComplianceConnectorAndRulesDto'
-        groups:
-          type: array
-          description: List of groups
-          items:
-            $ref: '#/components/schemas/ComplianceConnectorAndGroupsDto'
-        raProfiles:
-          type: array
-          description: List of associated RA Profiles
-          items:
-            $ref: '#/components/schemas/SimplifiedRaProfileDto'
-      description: Compliance Profiles
-    ComplianceRulesDto:
-      required:
-      - certificateType
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the rule
-          example: Sample rule description
-        certificateType:
-          type: string
-          description: Certificate type for the rule
-          example: X509
-          enum:
-          - X509
-          - SSH
-        attributes:
-          type: array
-          description: Attributes of the rule
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-      description: Rules associated
     RaProfileDto:
       required:
       - attributes
@@ -1047,11 +949,6 @@ components:
           items:
             type: string
             description: List of protocols enabled
-        complianceProfiles:
-          type: array
-          description: Compliance Profiles
-          items:
-            $ref: '#/components/schemas/ComplianceProfileDto'
       description: RA Profile
     ResponseAttributeDto:
       required:
@@ -1092,25 +989,6 @@ components:
           type: object
           description: Content of the Attribute
       description: List of Attributes to revoke a Certificate
-    SimplifiedRaProfileDto:
-      required:
-      - enabled
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-      description: List of associated RA Profiles
     AcmeProfileRequestDto:
       required:
       - issueCertificateAttributes
@@ -1188,41 +1066,6 @@ components:
         uuid:
           type: string
           description: Object identifier
-    AcmeProfileListDto:
-      required:
-      - enabled
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-          example: false
-        description:
-          type: string
-          description: ACME Profile description
-          example: Some description
-        raProfileName:
-          type: string
-          description: Name of the RA Profile
-          example: RA Profile 1
-        raProfileUuid:
-          type: string
-          description: UUID of RA Profile
-          example: 6b55de1c-844f-11ec-a8a3-0242ac120002
-        directoryUrl:
-          type: string
-          description: URL of the ACME Directory
-          example: https://some-server.com/api/acme/profile1/directory
     AcmeAccountResponseDto:
       required:
       - accountId
@@ -1321,10 +1164,46 @@ components:
           type: string
           description: UUID of the ACME Profile
           example: 6b55de1c-844f-11ec-a8a3-0242ac120002
+    AcmeProfileListDto:
+      required:
+      - enabled
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+          example: false
+        description:
+          type: string
+          description: ACME Profile description
+          example: Some description
+        raProfileName:
+          type: string
+          description: Name of the RA Profile
+          example: RA Profile 1
+        raProfileUuid:
+          type: string
+          description: UUID of RA Profile
+          example: 6b55de1c-844f-11ec-a8a3-0242ac120002
+        directoryUrl:
+          type: string
+          description: URL of the ACME Directory
+          example: https://some-server.com/api/acme/profile1/directory
     AcmeAccountListResponseDto:
       required:
       - accountId
       - acmeProfileName
+      - acmeProfileUuid
       - enabled
       - raProfileName
       - status
@@ -1365,6 +1244,10 @@ components:
           type: string
           description: Name of the ACME Profile
           example: ACMEProfile1
+        acmeProfileUuid:
+          type: string
+          description: UUID of the ACME Profile
+          example: 6b55de1c-844f-11ec-a8a3-0242ac120002
     BulkActionMessageDto:
       required:
       - message

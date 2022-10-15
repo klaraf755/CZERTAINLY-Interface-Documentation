@@ -23,7 +23,7 @@ tags:
 - name: Certificate Inventory API
   description: Certificate Inventory API
 paths:
-  /v1/certificate/{uuid}/validate:
+  /v1/certificates/{uuid}/validate:
     get:
       tags:
       - Certificate Inventory API
@@ -47,14 +47,14 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/CertificateValidationDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -74,6 +74,12 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate validation initiated
         "404":
@@ -82,252 +88,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/{uuid}/ra-profile:
-    put:
-      tags:
-      - Certificate Inventory API
-      summary: Update RA Profile for a Certificate
-      operationId: updateRaProfile
-      parameters:
-      - name: uuid
-        in: path
-        description: Certificate UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CertificateUpdateRAProfileDto'
-        required: true
-      responses:
-        "204":
-          description: RA Profile updated
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/{uuid}/owner:
-    put:
-      tags:
-      - Certificate Inventory API
-      summary: Update Owner for a Certificate
-      operationId: updateOwner
-      parameters:
-      - name: uuid
-        in: path
-        description: Certificate UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CertificateOwnerRequestDto'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Owner updated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/{uuid}/group:
-    put:
-      tags:
-      - Certificate Inventory API
-      summary: Update Group for a Certificate
-      operationId: updateCertificateGroup
-      parameters:
-      - name: uuid
-        in: path
-        description: Certificate UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CertificateUpdateGroupDto'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Group updated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/validate:
+  /v1/certificates/validate:
     put:
       tags:
       - Certificate Inventory API
       summary: Validate Certificates of Status Unknown
       operationId: validateAllCertificate
       responses:
-        "500":
-          description: Internal Server Error
         "204":
           description: Certificate Validation Initiated
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/ra-profile:
-    put:
-      tags:
-      - Certificate Inventory API
-      summary: Update RA Profile for multiple Certificates
-      description: "In this operation, when the list of Certificate UUIDs are provided\
-        \ and the filter is left as null or undefined, then the change will be applied\
-        \ only to the list of Certificate UUIDs provided. When the filter is provided\
-        \ in the request, the list of UUIDs will be ignored and the change will be\
-        \ applied for the all the certificates that matches the filter criteria. To\
-        \ apply this change for all the Certificates in the inventory, provide an\
-        \ empty array \"[]\" for the value of \"filters\" in the request body"
-      operationId: bulkUpdateRaProfile
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MultipleRAProfileUpdateDto'
-        required: true
-      responses:
-        "204":
-          description: RA Profile updated
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/owner:
-    put:
-      tags:
-      - Certificate Inventory API
-      summary: Update Owner for multiple Certificates
-      description: "In this operation, when the list of Certificate UUIDs are provided\
-        \ and the filter is left as null or undefined, then the change will be applied\
-        \ only to the list of Certificate UUIDs provided. When the filter is provided\
-        \ in the request, the list of UUIDs will be ignored and the change will be\
-        \ applied for the all the certificates that matches the filter criteria. To\
-        \ apply this change for all the Certificates in the inventory, provide an\
-        \ empty array \"[]\" for the value of \"filters\" in the request body"
-      operationId: bulkUpdateOwner
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CertificateOwnerBulkUpdateDto'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Owner updated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/group:
-    put:
-      tags:
-      - Certificate Inventory API
-      summary: Update Group for multiple Certificates
-      description: "In this operation, when the list of Certificate UUIDs are provided\
-        \ and the filter is left as null or undefined, then the change will be applied\
-        \ only to the list of Certificate UUIDs provided. When the filter is provided\
-        \ in the request, the list of UUIDs will be ignored and the change will be\
-        \ applied for the all the certificates that matches the filter criteria. To\
-        \ apply this change for all the Certificates in the inventory, provide an\
-        \ empty array \"[]\" for the value of \"filters\" in the request body"
-      operationId: bulkUpdateCertificateGroup
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MultipleGroupUpdateDto'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Group updated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/groups/{uuid}:
+  /v1/certificateGroups/{uuid}:
     get:
       tags:
       - Certificate Group API
@@ -340,31 +124,31 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Group details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-    post:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    put:
       tags:
       - Certificate Group API
-      summary: Update Group
-      operationId: updateGroup
+      summary: Edit Group
+      operationId: editGroup
       parameters:
       - name: uuid
         in: path
@@ -379,22 +163,22 @@ paths:
               $ref: '#/components/schemas/GroupRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Group updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDto'
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -402,8 +186,8 @@ paths:
     delete:
       tags:
       - Certificate Group API
-      summary: Remove Group
-      operationId: removeGroup
+      summary: Delete Group
+      operationId: deleteGroup
       parameters:
       - name: uuid
         in: path
@@ -415,20 +199,190 @@ paths:
         "500":
           description: Internal Server Error
         "204":
-          description: Group removed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+          description: Group deleted
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/groups:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/certificates/upload:
+    post:
+      tags:
+      - Certificate Inventory API
+      summary: Upload a new Certificate
+      operationId: upload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadCertificateRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "201":
+          description: Certificate uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/certificates/delete:
+    post:
+      tags:
+      - Certificate Inventory API
+      summary: Delete multiple certificates
+      description: "In this operation, when the list of Certificate UUIDs are provided\
+        \ and the filter is left as null or undefined, then the change will be applied\
+        \ only to the list of Certificate UUIDs provided. When the filter is provided\
+        \ in the request, the list of UUIDs will be ignored and the change will be\
+        \ applied for the all the certificates that matches the filter criteria. To\
+        \ apply this change for all the Certificates in the inventory, provide an\
+        \ empty array \"[]\" for the value of \"filters\" in the request body"
+      operationId: bulkDeleteCertificate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveCertificateDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificates deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationResponse'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/certificates/compliance:
+    post:
+      tags:
+      - Certificate Inventory API
+      summary: Initiate Certificate Compliance Check
+      operationId: checkCompliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateComplianceCheckDto'
+        required: true
+      responses:
+        "204":
+          description: Compliance check initiated
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/certificates:
+    post:
+      tags:
+      - Certificate Inventory API
+      summary: List Certificates
+      operationId: listCertificates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequestDto'
+        required: true
+      responses:
+        "200":
+          description: List of all the certificates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateResponseDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    patch:
+      tags:
+      - Certificate Inventory API
+      summary: "Update RA Profile, Group, Owner for multiple Certificates"
+      description: "In this operation, when the list of Certificate UUIDs are provided\
+        \ and the filter is left as null or undefined, then the change will be applied\
+        \ only to the list of Certificate UUIDs provided. When the filter is provided\
+        \ in the request, the list of UUIDs will be ignored and the change will be\
+        \ applied for the all the certificates that matches the filter criteria. To\
+        \ apply this change for all the Certificates in the inventory, provide an\
+        \ empty array \"[]\" for the value of \"filters\" in the request body"
+      operationId: bulkUpdateCertificateObjects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultipleCertificateObjectUpdateDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Certificate objects updated
+  /v1/certificateGroups:
     get:
       tags:
       - Certificate Group API
@@ -437,6 +391,12 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: list of available Group
           content:
@@ -447,12 +407,6 @@ paths:
                   $ref: '#/components/schemas/GroupDto'
         "404":
           description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
           content:
             application/json:
               schema:
@@ -471,29 +425,29 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "201":
-          description: Group created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "201":
+          description: Group created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
     delete:
       tags:
       - Certificate Group API
-      summary: Remove multiple Groups
-      operationId: bulkRemoveGroup
+      summary: Delete multiple Groups
+      operationId: bulkDeleteGroup
       requestBody:
         description: Group UUIDs
         content:
@@ -507,194 +461,23 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
-          description: Groups removed
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/upload:
-    post:
-      tags:
-      - Certificate Inventory API
-      summary: Upload a new Certificate
-      operationId: upload
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UploadCertificateRequestDto'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "201":
-          description: Certificate uploaded
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-  /v1/certificate/delete:
-    post:
-      tags:
-      - Certificate Inventory API
-      summary: Delete multiple certificates
-      description: "In this operation, when the list of Certificate UUIDs are provided\
-        \ and the filter is left as null or undefined, then the change will be applied\
-        \ only to the list of Certificate UUIDs provided. When the filter is provided\
-        \ in the request, the list of UUIDs will be ignored and the change will be\
-        \ applied for the all the certificates that matches the filter criteria. To\
-        \ apply this change for all the Certificates in the inventory, provide an\
-        \ empty array \"[]\" for the value of \"filters\" in the request body"
-      operationId: bulkRemoveCertificate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RemoveCertificateDto'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificates deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BulkOperationResponse'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/compliance:
-    post:
-      tags:
-      - Certificate Inventory API
-      summary: Initiate Certificate Compliance Check
-      operationId: checkCompliance
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CertificateComplianceCheckDto'
-        required: true
-      responses:
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Compliance check initiated
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate:
-    post:
-      tags:
-      - Certificate Inventory API
-      summary: List Certificates
-      operationId: listCertificate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchRequestDto'
-        required: true
-      responses:
-        "200":
-          description: List of all the certificates
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CertificateResponseDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/{uuid}/history:
-    get:
-      tags:
-      - Certificate Inventory API
-      summary: Get Certificate event history
-      operationId: getCertificateEventHistory
-      parameters:
-      - name: uuid
-        in: path
-        description: Certificate UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate event history retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CertificateEventHistoryDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/{uuid}:
+          description: Groups deleted
+  /v1/certificates/{uuid}:
     get:
       tags:
       - Certificate Inventory API
@@ -716,14 +499,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -731,8 +514,73 @@ paths:
     delete:
       tags:
       - Certificate Inventory API
-      summary: Remove a certificate
-      operationId: removeCertificate
+      summary: Delete a certificate
+      operationId: deleteCertificate
+      parameters:
+      - name: uuid
+        in: path
+        description: Certificate UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Certificate deleted
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    patch:
+      tags:
+      - Certificate Inventory API
+      summary: Update Certificate Objects
+      operationId: updateCertificateObjects
+      parameters:
+      - name: uuid
+        in: path
+        description: Certificate UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CertificateUpdateObjectsDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Certificate objects updated
+  /v1/certificates/{uuid}/history:
+    get:
+      tags:
+      - Certificate Inventory API
+      summary: Get Certificate event history
+      operationId: getCertificateEventHistory
       parameters:
       - name: uuid
         in: path
@@ -743,21 +591,27 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "204":
-          description: Certificate deleted
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/{certificateUuid}/locations:
+        "200":
+          description: Certificate event history retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CertificateEventHistoryDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/certificates/{certificateUuid}/locations:
     get:
       tags:
       - Certificate Inventory API
@@ -771,8 +625,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Locations retrieved
           content:
@@ -781,27 +633,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LocationDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/certificate/search:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/certificates/search:
     get:
       tags:
       - Certificate Inventory API
       summary: Get Certificate searchable fields information
       operationId: getSearchableFieldInformation
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Certificate searchable field information retrieved
           content:
@@ -810,14 +662,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SearchFieldDataDto'
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -833,39 +687,54 @@ components:
           type: string
           description: Error message detail
           example: Error message
-    CertificateUpdateRAProfileDto:
+    GroupRequestDto:
       required:
-      - raProfileUuid
+      - name
       type: object
       properties:
-        raProfileUuid:
+        name:
           type: string
-          description: RA Profile UUID
-    CertificateOwnerRequestDto:
+          description: Name of the Certificate Group
+        description:
+          type: string
+          description: Description of the Certificate Group
+    GroupDto:
       required:
-      - owner
+      - name
+      - uuid
       type: object
       properties:
-        owner:
+        uuid:
           type: string
-          description: Owner of the certificate
-    CertificateUpdateGroupDto:
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the Certificate Group
+    UploadCertificateRequestDto:
       required:
-      - groupUuid
+      - certificate
       type: object
       properties:
-        groupUuid:
+        certificate:
           type: string
-          description: Group UUID
-    MultipleRAProfileUpdateDto:
+          description: Base64 Content of the Certificate
+    UuidDto:
       required:
       - uuid
       type: object
       properties:
         uuid:
           type: string
-          description: UUID of the RA Profile
-        certificateUuids:
+          description: Object identifier
+    RemoveCertificateDto:
+      type: object
+      properties:
+        uuids:
           type: array
           description: List of Certificate UUIDs
           items:
@@ -933,102 +802,6 @@ components:
           type: object
           description: Value to match
       description: Certificate filter input
-    CertificateOwnerBulkUpdateDto:
-      required:
-      - owner
-      type: object
-      properties:
-        owner:
-          type: string
-          description: Owner of the Certificates
-        certificateUuids:
-          type: array
-          description: List of Certificate UUIDs
-          items:
-            type: string
-            description: List of Certificate UUIDs
-        filters:
-          type: array
-          description: Certificate filter input
-          items:
-            $ref: '#/components/schemas/SearchFilterRequestDto'
-    MultipleGroupUpdateDto:
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Group
-        certificateUuids:
-          type: array
-          description: List of Certificate UUIDs
-          items:
-            type: string
-            description: List of Certificate UUIDs
-        filters:
-          type: array
-          description: Certificate filter input
-          items:
-            $ref: '#/components/schemas/SearchFilterRequestDto'
-    GroupRequestDto:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the Certificate Group
-        description:
-          type: string
-          description: Description of the Certificate Group
-    GroupDto:
-      required:
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Certificate Group
-    UuidDto:
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-    UploadCertificateRequestDto:
-      required:
-      - certificate
-      type: object
-      properties:
-        certificate:
-          type: string
-          description: Base64 Content of the Certificate
-    RemoveCertificateDto:
-      type: object
-      properties:
-        uuids:
-          type: array
-          description: List of Certificate UUIDs
-          items:
-            type: string
-            description: List of Certificate UUIDs
-        filters:
-          type: array
-          description: Certificate filter input
-          items:
-            $ref: '#/components/schemas/SearchFilterRequestDto'
     BulkOperationResponse:
       required:
       - failedItem
@@ -1448,7 +1221,45 @@ components:
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
+        authorityInstanceUuid:
+          type: string
+          description: Authority Instance UUID
       description: RA Profile associated to the Certificate
+    CertificateUpdateObjectsDto:
+      type: object
+      properties:
+        raProfileUuid:
+          type: string
+          description: RA Profile UUID
+        groupUuid:
+          type: string
+          description: Group UUID
+        owner:
+          type: string
+          description: Certificate Owner
+    MultipleCertificateObjectUpdateDto:
+      type: object
+      properties:
+        raProfileUuid:
+          type: string
+          description: UUID of the RA Profile
+        groupUuid:
+          type: string
+          description: UUID of the Certificate Group
+        owner:
+          type: string
+          description: Certificate Owner
+        certificateUuids:
+          type: array
+          description: List of Certificate UUIDs
+          items:
+            type: string
+            description: List of Certificate UUIDs
+        filters:
+          type: array
+          description: Certificate filter input
+          items:
+            $ref: '#/components/schemas/SearchFilterRequestDto'
     CertificateValidationDto:
       type: object
       properties:
