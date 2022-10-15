@@ -21,7 +21,156 @@ tags:
 - name: Authority Management API
   description: Authority Management API
 paths:
-  /v1/authorities/{uuid}/raProfile/attributes/validate:
+  /v1/authorities/{uuid}:
+    get:
+      tags:
+      - Authority Management API
+      summary: Details of an Authority instance
+      operationId: getAuthorityInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Authority instance details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorityInstanceDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    put:
+      tags:
+      - Authority Management API
+      summary: Edit Authority instance
+      operationId: editAuthorityInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority instance UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorityInstanceUpdateRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Authority instance details updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorityInstanceDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    delete:
+      tags:
+      - Authority Management API
+      summary: Delete Authority instance
+      operationId: deleteAuthorityInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Authority instance deleted
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorities/{uuid}/attributes/raProfile/validate:
     post:
       tags:
       - Authority Management API
@@ -43,66 +192,14 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attribute information validated
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-  /v1/authorities/{uuid}:
-    get:
-      tags:
-      - Authority Management API
-      summary: Details of an Authority instance
-      operationId: getAuthorityInstance
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      responses:
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthorityInstanceDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -117,109 +214,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-    post:
-      tags:
-      - Authority Management API
-      summary: Update Authority instance
-      operationId: updateAuthorityInstance
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthorityInstanceUpdateRequestDto'
-        required: true
-      responses:
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance details updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthorityInstanceDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-    delete:
-      tags:
-      - Authority Management API
-      summary: Remove Authority instance
-      operationId: removeAuthorityInstance
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: Authority instance deleted
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorities:
     get:
       tags:
@@ -229,12 +229,6 @@ paths:
       responses:
         "503":
           description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -261,6 +255,12 @@ paths:
                   $ref: '#/components/schemas/AuthorityInstanceDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Authority Management API
@@ -273,31 +273,8 @@ paths:
               $ref: '#/components/schemas/AuthorityInstanceRequestDto'
         required: true
       responses:
-        "201":
-          description: New Authority instance added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "503":
           description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -314,13 +291,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "201":
+          description: New Authority instance added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Authority Management API
       summary: Delete multiple Authority instances
-      operationId: bulkRemoveAuthorityInstance
+      operationId: bulkDeleteAuthorityInstance
       requestBody:
         description: Authority Instance UUIDs
         content:
@@ -334,12 +334,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authority instances deleted
           content:
@@ -348,20 +342,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BulkActionMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -377,9 +359,156 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-  /v1/authorities/{uuid}/raProfile/attributes:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorities/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles:
+    get:
+      tags:
+      - Authority Management API
+      operationId: listCertificateProfiles
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority instance UUID
+        required: true
+        schema:
+          type: string
+      - name: endEntityProfileId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorities/{uuid}/endentityprofiles/{endEntityProfileId}/cas:
+    get:
+      tags:
+      - Authority Management API
+      operationId: listCAsInProfile
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority instance UUID
+        required: true
+        schema:
+          type: string
+      - name: endEntityProfileId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorities/{uuid}/endentityprofiles:
+    get:
+      tags:
+      - Authority Management API
+      operationId: listEntityProfiles
+      parameters:
+      - name: uuid
+        in: path
+        description: Authority instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/authorities/{uuid}/attributes/raProfile:
     get:
       tags:
       - Authority Management API
@@ -395,12 +524,6 @@ paths:
       responses:
         "503":
           description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -427,141 +550,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-  /v1/authorities/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles:
-    get:
-      tags:
-      - Authority Management API
-      operationId: listCertificateProfiles
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      - name: endEntityProfileId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-  /v1/authorities/{uuid}/endentityprofiles/{endEntityProfileId}/cas:
-    get:
-      tags:
-      - Authority Management API
-      operationId: listCAsInProfile
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      - name: endEntityProfileId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-  /v1/authorities/{uuid}/endentityprofiles:
-    get:
-      tags:
-      - Authority Management API
-      operationId: listEntityProfiles
-      parameters:
-      - name: uuid
-        in: path
-        description: Authority instance UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorities/force:
     delete:
       tags:
       - Authority Management API
       summary: Force delete multiple Authority instances
-      operationId: bulkForceRemoveAuthorityInstance
+      operationId: forceDeleteAuthorityInstances
       requestBody:
         content:
           application/json:
@@ -577,12 +577,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "400":
           description: Bad Request
           content:
@@ -595,17 +600,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessible Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+        "500":
+          description: Internal Server Error
         "200":
           description: Authority instances forced to delete
           content:
@@ -614,10 +610,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BulkActionMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
+    AuthorityInstanceUpdateRequestDto:
+      required:
+      - attributes
+      type: object
+      properties:
+        attributes:
+          type: array
+          description: List of Authority instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
     RequestAttributeDto:
       required:
       - content
@@ -635,6 +645,7 @@ components:
         content:
           type: object
           description: Content of the Attribute
+      description: List of Authority instance Attributes
     ErrorMessageDto:
       required:
       - message
@@ -644,16 +655,6 @@ components:
           type: string
           description: Error message detail
           example: Error message
-    AuthorityInstanceUpdateRequestDto:
-      required:
-      - attributes
-      type: object
-      properties:
-        attributes:
-          type: array
-          description: List of Authority instance Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
     AuthorityInstanceDto:
       required:
       - attributes

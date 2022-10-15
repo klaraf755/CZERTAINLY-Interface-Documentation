@@ -21,13 +21,19 @@ tags:
 - name: v2 Client Operations API
   description: v2 Client Operations API
 paths:
-  /v2/operations/{raProfileUuid}/{certificateUuid}/revoke:
+  /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/revoke:
     post:
       tags:
       - v2 Client Operations API
       summary: Revoke Certificate
       operationId: revokeCertificate
       parameters:
+      - name: authorityUuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
       - name: raProfileUuid
         in: path
         description: RA Profile UUID
@@ -47,6 +53,16 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRevocationDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Certificate revoked
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
@@ -65,23 +81,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Certificate revoked
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileUuid}/{certificateUuid}/renew:
+  /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/renew:
     post:
       tags:
       - v2 Client Operations API
       summary: Renew Certificate
       operationId: renewCertificate
       parameters:
+      - name: authorityUuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
       - name: raProfileUuid
         in: path
         description: RA Profile UUID
@@ -101,28 +113,16 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRenewRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -144,36 +144,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-  /v2/operations/{raProfileUuid}/revoke/attributes/validate:
-    post:
-      tags:
-      - v2 Client Operations API
-      summary: Validate revocation Attributes
-      operationId: validateRevokeCertificateAttributes
-      parameters:
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/RequestAttributeDto'
-        required: true
-      responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes validated
         "400":
           description: Bad Request
           content:
@@ -186,82 +156,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileUuid}/issue/attributes/validate:
-    post:
-      tags:
-      - v2 Client Operations API
-      summary: Validate issue Certificate Attributes
-      operationId: validateIssueCertificateAttributes
-      parameters:
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/RequestAttributeDto'
-        required: true
-      responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-  /v2/operations/{raProfileUuid}/issue:
+  /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates:
     post:
       tags:
       - v2 Client Operations API
       summary: Issue Certificate
       operationId: issueCertificate
       parameters:
+      - name: authorityUuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
       - name: raProfileUuid
         in: path
         description: RA Profile UUID
@@ -275,6 +182,87 @@ paths:
               $ref: '#/components/schemas/ClientCertificateSignRequestDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke/validate:
+    post:
+      tags:
+      - v2 Client Operations API
+      summary: Validate revocation Attributes
+      operationId: validateRevokeCertificateAttributes
+      parameters:
+      - name: authorityUuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
+        "200":
+          description: Attributes validated
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
@@ -293,16 +281,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+  /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue/validate:
+    post:
+      tags:
+      - v2 Client Operations API
+      summary: Validate issue Certificate Attributes
+      operationId: validateIssueCertificateAttributes
+      parameters:
+      - name: authorityUuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestAttributeDto'
+        required: true
+      responses:
         "200":
-          description: Certificate issued
+          description: Attributes validated
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "404":
-          description: Not Found
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -318,26 +336,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-  /v2/operations/{raProfileUuid}/revoke/attributes:
-    get:
-      tags:
-      - v2 Client Operations API
-      summary: Get revocation Attributes
-      operationId: listRevokeCertificateAttributes
-      parameters:
-      - name: raProfileUuid
-        in: path
-        description: RA Profile UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -346,6 +344,32 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke:
+    get:
+      tags:
+      - v2 Client Operations API
+      summary: Get revocation Attributes
+      operationId: listRevokeCertificateAttributes
+      parameters:
+      - name: authorityUuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -360,19 +384,37 @@ paths:
                   $ref: '#/components/schemas/AttributeDefinition'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v2/operations/{raProfileUuid}/issue/attributes:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue:
     get:
       tags:
       - v2 Client Operations API
       summary: Get issue Certificate Attributes
       operationId: listIssueCertificateAttributes
       parameters:
+      - name: authorityUuid
+        in: path
+        description: Authority Instance UUID
+        required: true
+        schema:
+          type: string
       - name: raProfileUuid
         in: path
         description: RA Profile UUID
@@ -388,28 +430,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -425,6 +455,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     ClientCertificateRevocationDto:

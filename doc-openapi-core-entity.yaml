@@ -21,7 +21,156 @@ tags:
 - name: Entity Management API
   description: Entity Management API
 paths:
-  /v1/entities/{entityUuid}/location/attributes/validate:
+  /v1/entities/{entityUuid}:
+    get:
+      tags:
+      - Entity Management API
+      summary: Get Entity instance details
+      operationId: getEntityInstance
+      parameters:
+      - name: entityUuid
+        in: path
+        description: Entity instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Authority instance details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityInstanceDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - Entity Management API
+      summary: Edit Entity instance
+      operationId: editEntityInstance
+      parameters:
+      - name: entityUuid
+        in: path
+        description: Entity instance UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityInstanceUpdateRequestDto'
+        required: true
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Authority instance details updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityInstanceDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+      - Entity Management API
+      summary: Delete Entity instance
+      operationId: deleteEntityInstance
+      parameters:
+      - name: entityUuid
+        in: path
+        description: Entity instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Entity instance deleted
+  /v1/entities/{entityUuid}/attributes/location/validate:
     post:
       tags:
       - Entity Management API
@@ -45,26 +194,8 @@ paths:
       responses:
         "200":
           description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             '*/*':
               schema:
@@ -80,6 +211,24 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1/entities:
@@ -89,6 +238,12 @@ paths:
       summary: List Entity instances
       operationId: listEntityInstances
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of Entity instances
           content:
@@ -97,6 +252,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/EntityInstanceDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -105,18 +266,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -141,26 +290,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -176,28 +307,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-  /v1/entities/{entityUuid}:
-    get:
-      tags:
-      - Entity Management API
-      summary: Get Entity instance details
-      operationId: getEntityInstance
-      parameters:
-      - name: entityUuid
-        in: path
-        description: Entity instance UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Authority instance details retrieved
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EntityInstanceDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -210,124 +325,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-    delete:
-      tags:
-      - Entity Management API
-      summary: Remove Entity instance
-      operationId: removeEntityInstance
-      parameters:
-      - name: entityUuid
-        in: path
-        description: Entity instance UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Entity instance deleted
-        "500":
-          description: Internal Server Error
-    patch:
-      tags:
-      - Entity Management API
-      summary: Update Entity instance
-      operationId: updateEntityInstance
-      parameters:
-      - name: entityUuid
-        in: path
-        description: Entity instance UUID
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EntityInstanceUpdateRequestDto'
-        required: true
-      responses:
-        "200":
-          description: Authority instance details updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EntityInstanceDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-  /v1/entities/{entityUuid}/location/attributes:
+  /v1/entities/{entityUuid}/attributes/location:
     get:
       tags:
       - Entity Management API
@@ -341,6 +341,12 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes retrieved
           content:
@@ -349,6 +355,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinition'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -361,22 +373,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
 components:
   schemas:
+    EntityInstanceUpdateRequestDto:
+      required:
+      - attributes
+      type: object
+      properties:
+        attributes:
+          type: array
+          description: List of Entity instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
     RequestAttributeDto:
       required:
       - content
@@ -394,6 +404,7 @@ components:
         content:
           type: object
           description: Content of the Attribute
+      description: List of Entity instance Attributes
     ErrorMessageDto:
       required:
       - message
@@ -403,47 +414,6 @@ components:
           type: string
           description: Error message detail
           example: Error message
-    EntityInstanceRequestDto:
-      required:
-      - attributes
-      - connectorUuid
-      - kind
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Entity instance name
-        attributes:
-          type: array
-          description: List of Entity instance Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        connectorUuid:
-          type: string
-          description: UUID of Entity Provider
-        kind:
-          type: string
-          description: Entity instance Kind
-          example: "Keystore, etc."
-    UuidDto:
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-    EntityInstanceUpdateRequestDto:
-      required:
-      - attributes
-      type: object
-      properties:
-        attributes:
-          type: array
-          description: List of Entity instance Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
     EntityInstanceDto:
       required:
       - attributes
@@ -520,6 +490,37 @@ components:
           type: object
           description: Content of the Attribute
       description: List of Entity instance Attributes
+    EntityInstanceRequestDto:
+      required:
+      - attributes
+      - connectorUuid
+      - kind
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Entity instance name
+        attributes:
+          type: array
+          description: List of Entity instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        connectorUuid:
+          type: string
+          description: UUID of Entity Provider
+        kind:
+          type: string
+          description: Entity instance Kind
+          example: "Keystore, etc."
+    UuidDto:
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
     AttributeCallback:
       required:
       - callbackContext

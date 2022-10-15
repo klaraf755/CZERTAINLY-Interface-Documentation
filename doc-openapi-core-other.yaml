@@ -18,81 +18,18 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Authentication Management API
-  description: Authentication Management API
 - name: Statistics/Dashboard API
   description: Statistics/Dashboard API
 - name: Audit Log API
   description: Audit Log API
 paths:
-  /v1/auth/profile:
-    get:
-      tags:
-      - Authentication Management API
-      summary: Profile Authorization
-      operationId: profile
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Authenticate a user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthProfileDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    put:
-      tags:
-      - Authentication Management API
-      summary: Edit Profile Information
-      operationId: editProfile
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EditAuthProfileDto'
-        required: true
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Edit Profile
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/statistics:
     get:
       tags:
       - Statistics/Dashboard API
-      summary: Get Dashboard/Statictics Details
+      summary: Get Dashboard/Statistics Details
       operationId: getStatistics
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -101,25 +38,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatisticsDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/logs/statuses:
-    get:
-      tags:
-      - Audit Log API
-      summary: List Status
-      operationId: listOperationStatuses
-      responses:
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/auditLogs/statuses:
+    get:
+      tags:
+      - Audit Log API
+      summary: List Status
+      operationId: listOperationStatuses
+      responses:
         "200":
           description: List of audit log status
           content:
@@ -130,13 +67,19 @@ paths:
                   type: string
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/logs/purge:
+  /v1/auditLogs/purge:
     get:
       tags:
       - Audit Log API
@@ -156,21 +99,21 @@ paths:
       responses:
         "204":
           description: Audit logs purged
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/logs/operations:
+  /v1/auditLogs/operations:
     get:
       tags:
       - Audit Log API
@@ -185,33 +128,27 @@ paths:
                 type: array
                 items:
                   type: string
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/logs/objects:
+  /v1/auditLogs/objects:
     get:
       tags:
       - Audit Log API
       summary: List Audit Objects
       operationId: listObjects
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit Objects
           content:
@@ -222,13 +159,19 @@ paths:
                   type: string
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/logs/export:
+  /v1/auditLogs/export:
     get:
       tags:
       - Audit Log API
@@ -246,12 +189,6 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -261,13 +198,19 @@ paths:
               schema:
                 type: string
                 format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/logs:
+  /v1/auditLogs:
     get:
       tags:
       - Audit Log API
@@ -285,14 +228,14 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -307,18 +250,6 @@ paths:
                 $ref: '#/components/schemas/AuditLogResponseDto'
 components:
   schemas:
-    EditAuthProfileDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the User
-        surname:
-          type: string
-          description: Surname of the User
-        email:
-          type: string
-          description: Email Id of the User
     ErrorMessageDto:
       required:
       - message
@@ -740,30 +671,3 @@ components:
           description: Audit log items
           items:
             $ref: '#/components/schemas/AuditLogDto'
-    AuthProfileDto:
-      required:
-      - email
-      - name
-      - role
-      - surname
-      - username
-      type: object
-      properties:
-        username:
-          type: string
-          description: Username
-        name:
-          type: string
-          description: Name of the user
-        surname:
-          type: string
-          description: Surname of the user
-        role:
-          type: string
-          description: Role of User
-          enum:
-          - administrator
-          - superAdministrator
-        email:
-          type: string
-          description: Email address of the user
