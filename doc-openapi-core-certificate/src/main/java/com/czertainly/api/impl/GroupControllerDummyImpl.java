@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 public class GroupControllerDummyImpl implements GroupController {
-
     @Override
     public List<GroupDto> listGroups() {
         return null;
@@ -29,18 +28,17 @@ public class GroupControllerDummyImpl implements GroupController {
     }
 
     @Override
-    public GroupDto updateGroup(String uuid, GroupRequestDto request) throws NotFoundException {
+    public GroupDto editGroup(String uuid, GroupRequestDto request) throws NotFoundException {
         return null;
     }
 
     @Override
-    public void removeGroup(String uuid) throws NotFoundException {
+    public void deleteGroup(String uuid) throws NotFoundException {
 
     }
 
     @Override
-    public void bulkRemoveGroup(List<String> groupUuids) throws NotFoundException {
+    public void bulkDeleteGroup(List<String> groupUuids) throws NotFoundException {
 
     }
-
 }

@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 public class AcmeProfileControllerDummyImpl implements AcmeProfileController {
     @Override
-    public List<AcmeProfileListDto> listAcmeProfile() {
+    public List<AcmeProfileListDto> listAcmeProfiles() {
         return null;
     }
 
@@ -34,7 +34,7 @@ public class AcmeProfileControllerDummyImpl implements AcmeProfileController {
     }
 
     @Override
-    public AcmeProfileDto updateAcmeProfile(String uuid, AcmeProfileEditRequestDto request) throws ConnectorException {
+    public AcmeProfileDto editAcmeProfile(String uuid, AcmeProfileEditRequestDto request) throws ConnectorException {
         return null;
     }
 
@@ -69,7 +69,7 @@ public class AcmeProfileControllerDummyImpl implements AcmeProfileController {
     }
 
     @Override
-    public List<BulkActionMessageDto> bulkForceRemoveACMEProfiles(List<String> uuids) throws NotFoundException, ValidationException {
+    public List<BulkActionMessageDto> forceDeleteACMEProfiles(List<String> uuids) throws NotFoundException, ValidationException {
         return null;
     }
 

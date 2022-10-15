@@ -14,9 +14,8 @@ import java.util.List;
 
 @RestController
 public class DiscoveryControllerDummyImpl implements DiscoveryController {
-
     @Override
-    public List<DiscoveryHistoryDto> listDiscovery() {
+    public List<DiscoveryHistoryDto> listDiscoveries() {
         return null;
     }
 
@@ -31,13 +30,12 @@ public class DiscoveryControllerDummyImpl implements DiscoveryController {
     }
 
     @Override
-    public void removeDiscovery(String uuid) throws NotFoundException {
+    public void deleteDiscovery(String uuid) throws NotFoundException {
 
     }
 
     @Override
-    public void bulkRemoveDiscovery(List<String> discoveryUuids) throws NotFoundException {
+    public void bulkDeleteDiscovery(List<String> discoveryUuids) throws NotFoundException {
 
     }
-
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CallbackControllerDummyImpl implements CallbackController {
-
     @Override
     public Object callback(String uuid, String functionGroup, String kind, RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException {
         return null;
@@ -19,5 +18,4 @@ public class CallbackControllerDummyImpl implements CallbackController {
     public Object raProfileCallback(String authorityUuid, RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException {
         return null;
     }
-
 }

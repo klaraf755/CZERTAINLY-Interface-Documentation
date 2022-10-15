@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 public class AuditLogControllerDummyImpl implements AuditLogController {
-
     @Override
     public AuditLogResponseDto listAuditLogs(AuditLogFilter filter, Pageable pageable) {
         return null;

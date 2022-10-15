@@ -19,7 +19,6 @@ import java.util.List;
 
 @RestController
 public class AuthorityInstanceControllerDummyImpl implements AuthorityInstanceController {
-
     @Override
     public List<AuthorityInstanceDto> listAuthorityInstances() {
         return null;
@@ -36,12 +35,12 @@ public class AuthorityInstanceControllerDummyImpl implements AuthorityInstanceCo
     }
 
     @Override
-    public AuthorityInstanceDto updateAuthorityInstance(String uuid, AuthorityInstanceUpdateRequestDto request) throws NotFoundException, ConnectorException {
+    public AuthorityInstanceDto editAuthorityInstance(String uuid, AuthorityInstanceUpdateRequestDto request) throws NotFoundException, ConnectorException {
         return null;
     }
 
     @Override
-    public void removeAuthorityInstance(String uuid) throws NotFoundException, ConnectorException {
+    public void deleteAuthorityInstance(String uuid) throws NotFoundException, ConnectorException {
 
     }
 
@@ -71,12 +70,12 @@ public class AuthorityInstanceControllerDummyImpl implements AuthorityInstanceCo
     }
 
     @Override
-    public List<BulkActionMessageDto> bulkRemoveAuthorityInstance(List<String> uuids) throws NotFoundException, ConnectorException, ValidationException {
+    public List<BulkActionMessageDto> bulkDeleteAuthorityInstance(List<String> uuids) throws NotFoundException, ConnectorException, ValidationException {
         return null;
     }
 
     @Override
-    public List<BulkActionMessageDto> bulkForceRemoveAuthorityInstance(List<String> uuids) throws NotFoundException, ValidationException {
+    public List<BulkActionMessageDto> forceDeleteAuthorityInstances(List<String> uuids) throws NotFoundException, ValidationException {
         return null;
     }
 }

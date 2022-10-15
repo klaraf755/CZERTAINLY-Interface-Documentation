@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 public class AcmeRaProfileControllerDummyImpl implements AcmeRaProfileController {
-
     @Override
     public ResponseEntity<Directory> getDirectory(String raProfileName) throws NotFoundException, AcmeProblemDocumentException {
         return null;

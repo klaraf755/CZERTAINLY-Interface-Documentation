@@ -10,29 +10,28 @@ import java.util.List;
 
 @RestController
 public class AcmeAccountControllerDummyImpl implements AcmeAccountController {
-
     @Override
-    public List<AcmeAccountListResponseDto> listAcmeAccount() {
+    public List<AcmeAccountListResponseDto> listAcmeAccounts() {
         return null;
     }
 
     @Override
-    public AcmeAccountResponseDto getAcmeAccount(String uuid) throws NotFoundException {
+    public AcmeAccountResponseDto getAcmeAccount(String acmeProfileUuid, String acmeAccountUuid) throws NotFoundException {
         return null;
     }
 
     @Override
-    public void enableAcmeAccount(String uuid) throws NotFoundException {
+    public void enableAcmeAccount(String acmeProfileUuid, String acmeAccountUuid) throws NotFoundException {
 
     }
 
     @Override
-    public void disableAcmeAccount(String uuid) throws NotFoundException {
+    public void disableAcmeAccount(String acmeProfileUuid, String acmeAccountUuid) throws NotFoundException {
 
     }
 
     @Override
-    public void revokeAcmeAccount(String uuid) throws NotFoundException {
+    public void revokeAcmeAccount(String acmeProfileUuid, String acmeAccountUuid) throws NotFoundException {
 
     }
 
@@ -50,5 +49,4 @@ public class AcmeAccountControllerDummyImpl implements AcmeAccountController {
     public void bulkRevokeAcmeAccount(List<String> uuids) throws NotFoundException {
 
     }
-
 }

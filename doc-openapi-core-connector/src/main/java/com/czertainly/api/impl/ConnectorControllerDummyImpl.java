@@ -11,6 +11,7 @@ import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.HealthDto;
 import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
+import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,22 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.ConnectException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class ConnectorControllerDummyImpl implements ConnectorController {
-
     @Override
-    public List<ConnectorDto> listConnectors() {
-        return null;
-    }
-
-    @Override
-    public List<ConnectorDto> listConnectorsByFunctionGroup(FunctionGroupCode functionGroup) throws NotFoundException {
-        return null;
-    }
-
-    @Override
-    public List<ConnectorDto> listConnectors(FunctionGroupCode functionGroup, String kind) throws NotFoundException {
+    public List<ConnectorDto> listConnectors(Optional<FunctionGroupCode> functionGroup, Optional<String> kind, Optional<ConnectorStatus> status) throws NotFoundException {
         return null;
     }
 
@@ -48,12 +39,12 @@ public class ConnectorControllerDummyImpl implements ConnectorController {
     }
 
     @Override
-    public ConnectorDto updateConnector(String uuid, ConnectorUpdateRequestDto request) throws ConnectorException {
+    public ConnectorDto editConnector(String uuid, ConnectorUpdateRequestDto request) throws ConnectorException {
         return null;
     }
 
     @Override
-    public void removeConnector(String uuid) throws NotFoundException {
+    public void deleteConnector(String uuid) throws NotFoundException {
 
     }
 
@@ -103,12 +94,12 @@ public class ConnectorControllerDummyImpl implements ConnectorController {
     }
 
     @Override
-    public List<BulkActionMessageDto> bulkRemoveConnector(List<String> uuids) throws NotFoundException, ValidationException, ConnectorException {
+    public List<BulkActionMessageDto> bulkDeleteConnector(List<String> uuids) throws NotFoundException, ValidationException, ConnectorException {
         return null;
     }
 
     @Override
-    public List<BulkActionMessageDto> bulkForceRemoveConnector(List<String> uuids) throws NotFoundException, ValidationException {
+    public List<BulkActionMessageDto> forceDeleteConnector(List<String> uuids) throws NotFoundException, ValidationException {
         return null;
     }
 }

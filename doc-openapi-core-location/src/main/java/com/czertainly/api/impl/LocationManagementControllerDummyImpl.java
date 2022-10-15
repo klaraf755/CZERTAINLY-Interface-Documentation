@@ -1,6 +1,7 @@
 package com.czertainly.api.impl;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.core.web.LocationManagementController;
@@ -18,74 +19,73 @@ import java.util.Optional;
 
 @RestController
 public class LocationManagementControllerDummyImpl implements LocationManagementController {
-
     @Override
     public List<LocationDto> listLocations(Optional<Boolean> enabled) {
         return null;
     }
 
     @Override
-    public ResponseEntity<?> addLocation(AddLocationRequestDto request) throws NotFoundException, AlreadyExistException, LocationException {
+    public ResponseEntity<?> addLocation(String entityUuid, AddLocationRequestDto request) throws NotFoundException, AlreadyExistException, LocationException {
         return null;
     }
 
     @Override
-    public LocationDto getLocation(String locationUuid) throws NotFoundException {
+    public LocationDto getLocation(String entityUuid, String locationUuid) throws NotFoundException {
         return null;
     }
 
     @Override
-    public LocationDto editLocation(String locationUuid, EditLocationRequestDto request) throws NotFoundException, LocationException {
+    public LocationDto editLocation(String entityUuid, String locationUuid, EditLocationRequestDto request) throws NotFoundException, LocationException {
         return null;
     }
 
     @Override
-    public void removeLocation(String locationUuid) throws NotFoundException {
+    public void deleteLocation(String entityUuid, String locationUuid) throws NotFoundException {
 
     }
 
     @Override
-    public void disableLocation(String locationUuid) throws NotFoundException {
+    public void disableLocation(String entityUuid, String locationUuid) throws NotFoundException {
 
     }
 
     @Override
-    public void enableLocation(String locationUuid) throws NotFoundException {
+    public void enableLocation(String entityUuid, String locationUuid) throws NotFoundException {
 
     }
 
     @Override
-    public List<AttributeDefinition> listPushAttributes(String locationUuid) throws NotFoundException, LocationException {
+    public List<AttributeDefinition> listPushAttributes(String entityUuid, String locationUuid) throws NotFoundException, LocationException {
         return null;
     }
 
     @Override
-    public List<AttributeDefinition> listCsrAttributes(String locationUuid) throws NotFoundException, LocationException {
+    public List<AttributeDefinition> listCsrAttributes(String entityUuid, String locationUuid) throws NotFoundException, LocationException {
         return null;
     }
 
     @Override
-    public LocationDto pushCertificate(String locationUuid, String certificateUuid, PushToLocationRequestDto request) throws NotFoundException, LocationException {
+    public LocationDto pushCertificate(String entityUuid, String locationUuid, String certificateUuid, PushToLocationRequestDto request) throws NotFoundException, LocationException {
         return null;
     }
 
     @Override
-    public LocationDto removeCertificate(String locationUuid, String certificateUuid) throws NotFoundException, LocationException {
+    public LocationDto removeCertificate(String entityUuid, String locationUuid, String certificateUuid) throws NotFoundException, LocationException {
         return null;
     }
 
     @Override
-    public LocationDto issueCertificate(String locationUuid, IssueToLocationRequestDto request) throws NotFoundException, LocationException {
+    public LocationDto issueCertificate(String entityUuid, String locationUuid, IssueToLocationRequestDto request) throws ConnectorException, LocationException {
         return null;
     }
 
     @Override
-    public LocationDto updateLocationContent(String locationUuid) throws NotFoundException, LocationException {
+    public LocationDto updateLocationContent(String entityUuid, String locationUuid) throws NotFoundException, LocationException {
         return null;
     }
 
     @Override
-    public LocationDto renewCertificateInLocation(String locationUuid, String certificateUuid) throws NotFoundException, LocationException {
+    public LocationDto renewCertificateInLocation(String entityUuid, String locationUuid, String certificateUuid) throws ConnectorException, LocationException {
         return null;
     }
 }

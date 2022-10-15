@@ -21,9 +21,9 @@ public class OpenApiConfig {
 	ServletContext context;
 	
     @Bean
-    public GroupedOpenApi adminApis() {
+    public GroupedOpenApi authorityApis() {
         return GroupedOpenApi.builder()
-        		.group("core-admin")
+        		.group("core-auth")
                 .packagesToScan("com.czertainly.api.impl")
                 //.pathsToMatch("/v1/**")
                 .build()
@@ -31,15 +31,15 @@ public class OpenApiConfig {
     }
 
     @Bean
-    public OpenAPI adminOpenAPI() {
+    public OpenAPI authorityOpenAPI() {
         Map<String, Object> logoExtension = new HashMap<>();
         Map<String, Object> logoExtensionFields = new HashMap<>();
         logoExtensionFields.put("url", "images/czertainly_color_H.svg");
         logoExtension.put("x-logo", logoExtensionFields);
 
         return new OpenAPI()
-                .info(new Info().title("CZERTAINLY Administrator API")
-                        .description("REST API for managing Administrators in the platform")
+                .info(new Info().title("CZERTAINLY Auth API")
+                        .description("REST API for managing user, roles, and permissions in the platform")
                         //.version("1.0.1")
                         .license(new License()
                                 .name("MIT License")

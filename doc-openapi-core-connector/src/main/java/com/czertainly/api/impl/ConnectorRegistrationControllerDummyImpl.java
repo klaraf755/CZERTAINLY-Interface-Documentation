@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ConnectorRegistrationControllerDummyImpl implements ConnectorRegistrationController {
-
     @Override
     public UuidDto register(ConnectorRequestDto request) throws ConnectorException, AlreadyExistException {
         return null;
     }
-
 }

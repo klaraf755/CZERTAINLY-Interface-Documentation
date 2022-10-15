@@ -11,7 +11,6 @@ import java.util.Set;
 
 @RestController
 public class ConnectorAuthControllerDummyImpl implements ConnectorAuthController {
-
     @Override
     public Set<AuthType> getAuthenticationTypes() {
         return null;
@@ -56,5 +55,4 @@ public class ConnectorAuthControllerDummyImpl implements ConnectorAuthController
     public void validateJWTAuthAttributes(List<RequestAttributeDto> attributes) {
 
     }
-
 }

@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 public class AcmeControllerDummyImpl implements AcmeController {
-
     @Override
     public ResponseEntity<Directory> getDirectory(String acmeProfileName) throws NotFoundException, AcmeProblemDocumentException {
         return null;
@@ -88,5 +87,4 @@ public class AcmeControllerDummyImpl implements AcmeController {
     public ResponseEntity<?> revokeCertificate(String acmeProfileName, String jwsBody) throws AcmeProblemDocumentException, ConnectorException, CertificateException {
         return null;
     }
-
 }

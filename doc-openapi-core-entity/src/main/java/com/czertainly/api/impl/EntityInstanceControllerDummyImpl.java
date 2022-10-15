@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 public class EntityInstanceControllerDummyImpl implements EntityInstanceController {
-
     @Override
     public List<EntityInstanceDto> listEntityInstances() {
         return null;
@@ -32,12 +31,12 @@ public class EntityInstanceControllerDummyImpl implements EntityInstanceControll
     }
 
     @Override
-    public EntityInstanceDto updateEntityInstance(String entityUuid, EntityInstanceUpdateRequestDto request) throws ConnectorException {
+    public EntityInstanceDto editEntityInstance(String entityUuid, EntityInstanceUpdateRequestDto request) throws ConnectorException {
         return null;
     }
 
     @Override
-    public void removeEntityInstance(String entityUuid) throws ConnectorException {
+    public void deleteEntityInstance(String entityUuid) throws ConnectorException {
 
     }
 

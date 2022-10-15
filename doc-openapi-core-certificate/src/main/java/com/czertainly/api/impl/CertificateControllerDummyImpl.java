@@ -5,8 +5,6 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.CertificateController;
 import com.czertainly.api.model.client.certificate.*;
-import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
-import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequestDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
@@ -17,15 +15,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 public class CertificateControllerDummyImpl implements CertificateController {
-
     @Override
-    public CertificateResponseDto listCertificate(SearchRequestDto request) throws ValidationException {
+    public CertificateResponseDto listCertificates(SearchRequestDto request) throws ValidationException {
         return null;
     }
 
@@ -35,22 +33,12 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public void removeCertificate(String uuid) throws NotFoundException {
+    public void deleteCertificate(String uuid) throws NotFoundException {
 
     }
 
     @Override
-    public void updateRaProfile(String uuid, CertificateUpdateRAProfileDto request) throws NotFoundException {
-
-    }
-
-    @Override
-    public void updateCertificateGroup(String uuid, CertificateUpdateGroupDto request) throws NotFoundException {
-
-    }
-
-    @Override
-    public void updateOwner(String uuid, CertificateOwnerRequestDto request) throws NotFoundException {
+    public void updateCertificateObjects(String uuid, CertificateUpdateObjectsDto request) throws NotFoundException {
 
     }
 
@@ -60,27 +48,17 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public void bulkUpdateRaProfile(MultipleRAProfileUpdateDto request) throws NotFoundException {
+    public void bulkUpdateCertificateObjects(MultipleCertificateObjectUpdateDto request) throws NotFoundException {
 
     }
 
     @Override
-    public void bulkUpdateCertificateGroup(MultipleGroupUpdateDto request) throws NotFoundException {
-
-    }
-
-    @Override
-    public void bulkUpdateOwner(CertificateOwnerBulkUpdateDto request) throws NotFoundException {
-
-    }
-
-    @Override
-    public ResponseEntity<UuidDto> upload(UploadCertificateRequestDto request) throws AlreadyExistException, CertificateException {
+    public ResponseEntity<UuidDto> upload(UploadCertificateRequestDto request) throws AlreadyExistException, CertificateException, NoSuchAlgorithmException {
         return null;
     }
 
     @Override
-    public BulkOperationResponse bulkRemoveCertificate(RemoveCertificateDto request) throws NotFoundException {
+    public BulkOperationResponse bulkDeleteCertificate(RemoveCertificateDto request) throws NotFoundException {
         return null;
     }
 

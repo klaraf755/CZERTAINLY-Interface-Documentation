@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 public class CredentialControllerDummyImpl implements CredentialController {
-
     @Override
     public List<CredentialDto> listCredentials() {
         return null;
@@ -32,12 +31,12 @@ public class CredentialControllerDummyImpl implements CredentialController {
     }
 
     @Override
-    public CredentialDto updateCredential(String uuid, CredentialUpdateRequestDto request) throws NotFoundException, ConnectorException {
+    public CredentialDto editCredential(String uuid, CredentialUpdateRequestDto request) throws NotFoundException, ConnectorException {
         return null;
     }
 
     @Override
-    public void removeCredential(String uuid) throws NotFoundException {
+    public void deleteCredential(String uuid) throws NotFoundException {
 
     }
 
@@ -52,12 +51,7 @@ public class CredentialControllerDummyImpl implements CredentialController {
     }
 
     @Override
-    public void bulkRemoveCredential(List<String> uuids) throws NotFoundException, ValidationException {
-
-    }
-
-    @Override
-    public void bulkForceRemoveCredential(List<String> uuids) throws NotFoundException, ValidationException {
+    public void bulkDeleteCredential(List<String> uuids) throws NotFoundException, ValidationException {
 
     }
 }

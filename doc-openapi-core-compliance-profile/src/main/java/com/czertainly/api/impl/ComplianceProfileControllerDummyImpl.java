@@ -19,7 +19,6 @@ import java.util.List;
 
 @RestController
 public class ComplianceProfileControllerDummyImpl implements ComplianceProfileController {
-
     @Override
     public List<ComplianceRulesListResponseDto> getComplianceRules(String complianceProviderUuid, String kind, List<CertificateType> certificateType) throws NotFoundException {
         return null;
@@ -46,8 +45,8 @@ public class ComplianceProfileControllerDummyImpl implements ComplianceProfileCo
     }
 
     @Override
-    public void addRule(String uuid, ComplianceRuleAdditionRequestDto request) throws AlreadyExistException, NotFoundException, ValidationException {
-
+    public ComplianceProfileRuleDto addRule(String uuid, ComplianceRuleAdditionRequestDto request) throws AlreadyExistException, NotFoundException, ValidationException {
+        return null;
     }
 
     @Override
@@ -66,7 +65,7 @@ public class ComplianceProfileControllerDummyImpl implements ComplianceProfileCo
     }
 
     @Override
-    public void removeComplianceProfile(String uuid) throws NotFoundException {
+    public void deleteComplianceProfile(String uuid) throws NotFoundException {
 
     }
 
@@ -76,27 +75,27 @@ public class ComplianceProfileControllerDummyImpl implements ComplianceProfileCo
     }
 
     @Override
-    public List<BulkActionMessageDto> bulkRemoveComplianceProfiles(List<String> uuids) throws NotFoundException, ValidationException {
+    public List<BulkActionMessageDto> bulkDeleteComplianceProfiles(List<String> uuids) throws NotFoundException, ValidationException {
         return null;
     }
 
     @Override
-    public List<BulkActionMessageDto> bulkForceRemoveComplianceProfiles(List<String> uuids) throws NotFoundException, ValidationException {
+    public List<BulkActionMessageDto> forceDeleteComplianceProfiles(List<String> uuids) throws NotFoundException, ValidationException {
         return null;
     }
 
     @Override
-    public void associateProfiles(String uuid, RaProfileAssociationRequestDto raProfiles) throws NotFoundException, ConnectorException {
+    public void associateProfiles(String uuid, RaProfileAssociationRequestDto raProfiles) throws ConnectorException {
 
     }
 
     @Override
-    public void disassociateProfiles(String uuid, RaProfileAssociationRequestDto raProfiles) throws NotFoundException, ConnectorException {
+    public void disassociateProfiles(String uuid, RaProfileAssociationRequestDto raProfiles) throws ConnectorException {
 
     }
 
     @Override
-    public void checkCompliance(ComplianceProfileComplianceCheckDto request) throws NotFoundException {
+    public void checkCompliance(List<String> uuids) throws NotFoundException {
 
     }
 }

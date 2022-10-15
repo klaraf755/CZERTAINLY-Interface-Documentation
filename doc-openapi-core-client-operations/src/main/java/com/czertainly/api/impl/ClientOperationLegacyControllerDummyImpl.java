@@ -7,14 +7,14 @@ import com.czertainly.api.interfaces.core.client.ClientOperationController;
 import com.czertainly.api.model.client.authority.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
 
 @RestController
 public class ClientOperationLegacyControllerDummyImpl implements ClientOperationController {
-
     @Override
-    public ClientCertificateSignResponseDto issueCertificate(String raProfileName, ClientCertificateSignRequestDto request) throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException {
+    public ClientCertificateSignResponseDto issueCertificate(String raProfileName, ClientCertificateSignRequestDto request) throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException, NoSuchAlgorithmException {
         return null;
     }
 
@@ -52,5 +52,4 @@ public class ClientOperationLegacyControllerDummyImpl implements ClientOperation
     public void resetPassword(String raProfileName, String username) throws NotFoundException, ConnectorException {
 
     }
-
 }

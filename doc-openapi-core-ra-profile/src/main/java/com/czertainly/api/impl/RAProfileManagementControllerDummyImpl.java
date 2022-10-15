@@ -5,7 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.RAProfileManagementController;
-import com.czertainly.api.model.client.client.SimplifiedClientDto;
+import com.czertainly.api.model.client.compliance.SimplifiedComplianceProfileDto;
 import com.czertainly.api.model.client.raprofile.*;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
@@ -13,57 +13,57 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class RAProfileManagementControllerDummyImpl implements RAProfileManagementController {
-
     @Override
-    public List<RaProfileDto> listRaProfiles() {
+    public List<RaProfileDto> listRaProfiles(Optional<Boolean> enabled) {
         return null;
     }
 
     @Override
-    public List<RaProfileDto> listRaProfiles(Boolean isEnabled) {
+    public ResponseEntity<?> createRaProfile(String authorityUuid, AddRaProfileRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException {
         return null;
     }
 
     @Override
-    public ResponseEntity<?> addRaProfile(AddRaProfileRequestDto request) throws AlreadyExistException, ValidationException, NotFoundException, ConnectorException {
+    public RaProfileDto getRaProfile(String authorityUuid, String raProfileUuid) throws NotFoundException {
         return null;
     }
 
     @Override
-    public RaProfileDto getRaProfile(String uuid) throws NotFoundException {
+    public RaProfileDto getRaProfile(String raProfileUuid) throws NotFoundException {
         return null;
     }
 
     @Override
-    public RaProfileDto editRaProfile(String uuid, EditRaProfileRequestDto request) throws NotFoundException, ConnectorException {
+    public RaProfileDto editRaProfile(String authorityUuid, String raProfileUuid, EditRaProfileRequestDto request) throws ConnectorException {
         return null;
     }
 
     @Override
-    public void removeRaProfile(String uuid) throws NotFoundException {
+    public void deleteRaProfile(String authorityUuid, String raProfileUuid) throws NotFoundException {
 
     }
 
     @Override
-    public void disableRaProfile(String uuid) throws NotFoundException {
+    public void deleteRaProfile(String raProfileUuid) throws NotFoundException {
 
     }
 
     @Override
-    public void enableRaProfile(String uuid) throws NotFoundException {
+    public void disableRaProfile(String authorityUuid, String raProfileUuid) throws NotFoundException {
 
     }
 
     @Override
-    public List<SimplifiedClientDto> listClients(String uuid) throws NotFoundException {
-        return null;
+    public void enableRaProfile(String authorityUuid, String raProfileUuid) throws NotFoundException {
+
     }
 
     @Override
-    public void bulkRemoveRaProfile(List<String> uuids) throws NotFoundException, ValidationException {
+    public void bulkDeleteRaProfile(List<String> uuids) throws NotFoundException, ValidationException {
 
     }
 
@@ -78,33 +78,37 @@ public class RAProfileManagementControllerDummyImpl implements RAProfileManageme
     }
 
     @Override
-    public RaProfileAcmeDetailResponseDto getAcmeForRaProfile(String uuid) throws NotFoundException {
+    public RaProfileAcmeDetailResponseDto getAcmeForRaProfile(String authorityUuid, String raProfileUuid) throws NotFoundException {
         return null;
     }
 
     @Override
-    public RaProfileAcmeDetailResponseDto activateAcmeForRaProfile(String uuid, ActivateAcmeForRaProfileRequestDto request) throws ConnectorException {
+    public RaProfileAcmeDetailResponseDto activateAcmeForRaProfile(String authorityUuid, String raProfileUuid, String acmeProfileUuid, ActivateAcmeForRaProfileRequestDto request) throws ConnectorException {
         return null;
     }
 
     @Override
-    public void deactivateAcmeForRaProfile(String uuid) throws NotFoundException {
+    public void deactivateAcmeForRaProfile(String authorityUuid, String raProfileUuid) throws NotFoundException {
 
     }
 
     @Override
-    public List<AttributeDefinition> listRevokeCertificateAttributes(String uuid) throws NotFoundException, ConnectorException {
+    public List<AttributeDefinition> listRevokeCertificateAttributes(String authorityUuid, String raProfileUuid) throws ConnectorException {
         return null;
     }
 
     @Override
-    public List<AttributeDefinition> listIssueCertificateAttributes(String uuid) throws NotFoundException, ConnectorException {
+    public List<AttributeDefinition> listIssueCertificateAttributes(String authorityUuid, String raProfileUuid) throws ConnectorException {
         return null;
     }
 
     @Override
-    public void checkCompliance(RaProfileComplianceCheckDto request) throws NotFoundException {
+    public void checkCompliance(List<String> uuids) throws NotFoundException {
 
     }
 
+    @Override
+    public List<SimplifiedComplianceProfileDto> getAssociatedComplianceProfiles(String authorityUuid, String raProfileUuid) throws NotFoundException {
+        return null;
+    }
 }
