@@ -1,0 +1,676 @@
+openapi: 3.0.1
+info:
+  title: CZERTAINLY Legacy Client Operations API
+  description: REST API for Legacy Client Operations
+  contact:
+    name: CZERTAINLY
+    url: https://www.czertainly.com
+    email: getinfo@czertainly.com
+  license:
+    name: MIT License
+    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  x-logo:
+    url: images/czertainly_color_H.svg
+externalDocs:
+  description: CZERTAINLY Documentation
+  url: https://docs.czertainly.com
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Legacy Client Operations API
+  description: Client API for managing End Entities and Certificates
+paths:
+  /v1/operations/{raProfileName}/endentity/{username}/resetPassword:
+    put:
+      tags:
+      - Legacy Client Operations API
+      summary: Reset password for End Entity
+      operationId: resetPassword
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: End Entity password reset
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/operations/{raProfileName}/endentity/{username}:
+    get:
+      tags:
+      - Legacy Client Operations API
+      summary: Get End Entity information
+      operationId: getEndEntity
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientEndEntityDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    post:
+      tags:
+      - Legacy Client Operations API
+      summary: Edit End Entity
+      operationId: editEndEntity
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity edited
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    delete:
+      tags:
+      - Legacy Client Operations API
+      summary: Revoke all Certificates and delete End Entity
+      operationId: revokeAndDeleteEndEntity
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity revoked and deleted
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/operations/{raProfileName}/endentity:
+    get:
+      tags:
+      - Legacy Client Operations API
+      summary: List all End Entities
+      operationId: listEntities
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: List of entities retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientEndEntityDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    post:
+      tags:
+      - Legacy Client Operations API
+      summary: Add End Entity
+      operationId: addEndEntity
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity added
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/operations/{raProfileName}/certificate/revoke:
+    post:
+      tags:
+      - Legacy Client Operations API
+      summary: Revoke Certificate
+      operationId: revokeCertificate
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateRevocationDto'
+        required: true
+      responses:
+        "200":
+          description: Certificate revoked
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/operations/{raProfileName}/certificate/issue:
+    post:
+      tags:
+      - Legacy Client Operations API
+      summary: Issue Certificate
+      operationId: issueCertificate
+      parameters:
+      - name: raProfileName
+        in: path
+        description: RA Profile name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCertificateSignRequestDto'
+        required: true
+      responses:
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+components:
+  schemas:
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
+    ClientEditEndEntityRequestDto:
+      required:
+      - password
+      - raProfile
+      - status
+      - subjectDN
+      type: object
+      properties:
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        password:
+          type: string
+          description: End Entity password
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        status:
+          type: string
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
+    EndEntityExtendedInfoDto:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      description: End Entity extension data
+    RaProfileDto:
+      required:
+      - attributes
+      - authorityInstanceName
+      - authorityInstanceUuid
+      - enabled
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of RA Profile
+        authorityInstanceUuid:
+          type: string
+          description: UUID of Authority provider
+        authorityInstanceName:
+          type: string
+          description: Name of Authority instance
+        attributes:
+          type: array
+          description: List of RA Profiles attributes
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        enabledProtocols:
+          type: array
+          description: List of protocols enabled
+          items:
+            type: string
+            description: List of protocols enabled
+      description: RA profile related to End Entity
+    ResponseAttributeDto:
+      required:
+      - label
+      - name
+      - type
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - STRING
+          - INTEGER
+          - SECRET
+          - FILE
+          - BOOLEAN
+          - CREDENTIAL
+          - DATE
+          - FLOAT
+          - JSON
+          - TEXT
+          - TIME
+          - DATETIME
+        content:
+          type: object
+          description: Content of the Attribute
+      description: List of RA Profiles attributes
+    ClientAddEndEntityRequestDto:
+      required:
+      - password
+      - raProfile
+      - subjectDN
+      - username
+      type: object
+      properties:
+        raProfile:
+          $ref: '#/components/schemas/RaProfileDto'
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        password:
+          type: string
+          description: End Entity password
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        username:
+          type: string
+          description: End Entity name
+    ClientCertificateRevocationDto:
+      required:
+      - certificateSN
+      - issuerDN
+      - reason
+      type: object
+      properties:
+        certificateSN:
+          type: string
+          description: Certificate serial number
+        issuerDN:
+          type: string
+          description: Issuer domain name
+        reason:
+          type: string
+          description: Revocation reason
+          enum:
+          - UNSPECIFIED
+          - KEY_COMPROMISE
+          - CA_COMPROMISE
+          - AFFILIATION_CHANGED
+          - SUPERSEDED
+          - CESSATION_OF_OPERATION
+          - CERTIFICATE_HOLD
+          - REMOVE_FROM_CRL
+          - PRIVILEGES_WITHDRAWN
+          - AA_COMPROMISE
+    ClientCertificateSignRequestDto:
+      required:
+      - password
+      - pkcs10
+      - username
+      type: object
+      properties:
+        password:
+          type: string
+          description: End Entity password
+        pkcs10:
+          type: string
+          description: Certificate sign request (PKCS#10) encoded as Base64 string
+        username:
+          type: string
+          description: End Entity username
+    ClientCertificateSignResponseDto:
+      required:
+      - certificateData
+      type: object
+      properties:
+        certificateData:
+          type: string
+          description: Date of signed certificate
+    ClientEndEntityDto:
+      required:
+      - status
+      - subjectDN
+      - username
+      type: object
+      properties:
+        subjectDN:
+          type: string
+          description: End Entity subject domain name
+        email:
+          type: string
+          description: End Entity email
+        extensionData:
+          type: array
+          description: End Entity extension data
+          items:
+            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+        subjectAltName:
+          type: string
+          description: End Entity Subject alternative name
+        status:
+          type: string
+          description: End Entity Subject domain name
+          enum:
+          - NEW
+          - FAILED
+          - INITIALIZED
+          - IN_PROCESS
+          - GENERATED
+          - REVOKED
+          - HISTORICAL
+          - KEY_RECOVERY
+          - WAITING_FOR_ADD_APPROVAL
+        username:
+          type: string
+          description: End Entity name
