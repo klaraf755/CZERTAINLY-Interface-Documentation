@@ -37,10 +37,14 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -53,12 +57,8 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/CertificateValidationDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     put:
       tags:
       - Certificate Inventory API
@@ -72,22 +72,22 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate validation initiated
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate validation initiated
+        "500":
+          description: Internal Server Error
   /v1/certificates/validate:
     put:
       tags:
@@ -95,10 +95,6 @@ paths:
       summary: Validate Certificates of Status Unknown
       operationId: validateAllCertificate
       responses:
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Certificate Validation Initiated
         "400":
           description: Bad Request
           content:
@@ -111,6 +107,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Certificate Validation Initiated
+        "500":
+          description: Internal Server Error
   /v1/certificateGroups/{uuid}:
     get:
       tags:
@@ -124,14 +124,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Group details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GroupDto'
         "400":
           description: Bad Request
           content:
@@ -144,6 +136,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Group details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDto'
+        "500":
+          description: Internal Server Error
     put:
       tags:
       - Certificate Group API
@@ -163,14 +163,6 @@ paths:
               $ref: '#/components/schemas/GroupRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Group updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GroupDto'
         "400":
           description: Bad Request
           content:
@@ -183,6 +175,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Group updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Certificate Group API
@@ -196,22 +196,22 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Group deleted
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Group deleted
+        "500":
+          description: Internal Server Error
   /v1/certificates/upload:
     post:
       tags:
@@ -225,8 +225,6 @@ paths:
               $ref: '#/components/schemas/UploadCertificateRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -245,6 +243,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
+        "500":
+          description: Internal Server Error
   /v1/certificates/delete:
     post:
       tags:
@@ -265,26 +265,26 @@ paths:
               $ref: '#/components/schemas/RemoveCertificateDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificates deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BulkOperationResponse'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Certificates deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkOperationResponse'
   /v1/certificates/compliance:
     post:
       tags:
@@ -298,10 +298,6 @@ paths:
               $ref: '#/components/schemas/CertificateComplianceCheckDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Compliance check initiated
         "400":
           description: Bad Request
           content:
@@ -314,6 +310,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Compliance check initiated
+        "500":
+          description: Internal Server Error
   /v1/certificates:
     post:
       tags:
@@ -327,8 +327,6 @@ paths:
               $ref: '#/components/schemas/SearchRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: List of all the certificates
           content:
@@ -347,6 +345,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     patch:
       tags:
       - Certificate Inventory API
@@ -366,8 +366,6 @@ paths:
               $ref: '#/components/schemas/MultipleCertificateObjectUpdateDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -380,6 +378,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Certificate objects updated
   /v1/certificateGroups:
@@ -389,10 +389,14 @@ paths:
       summary: List Groups
       operationId: listGroups
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -405,12 +409,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GroupDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - Certificate Group API
@@ -423,10 +423,14 @@ paths:
               $ref: '#/components/schemas/GroupRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -437,12 +441,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Certificate Group API
@@ -461,22 +461,22 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Groups deleted
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Groups deleted
   /v1/certificates/{uuid}:
     get:
       tags:
@@ -491,10 +491,14 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -505,12 +509,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Certificate Inventory API
@@ -524,10 +524,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Certificate deleted
         "400":
           description: Bad Request
           content:
@@ -540,6 +536,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Certificate deleted
+        "500":
+          description: Internal Server Error
     patch:
       tags:
       - Certificate Inventory API
@@ -559,8 +559,6 @@ paths:
               $ref: '#/components/schemas/CertificateUpdateObjectsDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -573,6 +571,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Certificate objects updated
   /v1/certificates/{uuid}/history:
@@ -589,10 +589,14 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -605,12 +609,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CertificateEventHistoryDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificates/{certificateUuid}/locations:
     get:
       tags:
@@ -625,10 +625,14 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -641,12 +645,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LocationDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/certificates/search:
     get:
       tags:
@@ -654,16 +654,6 @@ paths:
       summary: Get Certificate searchable fields information
       operationId: getSearchableFieldInformation
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate searchable field information retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SearchFieldDataDto'
         "400":
           description: Bad Request
           content:
@@ -676,6 +666,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate searchable field information retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchFieldDataDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     ErrorMessageDto:

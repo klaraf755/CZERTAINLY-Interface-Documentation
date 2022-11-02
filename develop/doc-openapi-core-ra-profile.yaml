@@ -59,18 +59,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: RA Profile details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
     put:
@@ -98,6 +98,12 @@ paths:
               $ref: '#/components/schemas/EditRaProfileRequestDto'
         required: true
       responses:
+        "204":
+          description: RA Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaProfileDto'
         "400":
           description: Bad Request
           content:
@@ -110,12 +116,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profile updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RaProfileDto'
         "404":
           description: Not Found
           content:
@@ -160,6 +160,8 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: RA Profile deleted
         "400":
           description: Bad Request
           content:
@@ -172,8 +174,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profile deleted
         "404":
           description: Not Found
           content:
@@ -207,6 +207,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "204":
+          description: Compliance check initiated
         "400":
           description: Bad Request
           content:
@@ -231,8 +233,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Compliance check initiated
         "500":
           description: Internal Server Error
   /v1/authorities/{authorityUuid}/raProfiles:
@@ -273,12 +273,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "201":
-          description: RA Profile added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
         "503":
           description: Connector Communication Error
           content:
@@ -298,6 +292,12 @@ paths:
               - Error Message 2
         "500":
           description: Internal Server Error
+        "201":
+          description: RA Profile added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
   /v1/raProfiles/enable:
     patch:
       tags:
@@ -317,6 +317,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "204":
+          description: RA Profiles enabled
         "400":
           description: Bad Request
           content:
@@ -329,8 +331,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profiles enabled
         "404":
           description: Not Found
           content:
@@ -364,6 +364,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "204":
+          description: RA Profiles disabled
         "400":
           description: Bad Request
           content:
@@ -376,8 +378,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profiles disabled
         "404":
           description: Not Found
           content:
@@ -412,6 +412,8 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: RA Profile enabled
         "400":
           description: Bad Request
           content:
@@ -436,8 +438,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profile enabled
         "500":
           description: Internal Server Error
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/disable:
@@ -460,6 +460,8 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: RA Profile disabled
         "400":
           description: Bad Request
           content:
@@ -484,8 +486,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profile disabled
         "500":
           description: Internal Server Error
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/deactivate:
@@ -508,6 +508,8 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: ACME deactivated
         "400":
           description: Bad Request
           content:
@@ -543,8 +545,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "204":
-          description: ACME deactivated
         "500":
           description: Internal Server Error
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/activate/{acmeProfileUuid}:
@@ -591,6 +591,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaProfileAcmeDetailResponseDto'
         "404":
           description: Not Found
           content:
@@ -614,12 +620,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "204":
-          description: ACME activated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RaProfileAcmeDetailResponseDto'
         "500":
           description: Internal Server Error
   /v1/raProfiles/{raProfileUuid}:
@@ -654,18 +654,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: RA Profile details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
     delete:
@@ -681,6 +681,8 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: RA Profile deleted
         "400":
           description: Bad Request
           content:
@@ -693,8 +695,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profile deleted
         "404":
           description: Not Found
           content:
@@ -722,6 +722,14 @@ paths:
         schema:
           type: boolean
       responses:
+        "200":
+          description: RA Profiles retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RaProfileDto'
         "400":
           description: Bad Request
           content:
@@ -746,14 +754,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: RA Profiles retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RaProfileDto'
         "500":
           description: Internal Server Error
     delete:
@@ -774,6 +774,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "204":
+          description: RA Profiles deleted
         "400":
           description: Bad Request
           content:
@@ -792,8 +794,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: RA Profiles deleted
         "503":
           description: Connector Communication Error
           content:
@@ -995,6 +995,12 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: ACME details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaProfileAcmeDetailResponseDto'
         "400":
           description: Bad Request
           content:
@@ -1007,12 +1013,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: ACME details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RaProfileAcmeDetailResponseDto'
         "404":
           description: Not Found
           content:

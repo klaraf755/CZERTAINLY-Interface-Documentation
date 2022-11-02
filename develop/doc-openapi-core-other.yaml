@@ -30,18 +30,6 @@ paths:
       summary: Get Dashboard/Statistics Details
       operationId: getStatistics
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatisticsDto'
         "400":
           description: Bad Request
           content:
@@ -50,6 +38,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "200":
+          description: Details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/auditLogs/statuses:
     get:
       tags:
@@ -57,12 +57,6 @@ paths:
       summary: List Status
       operationId: listOperationStatuses
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit log status
           content:
@@ -79,6 +73,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/auditLogs/purge:
     get:
       tags:
@@ -99,12 +99,6 @@ paths:
       responses:
         "204":
           description: Audit logs purged
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -113,6 +107,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/auditLogs/operations:
     get:
       tags:
@@ -128,12 +128,6 @@ paths:
                 type: array
                 items:
                   type: string
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -142,6 +136,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/auditLogs/objects:
     get:
       tags:
@@ -149,12 +149,6 @@ paths:
       summary: List Audit Objects
       operationId: listObjects
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit Objects
           content:
@@ -171,6 +165,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/auditLogs/export:
     get:
       tags:
@@ -189,19 +189,6 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Export of audit logs
-          content:
-            application/json:
-              schema:
-                type: string
-                format: binary
         "400":
           description: Bad Request
           content:
@@ -210,6 +197,19 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "200":
+          description: Export of audit logs
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/auditLogs:
     get:
       tags:
@@ -228,12 +228,6 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -242,6 +236,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of audit logs
           content:
@@ -501,21 +501,21 @@ components:
     Pageable:
       type: object
       properties:
+        sort:
+          $ref: '#/components/schemas/Sort'
         pageSize:
           type: integer
           format: int32
         pageNumber:
           type: integer
           format: int32
-        sort:
-          $ref: '#/components/schemas/Sort'
+        offset:
+          type: integer
+          format: int64
         paged:
           type: boolean
         unpaged:
           type: boolean
-        offset:
-          type: integer
-          format: int64
     Sort:
       type: object
       properties:

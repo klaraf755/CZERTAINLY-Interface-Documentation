@@ -37,8 +37,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: ACME Profile details retrieved
           content:
@@ -57,6 +55,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     put:
       tags:
       - ACME Profile Management API
@@ -76,14 +76,6 @@ paths:
               $ref: '#/components/schemas/AcmeProfileEditRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: ACME Profile updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AcmeProfileDto'
         "400":
           description: Bad Request
           content:
@@ -96,6 +88,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: ACME Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcmeProfileDto'
     delete:
       tags:
       - ACME Profile Management API
@@ -111,8 +111,6 @@ paths:
       responses:
         "204":
           description: ACME Profile deleted
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -125,6 +123,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/acmeAccounts/revoke:
     put:
       tags:
@@ -144,8 +144,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -158,6 +156,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: ACME Accounts revoked
   /v1/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}:
@@ -180,14 +180,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: ACME Account details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AcmeAccountResponseDto'
         "400":
           description: Bad Request
           content:
@@ -200,6 +192,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Account details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcmeAccountResponseDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - ACME Account Management API
@@ -219,8 +219,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "204":
           description: ACME Account revoked
         "400":
@@ -235,6 +233,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/acmeProfiles:
     get:
       tags:
@@ -242,16 +242,6 @@ paths:
       summary: Get list of ACME Profiles
       operationId: listAcmeProfiles
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: ACME Profile list retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AcmeProfileListDto'
         "400":
           description: Bad Request
           content:
@@ -264,6 +254,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profile list retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AcmeProfileListDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - ACME Profile Management API
@@ -276,14 +276,6 @@ paths:
               $ref: '#/components/schemas/AcmeProfileRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "201":
-          description: ACME Profile created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
         "400":
           description: Bad Request
           content:
@@ -296,6 +288,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "201":
+          description: ACME Profile created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
   /v1/acmeProfiles/{uuid}/raprofile/{raProfileUuid}:
     patch:
       tags:
@@ -316,10 +316,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: RA Profile updated
         "400":
           description: Bad Request
           content:
@@ -332,6 +328,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: RA Profile updated
+        "500":
+          description: Internal Server Error
   /v1/acmeProfiles/{uuid}/enable:
     patch:
       tags:
@@ -346,22 +346,22 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: ACME Profile enabled
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: ACME Profile enabled
   /v1/acmeProfiles/{uuid}/disable:
     patch:
       tags:
@@ -376,10 +376,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: ACME Profile disabled
         "400":
           description: Bad Request
           content:
@@ -392,6 +388,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profile disabled
+        "500":
+          description: Internal Server Error
   /v1/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}/enable:
     patch:
       tags:
@@ -412,10 +412,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "204":
-          description: ACME Account enabled
         "400":
           description: Bad Request
           content:
@@ -428,6 +424,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: ACME Account enabled
   /v1/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}/disable:
     patch:
       tags:
@@ -448,10 +448,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "204":
-          description: ACME Account disabled
         "400":
           description: Bad Request
           content:
@@ -464,6 +460,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME Account disabled
+        "500":
+          description: Internal Server Error
   /v1/acmeProfiles/enable:
     patch:
       tags:
@@ -483,8 +483,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -497,6 +495,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: ACME Profiles enabled
   /v1/acmeProfiles/disable:
@@ -518,22 +518,22 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: ACME Profiles disabled
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profiles disabled
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/acmeAccounts/enable:
     patch:
       tags:
@@ -553,8 +553,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -567,6 +565,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: ACME Accounts enabled
   /v1/acmeAccounts/disable:
@@ -588,10 +588,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "204":
-          description: ACME Accounts disabled
         "400":
           description: Bad Request
           content:
@@ -604,6 +600,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME Accounts disabled
+        "500":
+          description: Internal Server Error
   /v1/acmeAccounts:
     get:
       tags:
@@ -611,8 +611,12 @@ paths:
       summary: List ACME Accounts
       operationId: listAcmeAccounts
       responses:
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: ACME Accounts list retrieved
           content:
@@ -621,18 +625,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AcmeAccountListResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/acmeProfiles/delete/force:
     delete:
       tags:
@@ -652,6 +652,18 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "422":
@@ -665,18 +677,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: ACME Profiles forced to delete
           content:
@@ -704,14 +704,20 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: ACME Profiles deleted
           content:
@@ -720,12 +726,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BulkActionMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AcmeProfileEditRequestDto:
