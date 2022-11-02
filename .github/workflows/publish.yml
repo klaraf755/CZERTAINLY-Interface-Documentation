@@ -61,15 +61,15 @@ jobs:
           
       - name: Copy
         run: |
-          mkdir ../docs
-          cp ./openapi/*.html ../docs
-          cp ./openapi/*.yaml ../docs
-          cp ./index.html ../docs
-          cp ./style.css ../docs
-          mkdir ../docs/images
-          cp ./images/czertainly_color_H.svg ../docs/images
-          cp ./images/czertainly_white_H.svg ../docs/images
-          cp ./images/czertainly_sign_color.svg ../docs/images
+          mkdir -p ../docs/develop
+          cp ./openapi/*.html ../docs/develop
+          cp ./openapi/*.yaml ../docs/develop
+          cp ./index.html ../docs/develop
+          cp ./style.css ../docs/develop
+          mkdir ../docs//develop/images
+          cp ./images/czertainly_color_H.svg ../docs/develop/images
+          cp ./images/czertainly_white_H.svg ../docs/develop/images
+          cp ./images/czertainly_sign_color.svg ../docs/develop/images
           cp ./CNAME ../docs
           cp ./.nojekyll ../docs
       - name: Checkout
@@ -83,7 +83,7 @@ jobs:
       - name: Commit
         run: |
           git config --global user.name 'GitHub Actions'
-          git config --global user.email 'interfacese@users.noreply.github.com'
+          git config --global user.email 'interfaces@users.noreply.github.com'
           git add -A
           if [ -n "$(git status --porcelain)" ]; then
             echo "there are changes";
@@ -92,24 +92,24 @@ jobs:
           else
             echo "no changes";
           fi
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: openapi
-      - name: Copy back
-        run: |
-          cp ../docs/*.yaml ./
-          cp ../docs/.nojekyll ./
-          cp ../docs/CNAME ./
-      - name: Commit
-        run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'interfacese@users.noreply.github.com'
-          git add -A
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "there are changes";
-            git commit -am "Automatically generated docs"
-            git push
-          else
-            echo "no changes";
-          fi    
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#        with:
+#          ref: openapi
+#      - name: Copy back
+#        run: |
+#          cp ../docs/*.yaml ./
+#          cp ../docs/.nojekyll ./
+#          cp ../docs/CNAME ./
+#      - name: Commit
+#        run: |
+#          git config --global user.name 'GitHub Actions'
+#          git config --global user.email 'interfaces@users.noreply.github.com'
+#          git add -A
+#          if [ -n "$(git status --porcelain)" ]; then
+#            echo "there are changes";
+#            git commit -am "Automatically generated docs"
+#            git push
+#          else
+#            echo "no changes";
+#          fi
