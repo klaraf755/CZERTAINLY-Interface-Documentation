@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - develop # or the name of your main branch
+    tags:
+      - '*'
   workflow_dispatch:
 
 jobs:
@@ -61,15 +63,15 @@ jobs:
           
       - name: Copy
         run: |
-          mkdir -p ../docs/develop
-          cp ./openapi/*.html ../docs/develop
-          cp ./openapi/*.yaml ../docs/develop
-          cp ./index.html ../docs/develop
-          cp ./style.css ../docs/develop
-          mkdir ../docs//develop/images
-          cp ./images/czertainly_color_H.svg ../docs/develop/images
-          cp ./images/czertainly_white_H.svg ../docs/develop/images
-          cp ./images/czertainly_sign_color.svg ../docs/develop/images
+          mkdir -p ../docs/$GITHUB_REF_NAME
+          cp ./openapi/*.html ../docs/$GITHUB_REF_NAME
+          cp ./openapi/*.yaml ../docs/$GITHUB_REF_NAME
+          cp ./index.html ../docs/$GITHUB_REF_NAME
+          cp ./style.css ../docs/$GITHUB_REF_NAME
+          mkdir ../docs//$GITHUB_REF_NAME/images
+          cp ./images/czertainly_color_H.svg ../docs/$GITHUB_REF_NAME/images
+          cp ./images/czertainly_white_H.svg ../docs/$GITHUB_REF_NAME/images
+          cp ./images/czertainly_sign_color.svg ../docs/$GITHUB_REF_NAME/images
           cp ./CNAME ../docs
           cp ./.nojekyll ../docs
       - name: Checkout
