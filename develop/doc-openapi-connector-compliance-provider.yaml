@@ -69,6 +69,18 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Attribute validation failed
           content:
@@ -80,22 +92,10 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attribute validation completed
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/complianceProvider/{kind}/compliance:
     post:
       tags:
@@ -122,6 +122,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable entity
           content:
@@ -133,20 +139,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
         "200":
           description: Compliance check completed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComplianceResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -167,6 +167,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes retrieved
           content:
@@ -174,15 +180,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AttributeDefinition'
+                  oneOf:
+                  - $ref: '#/components/schemas/BaseAttributeObject'
+                  - $ref: '#/components/schemas/DataAttribute'
+                  - $ref: '#/components/schemas/GroupAttribute'
+                  - $ref: '#/components/schemas/InfoAttribute'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -196,6 +200,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Health check completed successfully
           content:
@@ -204,12 +214,6 @@ paths:
                 $ref: '#/components/schemas/HealthDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/rules:
     get:
       tags:
@@ -230,6 +234,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -240,12 +250,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/groups/{uuid}:
     get:
       tags:
@@ -272,6 +276,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -282,12 +292,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/groups:
     get:
       tags:
@@ -308,6 +312,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -318,12 +328,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1:
     get:
       tags:
@@ -338,6 +342,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -348,14 +358,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
+    BaseAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: object
+          description: Content Data
+      description: Content of the Attribute
     RequestAttributeDto:
       required:
       - content
@@ -371,8 +385,10 @@ components:
           description: Name of the Attribute
           example: Attribute
         content:
-          type: object
+          type: array
           description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttributeContent'
     ErrorMessageDto:
       required:
       - message
@@ -489,18 +505,25 @@ components:
           description: Type of the attribute. It is optional and must be set only
             if special behaviour is needed.
           enum:
-          - STRING
-          - INTEGER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - CREDENTIAL
-          - DATE
-          - FLOAT
-          - JSON
-          - TEXT
-          - TIME
-          - DATETIME
+          - data
+          - group
+          - info
+        attributeContentType:
+          type: string
+          description: 'Type of the attribute content. '
+          enum:
+          - string
+          - integer
+          - secret
+          - file
+          - boolean
+          - credential
+          - date
+          - float
+          - object
+          - text
+          - time
+          - datetime
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -521,17 +544,12 @@ components:
           description: Static value to be propagated to targets. It is optional and
             is set only if the value is known at attribute creation time.
       description: Mappings for the callback method
-    AttributeDefinition:
+    BaseAttribute:
       required:
-      - label
-      - list
-      - multiSelect
+      - content
       - name
-      - readOnly
-      - required
       - type
       - uuid
-      - visible
       type: object
       properties:
         uuid:
@@ -542,29 +560,153 @@ components:
           type: string
           description: Name of the Attribute that is used for identification
           example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
         content:
+          type: array
+          items:
+            type: object
+            description: Content of the Attribute
+        type:
+          type: string
+          description: Type of the Attribute
+          default: DATA
+          enum:
+          - data
+          - group
+          - info
+      description: Content of the Attribute
+      discriminator:
+        propertyName: type
+    BaseAttributeConstraint:
+      required:
+      - data
+      - type
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the constraint
+        errorMessage:
+          type: string
+          description: Error message to be displayed for wrong data
+        type:
+          type: string
+          description: Attribute Constraint Type
+          enum:
+          - REGEXP
+          - RANGE
+          - DATETIME
+        data:
           type: object
-          description: Content of the Attribute
+          description: Attribute Constraint Data
+      description: Optional regular expressions and constraints used for validating
+        the Attribute content
+    BaseAttributeObject:
+      required:
+      - content
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          items:
+            type: object
+            description: Content of the Attribute
+        type:
+          type: string
+          description: Type of the Attribute
+          default: DATA
+          enum:
+          - data
+          - group
+          - info
+      discriminator:
+        propertyName: type
+    DataAttribute:
+      required:
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseAttributeObject'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: Content of the Attribute
+            items:
+              $ref: '#/components/schemas/BaseAttributeContent'
+          contentType:
+            type: string
+            description: Type of the Content
+            enum:
+            - string
+            - integer
+            - secret
+            - file
+            - boolean
+            - credential
+            - date
+            - float
+            - object
+            - text
+            - time
+            - datetime
+          properties:
+            $ref: '#/components/schemas/DataAttributeProperties'
+          constraints:
+            type: array
+            description: Optional regular expressions and constraints used for validating
+              the Attribute content
+            items:
+              $ref: '#/components/schemas/BaseAttributeConstraint'
+          attributeCallback:
+            $ref: '#/components/schemas/AttributeCallback'
+      - $ref: '#/components/schemas/BaseAttribute'
+    DataAttributeProperties:
+      required:
+      - label
+      - list
+      - multiSelect
+      - readOnly
+      - required
+      - visible
+      type: object
+      properties:
         label:
           type: string
           description: Friendly name of the the Attribute
           example: Attribute Name
-        type:
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        group:
           type: string
-          description: Type of the Attribute
-          enum:
-          - STRING
-          - INTEGER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - CREDENTIAL
-          - DATE
-          - FLOAT
-          - JSON
-          - TEXT
-          - TIME
-          - DATETIME
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
         required:
           type: boolean
           description: "Boolean determining if the Attribute is required. If true,\
@@ -575,35 +717,108 @@ components:
           description: "Boolean determining if the Attribute is read only. If true,\
             \ the Attribute content cannot be changed."
           default: false
-        visible:
-          type: boolean
-          description: "Boolean determining if the Attribute is visible and can be\
-            \ displayed, otherwise it should be hidden to the user."
-          default: true
         list:
           type: boolean
           description: Boolean determining if the Attribute contains list of values
             in the content
           default: false
-        description:
-          type: string
-          description: "Optional description of the Attribute, should contain helper\
-            \ text on what is expected"
-        validationRegex:
-          type: string
-          description: Optional regular expression used for validating the Attribute
-            content
-        attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
         multiSelect:
           type: boolean
           description: Boolean determining if the Attribute can have multiple values
           default: false
+      description: Properties of the Attributes
+    GroupAttribute:
+      required:
+      - content
+      - contentType
+      - name
+      - type
+      - uuid
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseAttributeObject'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: Content of the Attribute
+            items:
+              $ref: '#/components/schemas/BaseAttribute'
+          contentType:
+            type: string
+            description: Type of the Content
+            enum:
+            - string
+            - integer
+            - secret
+            - file
+            - boolean
+            - credential
+            - date
+            - float
+            - object
+            - text
+            - time
+            - datetime
+          attributeCallback:
+            $ref: '#/components/schemas/AttributeCallback'
+    InfoAttribute:
+      required:
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseAttribute'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: Content of the Attribute
+            items:
+              $ref: '#/components/schemas/BaseAttributeContent'
+          contentType:
+            type: string
+            description: Type of the Content
+            enum:
+            - string
+            - integer
+            - secret
+            - file
+            - boolean
+            - credential
+            - date
+            - float
+            - object
+            - text
+            - time
+            - datetime
+          properties:
+            $ref: '#/components/schemas/InfoAttributeProperties'
+      - $ref: '#/components/schemas/BaseAttributeObject'
+    InfoAttributeProperties:
+      required:
+      - label
+      - visible
+      type: object
+      properties:
+        label:
+          type: string
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
         group:
           type: string
           description: "Group of the Attribute, used for the logical grouping of the\
             \ Attribute"
           example: requiredAttributes
+      description: Properties of the Attributes
     HealthDto:
       required:
       - status
@@ -654,7 +869,11 @@ components:
           type: array
           description: Rule attributes
           items:
-            $ref: '#/components/schemas/AttributeDefinition'
+            oneOf:
+            - $ref: '#/components/schemas/BaseAttribute'
+            - $ref: '#/components/schemas/DataAttribute'
+            - $ref: '#/components/schemas/GroupAttribute'
+            - $ref: '#/components/schemas/InfoAttribute'
         description:
           type: string
           description: Description of the rule

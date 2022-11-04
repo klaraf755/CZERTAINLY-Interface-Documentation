@@ -41,18 +41,14 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Reconnect to a Connector
           content:
@@ -61,8 +57,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ConnectDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -80,8 +74,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -100,6 +100,22 @@ paths:
         schema:
           type: string
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Connector Approved
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -108,22 +124,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Connector Approved
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -142,14 +142,8 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -168,8 +162,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -193,14 +193,8 @@ paths:
               $ref: '#/components/schemas/ConnectorUpdateRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -218,20 +212,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Connector updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConnectorDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -249,14 +249,8 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -271,8 +265,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Connector deleted
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -296,6 +296,22 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Reconnect multiple Connectors initiated
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -304,22 +320,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Reconnect multiple Connectors initiated
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -337,20 +337,22 @@ paths:
               $ref: '#/components/schemas/ConnectRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "200":
+          description: Connector connected
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -368,16 +370,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Connector connected
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ConnectDto'
-        "503":
-          description: Connector Communication Error
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -401,14 +401,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -423,8 +417,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Approve multiple Connectors
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -456,14 +456,8 @@ paths:
             application/json:
               schema:
                 type: object
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -476,8 +470,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -518,14 +518,8 @@ paths:
       responses:
         "200":
           description: Attributes Validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -538,8 +532,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -583,14 +583,8 @@ paths:
             application/json:
               schema:
                 type: object
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -603,8 +597,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -626,16 +626,16 @@ paths:
       responses:
         "200":
           description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -657,16 +657,16 @@ paths:
       responses:
         "200":
           description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -688,16 +688,16 @@ paths:
       responses:
         "200":
           description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -719,16 +719,16 @@ paths:
       responses:
         "200":
           description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -768,14 +768,8 @@ paths:
           - failed
           - offline
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -796,8 +790,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ConnectorDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -814,14 +814,14 @@ paths:
               $ref: '#/components/schemas/ConnectorRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "200":
+          description: New Connector created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+                $ref: '#/components/schemas/UuidDto'
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -845,14 +845,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: New Connector created
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UuidDto'
-        "503":
-          description: Connector Communication Error
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -875,26 +875,14 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Connectors deleted
           content:
@@ -903,6 +891,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BulkActionMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -914,8 +908,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -933,14 +933,8 @@ paths:
               $ref: '#/components/schemas/ConnectorRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -959,8 +953,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -979,14 +979,8 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -1005,8 +999,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -1037,6 +1037,29 @@ paths:
         schema:
           type: string
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Attributes received
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/DataAttribute'
+                - $ref: '#/components/schemas/InfoAttribute'
+                - $ref: '#/components/schemas/GroupAttribute'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -1045,28 +1068,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes received
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeDefinition'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -1085,26 +1086,14 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes received
           content:
@@ -1116,9 +1105,25 @@ paths:
                   additionalProperties:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AttributeDefinition'
-        "503":
-          description: Connector Communication Error
+                      oneOf:
+                      - $ref: '#/components/schemas/BaseAttributeObject'
+                      - $ref: '#/components/schemas/DataAttribute'
+                      - $ref: '#/components/schemas/GroupAttribute'
+                      - $ref: '#/components/schemas/InfoAttribute'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -1138,16 +1143,16 @@ paths:
                 type: array
                 items:
                   type: string
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -1159,8 +1164,10 @@ paths:
       summary: Get JWT auth Attributes
       operationId: getJWTAuthAttributes
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1170,13 +1177,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeDefinition'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+                anyOf:
+                - $ref: '#/components/schemas/DataAttribute'
+                - $ref: '#/components/schemas/InfoAttribute'
+                - $ref: '#/components/schemas/GroupAttribute'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -1188,8 +1194,10 @@ paths:
       summary: Get Attributes for certificate auth
       operationId: getCertificateAttributes
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1199,13 +1207,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeDefinition'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+                anyOf:
+                - $ref: '#/components/schemas/DataAttribute'
+                - $ref: '#/components/schemas/InfoAttribute'
+                - $ref: '#/components/schemas/GroupAttribute'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -1217,8 +1224,10 @@ paths:
       summary: Get basic auth Attributes
       operationId: getBasicAuthAttributes
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1228,13 +1237,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeDefinition'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+                anyOf:
+                - $ref: '#/components/schemas/DataAttribute'
+                - $ref: '#/components/schemas/InfoAttribute'
+                - $ref: '#/components/schemas/GroupAttribute'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -1246,8 +1254,10 @@ paths:
       summary: Get API Key auth Attributes
       operationId: getApiKeyAuthAttributes
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1257,13 +1267,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeDefinition'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+                anyOf:
+                - $ref: '#/components/schemas/DataAttribute'
+                - $ref: '#/components/schemas/InfoAttribute'
+                - $ref: '#/components/schemas/GroupAttribute'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -1287,26 +1296,14 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Connectors deleted
           content:
@@ -1315,6 +1312,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BulkActionMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -1326,8 +1329,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -1423,6 +1432,29 @@ components:
           type: string
           description: Function Group Name
       description: Function Group information of a connector
+    BaseAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: object
+          description: Content Data
+      description: Content of the Attribute
+      oneOf:
+      - $ref: '#/components/schemas/BooleanAttributeContent'
+      - $ref: '#/components/schemas/CredentialAttributeContent'
+      - $ref: '#/components/schemas/DateAttributeContent'
+      - $ref: '#/components/schemas/DateTimeAttributeContent'
+      - $ref: '#/components/schemas/FileAttributeContent'
+      - $ref: '#/components/schemas/FloatAttributeContent'
+      - $ref: '#/components/schemas/IntegerAttributeContent'
+      - $ref: '#/components/schemas/ObjectAttributeContent'
+      - $ref: '#/components/schemas/SecretAttributeContent'
+      - $ref: '#/components/schemas/StringAttributeContent'
+      - $ref: '#/components/schemas/TextAttributeContent'
+      - $ref: '#/components/schemas/TimeAttributeContent'
     ConnectorUpdateRequestDto:
       type: object
       properties:
@@ -1461,8 +1493,10 @@ components:
           description: Name of the Attribute
           example: Attribute
         content:
-          type: object
+          type: array
           description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttributeContent'
       description: List of authentication Attributes. Required if the authentication
         type is not NONE
     ConnectorDto:
@@ -1518,6 +1552,7 @@ components:
           - offline
     ResponseAttributeDto:
       required:
+      - contentType
       - label
       - name
       - type
@@ -1539,22 +1574,32 @@ components:
           type: string
           description: Type of the Attribute
           enum:
-          - STRING
-          - INTEGER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - CREDENTIAL
-          - DATE
-          - FLOAT
-          - JSON
-          - TEXT
-          - TIME
-          - DATETIME
+          - data
+          - group
+          - info
+        contentType:
+          type: string
+          description: Content Type of the Attribute
+          example: Attribute
+          enum:
+          - string
+          - integer
+          - secret
+          - file
+          - boolean
+          - credential
+          - date
+          - float
+          - object
+          - text
+          - time
+          - datetime
         content:
-          type: object
+          type: array
           description: Content of the Attribute
-      description: List of Attributes for the authentication type
+          items:
+            $ref: '#/components/schemas/BaseAttributeContent'
+      description: List of Credential Attributes
     ConnectRequestDto:
       required:
       - authType
@@ -1596,19 +1641,19 @@ components:
         name:
           type: string
           description: Name of the Attribute
-        pathVariables:
+        pathVariable:
           type: object
           additionalProperties:
             type: object
             description: Map of path variables supported by the callback method
           description: Map of path variables supported by the callback method
-        queryParameters:
+        requestParameter:
           type: object
           additionalProperties:
             type: object
             description: Map of the query parameters supported by the callback method
           description: Map of the query parameters supported by the callback method
-        requestBody:
+        body:
           type: object
           additionalProperties:
             type: object
@@ -1710,18 +1755,25 @@ components:
           description: Type of the attribute. It is optional and must be set only
             if special behaviour is needed.
           enum:
-          - STRING
-          - INTEGER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - CREDENTIAL
-          - DATE
-          - FLOAT
-          - JSON
-          - TEXT
-          - TIME
-          - DATETIME
+          - data
+          - group
+          - info
+        attributeContentType:
+          type: string
+          description: 'Type of the attribute content. '
+          enum:
+          - string
+          - integer
+          - secret
+          - file
+          - boolean
+          - credential
+          - date
+          - float
+          - object
+          - text
+          - time
+          - datetime
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -1742,50 +1794,152 @@ components:
           description: Static value to be propagated to targets. It is optional and
             is set only if the value is known at attribute creation time.
       description: Mappings for the callback method
-    AttributeDefinition:
+    BaseAttributeConstraint:
       required:
-      - label
-      - list
-      - multiSelect
-      - name
-      - readOnly
-      - required
+      - data
       - type
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the constraint
+        errorMessage:
+          type: string
+          description: Error message to be displayed for wrong data
+        type:
+          type: string
+          description: Attribute Constraint Type
+          enum:
+          - REGEXP
+          - RANGE
+          - DATETIME
+        data:
+          type: object
+          description: Attribute Constraint Data
+      description: Optional regular expressions and constraints used for validating
+        the Attribute content
+    BooleanAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: boolean
+          description: Boolean attribute value
+    CredentialAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/CredentialDto'
+    CredentialDto:
+      required:
+      - attributes
+      - connectorName
+      - connectorUuid
+      - enabled
+      - kind
+      - name
       - uuid
-      - visible
       type: object
       properties:
         uuid:
           type: string
-          description: UUID of the Attribute for unique identification
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
         name:
           type: string
-          description: Name of the Attribute that is used for identification
-          example: Attribute
-        content:
-          type: object
-          description: Content of the Attribute
+          description: Object Name
+          example: Name
+        kind:
+          type: string
+          description: Credential Kind
+          example: "SoftKeyStore, Basic, ApiKey, etc"
+        attributes:
+          type: array
+          description: List of Credential Attributes
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        connectorUuid:
+          type: string
+          description: UUID of Credential provider Connector
+        connectorName:
+          type: string
+          description: Name of Credential provider Connector
+      description: Text attribute value
+    DataAttribute:
+      required:
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseAttribute'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: Content of the Attribute
+            items:
+              $ref: '#/components/schemas/BaseAttributeContent'
+          contentType:
+            type: string
+            description: Type of the Content
+            enum:
+            - string
+            - integer
+            - secret
+            - file
+            - boolean
+            - credential
+            - date
+            - float
+            - object
+            - text
+            - time
+            - datetime
+          properties:
+            $ref: '#/components/schemas/DataAttributeProperties'
+          constraints:
+            type: array
+            description: Optional regular expressions and constraints used for validating
+              the Attribute content
+            items:
+              $ref: '#/components/schemas/BaseAttributeConstraint'
+          attributeCallback:
+            $ref: '#/components/schemas/AttributeCallback'
+    DataAttributeProperties:
+      required:
+      - label
+      - list
+      - multiSelect
+      - readOnly
+      - required
+      - visible
+      type: object
+      properties:
         label:
           type: string
           description: Friendly name of the the Attribute
           example: Attribute Name
-        type:
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        group:
           type: string
-          description: Type of the Attribute
-          enum:
-          - STRING
-          - INTEGER
-          - SECRET
-          - FILE
-          - BOOLEAN
-          - CREDENTIAL
-          - DATE
-          - FLOAT
-          - JSON
-          - TEXT
-          - TIME
-          - DATETIME
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
         required:
           type: boolean
           description: "Boolean determining if the Attribute is required. If true,\
@@ -1796,35 +1950,352 @@ components:
           description: "Boolean determining if the Attribute is read only. If true,\
             \ the Attribute content cannot be changed."
           default: false
-        visible:
-          type: boolean
-          description: "Boolean determining if the Attribute is visible and can be\
-            \ displayed, otherwise it should be hidden to the user."
-          default: true
         list:
           type: boolean
           description: Boolean determining if the Attribute contains list of values
             in the content
           default: false
-        description:
-          type: string
-          description: "Optional description of the Attribute, should contain helper\
-            \ text on what is expected"
-        validationRegex:
-          type: string
-          description: Optional regular expression used for validating the Attribute
-            content
-        attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
         multiSelect:
           type: boolean
           description: Boolean determining if the Attribute can have multiple values
           default: false
+      description: Properties of the Attributes
+    DateAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: string
+          format: date
+    DateTimeAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: string
+          format: date-time
+    FileAttributeContent:
+      required:
+      - data
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/FileAttributeContentData'
+    FileAttributeContentData:
+      required:
+      - content
+      - fileName
+      - mimeType
+      type: object
+      properties:
+        content:
+          type: string
+          description: File content
+        fileName:
+          type: string
+          description: Name of the file
+        mimeType:
+          $ref: '#/components/schemas/MimeType'
+      description: File Content
+    FloatAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: number
+          description: Float attribute value
+          format: float
+    IntegerAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: integer
+          description: Integer attribute value
+          format: int32
+    LocalTime:
+      type: object
+      properties:
+        hour:
+          type: integer
+          format: int32
+        minute:
+          type: integer
+          format: int32
+        second:
+          type: integer
+          format: int32
+        nano:
+          type: integer
+          format: int32
+    MimeType:
+      type: object
+      properties:
+        type:
+          type: string
+        subtype:
+          type: string
+        parameters:
+          type: object
+          additionalProperties:
+            type: string
+        wildcardType:
+          type: boolean
+        wildcardSubtype:
+          type: boolean
+        concrete:
+          type: boolean
+        charset:
+          type: object
+          properties:
+            registered:
+              type: boolean
+      description: Type of the file uploaded
+    ObjectAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: object
+          description: Object attribute value
+    SecretAttributeContent:
+      required:
+      - data
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/SecretAttributeContentData'
+    SecretAttributeContentData:
+      type: object
+      properties:
+        secret:
+          type: string
+          description: Secret attribute data
+        protectionLevel:
+          type: string
+          description: Level of protection of the data
+      description: File Content
+    StringAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: string
+          description: String attribute value
+    TextAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: string
+          description: Text attribute value
+    TimeAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/LocalTime'
+    InfoAttribute:
+      required:
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseAttribute'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: Content of the Attribute
+            items:
+              $ref: '#/components/schemas/BaseAttributeContent'
+          contentType:
+            type: string
+            description: Type of the Content
+            enum:
+            - string
+            - integer
+            - secret
+            - file
+            - boolean
+            - credential
+            - date
+            - float
+            - object
+            - text
+            - time
+            - datetime
+          properties:
+            $ref: '#/components/schemas/InfoAttributeProperties'
+    InfoAttributeProperties:
+      required:
+      - label
+      - visible
+      type: object
+      properties:
+        label:
+          type: string
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
         group:
           type: string
           description: "Group of the Attribute, used for the logical grouping of the\
             \ Attribute"
           example: requiredAttributes
+      description: Properties of the Attributes
+    BaseAttribute:
+      required:
+      - content
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          items:
+            type: object
+            description: Content of the Attribute
+        type:
+          type: string
+          description: Type of the Attribute
+          default: DATA
+          enum:
+          - data
+          - group
+          - info
+      description: Content of the Attribute
+      discriminator:
+        propertyName: type
+    GroupAttribute:
+      required:
+      - content
+      - contentType
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttribute'
+        type:
+          type: string
+          description: Type of the Attribute
+          default: DATA
+          enum:
+          - data
+          - group
+          - info
+        contentType:
+          type: string
+          description: Type of the Content
+          enum:
+          - string
+          - integer
+          - secret
+          - file
+          - boolean
+          - credential
+          - date
+          - float
+          - object
+          - text
+          - time
+          - datetime
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+    BaseAttributeObject:
+      required:
+      - content
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          items:
+            type: object
+            description: Content of the Attribute
+        type:
+          type: string
+          description: Type of the Attribute
+          default: DATA
+          enum:
+          - data
+          - group
+          - info
+      discriminator:
+        propertyName: type
     BulkActionMessageDto:
       required:
       - message
