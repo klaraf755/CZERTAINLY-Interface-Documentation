@@ -9,6 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  version: 1.5.1-SNAPSHOT
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -47,14 +48,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -65,14 +62,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Content updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}:
     put:
       tags:
@@ -105,26 +114,22 @@ paths:
               $ref: '#/components/schemas/PushToLocationRequestDto'
         required: true
       responses:
-        "200":
-          description: Certificate pushed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LocationDto'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "200":
+          description: Certificate pushed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+                $ref: '#/components/schemas/LocationDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -135,8 +140,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
     delete:
       tags:
       - Location Management API
@@ -168,20 +185,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate removed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LocationDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -192,8 +199,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: Certificate removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
     patch:
       tags:
       - Location Management API
@@ -225,14 +250,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -243,14 +264,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Content updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}:
     get:
       tags:
@@ -277,20 +310,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Location detail retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LocationDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -301,8 +324,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: Location detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
     put:
       tags:
       - Location Management API
@@ -328,6 +369,32 @@ paths:
               $ref: '#/components/schemas/EditLocationRequestDto'
         required: true
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -339,38 +406,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "503":
-          description: Connector Communication Error
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: Location updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "401":
+          description: Unauthorized
     delete:
       tags:
       - Location Management API
@@ -396,14 +445,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             '*/*':
               schema:
@@ -414,10 +459,22 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: Location deleted
-        "500":
-          description: Internal Server Error
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/certificates:
     post:
       tags:
@@ -450,14 +507,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -468,14 +521,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate issued
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations:
     post:
       tags:
@@ -496,12 +561,6 @@ paths:
               $ref: '#/components/schemas/AddLocationRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -513,20 +572,16 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "201":
-          description: Location added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "400":
-          description: Bad Request
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -537,8 +592,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "201":
+          description: Location added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/enable:
     patch:
       tags:
@@ -565,14 +638,10 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             '*/*':
               schema:
@@ -583,10 +652,22 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: Location enabled
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/disable:
     patch:
       tags:
@@ -607,22 +688,18 @@ paths:
         schema:
           type: string
       responses:
-        "204":
-          description: Location disabled
         "503":
           description: Connector Communication Error
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Location disabled
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             '*/*':
               schema:
@@ -633,8 +710,20 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
   /v1/locations:
     get:
       tags:
@@ -654,22 +743,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Locations retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/LocationDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -680,8 +757,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: Locations retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/attributes/push:
     get:
       tags:
@@ -709,25 +806,21 @@ paths:
               schema:
                 type: array
                 items:
-                  oneOf:
-                  - $ref: '#/components/schemas/BaseAttributeObject'
+                  type: object
+                  anyOf:
                   - $ref: '#/components/schemas/DataAttribute'
-                  - $ref: '#/components/schemas/GroupAttribute'
                   - $ref: '#/components/schemas/InfoAttribute'
+                  - $ref: '#/components/schemas/GroupAttribute'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -738,8 +831,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/attributes/issue:
     get:
       tags:
@@ -767,25 +872,21 @@ paths:
               schema:
                 type: array
                 items:
-                  oneOf:
-                  - $ref: '#/components/schemas/BaseAttributeObject'
+                  type: object
+                  anyOf:
                   - $ref: '#/components/schemas/DataAttribute'
-                  - $ref: '#/components/schemas/GroupAttribute'
                   - $ref: '#/components/schemas/InfoAttribute'
+                  - $ref: '#/components/schemas/GroupAttribute'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -796,8 +897,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
 components:
   schemas:
     ErrorMessageDto:
@@ -809,6 +922,23 @@ components:
           type: string
           description: Error message detail
           example: Error message
+    AuthenticationServiceExceptionDto:
+      required:
+      - code
+      - message
+      - statusCode
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          description: Status code of the HTTP Request
+          format: int32
+        code:
+          type: string
+          description: Code of the result
+        message:
+          type: string
+          description: Exception message
     BaseAttributeContent:
       type: object
       properties:
@@ -819,6 +949,28 @@ components:
           type: object
           description: Content Data
       description: Content of the Attribute
+      oneOf:
+      - $ref: '#/components/schemas/BooleanAttributeContent'
+      - $ref: '#/components/schemas/CredentialAttributeContent'
+      - $ref: '#/components/schemas/DateAttributeContent'
+      - $ref: '#/components/schemas/DateTimeAttributeContent'
+      - $ref: '#/components/schemas/FileAttributeContent'
+      - $ref: '#/components/schemas/FloatAttributeContent'
+      - $ref: '#/components/schemas/IntegerAttributeContent'
+      - $ref: '#/components/schemas/ObjectAttributeContent'
+      - $ref: '#/components/schemas/SecretAttributeContent'
+      - $ref: '#/components/schemas/StringAttributeContent'
+      - $ref: '#/components/schemas/TextAttributeContent'
+      - $ref: '#/components/schemas/TimeAttributeContent'
+    BooleanAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: boolean
+          description: Boolean attribute value
     CertificateInLocationDto:
       required:
       - certificateUuid
@@ -857,6 +1009,131 @@ components:
           description: If the Certificate in Location has associated private key
           default: false
       description: List of Certificates in Location
+    CredentialAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/CredentialDto'
+    CredentialDto:
+      required:
+      - attributes
+      - connectorName
+      - connectorUuid
+      - enabled
+      - kind
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        kind:
+          type: string
+          description: Credential Kind
+          example: "SoftKeyStore, Basic, ApiKey, etc"
+        attributes:
+          type: array
+          description: List of Credential Attributes
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        connectorUuid:
+          type: string
+          description: UUID of Credential provider Connector
+        connectorName:
+          type: string
+          description: Name of Credential provider Connector
+      description: Text attribute value
+    DateAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: string
+          format: date
+    DateTimeAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: string
+          format: date-time
+    FileAttributeContent:
+      required:
+      - data
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/FileAttributeContentData'
+    FileAttributeContentData:
+      required:
+      - content
+      - fileName
+      - mimeType
+      type: object
+      properties:
+        content:
+          type: string
+          description: File content
+        fileName:
+          type: string
+          description: Name of the file
+        mimeType:
+          $ref: '#/components/schemas/MimeType'
+      description: File Content
+    FloatAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: number
+          description: Float attribute value
+          format: float
+    IntegerAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: integer
+          description: Integer attribute value
+          format: int32
+    LocalTime:
+      type: object
+      properties:
+        hour:
+          type: integer
+          format: int32
+        minute:
+          type: integer
+          format: int32
+        second:
+          type: integer
+          format: int32
+        nano:
+          type: integer
+          format: int32
     LocationDto:
       required:
       - attributes
@@ -914,6 +1191,38 @@ components:
             type: object
             description: Location metadata
           description: Location metadata
+    MimeType:
+      type: object
+      properties:
+        type:
+          type: string
+        subtype:
+          type: string
+        parameters:
+          type: object
+          additionalProperties:
+            type: string
+        wildcardType:
+          type: boolean
+        wildcardSubtype:
+          type: boolean
+        concrete:
+          type: boolean
+        charset:
+          type: object
+          properties:
+            registered:
+              type: boolean
+      description: Type of the file uploaded
+    ObjectAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: object
+          description: Object attribute value
     RequestAttributeDto:
       required:
       - content
@@ -983,7 +1292,53 @@ components:
           description: Content of the Attribute
           items:
             $ref: '#/components/schemas/BaseAttributeContent'
-      description: List of Location attributes
+      description: List of Credential Attributes
+    SecretAttributeContent:
+      required:
+      - data
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/SecretAttributeContentData'
+    SecretAttributeContentData:
+      type: object
+      properties:
+        secret:
+          type: string
+          description: Secret attribute data
+        protectionLevel:
+          type: string
+          description: Level of protection of the data
+      description: File Content
+    StringAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: string
+          description: String attribute value
+    TextAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: string
+          description: Text attribute value
+    TimeAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/LocalTime'
     PushToLocationRequestDto:
       required:
       - attributes
@@ -1135,42 +1490,6 @@ components:
           description: Static value to be propagated to targets. It is optional and
             is set only if the value is known at attribute creation time.
       description: Mappings for the callback method
-    BaseAttribute:
-      required:
-      - content
-      - name
-      - type
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute for unique identification
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute that is used for identification
-          example: Attribute
-        description:
-          type: string
-          description: "Optional description of the Attribute, should contain helper\
-            \ text on what is expected"
-        content:
-          type: array
-          items:
-            type: object
-            description: Content of the Attribute
-        type:
-          type: string
-          description: Type of the Attribute
-          default: DATA
-          enum:
-          - data
-          - group
-          - info
-      description: Content of the Attribute
-      discriminator:
-        propertyName: type
     BaseAttributeConstraint:
       required:
       - data
@@ -1187,49 +1506,18 @@ components:
           type: string
           description: Attribute Constraint Type
           enum:
-          - REGEXP
-          - RANGE
-          - DATETIME
+          - regExp
+          - range
+          - dateTime
         data:
           type: object
           description: Attribute Constraint Data
       description: Optional regular expressions and constraints used for validating
         the Attribute content
-    BaseAttributeObject:
-      required:
-      - content
-      - name
-      - type
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute for unique identification
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute that is used for identification
-          example: Attribute
-        description:
-          type: string
-          description: "Optional description of the Attribute, should contain helper\
-            \ text on what is expected"
-        content:
-          type: array
-          items:
-            type: object
-            description: Content of the Attribute
-        type:
-          type: string
-          description: Type of the Attribute
-          default: DATA
-          enum:
-          - data
-          - group
-          - info
-      discriminator:
-        propertyName: type
+      anyOf:
+      - $ref: '#/components/schemas/RegexpAttributeConstraint'
+      - $ref: '#/components/schemas/RangeAttributeConstraint'
+      - $ref: '#/components/schemas/DateTimeAttributeConstraint'
     DataAttribute:
       required:
       - contentType
@@ -1239,7 +1527,7 @@ components:
       - uuid
       type: object
       allOf:
-      - $ref: '#/components/schemas/BaseAttributeObject'
+      - $ref: '#/components/schemas/BaseAttribute'
       - type: object
         properties:
           content:
@@ -1267,13 +1555,10 @@ components:
             $ref: '#/components/schemas/DataAttributeProperties'
           constraints:
             type: array
-            description: Optional regular expressions and constraints used for validating
-              the Attribute content
             items:
               $ref: '#/components/schemas/BaseAttributeConstraint'
           attributeCallback:
             $ref: '#/components/schemas/AttributeCallback'
-      - $ref: '#/components/schemas/BaseAttribute'
     DataAttributeProperties:
       required:
       - label
@@ -1318,41 +1603,91 @@ components:
           description: Boolean determining if the Attribute can have multiple values
           default: false
       description: Properties of the Attributes
-    GroupAttribute:
+    DateTimeAttributeConstraint:
       required:
-      - content
-      - contentType
-      - name
       - type
-      - uuid
       type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseAttributeObject'
-      - type: object
-        properties:
-          content:
-            type: array
-            description: Content of the Attribute
-            items:
-              $ref: '#/components/schemas/BaseAttribute'
-          contentType:
-            type: string
-            description: Type of the Content
-            enum:
-            - string
-            - integer
-            - secret
-            - file
-            - boolean
-            - credential
-            - date
-            - float
-            - object
-            - text
-            - time
-            - datetime
-          attributeCallback:
-            $ref: '#/components/schemas/AttributeCallback'
+      properties:
+        description:
+          type: string
+          description: Description of the constraint
+        errorMessage:
+          type: string
+          description: Error message to be displayed for wrong data
+        type:
+          type: string
+          description: Attribute Constraint Type
+          enum:
+          - regExp
+          - range
+          - dateTime
+        data:
+          $ref: '#/components/schemas/DateTimeAttributeConstraintData'
+    DateTimeAttributeConstraintData:
+      type: object
+      properties:
+        from:
+          type: string
+          description: Start of the datetime for validation
+          format: date-time
+        to:
+          type: string
+          description: End of the datetime for validation
+          format: date-time
+      description: DateTime Range Attribute Constraint Data
+    RangeAttributeConstraint:
+      required:
+      - type
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the constraint
+        errorMessage:
+          type: string
+          description: Error message to be displayed for wrong data
+        type:
+          type: string
+          description: Attribute Constraint Type
+          enum:
+          - regExp
+          - range
+          - dateTime
+        data:
+          $ref: '#/components/schemas/RangeAttributeConstraintData'
+    RangeAttributeConstraintData:
+      type: object
+      properties:
+        from:
+          type: integer
+          description: Start of the range for validation
+          format: int32
+        to:
+          type: integer
+          description: End of the range for validation
+          format: int32
+      description: Integer Range Attribute Constraint Data
+    RegexpAttributeConstraint:
+      required:
+      - type
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the constraint
+        errorMessage:
+          type: string
+          description: Error message to be displayed for wrong data
+        type:
+          type: string
+          description: Attribute Constraint Type
+          enum:
+          - regExp
+          - range
+          - dateTime
+        data:
+          type: string
+          description: Regular Expression Attribute Constraint Data
     InfoAttribute:
       required:
       - contentType
@@ -1388,7 +1723,6 @@ components:
             - datetime
           properties:
             $ref: '#/components/schemas/InfoAttributeProperties'
-      - $ref: '#/components/schemas/BaseAttributeObject'
     InfoAttributeProperties:
       required:
       - label
@@ -1410,3 +1744,91 @@ components:
             \ Attribute"
           example: requiredAttributes
       description: Properties of the Attributes
+    BaseAttribute:
+      required:
+      - content
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          items:
+            type: object
+            description: Content of the Attribute
+        type:
+          type: string
+          description: Type of the Attribute
+          default: data
+          enum:
+          - data
+          - group
+          - info
+      description: Content of the Attribute
+      discriminator:
+        propertyName: type
+    GroupAttribute:
+      required:
+      - content
+      - contentType
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttribute'
+        type:
+          type: string
+          description: Type of the Attribute
+          default: data
+          enum:
+          - data
+          - group
+          - info
+        contentType:
+          type: string
+          description: Type of the Content
+          enum:
+          - string
+          - integer
+          - secret
+          - file
+          - boolean
+          - credential
+          - date
+          - float
+          - object
+          - text
+          - time
+          - datetime
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
