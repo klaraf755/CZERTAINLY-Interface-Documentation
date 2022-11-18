@@ -80,14 +80,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v2/authorityProvider/authorities/{uuid}/certificates/revoke:
     post:
       tags:
@@ -127,14 +127,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v2/authorityProvider/authorities/{uuid}/certificates/renew:
     post:
       tags:
@@ -172,14 +172,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Certificate renewed
           content:
@@ -227,14 +227,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v2/authorityProvider/authorities/{uuid}/certificates/issue:
     post:
       tags:
@@ -272,20 +272,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Certificate issued
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateDataResponseDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
       tags:
@@ -316,14 +316,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attribute validation completed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Attribute validation failed
           content:
@@ -335,6 +327,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes/validate:
     post:
       tags:
@@ -365,14 +365,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}:
     get:
       tags:
@@ -399,14 +399,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Authority Management API
@@ -438,14 +438,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - Authority Management API
@@ -467,14 +467,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authority instance removed
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities:
     get:
       tags:
@@ -496,14 +496,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Authority Management API
@@ -522,14 +522,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Authority instance created
           content:
@@ -550,6 +550,18 @@ paths:
         schema:
           type: string
       responses:
+        "200":
+          description: Attribute list retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  anyOf:
+                  - $ref: '#/components/schemas/DataAttribute'
+                  - $ref: '#/components/schemas/InfoAttribute'
+                  - $ref: '#/components/schemas/GroupAttribute'
         "400":
           description: Bad Request
           content:
@@ -567,26 +579,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Attribute list retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  anyOf:
-                  - $ref: '#/components/schemas/DataAttribute'
-                  - $ref: '#/components/schemas/InfoAttribute'
-                  - $ref: '#/components/schemas/GroupAttribute'
   /v2/authorityProvider/authorities/{uuid}/certificates/issue/attributes:
     get:
       tags:
@@ -601,20 +601,6 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attribute list retrieved
           content:
@@ -627,6 +613,20 @@ paths:
                   - $ref: '#/components/schemas/DataAttribute'
                   - $ref: '#/components/schemas/InfoAttribute'
                   - $ref: '#/components/schemas/GroupAttribute'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -641,6 +641,12 @@ paths:
         schema:
           type: string
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes retrieved
           content:
@@ -653,20 +659,14 @@ paths:
                   - $ref: '#/components/schemas/DataAttribute'
                   - $ref: '#/components/schemas/InfoAttribute'
                   - $ref: '#/components/schemas/GroupAttribute'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/health:
     get:
       tags:
@@ -686,14 +686,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes:
     get:
       tags:
@@ -726,14 +726,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/connect:
     get:
       tags:
@@ -756,14 +756,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1:
     get:
       tags:
@@ -778,12 +778,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -794,6 +788,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     BaseAttributeContent:
@@ -1031,6 +1031,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
         contentType:
           type: string
           description: Content Type of the Attribute
@@ -1164,8 +1166,66 @@ components:
           type: string
           description: Base64 Certificate content. (Certificate to be renewed)
         meta:
-          type: string
+          type: array
           description: Metadata for the Certificate
+          items:
+            $ref: '#/components/schemas/InfoAttribute'
+    InfoAttribute:
+      required:
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseAttribute'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: Content of the Attribute
+            items:
+              $ref: '#/components/schemas/BaseAttributeContent'
+          contentType:
+            type: string
+            description: Type of the Content
+            enum:
+            - string
+            - integer
+            - secret
+            - file
+            - boolean
+            - credential
+            - date
+            - float
+            - object
+            - text
+            - time
+            - datetime
+          properties:
+            $ref: '#/components/schemas/InfoAttributeProperties'
+    InfoAttributeProperties:
+      required:
+      - label
+      - visible
+      type: object
+      properties:
+        label:
+          type: string
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        group:
+          type: string
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
+      description: Properties of the Attributes
     CertificateDataResponseDto:
       required:
       - certificateData
@@ -1180,8 +1240,10 @@ components:
           type: string
           description: UUID of Certificate
         meta:
-          type: string
+          type: array
           description: Metadata for the Certificate
+          items:
+            $ref: '#/components/schemas/InfoAttribute'
     CertificateSignRequestDto:
       required:
       - attributes
@@ -1260,6 +1322,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
         attributeContentType:
           type: string
           description: 'Type of the attribute content. '
@@ -1353,6 +1417,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
       description: Content of the Attribute
       discriminator:
         propertyName: type
@@ -1535,6 +1601,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
         contentType:
           type: string
           description: Type of the Content
@@ -1553,62 +1621,6 @@ components:
           - datetime
         attributeCallback:
           $ref: '#/components/schemas/AttributeCallback'
-    InfoAttribute:
-      required:
-      - contentType
-      - name
-      - properties
-      - type
-      - uuid
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseAttribute'
-      - type: object
-        properties:
-          content:
-            type: array
-            description: Content of the Attribute
-            items:
-              $ref: '#/components/schemas/BaseAttributeContent'
-          contentType:
-            type: string
-            description: Type of the Content
-            enum:
-            - string
-            - integer
-            - secret
-            - file
-            - boolean
-            - credential
-            - date
-            - float
-            - object
-            - text
-            - time
-            - datetime
-          properties:
-            $ref: '#/components/schemas/InfoAttributeProperties'
-    InfoAttributeProperties:
-      required:
-      - label
-      - visible
-      type: object
-      properties:
-        label:
-          type: string
-          description: Friendly name of the the Attribute
-          example: Attribute Name
-        visible:
-          type: boolean
-          description: "Boolean determining if the Attribute is visible and can be\
-            \ displayed, otherwise it should be hidden to the user."
-          default: true
-        group:
-          type: string
-          description: "Group of the Attribute, used for the logical grouping of the\
-            \ Attribute"
-          example: requiredAttributes
-      description: Properties of the Attributes
     RangeAttributeConstraint:
       required:
       - type

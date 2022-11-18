@@ -29,18 +29,30 @@ paths:
       summary: List Discovery
       operationId: listDiscoveries
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: List of available Discoveries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscoveryHistoryDto'
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -53,24 +65,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "200":
-          description: List of available Discoveries
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DiscoveryHistoryDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Discovery Management API
@@ -83,18 +83,39 @@ paths:
               $ref: '#/components/schemas/DiscoveryDto'
         required: true
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "400":
-          description: Bad Request
+        "201":
+          description: Discovery Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/UuidDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -107,33 +128,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "201":
-          description: Discovery Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
     delete:
       tags:
       - Discovery Management API
@@ -152,18 +152,24 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "204":
+          description: Discoveries deleted
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -176,18 +182,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Discoveries deleted
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/discoveries/{uuid}:
     get:
       tags:
@@ -202,46 +202,46 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Discovery details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryHistoryDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Discovery Management API
@@ -255,18 +255,24 @@ paths:
         schema:
           type: string
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Discovery deleted
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -279,18 +285,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Discovery deleted
-        "500":
-          description: Internal Server Error
 components:
   schemas:
     BaseAttributeContent:
@@ -551,6 +551,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
         contentType:
           type: string
           description: Content Type of the Attribute
@@ -620,6 +622,15 @@ components:
           description: Content Reference
         data:
           $ref: '#/components/schemas/LocalTime'
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -637,15 +648,6 @@ components:
         message:
           type: string
           description: Exception message
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     UuidDto:
       required:
       - uuid
@@ -760,9 +762,85 @@ components:
           description: List of Discovery Attributes
           items:
             $ref: '#/components/schemas/ResponseAttributeDto'
-        meta:
-          type: object
-          additionalProperties:
-            type: object
-            description: Metadata of the Discovery
+        metadata:
+          type: array
           description: Metadata of the Discovery
+          items:
+            $ref: '#/components/schemas/MetadataResponseDto'
+    MetadataResponseDto:
+      required:
+      - connectorName
+      - connectorUuid
+      - items
+      type: object
+      properties:
+        connectorUuid:
+          type: string
+          description: UUID of the Connector
+        connectorName:
+          type: string
+          description: Name of the Connector
+        items:
+          type: array
+          description: List of Metadata
+          items:
+            $ref: '#/components/schemas/ResponseMetadataDto'
+      description: Metadata of the Discovery
+    ResponseMetadataDto:
+      required:
+      - contentType
+      - label
+      - name
+      - type
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute
+          example: Attribute
+        label:
+          type: string
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          type: string
+          description: Type of the Attribute
+          enum:
+          - data
+          - group
+          - info
+          - meta
+          - custom
+        contentType:
+          type: string
+          description: Content Type of the Attribute
+          example: Attribute
+          enum:
+          - string
+          - integer
+          - secret
+          - file
+          - boolean
+          - credential
+          - date
+          - float
+          - object
+          - text
+          - time
+          - datetime
+        content:
+          type: array
+          description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttributeContent'
+        sourceObjectType:
+          type: string
+          description: Source Object Type
+        sourceObjectUuid:
+          type: string
+          description: Source Object UUID
+      description: List of Metadata

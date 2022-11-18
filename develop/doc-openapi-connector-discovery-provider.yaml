@@ -63,6 +63,16 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attribute validation completed
         "422":
           description: Attribute validation failed
           content:
@@ -74,16 +84,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Attribute validation completed
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -180,6 +180,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Discovery initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscoveryProviderDto'
         "422":
           description: Unprocessable entity
           content:
@@ -191,18 +203,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "200":
-          description: Discovery initiated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -250,14 +250,14 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -286,6 +286,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Functions found
           content:
@@ -294,12 +300,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     BaseAttributeContent:
@@ -537,6 +537,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
         contentType:
           type: string
           description: Content Type of the Attribute
@@ -651,11 +653,10 @@ components:
           type: string
           description: Base64 encoded Certificate content
         meta:
-          type: object
-          additionalProperties:
-            type: object
-            description: Metadata for the Certificate
+          type: array
           description: Metadata for the Certificate
+          items:
+            $ref: '#/components/schemas/InfoAttribute'
       description: Certificate data
     DiscoveryProviderDto:
       required:
@@ -693,11 +694,66 @@ components:
           items:
             $ref: '#/components/schemas/DiscoveryProviderCertificateDataDto'
         meta:
-          type: object
-          additionalProperties:
-            type: object
-            description: Certificate Metadata
+          type: array
           description: Certificate Metadata
+          items:
+            $ref: '#/components/schemas/InfoAttribute'
+    InfoAttribute:
+      required:
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseAttribute'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: Content of the Attribute
+            items:
+              $ref: '#/components/schemas/BaseAttributeContent'
+          contentType:
+            type: string
+            description: Type of the Content
+            enum:
+            - string
+            - integer
+            - secret
+            - file
+            - boolean
+            - credential
+            - date
+            - float
+            - object
+            - text
+            - time
+            - datetime
+          properties:
+            $ref: '#/components/schemas/InfoAttributeProperties'
+    InfoAttributeProperties:
+      required:
+      - label
+      - visible
+      type: object
+      properties:
+        label:
+          type: string
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        group:
+          type: string
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
+      description: Properties of the Attributes
     DiscoveryRequestDto:
       required:
       - kind
@@ -755,6 +811,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
         attributeContentType:
           type: string
           description: 'Type of the attribute content. '
@@ -989,62 +1047,6 @@ components:
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
-    InfoAttribute:
-      required:
-      - contentType
-      - name
-      - properties
-      - type
-      - uuid
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseAttribute'
-      - type: object
-        properties:
-          content:
-            type: array
-            description: Content of the Attribute
-            items:
-              $ref: '#/components/schemas/BaseAttributeContent'
-          contentType:
-            type: string
-            description: Type of the Content
-            enum:
-            - string
-            - integer
-            - secret
-            - file
-            - boolean
-            - credential
-            - date
-            - float
-            - object
-            - text
-            - time
-            - datetime
-          properties:
-            $ref: '#/components/schemas/InfoAttributeProperties'
-    InfoAttributeProperties:
-      required:
-      - label
-      - visible
-      type: object
-      properties:
-        label:
-          type: string
-          description: Friendly name of the the Attribute
-          example: Attribute Name
-        visible:
-          type: boolean
-          description: "Boolean determining if the Attribute is visible and can be\
-            \ displayed, otherwise it should be hidden to the user."
-          default: true
-        group:
-          type: string
-          description: "Group of the Attribute, used for the logical grouping of the\
-            \ Attribute"
-          example: requiredAttributes
-      description: Properties of the Attributes
     BaseAttribute:
       required:
       - content
@@ -1078,6 +1080,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
       description: Content of the Attribute
       discriminator:
         propertyName: type
@@ -1115,6 +1119,8 @@ components:
           - data
           - group
           - info
+          - meta
+          - custom
         contentType:
           type: string
           description: Type of the Content
