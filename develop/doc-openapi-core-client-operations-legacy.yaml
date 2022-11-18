@@ -19,13 +19,13 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Legacy Client Operations API
+- name: Legacy Client Operations
   description: Client API for managing End Entities and Certificates
 paths:
   /v1/operations/{raProfileName}/endentity/{username}/resetPassword:
     put:
       tags:
-      - Legacy Client Operations API
+      - Legacy Client Operations
       summary: Reset password for End Entity
       operationId: resetPassword
       parameters:
@@ -42,12 +42,30 @@ paths:
         schema:
           type: string
       responses:
+        "200":
+          description: End Entity password reset
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -60,28 +78,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: End Entity password reset
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
   /v1/operations/{raProfileName}/endentity/{username}:
     get:
       tags:
-      - Legacy Client Operations API
+      - Legacy Client Operations
       summary: Get End Entity information
       operationId: getEndEntity
       parameters:
@@ -98,32 +98,20 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
@@ -138,9 +126,21 @@ paths:
                 $ref: '#/components/schemas/ClientEndEntityDto'
         "401":
           description: Unauthorized
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
-      - Legacy Client Operations API
+      - Legacy Client Operations
       summary: Edit End Entity
       operationId: editEndEntity
       parameters:
@@ -163,12 +163,30 @@ paths:
               $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity edited
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -181,27 +199,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: End Entity edited
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
     delete:
       tags:
-      - Legacy Client Operations API
+      - Legacy Client Operations
       summary: Revoke all Certificates and delete End Entity
       operationId: revokeAndDeleteEndEntity
       parameters:
@@ -218,12 +218,30 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity revoked and deleted
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -236,28 +254,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: End Entity revoked and deleted
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
   /v1/operations/{raProfileName}/endentity:
     get:
       tags:
-      - Legacy Client Operations API
+      - Legacy Client Operations
       summary: List all End Entities
       operationId: listEntities
       parameters:
@@ -268,26 +268,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: List of entities retrieved
           content:
@@ -302,6 +282,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
@@ -310,9 +298,21 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "401":
           description: Unauthorized
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
-      - Legacy Client Operations API
+      - Legacy Client Operations
       summary: Add End Entity
       operationId: addEndEntity
       parameters:
@@ -329,12 +329,30 @@ paths:
               $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity added
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -347,28 +365,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: End Entity added
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
   /v1/operations/{raProfileName}/certificate/revoke:
     post:
       tags:
-      - Legacy Client Operations API
+      - Legacy Client Operations
       summary: Revoke Certificate
       operationId: revokeCertificate
       parameters:
@@ -385,14 +385,30 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRevocationDto'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate revoked
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -405,26 +421,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
   /v1/operations/{raProfileName}/certificate/issue:
     post:
       tags:
-      - Legacy Client Operations API
+      - Legacy Client Operations
       summary: Issue Certificate
       operationId: issueCertificate
       parameters:
@@ -441,12 +441,34 @@ paths:
               $ref: '#/components/schemas/ClientCertificateSignRequestDto'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -459,39 +481,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: Certificate issued
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
 components:
   schemas:
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -509,7 +500,44 @@ components:
         message:
           type: string
           description: Exception message
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
+    AttributeContentType:
+      type: string
+      description: Content Type of the Attribute
+      example: Attribute
+      enum:
+      - string
+      - integer
+      - secret
+      - file
+      - boolean
+      - credential
+      - date
+      - float
+      - object
+      - text
+      - time
+      - datetime
+    AttributeType:
+      type: string
+      description: Type of the Attribute
+      enum:
+      - data
+      - group
+      - info
+      - meta
+      - custom
     BaseAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -533,6 +561,8 @@ components:
       - $ref: '#/components/schemas/TextAttributeContent'
       - $ref: '#/components/schemas/TimeAttributeContent'
     BooleanAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -582,6 +612,8 @@ components:
           - KEY_RECOVERY
           - WAITING_FOR_ADD_APPROVAL
     CredentialAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -626,8 +658,10 @@ components:
         connectorName:
           type: string
           description: Name of Credential provider Connector
-      description: Text attribute value
+      description: Credential attribute content data
     DateAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -635,8 +669,11 @@ components:
           description: Content Reference
         data:
           type: string
+          description: Date attribute value
           format: date
     DateTimeAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -644,6 +681,7 @@ components:
           description: Content Reference
         data:
           type: string
+          description: DateTime attribute value
           format: date-time
     EndEntityExtendedInfoDto:
       type: object
@@ -678,8 +716,10 @@ components:
           description: Name of the file
         mimeType:
           $ref: '#/components/schemas/MimeType'
-      description: File Content
+      description: File attribute content data
     FloatAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -690,6 +730,8 @@ components:
           description: Float attribute value
           format: float
     IntegerAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -714,6 +756,7 @@ components:
         nano:
           type: integer
           format: int32
+      description: Time attribute value
     MimeType:
       type: object
       properties:
@@ -738,6 +781,8 @@ components:
               type: boolean
       description: Type of the file uploaded
     ObjectAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -745,7 +790,7 @@ components:
           description: Content Reference
         data:
           type: object
-          description: Object attribute value
+          description: Object attribute content data
     RaProfileDto:
       required:
       - attributes
@@ -809,37 +854,15 @@ components:
           description: Label of the the Attribute
           example: Attribute Name
         type:
-          type: string
-          description: Type of the Attribute
-          enum:
-          - data
-          - group
-          - info
-          - meta
-          - custom
+          $ref: '#/components/schemas/AttributeType'
         contentType:
-          type: string
-          description: Content Type of the Attribute
-          example: Attribute
-          enum:
-          - string
-          - integer
-          - secret
-          - file
-          - boolean
-          - credential
-          - date
-          - float
-          - object
-          - text
-          - time
-          - datetime
+          $ref: '#/components/schemas/AttributeContentType'
         content:
           type: array
           description: Content of the Attribute
           items:
             $ref: '#/components/schemas/BaseAttributeContent'
-      description: List of RA Profiles attributes
+      description: Response attribute with content for object it belongs to
     SecretAttributeContent:
       required:
       - data
@@ -859,8 +882,10 @@ components:
         protectionLevel:
           type: string
           description: Level of protection of the data
-      description: File Content
+      description: Secret attribute content data
     StringAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -870,6 +895,8 @@ components:
           type: string
           description: String attribute value
     TextAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -879,6 +906,8 @@ components:
           type: string
           description: Text attribute value
     TimeAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:

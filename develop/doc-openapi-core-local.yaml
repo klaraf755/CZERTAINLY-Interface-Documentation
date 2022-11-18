@@ -19,13 +19,13 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Local API
+- name: Local operations
   description: API only accessible from localhost
 paths:
   /v1/local/admins:
     post:
       tags:
-      - Local API
+      - Local operations
       summary: Create Administrator
       operationId: addAdmin
       requestBody:
@@ -35,18 +35,16 @@ paths:
               $ref: '#/components/schemas/AddUserRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "200":
           description: Admin created
           content:
@@ -59,10 +57,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AddUserRequestDto:

@@ -19,34 +19,34 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Authority Management API
-  description: Authority Management API
-- name: Info API
+- name: Connector Info
   description: "Connector Information API. Each connector may have multiple functions\
     \ represented by FunctionGroupCode. For each FunctionGroupCode there is a list\
     \ of implemented end points. These endpoints must be according the specified interface,\
     \ this is validated by the core. You can also implement helper end points that\
     \ are used for callbacks and other relevant operations specific to implementation."
-- name: Certificate Management API
+- name: Certificate Management
   description: Certificate Management API
-- name: End Entity Profiles API
+- name: End Entity Profiles
   description: End Entity Profiles API
-- name: End Entity Management API
+- name: Health check
+  description: "Connector Health check API. Connector returns own status and in some\
+    \ cases can return status of services on which it depends like database, HSM and\
+    \ so on."
+- name: Authority Management
+  description: Authority Management API
+- name: End Entity Management
   description: End Entity Management API
-- name: Attributes API
+- name: Connector Attributes
   description: Connector Attributes API. Provides information about supported Attributes
     of the connector. Attributes are specific to implementation and gives information
     about the data that can be exchanged and properly parsed by the connector. Part
     of this API is validation of the Attributes.
-- name: Health check API
-  description: "Connector Health check API. Connector returns own status and in some\
-    \ cases can return status of services on which it depends like database, HSM and\
-    \ so on."
 paths:
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities/{endEntityName}/resetPassword:
     put:
       tags:
-      - End Entity Management API
+      - End Entity Management
       summary: Reset End Entity password
       operationId: resetPassword
       parameters:
@@ -69,8 +69,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -85,10 +83,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
       tags:
-      - Attributes API
+      - Connector Attributes
       summary: Validate Attributes
       operationId: validateAttributes
       parameters:
@@ -107,16 +107,14 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
+        "200":
+          description: Attribute validation completed
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attribute validation completed
         "422":
           description: Attribute validation failed
           content:
@@ -134,10 +132,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes/validate:
     post:
       tags:
-      - Authority Management API
+      - Authority Management
       summary: Validate RA Profile attributes
       operationId: validateRAProfileAttributes
       parameters:
@@ -156,26 +156,26 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "200":
-          description: Authority instance updated
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: RA Profile Attributes information validated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities/{endEntityName}:
     get:
       tags:
-      - End Entity Management API
+      - End Entity Management
       summary: Get End Entity
       operationId: getEndEntity
       parameters:
@@ -198,29 +198,29 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: End Entity retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EndEntityDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
-      - End Entity Management API
+      - End Entity Management
       summary: Update End Entity
       operationId: updateEndEntity
       parameters:
@@ -249,25 +249,25 @@ paths:
               $ref: '#/components/schemas/EditEndEntityRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity updated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity updated
+        "500":
+          description: Internal Server Error
     delete:
       tags:
-      - End Entity Management API
+      - End Entity Management
       summary: Remove End Entity
       operationId: removeEndEntity
       parameters:
@@ -290,26 +290,26 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity removed
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity removed
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities:
     get:
       tags:
-      - End Entity Management API
+      - End Entity Management
       summary: List End Entities
       operationId: listEndEntities
       parameters:
@@ -326,16 +326,6 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: End Entities retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EndEntityDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -348,9 +338,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entities retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EndEntityDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
-      - End Entity Management API
+      - End Entity Management
       summary: Create End Entity
       operationId: createEndEntity
       parameters:
@@ -373,26 +373,26 @@ paths:
               $ref: '#/components/schemas/AddEndEntityRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
+        "200":
+          description: End Entity created
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity created
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates/revoke:
     post:
       tags:
-      - Certificate Management API
+      - Certificate Management
       summary: Revoke Certificate
       operationId: revokeCertificate
       parameters:
@@ -415,10 +415,6 @@ paths:
               $ref: '#/components/schemas/CertRevocationDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate revoked
         "404":
           description: Not Found
           content:
@@ -431,10 +427,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate revoked
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates/issue:
     post:
       tags:
-      - Certificate Management API
+      - Certificate Management
       summary: Issue Certificate
       operationId: issueCertificate
       parameters:
@@ -457,10 +457,14 @@ paths:
               $ref: '#/components/schemas/CertificateSignRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -471,16 +475,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateSignResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}:
     get:
       tags:
-      - Authority Management API
+      - Authority Management
       summary: Get an Authority instance
       operationId: getAuthorityInstance
       parameters:
@@ -491,14 +491,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Authority instance retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
         "404":
           description: Not Found
           content:
@@ -511,9 +503,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Authority instance retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
-      - Authority Management API
+      - Authority Management
       summary: Update Authority instance
       operationId: updateAuthorityInstance
       parameters:
@@ -530,14 +530,6 @@ paths:
               $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
         required: true
       responses:
-        "200":
-          description: Authority instance updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -550,9 +542,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Authority instance updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
-      - Authority Management API
+      - Authority Management
       summary: Remove Authority instance
       operationId: removeAuthorityInstance
       parameters:
@@ -563,8 +563,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -579,38 +577,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities:
     get:
       tags:
-      - Authority Management API
+      - Authority Management
       summary: List Authority instances
       operationId: listAuthorityInstances
       responses:
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
-          description: Authority instances retrieved
+          description: Authority instance list retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
-      - Authority Management API
+      - Authority Management
       summary: Create Authority instance
       operationId: createAuthorityInstance
       requestBody:
@@ -620,10 +620,14 @@ paths:
               $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -634,16 +638,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
-      - Attributes API
+      - Connector Attributes
       summary: List available Attributes
       operationId: listAttributeDefinitions
       parameters:
@@ -654,10 +654,14 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -669,26 +673,16 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  anyOf:
-                  - $ref: '#/components/schemas/DataAttribute'
-                  - $ref: '#/components/schemas/InfoAttribute'
-                  - $ref: '#/components/schemas/GroupAttribute'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                  $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
   /v1/health:
     get:
       tags:
-      - Health check API
+      - Health check
       summary: Health check
       operationId: checkHealth
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -707,10 +701,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes:
     get:
       tags:
-      - Authority Management API
+      - Authority Management
       summary: List RA Profile Attributes
       operationId: listRAProfileAttributes
       parameters:
@@ -721,36 +717,32 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
+        "200":
+          description: RA Profile Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance updated
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  anyOf:
-                  - $ref: '#/components/schemas/DataAttribute'
-                  - $ref: '#/components/schemas/InfoAttribute'
-                  - $ref: '#/components/schemas/GroupAttribute'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileId}/certificateprofiles:
     get:
       tags:
-      - End Entity Profiles API
+      - End Entity Profiles
       summary: List available certificate profiles for given end entity profile
       operationId: listCertificateProfiles
       parameters:
@@ -768,10 +760,14 @@ paths:
           type: integer
           format: int32
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -784,16 +780,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/NameAndIdDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileId}/cas:
     get:
       tags:
-      - End Entity Profiles API
+      - End Entity Profiles
       summary: List available certification authorities for given end entity profile
       operationId: listCAsInProfile
       parameters:
@@ -811,10 +803,14 @@ paths:
           type: integer
           format: int32
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -827,16 +823,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/NameAndIdDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles:
     get:
       tags:
-      - End Entity Profiles API
+      - End Entity Profiles
       summary: List available end entity profiles
       operationId: listEntityProfiles
       parameters:
@@ -847,8 +839,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -869,10 +859,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/connect:
     get:
       tags:
-      - Authority Management API
+      - Authority Management
       summary: Connect to Authority
       operationId: getConnection
       parameters:
@@ -883,10 +875,6 @@ paths:
         schema:
           type: string
       responses:
-        "204":
-          description: Authority instance connected
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -899,18 +887,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Authority instance connected
+        "500":
+          description: Internal Server Error
   /v1:
     get:
       tags:
-      - Info API
+      - Connector Info
       summary: List supported functions of the connector
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -923,12 +919,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     ErrorMessageDto:
@@ -940,7 +932,35 @@ components:
           type: string
           description: Error message detail
           example: Error message
+    AttributeContentType:
+      type: string
+      description: Content Type of the Attribute
+      example: Attribute
+      enum:
+      - string
+      - integer
+      - secret
+      - file
+      - boolean
+      - credential
+      - date
+      - float
+      - object
+      - text
+      - time
+      - datetime
+    AttributeType:
+      type: string
+      description: Type of the Attribute
+      enum:
+      - data
+      - group
+      - info
+      - meta
+      - custom
     BaseAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -964,6 +984,8 @@ components:
       - $ref: '#/components/schemas/TextAttributeContent'
       - $ref: '#/components/schemas/TimeAttributeContent'
     BooleanAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -973,6 +995,8 @@ components:
           type: boolean
           description: Boolean attribute value
     CredentialAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1017,8 +1041,10 @@ components:
         connectorName:
           type: string
           description: Name of Credential provider Connector
-      description: Text attribute value
+      description: Credential attribute content data
     DateAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1026,8 +1052,11 @@ components:
           description: Content Reference
         data:
           type: string
+          description: Date attribute value
           format: date
     DateTimeAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1035,6 +1064,7 @@ components:
           description: Content Reference
         data:
           type: string
+          description: DateTime attribute value
           format: date-time
     FileAttributeContent:
       required:
@@ -1061,8 +1091,10 @@ components:
           description: Name of the file
         mimeType:
           $ref: '#/components/schemas/MimeType'
-      description: File Content
+      description: File attribute content data
     FloatAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1073,6 +1105,8 @@ components:
           description: Float attribute value
           format: float
     IntegerAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1097,6 +1131,7 @@ components:
         nano:
           type: integer
           format: int32
+      description: Time attribute value
     MimeType:
       type: object
       properties:
@@ -1121,6 +1156,8 @@ components:
               type: boolean
       description: Type of the file uploaded
     ObjectAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1128,7 +1165,7 @@ components:
           description: Content Reference
         data:
           type: object
-          description: Object attribute value
+          description: Object attribute content data
     RequestAttributeDto:
       required:
       - content
@@ -1148,6 +1185,7 @@ components:
           description: Content of the Attribute
           items:
             $ref: '#/components/schemas/BaseAttributeContent'
+      description: Request attribute to send attribute content for object
     ResponseAttributeDto:
       required:
       - contentType
@@ -1169,37 +1207,15 @@ components:
           description: Label of the the Attribute
           example: Attribute Name
         type:
-          type: string
-          description: Type of the Attribute
-          enum:
-          - data
-          - group
-          - info
-          - meta
-          - custom
+          $ref: '#/components/schemas/AttributeType'
         contentType:
-          type: string
-          description: Content Type of the Attribute
-          example: Attribute
-          enum:
-          - string
-          - integer
-          - secret
-          - file
-          - boolean
-          - credential
-          - date
-          - float
-          - object
-          - text
-          - time
-          - datetime
+          $ref: '#/components/schemas/AttributeContentType'
         content:
           type: array
           description: Content of the Attribute
           items:
             $ref: '#/components/schemas/BaseAttributeContent'
-      description: List of Credential Attributes
+      description: Response attribute with content for object it belongs to
     SecretAttributeContent:
       required:
       - data
@@ -1219,8 +1235,10 @@ components:
         protectionLevel:
           type: string
           description: Level of protection of the data
-      description: File Content
+      description: Secret attribute content data
     StringAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1230,6 +1248,8 @@ components:
           type: string
           description: String attribute value
     TextAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1239,6 +1259,8 @@ components:
           type: string
           description: Text attribute value
     TimeAttributeContent:
+      required:
+      - data
       type: object
       properties:
         reference:
@@ -1468,31 +1490,9 @@ components:
             path variable or request param or body field.It is optional and must be
             set only if value is not set.
         attributeType:
-          type: string
-          description: Type of the attribute. It is optional and must be set only
-            if special behaviour is needed.
-          enum:
-          - data
-          - group
-          - info
-          - meta
-          - custom
+          $ref: '#/components/schemas/AttributeType'
         attributeContentType:
-          type: string
-          description: 'Type of the attribute content. '
-          enum:
-          - string
-          - integer
-          - secret
-          - file
-          - boolean
-          - credential
-          - date
-          - float
-          - object
-          - text
-          - time
-          - datetime
+          $ref: '#/components/schemas/AttributeContentType'
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -1502,17 +1502,26 @@ components:
           type: array
           description: Set of targets for propagating value.
           items:
-            type: string
-            description: Set of targets for propagating value.
-            enum:
-            - pathVariable
-            - requestParameter
-            - body
+            $ref: '#/components/schemas/AttributeValueTarget'
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
             is set only if the value is known at attribute creation time.
       description: Mappings for the callback method
+    AttributeConstraintType:
+      type: string
+      description: Attribute Constraint Type
+      enum:
+      - regExp
+      - range
+      - dateTime
+    AttributeValueTarget:
+      type: string
+      description: Set of targets for propagating value.
+      enum:
+      - pathVariable
+      - requestParameter
+      - body
     AuthorityProviderInstanceDto:
       required:
       - attributes
@@ -1532,15 +1541,70 @@ components:
           type: array
           description: List of Authority instance Attributes
           items:
-            oneOf:
-            - $ref: '#/components/schemas/BaseAttribute'
-            - $ref: '#/components/schemas/DataAttribute'
-            - $ref: '#/components/schemas/GroupAttribute'
-            - $ref: '#/components/schemas/InfoAttribute'
-    BaseAttribute:
+            $ref: '#/components/schemas/BaseAttributeDto'
+    BaseAttributeConstraint:
       required:
-      - content
+      - data
+      - type
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the constraint
+        errorMessage:
+          type: string
+          description: Error message to be displayed for wrong data
+        type:
+          $ref: '#/components/schemas/AttributeConstraintType'
+        data:
+          type: object
+          description: Attribute Constraint Data
+      description: Optional regular expressions and constraints used for validating
+        the Attribute content
+      oneOf:
+      - $ref: '#/components/schemas/RegexpAttributeConstraint'
+      - $ref: '#/components/schemas/RangeAttributeConstraint'
+      - $ref: '#/components/schemas/DateTimeAttributeConstraint'
+    BaseAttributeDto:
+      required:
       - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        content:
+          type: object
+          description: Content of the Attribute
+      description: Base Attribute definition
+      discriminator:
+        propertyName: type
+        mapping:
+          data: '#/components/schemas/DataAttribute'
+          info: '#/components/schemas/InfoAttribute'
+          group: '#/components/schemas/GroupAttribute'
+      oneOf:
+      - $ref: '#/components/schemas/DataAttribute'
+      - $ref: '#/components/schemas/InfoAttribute'
+      - $ref: '#/components/schemas/GroupAttribute'
+    DataAttribute:
+      required:
+      - contentType
+      - name
+      - properties
       - type
       - uuid
       type: object
@@ -1559,91 +1623,25 @@ components:
             \ text on what is expected"
         content:
           type: array
+          description: Content of the Attribute
           items:
-            type: object
-            description: Content of the Attribute
+            $ref: '#/components/schemas/BaseAttributeContent'
         type:
-          type: string
-          description: Type of the Attribute
-          default: data
-          enum:
-          - data
-          - group
-          - info
-          - meta
-          - custom
-      description: Content of the Attribute
-      discriminator:
-        propertyName: type
-    BaseAttributeConstraint:
-      required:
-      - data
-      - type
-      type: object
-      properties:
-        description:
-          type: string
-          description: Description of the constraint
-        errorMessage:
-          type: string
-          description: Error message to be displayed for wrong data
-        type:
-          type: string
-          description: Attribute Constraint Type
-          enum:
-          - regExp
-          - range
-          - dateTime
-        data:
-          type: object
-          description: Attribute Constraint Data
-      description: Optional regular expressions and constraints used for validating
-        the Attribute content
-      anyOf:
-      - $ref: '#/components/schemas/RegexpAttributeConstraint'
-      - $ref: '#/components/schemas/RangeAttributeConstraint'
-      - $ref: '#/components/schemas/DateTimeAttributeConstraint'
-    DataAttribute:
-      required:
-      - contentType
-      - name
-      - properties
-      - type
-      - uuid
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseAttribute'
-      - type: object
+          $ref: '#/components/schemas/AttributeType'
+        contentType:
+          $ref: '#/components/schemas/AttributeContentType'
         properties:
-          content:
-            type: array
-            description: Content of the Attribute
-            items:
-              $ref: '#/components/schemas/BaseAttributeContent'
-          contentType:
-            type: string
-            description: Type of the Content
-            enum:
-            - string
-            - integer
-            - secret
-            - file
-            - boolean
-            - credential
-            - date
-            - float
-            - object
-            - text
-            - time
-            - datetime
-          properties:
-            $ref: '#/components/schemas/DataAttributeProperties'
-          constraints:
-            type: array
-            items:
-              $ref: '#/components/schemas/BaseAttributeConstraint'
-          attributeCallback:
-            $ref: '#/components/schemas/AttributeCallback'
+          $ref: '#/components/schemas/DataAttributeProperties'
+        constraints:
+          type: array
+          description: Optional regular expressions and constraints used for validating
+            the Attribute content
+          items:
+            $ref: '#/components/schemas/BaseAttributeConstraint'
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+      description: Data attribute allows to store and transfer dynamic data. Its content
+        can be edited and send in requests to store.
     DataAttributeProperties:
       required:
       - label
@@ -1700,12 +1698,7 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          type: string
-          description: Attribute Constraint Type
-          enum:
-          - regExp
-          - range
-          - dateTime
+          $ref: '#/components/schemas/AttributeConstraintType'
         data:
           $ref: '#/components/schemas/DateTimeAttributeConstraintData'
     DateTimeAttributeConstraintData:
@@ -1722,9 +1715,41 @@ components:
       description: DateTime Range Attribute Constraint Data
     GroupAttribute:
       required:
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          description: List of all different types of attributes
+          items:
+            $ref: '#/components/schemas/BaseAttributeDto'
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+      description: Group attribute and its content represents dynamic list of additional
+        attributes retrieved by callback. Its content can not be edited and is not
+        send in requests to store.
+    InfoAttribute:
+      required:
       - content
       - contentType
       - name
+      - properties
       - type
       - uuid
       type: object
@@ -1745,70 +1770,16 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttribute'
+            $ref: '#/components/schemas/BaseAttributeContent'
         type:
-          type: string
-          description: Type of the Attribute
-          default: data
-          enum:
-          - data
-          - group
-          - info
-          - meta
-          - custom
+          $ref: '#/components/schemas/AttributeType'
         contentType:
-          type: string
-          description: Type of the Content
-          enum:
-          - string
-          - integer
-          - secret
-          - file
-          - boolean
-          - credential
-          - date
-          - float
-          - object
-          - text
-          - time
-          - datetime
-        attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
-    InfoAttribute:
-      required:
-      - contentType
-      - name
-      - properties
-      - type
-      - uuid
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseAttribute'
-      - type: object
+          $ref: '#/components/schemas/AttributeContentType'
         properties:
-          content:
-            type: array
-            description: Content of the Attribute
-            items:
-              $ref: '#/components/schemas/BaseAttributeContent'
-          contentType:
-            type: string
-            description: Type of the Content
-            enum:
-            - string
-            - integer
-            - secret
-            - file
-            - boolean
-            - credential
-            - date
-            - float
-            - object
-            - text
-            - time
-            - datetime
-          properties:
-            $ref: '#/components/schemas/InfoAttributeProperties'
+          $ref: '#/components/schemas/InfoAttributeProperties'
+      description: Info attribute contains content that is for information purpose
+        or represents additional information for object (metadata). Its content can
+        not be edited and is not send in requests to store.
     InfoAttributeProperties:
       required:
       - label
@@ -1842,12 +1813,7 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          type: string
-          description: Attribute Constraint Type
-          enum:
-          - regExp
-          - range
-          - dateTime
+          $ref: '#/components/schemas/AttributeConstraintType'
         data:
           $ref: '#/components/schemas/RangeAttributeConstraintData'
     RangeAttributeConstraintData:
@@ -1874,12 +1840,7 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          type: string
-          description: Attribute Constraint Type
-          enum:
-          - regExp
-          - range
-          - dateTime
+          $ref: '#/components/schemas/AttributeConstraintType'
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
@@ -1889,12 +1850,7 @@ components:
       type: object
       properties:
         status:
-          type: string
-          description: Current connector operational status
-          enum:
-          - ok
-          - nok
-          - unknown
+          $ref: '#/components/schemas/HealthStatus'
         description:
           type: string
           description: Detailed status description
@@ -1903,6 +1859,13 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/HealthDto'
           description: Nested status of services
+    HealthStatus:
+      type: string
+      description: Current connector operational status
+      enum:
+      - ok
+      - nok
+      - unknown
     EndEntityDto:
       required:
       - status
@@ -1983,6 +1946,16 @@ components:
           description: True if the Endpoint is required for implementation
           example: true
       description: List of end points related to functional group
+    FunctionGroupCode:
+      type: string
+      description: Enumerated code of functional group
+      enum:
+      - credentialProvider
+      - legacyAuthorityProvider
+      - authorityProvider
+      - discoveryProvider
+      - entityProvider
+      - complianceProvider
     InfoResponse:
       required:
       - endPoints
@@ -1991,15 +1964,7 @@ components:
       type: object
       properties:
         functionGroupCode:
-          type: string
-          description: Enumerated code of functional group
-          enum:
-          - credentialProvider
-          - legacyAuthorityProvider
-          - authorityProvider
-          - discoveryProvider
-          - entityProvider
-          - complianceProvider
+          $ref: '#/components/schemas/FunctionGroupCode'
         kinds:
           type: array
           description: List of supported functional group kinds

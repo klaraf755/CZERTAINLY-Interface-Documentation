@@ -19,17 +19,17 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Authentication Management API
-  description: Authentication Management API
-- name: User Management API
+- name: User Management
   description: User Management API
-- name: Role Management API
+- name: Authentication Management
+  description: Authentication Management API
+- name: Role Management
   description: Role Management API
 paths:
   /v1/users/{userUuid}/roles/{roleUuid}:
     put:
       tags:
-      - User Management API
+      - User Management
       summary: Add role to User
       operationId: addRole
       parameters:
@@ -46,8 +46,18 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -58,25 +68,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
     delete:
       tags:
-      - User Management API
+      - User Management
       summary: Remove role from User
       operationId: removeRole
       parameters:
@@ -93,8 +93,12 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -105,26 +109,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: User roles removed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/users/{userUuid}:
     get:
       tags:
-      - User Management API
+      - User Management
       summary: Get user details
       operationId: getUser
       parameters:
@@ -135,37 +135,37 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "200":
           description: User details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     put:
       tags:
-      - User Management API
+      - User Management
       summary: Update User
       operationId: updateUser
       parameters:
@@ -182,37 +182,37 @@ paths:
               $ref: '#/components/schemas/UpdateUserRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: User details updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     delete:
       tags:
-      - User Management API
+      - User Management
       summary: Delete User
       operationId: deleteUser
       parameters:
@@ -223,8 +223,14 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "204":
+          description: User deleted
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -235,22 +241,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
-        "204":
-          description: User deleted
   /v1/roles/{roleUuid}/permissions/{resourceUuid}/objects/{objectUuid}:
     put:
       tags:
-      - Role Management API
+      - Role Management
       summary: Update Resource Objects to a Role
       operationId: updateResourcePermissionObjects
       parameters:
@@ -279,8 +279,12 @@ paths:
               $ref: '#/components/schemas/ObjectPermissionsRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -293,19 +297,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
     delete:
       tags:
-      - Role Management API
+      - Role Management
       summary: Update Resource Objects to a Role
       operationId: removeResourcePermissionObjects
       parameters:
@@ -328,8 +328,12 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -342,20 +346,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
   /v1/roles/{roleUuid}:
     get:
       tags:
-      - Role Management API
+      - Role Management
       summary: Get role details
       operationId: getRole
       parameters:
@@ -366,37 +366,37 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: Role details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RoleDetailDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     put:
       tags:
-      - Role Management API
+      - Role Management
       summary: Update Role
       operationId: updateRole
       parameters:
@@ -413,8 +413,18 @@ paths:
               $ref: '#/components/schemas/RoleRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "200":
+          description: Role details updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDetailDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -425,25 +435,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: Role details updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RoleDetailDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
     delete:
       tags:
-      - Role Management API
+      - Role Management
       summary: Delete Role
       operationId: deleteRole
       parameters:
@@ -454,68 +454,68 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "204":
           description: Role deleted
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/auth/profile:
     get:
       tags:
-      - Authentication Management API
+      - Authentication Management
       summary: Profile Authorization
       operationId: profile
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: Authenticate a user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     put:
       tags:
-      - Authentication Management API
+      - Authentication Management
       summary: Update User Profile
       operationId: updateUserProfile
       requestBody:
@@ -525,43 +525,47 @@ paths:
               $ref: '#/components/schemas/UpdateUserRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: Authenticate a user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/users:
     get:
       tags:
-      - User Management API
+      - User Management
       summary: List Users
       operationId: listUsers
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -572,16 +576,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: List of users fetched
           content:
@@ -592,7 +592,7 @@ paths:
                   $ref: '#/components/schemas/UserDto'
     post:
       tags:
-      - User Management API
+      - User Management
       summary: Create User
       operationId: createUser
       requestBody:
@@ -602,38 +602,38 @@ paths:
               $ref: '#/components/schemas/AddUserRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "201":
           description: User details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/roles/{roleUuid}/permissions/{resourceUuid}/objects:
     get:
       tags:
-      - Role Management API
+      - Role Management
       summary: Get Resource Objects of a Role
       operationId: getResourcePermissionObjects
       parameters:
@@ -650,8 +650,12 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -670,19 +674,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
     post:
       tags:
-      - Role Management API
+      - Role Management
       summary: Add Resource Objects to a Role
       operationId: addResourcePermissionObjects
       parameters:
@@ -707,8 +707,12 @@ paths:
                 $ref: '#/components/schemas/ObjectPermissionsRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -721,20 +725,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
   /v1/roles/{roleUuid}/permissions:
     get:
       tags:
-      - Role Management API
+      - Role Management
       summary: Get Permissions of a Role
       operationId: getRolePermissions
       parameters:
@@ -745,8 +745,12 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -757,25 +761,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: Role permissions retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubjectPermissionsDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     post:
       tags:
-      - Role Management API
+      - Role Management
       summary: Add permissions to Role
       operationId: savePermissions
       parameters:
@@ -792,8 +792,18 @@ paths:
               $ref: '#/components/schemas/RolePermissionsRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -804,31 +814,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubjectPermissionsDto'
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+  /v1/roles:
+    get:
+      tags:
+      - Role Management
+      summary: List Roles
+      operationId: listRoles
+      responses:
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
-  /v1/roles:
-    get:
-      tags:
-      - Role Management API
-      summary: List Roles
-      operationId: listRoles
-      responses:
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -841,25 +851,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RoleDto'
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
     post:
       tags:
-      - Role Management API
+      - Role Management
       summary: Create Role
       operationId: createRole
       requestBody:
@@ -869,8 +869,18 @@ paths:
               $ref: '#/components/schemas/RoleRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "201":
+          description: Role created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDetailDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -881,26 +891,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
-        "201":
-          description: Role created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RoleDetailDto'
   /v1/users/{userUuid}/roles:
     get:
       tags:
-      - User Management API
+      - User Management
       summary: Get User Roles
       operationId: getUserRoles
       parameters:
@@ -911,8 +911,12 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -923,16 +927,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: User roles retrieved
           content:
@@ -941,9 +935,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RoleDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     patch:
       tags:
-      - User Management API
+      - User Management
       summary: Add roles to User
       operationId: updateRoles
       parameters:
@@ -966,8 +966,18 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -978,26 +988,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
   /v1/users/{userUuid}/enable:
     patch:
       tags:
-      - User Management API
+      - User Management
       summary: Enable User
       operationId: enableUser
       parameters:
@@ -1008,8 +1008,18 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "200":
+          description: User enabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1020,26 +1030,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: User enabled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDetailDto'
-        "401":
-          description: Unauthorized
   /v1/users/{userUuid}/disable:
     patch:
       tags:
-      - User Management API
+      - User Management
       summary: Disable User
       operationId: disableUser
       parameters:
@@ -1050,38 +1050,38 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "200":
           description: User disabled
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/roles/{roleUuid}/users:
     get:
       tags:
-      - Role Management API
+      - Role Management
       summary: Get Role Users
       operationId: getRoleUsers
       parameters:
@@ -1092,8 +1092,12 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1112,19 +1116,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
     patch:
       tags:
-      - Role Management API
+      - Role Management
       summary: Add users to Role
       operationId: updateUsers
       parameters:
@@ -1147,8 +1147,18 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "200":
+          description: Role users updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDetailDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1159,26 +1169,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: Role users updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RoleDetailDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
   /v1/users/{userUuid}/permissions:
     get:
       tags:
-      - User Management API
+      - User Management
       summary: Get User permissions
       operationId: getPermissions
       parameters:
@@ -1189,14 +1189,18 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "200":
           description: User permissions removed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SubjectPermissionsDto'
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1207,20 +1211,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
   /v1/roles/{roleUuid}/permissions/{resourceUuid}:
     get:
       tags:
-      - Role Management API
+      - Role Management
       summary: Get Resources of a Role
       operationId: getRoleResourcePermissions
       parameters:
@@ -1237,24 +1237,8 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
         "500":
           description: Internal Server Error
         "200":
@@ -1263,23 +1247,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResourcePermissionsDto'
-        "401":
-          description: Unauthorized
-  /v1/auth/resources:
-    get:
-      tags:
-      - Authentication Management API
-      summary: Get all Resources
-      operationId: getAllResources
-      responses:
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+  /v1/auth/resources:
+    get:
+      tags:
+      - Authentication Management
+      summary: Get all Resources
+      operationId: getAllResources
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Resources retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResourceDetailDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1290,18 +1302,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: Resources retrieved successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ResourceDetailDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
 components:
   schemas:
     AuthenticationServiceExceptionDto:
