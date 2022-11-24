@@ -84,6 +84,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "422":
           description: Attribute validation failed
           content:
@@ -95,8 +97,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
   /v1/complianceProvider/{kind}/compliance:
     post:
       tags:
@@ -129,6 +129,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable entity
           content:
@@ -140,14 +148,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -191,18 +191,18 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -315,6 +315,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Groups retrieved successfully
           content:
@@ -323,8 +325,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsResponseDto'
-        "500":
-          description: Internal Server Error
   /v1:
     get:
       tags:
@@ -755,14 +755,16 @@ components:
           description: Name of the rule
           example: Rule1
         status:
-          type: string
-          description: Rule status
-          example: ok
-          enum:
-          - ok
-          - nok
-          - na
+          $ref: '#/components/schemas/ComplianceRuleStatus'
       description: List of rules applied and their status
+    ComplianceRuleStatus:
+      type: string
+      description: Rule status
+      example: ok
+      enum:
+      - ok
+      - nok
+      - na
     ComplianceStatus:
       type: string
       description: Status of the compliance check
@@ -1160,6 +1162,13 @@ components:
       - ok
       - nok
       - unknown
+    CertificateType:
+      type: string
+      description: Type of the certificate to which this rule can be applied
+      example: X509
+      enum:
+      - X509
+      - SSH
     ComplianceRulesResponseDto:
       required:
       - certificateType
@@ -1180,12 +1189,7 @@ components:
           description: Name of the rule
           example: Rule1
         certificateType:
-          type: string
-          description: Type of the certificate to which this rule can be applied
-          example: X509
-          enum:
-          - X509
-          - SSH
+          $ref: '#/components/schemas/CertificateType'
         attributes:
           type: array
           description: Rule attributes
