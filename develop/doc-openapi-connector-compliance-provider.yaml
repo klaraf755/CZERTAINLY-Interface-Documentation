@@ -84,8 +84,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Attribute validation failed
           content:
@@ -97,6 +95,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
   /v1/complianceProvider/{kind}/compliance:
     post:
       tags:
@@ -174,8 +174,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes retrieved
           content:
@@ -184,6 +182,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
   /v1/health:
     get:
       tags:
@@ -315,8 +315,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Groups retrieved successfully
           content:
@@ -325,6 +323,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsResponseDto'
+        "500":
+          description: Internal Server Error
   /v1:
     get:
       tags:
@@ -345,8 +345,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Functions found
           content:
@@ -355,6 +353,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     AttributeContentType:
@@ -434,6 +434,7 @@ components:
       - attributes
       - connectorName
       - connectorUuid
+      - customAttributes
       - enabled
       - kind
       - name
@@ -455,6 +456,11 @@ components:
         attributes:
           type: array
           description: List of Credential Attributes
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        customAttributes:
+          type: array
+          description: List of Custom Attributes
           items:
             $ref: '#/components/schemas/ResponseAttributeDto'
         enabled:
@@ -892,6 +898,8 @@ components:
           data: '#/components/schemas/DataAttribute'
           info: '#/components/schemas/InfoAttribute'
           group: '#/components/schemas/GroupAttribute'
+          meta: '#/components/schemas/InfoAttribute'
+          custom: '#/components/schemas/DataAttribute'
       oneOf:
       - $ref: '#/components/schemas/DataAttribute'
       - $ref: '#/components/schemas/InfoAttribute'
