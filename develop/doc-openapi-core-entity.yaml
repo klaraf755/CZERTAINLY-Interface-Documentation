@@ -36,24 +36,26 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Authority instance details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EntityInstanceDto'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Authority instance details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityInstanceDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -66,8 +68,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     put:
       tags:
       - Entity Management
@@ -116,6 +116,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -128,8 +130,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - Entity Management
@@ -157,6 +157,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -169,8 +171,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/entities/{entityUuid}/attributes/location/validate:
     post:
       tags:
@@ -216,6 +216,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -228,8 +230,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes validated
         "204":
@@ -241,6 +241,12 @@ paths:
       summary: List Entity instances
       operationId: listEntityInstances
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of Entity instances
           content:
@@ -249,18 +255,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/EntityInstanceDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -273,8 +275,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Entity Management
@@ -287,12 +287,6 @@ paths:
               $ref: '#/components/schemas/EntityInstanceRequestDto'
         required: true
       responses:
-        "201":
-          description: Entity instance created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
         "503":
           description: Connector Communication Error
           content:
@@ -316,20 +310,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "201":
+          description: Entity instance created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/entities/{entityUuid}/attributes/location:
     get:
       tags:
@@ -356,6 +356,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "502":
           description: Connector Error
           content:
@@ -376,8 +378,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "500":
-          description: Internal Server Error
 components:
   schemas:
     AttributeContentType:

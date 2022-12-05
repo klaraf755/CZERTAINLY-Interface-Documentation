@@ -71,14 +71,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Attribute validation failed
           content:
@@ -90,6 +82,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/discoveryProvider/discover/{uuid}:
     post:
       tags:
@@ -116,12 +116,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -130,6 +124,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryProviderDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Discovery
@@ -151,14 +151,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Discovery information deleted
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/discoveryProvider/discover:
     post:
       tags:
@@ -172,26 +172,6 @@ paths:
               $ref: '#/components/schemas/DiscoveryRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Discovery initiated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
         "422":
           description: Unprocessable entity
           content:
@@ -203,6 +183,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Discovery initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscoveryProviderDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -223,14 +223,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes retrieved
           content:
@@ -239,6 +231,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -246,26 +246,26 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "200":
-          description: Health check completed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1:
     get:
       tags:
@@ -280,14 +280,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Functions found
           content:
@@ -296,6 +288,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeContentType:
@@ -685,7 +685,7 @@ components:
           type: array
           description: Metadata for the Certificate
           items:
-            $ref: '#/components/schemas/InfoAttribute'
+            $ref: '#/components/schemas/MetadataAttribute'
       description: Certificate data
     DiscoveryProviderDto:
       required:
@@ -720,7 +720,7 @@ components:
           type: array
           description: Certificate Metadata
           items:
-            $ref: '#/components/schemas/InfoAttribute'
+            $ref: '#/components/schemas/MetadataAttribute'
     DiscoveryStatus:
       type: string
       description: Status of Discovery
@@ -729,7 +729,7 @@ components:
       - failed
       - completed
       - warning
-    InfoAttribute:
+    MetadataAttribute:
       required:
       - content
       - contentType
@@ -761,11 +761,10 @@ components:
         contentType:
           $ref: '#/components/schemas/AttributeContentType'
         properties:
-          $ref: '#/components/schemas/InfoAttributeProperties'
-      description: Info attribute contains content that is for information purpose
-        or represents additional information for object (metadata). Its content can
-        not be edited and is not send in requests to store.
-    InfoAttributeProperties:
+          $ref: '#/components/schemas/MetadataAttributeProperties'
+      description: Info attribute contains content that is for metadata. Its content
+        can not be edited and is not send in requests to store.
+    MetadataAttributeProperties:
       required:
       - label
       - visible
@@ -785,6 +784,10 @@ components:
           description: "Group of the Attribute, used for the logical grouping of the\
             \ Attribute"
           example: requiredAttributes
+        global:
+          type: boolean
+          description: Boolean determining if the Metadata is a global metadata.
+          default: false
       description: Properties of the Attributes
     DiscoveryRequestDto:
       required:
@@ -1072,6 +1075,63 @@ components:
       description: Group attribute and its content represents dynamic list of additional
         attributes retrieved by callback. Its content can not be edited and is not
         send in requests to store.
+    InfoAttribute:
+      required:
+      - content
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttributeContent'
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        contentType:
+          $ref: '#/components/schemas/AttributeContentType'
+        properties:
+          $ref: '#/components/schemas/InfoAttributeProperties'
+      description: Info attribute contains content that is for information purpose
+        or represents additional information for object (metadata). Its content can
+        not be edited and is not send in requests to store.
+    InfoAttributeProperties:
+      required:
+      - label
+      - visible
+      type: object
+      properties:
+        label:
+          type: string
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        group:
+          type: string
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
+      description: Properties of the Attributes
     RangeAttributeConstraint:
       required:
       - type
