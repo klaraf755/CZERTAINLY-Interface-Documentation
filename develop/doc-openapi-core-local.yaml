@@ -35,12 +35,10 @@ paths:
               $ref: '#/components/schemas/AddUserRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -53,16 +51,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Admin created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
-        "401":
-          description: Unauthorized
 components:
   schemas:
     AddUserRequestDto:
@@ -226,7 +226,7 @@ components:
           description: Content Reference
         data:
           type: string
-          description: Date attribute value
+          description: Date attribute value in format yyyy-MM-dd
           format: date
     DateTimeAttributeContent:
       required:
@@ -238,7 +238,7 @@ components:
           description: Content Reference
         data:
           type: string
-          description: DateTime attribute value
+          description: DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX
           format: date-time
     FileAttributeContent:
       required:
@@ -290,22 +290,6 @@ components:
           type: integer
           description: Integer attribute value
           format: int32
-    LocalTime:
-      type: object
-      properties:
-        hour:
-          type: integer
-          format: int32
-        minute:
-          type: integer
-          format: int32
-        second:
-          type: integer
-          format: int32
-        nano:
-          type: integer
-          format: int32
-      description: Time attribute value
     MimeType:
       type: object
       properties:
@@ -438,7 +422,8 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/LocalTime'
+          type: string
+          description: Time attribute value in format HH:mm:ss
     ErrorMessageDto:
       required:
       - message

@@ -65,12 +65,20 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "422":
           description: Attribute validation failed
           content:
@@ -82,14 +90,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/discoveryProvider/discover/{uuid}:
     post:
       tags:
@@ -110,6 +110,12 @@ paths:
               $ref: '#/components/schemas/DiscoveryDataRequestDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -124,12 +130,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryProviderDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Discovery
@@ -143,6 +143,12 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -153,12 +159,6 @@ paths:
           description: Internal Server Error
         "204":
           description: Discovery information deleted
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/discoveryProvider/discover:
     post:
       tags:
@@ -172,6 +172,12 @@ paths:
               $ref: '#/components/schemas/DiscoveryRequestDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -197,12 +203,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -217,6 +217,12 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -233,12 +239,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -246,6 +246,12 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -260,12 +266,6 @@ paths:
                 $ref: '#/components/schemas/HealthDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1:
     get:
       tags:
@@ -274,6 +274,12 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -290,12 +296,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeContentType:
@@ -424,7 +424,7 @@ components:
           description: Content Reference
         data:
           type: string
-          description: Date attribute value
+          description: Date attribute value in format yyyy-MM-dd
           format: date
     DateTimeAttributeContent:
       required:
@@ -436,7 +436,7 @@ components:
           description: Content Reference
         data:
           type: string
-          description: DateTime attribute value
+          description: DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX
           format: date-time
     FileAttributeContent:
       required:
@@ -488,22 +488,6 @@ components:
           type: integer
           description: Integer attribute value
           format: int32
-    LocalTime:
-      type: object
-      properties:
-        hour:
-          type: integer
-          format: int32
-        minute:
-          type: integer
-          format: int32
-        second:
-          type: integer
-          format: int32
-        nano:
-          type: integer
-          format: int32
-      description: Time attribute value
     MimeType:
       type: object
       properties:
@@ -636,7 +620,8 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/LocalTime'
+          type: string
+          description: Time attribute value in format HH:mm:ss
     ErrorMessageDto:
       required:
       - message
