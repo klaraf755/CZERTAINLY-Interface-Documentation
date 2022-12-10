@@ -141,6 +141,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
+  /v1/certificate/{certificateType}/random:
+    get:
+      tags:
+      - Certificate Utils API
+      summary: Generate random certificate
+      operationId: randomCertificate
+      parameters:
+      - name: certificateType
+        in: path
+        description: Certificate type
+        required: true
+        schema:
+          type: string
+          enum:
+          - X509
+          - SSH
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponseDto'
+        "200":
+          description: Certificate generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RandomCertificateResponseDto'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponseDto'
 components:
   schemas:
     ParseRequestRequestDto:
@@ -534,3 +569,15 @@ components:
           description: "Name of the OID number, if defined"
           nullable: true
           example: Common Name
+    RandomCertificateResponseDto:
+      required:
+      - certificate
+      type: object
+      properties:
+        certificate:
+          type: array
+          description: Base64-encoded certificate
+          items:
+            type: string
+            description: Base64-encoded certificate
+            format: byte
