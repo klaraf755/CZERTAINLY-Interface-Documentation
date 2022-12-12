@@ -31,7 +31,7 @@ public class AuthControllerDummyImpl implements AuthController {
     }
 
     @Override
-    public List<NameAndUuidDto> getObjectsForResource(Resource resource) throws NotFoundException {
+    public List<NameAndUuidDto> getObjectsForResource(Resource resourceName) throws NotFoundException {
         return null;
     }
 
