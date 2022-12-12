@@ -108,6 +108,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ParseCertificateResponseDto'
+  /v1/certificate/identify:
+    post:
+      tags:
+      - Certificate Utils API
+      summary: Identify certificate type
+      operationId: identifyCertificate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentifyCertificateRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Certificate identified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentifyCertificateResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponseDto'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponseDto'
   /v1/oid/{identifier}:
     get:
       tags:
@@ -164,18 +195,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
-        "200":
-          description: Certificate generated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RandomCertificateResponseDto'
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
+        "200":
+          description: Certificate generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RandomCertificateResponseDto'
 components:
   schemas:
     ParseRequestRequestDto:
@@ -554,6 +585,29 @@ components:
             type: string
             description: List of subject alternative names
             example: "DNS: test.example.com"
+    IdentifyCertificateRequestDto:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          type: array
+          description: Base64-encoded data to be identified
+          items:
+            type: string
+            description: Base64-encoded data to be identified
+            format: byte
+    IdentifyCertificateResponseDto:
+      required:
+      - certificateType
+      type: object
+      properties:
+        certificateType:
+          type: string
+          description: Identified Type of certificate
+          enum:
+          - X509
+          - SSH
     OidInfoResponseDto:
       required:
       - identifier
