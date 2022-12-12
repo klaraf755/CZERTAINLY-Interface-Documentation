@@ -3,6 +3,8 @@ package com.czertainly.api.impl;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.core.web.AuthController;
 import com.czertainly.api.model.client.auth.UpdateUserRequestDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.auth.ResourceDetailDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,4 +29,10 @@ public class AuthControllerDummyImpl implements AuthController {
     public List<ResourceDetailDto> getAllResources() throws NotFoundException {
         return null;
     }
+
+    @Override
+    public List<NameAndUuidDto> getObjectsForResource(Resource resource) throws NotFoundException {
+        return null;
+    }
+
 }
