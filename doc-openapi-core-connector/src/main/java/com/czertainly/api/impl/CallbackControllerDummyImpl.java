@@ -5,6 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.CallbackController;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
+import com.czertainly.api.model.core.auth.Resource;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,7 +16,7 @@ public class CallbackControllerDummyImpl implements CallbackController {
     }
 
     @Override
-    public Object raProfileCallback(String authorityUuid, RequestAttributeCallback callback) throws ConnectorException, ValidationException {
+    public Object resourceCallback(Resource resource, String resourceParentUuid, RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException {
         return null;
     }
 }
