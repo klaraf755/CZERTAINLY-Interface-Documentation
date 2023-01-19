@@ -72,20 +72,6 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Attribute validation failed
           content:
@@ -97,6 +83,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/compliance:
     post:
       tags:
@@ -123,14 +123,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComplianceResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -148,6 +140,44 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1:
+    get:
+      tags:
+      - Connector Info
+      summary: List supported functions of the connector
+      description: Returns map of functional code and implemented end points
+      operationId: listSupportedFunctions
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Functions found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InfoResponse'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -162,14 +192,6 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -184,6 +206,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -191,26 +221,26 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/rules:
     get:
       tags:
@@ -225,20 +255,14 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Rules retrieved successfully
           content:
@@ -247,6 +271,48 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/complianceProvider/{kind}/groups:
+    get:
+      tags:
+      - Compliance Rules
+      summary: Get list of groups
+      operationId: getGroups
+      parameters:
+      - name: kind
+        in: path
+        description: Connector kind
+        required: true
+        schema:
+          type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Groups retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComplianceGroupsResponseDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/groups/{uuid}:
     get:
       tags:
@@ -267,20 +333,14 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Rules retrieved successfully
           content:
@@ -289,72 +349,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
-  /v1/complianceProvider/{kind}/groups:
-    get:
-      tags:
-      - Compliance Rules
-      summary: Get list of groups
-      operationId: getGroups
-      parameters:
-      - name: kind
-        in: path
-        description: Connector kind
-        required: true
-        schema:
-          type: string
-      responses:
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Groups retrieved successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ComplianceGroupsResponseDto'
-  /v1:
-    get:
-      tags:
-      - Connector Info
-      summary: List supported functions of the connector
-      description: Returns map of functional code and implemented end points
-      operationId: listSupportedFunctions
-      responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Functions found
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InfoResponse'
 components:
   schemas:
     AttributeCallback:
@@ -745,6 +745,8 @@ components:
           type: boolean
         wildcardSubtype:
           type: boolean
+        subtypeSuffix:
+          type: string
         concrete:
           type: boolean
         charset:
@@ -960,6 +962,72 @@ components:
       - ok
       - nok
       - na
+    EndpointDto:
+      required:
+      - context
+      - method
+      - name
+      - required
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        context:
+          type: string
+          description: Context of the Endpoint
+          example: /v1
+        method:
+          type: string
+          description: Method to be used for the Endpoint
+          example: POST
+        required:
+          type: boolean
+          description: True if the Endpoint is required for implementation
+          example: true
+      description: List of end points related to functional group
+    FunctionGroupCode:
+      type: string
+      description: Enumerated code of functional group
+      enum:
+      - credentialProvider
+      - legacyAuthorityProvider
+      - authorityProvider
+      - discoveryProvider
+      - entityProvider
+      - complianceProvider
+      - cryptographyProvider
+    InfoResponse:
+      required:
+      - endPoints
+      - functionGroupCode
+      - kinds
+      type: object
+      properties:
+        functionGroupCode:
+          $ref: '#/components/schemas/FunctionGroupCode'
+        kinds:
+          type: array
+          description: List of supported functional group kinds
+          example:
+          - SoftKeyStore
+          - Basic
+          - ApiKey
+          items:
+            type: string
+            description: List of supported functional group kinds
+            example: "[\"SoftKeyStore\",\"Basic\",\"ApiKey\"]"
+        endPoints:
+          type: array
+          description: List of end points related to functional group
+          items:
+            $ref: '#/components/schemas/EndpointDto'
     BaseAttributeDto:
       required:
       - name
@@ -1302,69 +1370,3 @@ components:
           type: string
           description: Description of the group
           example: Sample description of the group
-    EndpointDto:
-      required:
-      - context
-      - method
-      - name
-      - required
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        context:
-          type: string
-          description: Context of the Endpoint
-          example: /v1
-        method:
-          type: string
-          description: Method to be used for the Endpoint
-          example: POST
-        required:
-          type: boolean
-          description: True if the Endpoint is required for implementation
-          example: true
-      description: List of end points related to functional group
-    FunctionGroupCode:
-      type: string
-      description: Enumerated code of functional group
-      enum:
-      - credentialProvider
-      - legacyAuthorityProvider
-      - authorityProvider
-      - discoveryProvider
-      - entityProvider
-      - complianceProvider
-      - cryptographyProvider
-    InfoResponse:
-      required:
-      - endPoints
-      - functionGroupCode
-      - kinds
-      type: object
-      properties:
-        functionGroupCode:
-          $ref: '#/components/schemas/FunctionGroupCode'
-        kinds:
-          type: array
-          description: List of supported functional group kinds
-          example:
-          - SoftKeyStore
-          - Basic
-          - ApiKey
-          items:
-            type: string
-            description: List of supported functional group kinds
-            example: "[\"SoftKeyStore\",\"Basic\",\"ApiKey\"]"
-        endPoints:
-          type: array
-          description: List of end points related to functional group
-          items:
-            $ref: '#/components/schemas/EndpointDto'
