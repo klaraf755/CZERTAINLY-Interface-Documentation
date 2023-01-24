@@ -72,6 +72,17 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
+        "422":
+          description: Attribute validation failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "400":
           description: Bad Request
           content:
@@ -84,17 +95,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Attribute validation failed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "500":
           description: Internal Server Error
   /v1/complianceProvider/{kind}/compliance:
@@ -123,6 +123,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComplianceResponseDto'
+        "422":
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "400":
           description: Bad Request
           content:
@@ -135,17 +146,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "500":
           description: Internal Server Error
   /v1:
@@ -162,12 +162,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Functions found
           content:
@@ -176,6 +170,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes:
@@ -198,12 +198,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes retrieved
           content:
@@ -212,6 +206,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1/health:
@@ -221,18 +221,18 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -297,12 +297,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Groups retrieved successfully
           content:
@@ -311,6 +305,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1/complianceProvider/{kind}/groups/{uuid}:
@@ -471,7 +471,7 @@ components:
       - $ref: '#/components/schemas/RegexpAttributeConstraint'
       - $ref: '#/components/schemas/RangeAttributeConstraint'
       - $ref: '#/components/schemas/DateTimeAttributeConstraint'
-    BaseAttributeContent:
+    BaseAttributeContentDto:
       required:
       - data
       type: object
@@ -482,7 +482,7 @@ components:
         data:
           type: object
           description: Content Data
-      description: Content of the Attribute
+      description: Base Attribute content definition
       oneOf:
       - $ref: '#/components/schemas/BooleanAttributeContent'
       - $ref: '#/components/schemas/CredentialAttributeContent'
@@ -568,7 +568,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -824,7 +824,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
       description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
@@ -1092,7 +1092,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -1202,7 +1202,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -1259,7 +1259,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:

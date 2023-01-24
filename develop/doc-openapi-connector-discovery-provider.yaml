@@ -65,6 +65,12 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -84,12 +90,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/discoveryProvider/discover:
     post:
       tags:
@@ -103,6 +103,12 @@ paths:
               $ref: '#/components/schemas/DiscoveryRequestDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -111,12 +117,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: Discovery initiated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
         "422":
           description: Unprocessable entity
           content:
@@ -128,12 +128,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
+        "200":
+          description: Discovery initiated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/DiscoveryProviderDto'
   /v1/discoveryProvider/discover/{uuid}:
     post:
       tags:
@@ -154,6 +154,12 @@ paths:
               $ref: '#/components/schemas/DiscoveryDataRequestDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -168,12 +174,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryProviderDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Discovery
@@ -187,6 +187,12 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -197,12 +203,6 @@ paths:
           description: Internal Server Error
         "204":
           description: Discovery information deleted
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1:
     get:
       tags:
@@ -211,6 +211,12 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -227,12 +233,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -247,6 +247,12 @@ paths:
         schema:
           type: string
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -263,12 +269,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -282,6 +282,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -290,12 +296,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeCallback:
@@ -412,7 +412,7 @@ components:
       - $ref: '#/components/schemas/RegexpAttributeConstraint'
       - $ref: '#/components/schemas/RangeAttributeConstraint'
       - $ref: '#/components/schemas/DateTimeAttributeConstraint'
-    BaseAttributeContent:
+    BaseAttributeContentDto:
       required:
       - data
       type: object
@@ -423,7 +423,7 @@ components:
         data:
           type: object
           description: Content Data
-      description: Content of the Attribute
+      description: Base Attribute content definition
       oneOf:
       - $ref: '#/components/schemas/BooleanAttributeContent'
       - $ref: '#/components/schemas/CredentialAttributeContent'
@@ -509,7 +509,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -765,7 +765,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
       description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
@@ -933,7 +933,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -1119,7 +1119,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -1229,7 +1229,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:

@@ -36,6 +36,12 @@ paths:
         schema:
           type: string
       responses:
+        "200":
+          description: Authority instance details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityInstanceDto'
         "404":
           description: Not Found
           content:
@@ -54,12 +60,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EntityInstanceDto'
         "503":
           description: Connector Communication Error
           content:
@@ -87,12 +87,29 @@ paths:
               $ref: '#/components/schemas/EntityInstanceUpdateRequestDto'
         required: true
       responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Authority instance details updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityInstanceDto'
         "400":
           description: Bad Request
           content:
@@ -105,29 +122,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance details updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EntityInstanceDto'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "500":
           description: Internal Server Error
     delete:
@@ -143,14 +143,14 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: Entity instance deleted
         "404":
           description: Not Found
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Entity instance deleted
         "400":
           description: Bad Request
           content:
@@ -178,6 +178,14 @@ paths:
       summary: List Entity instances
       operationId: listEntityInstances
       responses:
+        "200":
+          description: List of Entity instances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityInstanceDto'
         "404":
           description: Not Found
           content:
@@ -196,14 +204,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: List of Entity instances
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EntityInstanceDto'
         "503":
           description: Connector Communication Error
           content:
@@ -224,6 +224,17 @@ paths:
               $ref: '#/components/schemas/EntityInstanceRequestDto'
         required: true
       responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
           description: Not Found
           content:
@@ -242,31 +253,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "201":
-          description: Entity instance created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
+        "500":
+          description: Internal Server Error
+        "201":
+          description: Entity instance created
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
+                $ref: '#/components/schemas/UuidDto'
   /v1/entities/{entityUuid}/attributes/location/validate:
     post:
       tags:
@@ -289,6 +289,17 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
           description: Not Found
           content:
@@ -313,17 +324,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "200":
           description: Attributes validated
         "500":
@@ -494,7 +494,7 @@ components:
       - $ref: '#/components/schemas/RegexpAttributeConstraint'
       - $ref: '#/components/schemas/RangeAttributeConstraint'
       - $ref: '#/components/schemas/DateTimeAttributeConstraint'
-    BaseAttributeContent:
+    BaseAttributeContentDto:
       required:
       - data
       type: object
@@ -505,7 +505,7 @@ components:
         data:
           type: object
           description: Content Data
-      description: Content of the Attribute
+      description: Base Attribute content definition
       oneOf:
       - $ref: '#/components/schemas/BooleanAttributeContent'
       - $ref: '#/components/schemas/CredentialAttributeContent'
@@ -591,7 +591,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -862,7 +862,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
       description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
@@ -996,7 +996,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
       description: Response attribute with content for object it belongs to
     EntityInstanceRequestDto:
       required:
@@ -1098,7 +1098,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -1208,7 +1208,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
@@ -1265,7 +1265,7 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContent'
+            $ref: '#/components/schemas/BaseAttributeContentDto'
         type:
           $ref: '#/components/schemas/AttributeType'
         contentType:
