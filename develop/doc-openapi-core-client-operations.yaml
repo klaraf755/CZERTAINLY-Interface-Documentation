@@ -44,22 +44,26 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: End Entity password reset
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity password reset
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -76,10 +80,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates:
     post:
       tags:
@@ -106,44 +106,12 @@ paths:
               $ref: '#/components/schemas/ClientCertificateSignRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate issued
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "401":
-          description: Unauthorized
         "500":
           description: Internal Server Error
         "422":
@@ -157,6 +125,38 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/revoke:
     post:
       tags:
@@ -189,20 +189,26 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRevocationDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "204":
+          description: Certificate revoked
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -219,12 +225,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Certificate revoked
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/renew:
     post:
       tags:
@@ -257,20 +257,41 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRenewRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "200":
+          description: Certificate renewed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -287,27 +308,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate renewed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke/validate:
     post:
       tags:
@@ -336,24 +336,30 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attributes validated
         "400":
           description: Bad Request
           content:
@@ -366,12 +372,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Attributes validated
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue/validate:
     post:
       tags:
@@ -400,24 +400,41 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attributes validated
         "400":
           description: Bad Request
           content:
@@ -430,23 +447,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Attributes validated
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
   /v1/operations/{raProfileName}/endentity:
     get:
       tags:
@@ -461,12 +461,14 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: List of entities retrieved
           content:
@@ -475,14 +477,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClientEndEntityDto'
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -499,10 +503,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Legacy Client Operations
@@ -522,24 +522,30 @@ paths:
               $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity added
         "400":
           description: Bad Request
           content:
@@ -552,12 +558,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity added
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
   /v1/operations/{raProfileName}/endentity/{username}:
     get:
       tags:
@@ -578,20 +578,30 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "200":
+          description: End Entity detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientEndEntityDto'
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -608,16 +618,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity detail retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientEndEntityDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Legacy Client Operations
@@ -643,24 +643,30 @@ paths:
               $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity edited
         "400":
           description: Bad Request
           content:
@@ -673,12 +679,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity edited
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - Legacy Client Operations
@@ -698,24 +698,30 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity revoked and deleted
         "400":
           description: Bad Request
           content:
@@ -728,12 +734,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity revoked and deleted
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
   /v1/operations/{raProfileName}/certificate/revoke:
     post:
       tags:
@@ -754,20 +754,26 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRevocationDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "200":
+          description: Certificate revoked
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -784,12 +790,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate revoked
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
   /v1/operations/{raProfileName}/certificate/issue:
     post:
       tags:
@@ -810,24 +810,34 @@ paths:
               $ref: '#/components/schemas/ClientCertificateSignRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
         "400":
           description: Bad Request
           content:
@@ -840,16 +850,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate issued
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke:
     get:
       tags:
@@ -878,20 +878,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -908,10 +912,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue:
     get:
       tags:
@@ -932,20 +932,43 @@ paths:
         schema:
           type: string
       responses:
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "401":
+          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
+        "200":
+          description: Attributes list obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -962,29 +985,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes list obtained
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
 components:
   schemas:
     ErrorMessageDto:
