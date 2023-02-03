@@ -42,20 +42,12 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: Cryptographic Key Detail retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/KeyDetailDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -70,6 +62,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
     put:
       tags:
       - Cryptographic Key Controller
@@ -95,31 +95,12 @@ paths:
               $ref: '#/components/schemas/EditKeyRequestDto'
         required: true
       responses:
-        "422":
-          description: Unprocessible Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "204":
           description: Key updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/KeyDetailDto'
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -132,8 +113,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "422":
+          description: Unprocessible Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
     delete:
       tags:
       - Cryptographic Key Controller
@@ -169,14 +169,6 @@ paths:
       responses:
         "204":
           description: Key deleted
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -191,6 +183,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/tokens/{tokenInstanceUuid}/keys/{uuid}/usages:
     put:
       tags:
@@ -220,22 +220,14 @@ paths:
               $ref: '#/components/schemas/UpdateKeyUsageRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "204":
-          description: Keys Usages Updates
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Keys Usages Updates
         "403":
           description: Forbidden
           content:
@@ -244,6 +236,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/usages:
     put:
       tags:
@@ -259,22 +259,14 @@ paths:
               $ref: '#/components/schemas/BulkKeyUsageRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "204":
-          description: Keys Usages Updated
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Keys Usages Updated
         "403":
           description: Forbidden
           content:
@@ -283,6 +275,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/items/usages:
     put:
       tags:
@@ -297,16 +297,6 @@ paths:
               $ref: '#/components/schemas/BulkKeyItemUsageRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "204":
-          description: Key Items Usages Updated
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -319,8 +309,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "204":
+          description: Key Items Usages Updated
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{type}:
     post:
       tags:
@@ -353,6 +353,24 @@ paths:
               $ref: '#/components/schemas/KeyRequestDto'
         required: true
       responses:
+        "201":
+          description: Cryptographic Key Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyDetailDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -364,20 +382,29 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "201":
-          description: Cryptographic Key Created Successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KeyDetailDto'
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+  /v1/keys:
+    post:
+      tags:
+      - Cryptographic Key Controller
+      summary: List cryptographic keys
+      operationId: listCryptographicKeys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequestDto'
+        required: true
+      responses:
         "400":
           description: Bad Request
           content:
@@ -392,6 +419,62 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+        "200":
+          description: List of all the cryptographic keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptographicKeyResponseDto'
+    delete:
+      tags:
+      - Cryptographic Key Controller
+      summary: Delete Multiple Cryptographic Key
+      operationId: deleteKeys
+      requestBody:
+        description: Key UUIDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Keys deleted
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/tokens/{tokenInstanceUuid}/keys/{uuid}/enable:
     patch:
       tags:
@@ -428,14 +511,6 @@ paths:
       responses:
         "204":
           description: Key enabled
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -450,6 +525,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/tokens/{tokenInstanceUuid}/keys/{uuid}/disable:
     patch:
       tags:
@@ -484,14 +567,6 @@ paths:
             - c2f685d4-6a3e-11ec-90d6-0242ac120003
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -504,10 +579,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "204":
-          description: Key disabled
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+        "204":
+          description: Key disabled
   /v1/tokens/{tokenInstanceUuid}/keys/{uuid}/destroy:
     patch:
       tags:
@@ -542,16 +625,8 @@ paths:
             - c2f685d4-6a3e-11ec-90d6-0242ac120003
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
       responses:
-        "401":
-          description: Unauthorized
         "204":
           description: Keys destroyed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -566,6 +641,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/tokens/{tokenInstanceUuid}/keys/{uuid}/compromise:
     patch:
       tags:
@@ -595,16 +678,6 @@ paths:
               $ref: '#/components/schemas/CompromiseKeyRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Key marked as compromised
         "400":
           description: Bad Request
           content:
@@ -619,6 +692,16 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "204":
+          description: Key marked as compromised
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/items/enable:
     patch:
       tags:
@@ -638,14 +721,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -660,6 +735,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "204":
           description: Key Items enabled
   /v1/keys/items/disable:
@@ -681,16 +764,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Key Items disabled
         "400":
           description: Bad Request
           content:
@@ -705,6 +778,16 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "204":
+          description: Key Items disabled
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/items/destroy:
     patch:
       tags:
@@ -726,14 +809,6 @@ paths:
       responses:
         "204":
           description: Keys Items destroyed
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -748,6 +823,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/items/compromise:
     patch:
       tags:
@@ -765,14 +848,6 @@ paths:
       responses:
         "204":
           description: Key Items marked as compromised
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -787,6 +862,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/enable:
     patch:
       tags:
@@ -806,16 +889,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Keys enabled
         "400":
           description: Bad Request
           content:
@@ -830,6 +903,16 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "204":
+          description: Keys enabled
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/disable:
     patch:
       tags:
@@ -849,16 +932,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "401":
-          description: Unauthorized
         "204":
           description: Keys disabled
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -873,6 +948,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/destroy:
     patch:
       tags:
@@ -892,16 +975,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "401":
-          description: Unauthorized
         "204":
           description: Keys destroyed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -916,6 +991,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/compromise:
     patch:
       tags:
@@ -932,16 +1015,6 @@ paths:
               $ref: '#/components/schemas/BulkCompromiseKeyRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Key marked as compromised
         "400":
           description: Bad Request
           content:
@@ -956,6 +1029,16 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "204":
+          description: Key marked as compromised
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{type}/attributes:
     get:
       tags:
@@ -990,14 +1073,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -1012,6 +1087,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItemUuid}:
     get:
       tags:
@@ -1038,20 +1121,12 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: Cryptographic Key Detail retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/KeyItemDetailDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -1066,6 +1141,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItemUuid}/history:
     get:
       tags:
@@ -1100,14 +1183,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/KeyEventHistoryDto'
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -1122,35 +1197,29 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-  /v1/keys:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+  /v1/keys/search:
     get:
       tags:
       - Cryptographic Key Controller
-      summary: List Cryptographic Keys
-      operationId: listKeys
-      parameters:
-      - name: tokenProfileUuid
-        in: query
-        required: false
-        schema:
-          type: string
+      summary: Get CryptographicKey searchable fields information
+      operationId: getSearchableFieldInformation
       responses:
-        "401":
-          description: Unauthorized
         "200":
-          description: Cryptographic Keys retrieved
+          description: CryptographicKey searchable field information retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/KeyDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                  $ref: '#/components/schemas/SearchFieldDataDto'
         "400":
           description: Bad Request
           content:
@@ -1165,48 +1234,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-    delete:
-      tags:
-      - Cryptographic Key Controller
-      summary: Delete Multiple Cryptographic Key
-      operationId: deleteKeys
-      requestBody:
-        description: Key UUIDs
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
-        required: true
-      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "401":
           description: Unauthorized
-        "204":
-          description: Keys deleted
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/keys/pairs:
     get:
       tags:
@@ -1222,8 +1257,6 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: Cryptographic Keys retrieved
           content:
@@ -1232,12 +1265,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/KeyDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -1252,6 +1279,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/keys/items:
     delete:
       tags:
@@ -1273,14 +1308,6 @@ paths:
       responses:
         "204":
           description: Key Items deleted
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -1295,6 +1322,14 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
 components:
   schemas:
     AttributeCallback:
@@ -2299,6 +2334,225 @@ components:
           description: Custom Attributes for the key
           items:
             $ref: '#/components/schemas/RequestAttributeDto'
+    SearchCondition:
+      type: string
+      description: Condition for the search
+      enum:
+      - EQUALS
+      - NOT_EQUALS
+      - GREATER
+      - LESSER
+      - CONTAINS
+      - NOT_CONTAINS
+      - STARTS_WITH
+      - ENDS_WITH
+      - EMPTY
+      - NOT_EMPTY
+      - SUCCESS
+      - FAILED
+      - UNKNOWN
+      - NOT_CHECKED
+    SearchFilterRequestDto:
+      required:
+      - condition
+      - field
+      type: object
+      properties:
+        field:
+          $ref: '#/components/schemas/SearchableFields'
+        condition:
+          $ref: '#/components/schemas/SearchCondition'
+        value:
+          type: object
+          description: Value to match
+      description: Certificate filter input
+    SearchRequestDto:
+      type: object
+      properties:
+        filters:
+          type: array
+          description: Certificate filter input
+          items:
+            $ref: '#/components/schemas/SearchFilterRequestDto'
+        itemsPerPage:
+          maximum: 1000
+          type: integer
+          description: Number of entries per page
+          format: int32
+          default: 10
+        pageNumber:
+          type: integer
+          description: Page number for the request
+          format: int32
+          default: 1
+    SearchableFields:
+      type: string
+      description: Field to search
+      enum:
+      - commonName
+      - serialNumber
+      - raProfile
+      - entity
+      - status
+      - complianceStatus
+      - group
+      - owner
+      - issuerCommonName
+      - signatureAlgorithm
+      - fingerprint
+      - notAfter
+      - notBefore
+      - publicKeyAlgorithm
+      - keySize
+      - keyUsage
+      - basicConstraints
+      - meta
+      - subjectAlternativeNames
+      - subjectDn
+      - issuerDn
+      - issuerSerialNumber
+      - ocspValidation
+      - crlValidation
+      - signatureValidation
+      - cryptographicKey.name
+      - cryptographicKey.group
+      - cryptographicKey.owner
+      - cryptographicKey.tokenProfile.name
+      - cryptographicKey.tokenInstanceReference.name
+      - type
+      - format
+      - state
+      - length
+      - usage
+      - cryptographicAlgorithm
+    CryptographicKeyResponseDto:
+      required:
+      - cryptographicKeys
+      - itemsPerPage
+      - pageNumber
+      - totalItems
+      - totalPages
+      type: object
+      properties:
+        cryptographicKeys:
+          type: array
+          description: CryptographicKeys
+          items:
+            $ref: '#/components/schemas/KeyDto'
+        itemsPerPage:
+          type: integer
+          description: Number of entries per page
+          format: int32
+        pageNumber:
+          type: integer
+          description: Page number for the request
+          format: int32
+        totalPages:
+          type: integer
+          description: Number of pages available
+          format: int32
+        totalItems:
+          type: integer
+          description: Number of items available
+          format: int64
+    KeyDto:
+      required:
+      - creationTime
+      - description
+      - items
+      - name
+      - tokenInstanceName
+      - tokenInstanceUuid
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the Key
+        creationTime:
+          type: string
+          description: "Creation time of the Key. If the key is discovered from the\
+            \ connector, then it will be returned"
+          format: date-time
+        tokenProfileUuid:
+          type: string
+          description: UUID of the Token Profile
+        tokenProfileName:
+          type: string
+          description: Name of the Token Profile
+        tokenInstanceUuid:
+          type: string
+          description: Token Instance UUID
+        tokenInstanceName:
+          type: string
+          description: Token Instance Name
+        owner:
+          type: string
+          description: Owner of the Key
+        group:
+          $ref: '#/components/schemas/GroupDto'
+        items:
+          type: array
+          description: Key Items
+          items:
+            $ref: '#/components/schemas/KeyItemDto'
+        associations:
+          type: integer
+          description: Number of associated objects
+          format: int32
+      description: CryptographicKeys
+    KeyItemDto:
+      required:
+      - cryptographicAlgorithm
+      - enabled
+      - keyReferenceUuid
+      - name
+      - state
+      - type
+      - usage
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        keyReferenceUuid:
+          type: string
+          description: UUID of the key item in the Connector
+        type:
+          $ref: '#/components/schemas/KeyType'
+        cryptographicAlgorithm:
+          $ref: '#/components/schemas/CryptographicAlgorithm'
+        format:
+          $ref: '#/components/schemas/KeyFormat'
+        length:
+          type: integer
+          description: Key Length
+          format: int32
+        usage:
+          type: array
+          description: Key Usages
+          items:
+            $ref: '#/components/schemas/KeyUsage'
+        enabled:
+          type: boolean
+          description: Boolean describing if the key is enabled or not
+        state:
+          $ref: '#/components/schemas/KeyState'
+      description: Key Items
     CompromiseKeyRequestDto:
       required:
       - reason
@@ -2663,100 +2917,35 @@ components:
             type: object
             description: Additional information for the event
           description: Additional information for the event
-    KeyDto:
+    SearchFieldDataDto:
       required:
-      - creationTime
-      - description
-      - items
-      - name
-      - tokenInstanceName
-      - tokenInstanceUuid
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Key
-        creationTime:
-          type: string
-          description: "Creation time of the Key. If the key is discovered from the\
-            \ connector, then it will be returned"
-          format: date-time
-        tokenProfileUuid:
-          type: string
-          description: UUID of the Token Profile
-        tokenProfileName:
-          type: string
-          description: Name of the Token Profile
-        tokenInstanceUuid:
-          type: string
-          description: Token Instance UUID
-        tokenInstanceName:
-          type: string
-          description: Token Instance Name
-        owner:
-          type: string
-          description: Owner of the Key
-        group:
-          $ref: '#/components/schemas/GroupDto'
-        items:
-          type: array
-          description: Key Items
-          items:
-            $ref: '#/components/schemas/KeyItemDto'
-        associations:
-          type: integer
-          description: Number of associated objects
-          format: int32
-    KeyItemDto:
-      required:
-      - cryptographicAlgorithm
-      - enabled
-      - keyReferenceUuid
-      - name
-      - state
+      - conditions
+      - field
+      - label
       - type
-      - usage
-      - uuid
       type: object
       properties:
-        uuid:
+        field:
+          $ref: '#/components/schemas/SearchableFields'
+        label:
           type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        keyReferenceUuid:
-          type: string
-          description: UUID of the key item in the Connector
+          description: Label for the field
         type:
-          $ref: '#/components/schemas/KeyType'
-        cryptographicAlgorithm:
-          $ref: '#/components/schemas/CryptographicAlgorithm'
-        format:
-          $ref: '#/components/schemas/KeyFormat'
-        length:
-          type: integer
-          description: Key Length
-          format: int32
-        usage:
+          type: string
+          description: Type of the field
+          enum:
+          - string
+          - number
+          - list
+          - date
+        conditions:
           type: array
-          description: Key Usages
+          description: List of available conditions for the field
           items:
-            $ref: '#/components/schemas/KeyUsage'
-        enabled:
+            $ref: '#/components/schemas/SearchCondition'
+        value:
+          type: object
+          description: Available values for the field
+        multiValue:
           type: boolean
-          description: Boolean describing if the key is enabled or not
-        state:
-          $ref: '#/components/schemas/KeyState'
-      description: Key Items
+          description: "Multivalue flag. true = yes, false = no"
