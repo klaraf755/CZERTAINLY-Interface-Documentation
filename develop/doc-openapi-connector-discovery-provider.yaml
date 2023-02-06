@@ -76,6 +76,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -84,12 +90,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/discoveryProvider/discover:
     post:
       tags:
@@ -114,14 +114,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Discovery initiated
           content:
@@ -134,6 +126,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/discoveryProvider/discover/{uuid}:
     post:
       tags:
@@ -154,14 +154,6 @@ paths:
               $ref: '#/components/schemas/DiscoveryDataRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -174,6 +166,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryProviderDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Discovery
@@ -187,14 +187,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: Discovery information deleted
         "400":
@@ -203,14 +195,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1:
-    get:
-      tags:
-      - Connector Info
-      summary: List supported functions of the connector
-      description: Returns map of functional code and implemented end points
-      operationId: listSupportedFunctions
-      responses:
         "404":
           description: Not Found
           content:
@@ -219,6 +203,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+  /v1:
+    get:
+      tags:
+      - Connector Info
+      summary: List supported functions of the connector
+      description: Returns map of functional code and implemented end points
+      operationId: listSupportedFunctions
+      responses:
         "200":
           description: Functions found
           content:
@@ -233,6 +225,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -247,14 +247,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes retrieved
           content:
@@ -269,6 +261,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/health:
     get:
       tags:
@@ -282,6 +282,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -290,12 +296,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeCallback:
@@ -372,6 +372,7 @@ components:
       - text
       - time
       - datetime
+      - codeblock
     AttributeType:
       type: string
       description: Type of the attribute. It is optional and must be set only if special
@@ -426,6 +427,7 @@ components:
       description: Base Attribute content definition
       oneOf:
       - $ref: '#/components/schemas/BooleanAttributeContent'
+      - $ref: '#/components/schemas/CodeBlockAttributeContent'
       - $ref: '#/components/schemas/CredentialAttributeContent'
       - $ref: '#/components/schemas/DateAttributeContent'
       - $ref: '#/components/schemas/DateTimeAttributeContent'
@@ -448,6 +450,26 @@ components:
         data:
           type: boolean
           description: Boolean attribute value
+    CodeBlockAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/CodeBlockAttributeContentData'
+    CodeBlockAttributeContentData:
+      required:
+      - code
+      - language
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ProgrammingLanguageEnum'
+        code:
+          type: string
+          description: Block of the code in Base64. Formatting of the code is specified
+            by variable language
     CredentialAttributeContent:
       required:
       - data
@@ -704,6 +726,162 @@ components:
         data:
           type: object
           description: Object attribute content data
+    ProgrammingLanguageEnum:
+      type: string
+      description: Definition of programming languages used for code
+      example: "JAVA, PHP, C, etc"
+      enum:
+      - css
+      - clike
+      - javascript
+      - abap
+      - actionscript
+      - ada
+      - apacheconf
+      - apl
+      - applescript
+      - arduino
+      - arff
+      - asciidoc
+      - asm6502
+      - aspnet
+      - autohotkey
+      - autoit
+      - bash
+      - basic
+      - batch
+      - bison
+      - brainfuck
+      - bro
+      - c
+      - csharp
+      - cpp
+      - coffeescript
+      - clojure
+      - crystal
+      - csp
+      - css-extras
+      - d
+      - dart
+      - diff
+      - django
+      - docker
+      - eiffel
+      - elixir
+      - elm
+      - erb
+      - erlang
+      - fsharp
+      - flow
+      - fortran
+      - gedcom
+      - gherkin
+      - git
+      - glsl
+      - gml
+      - go
+      - graphql
+      - groovy
+      - haml
+      - handlebars
+      - haskell
+      - haxe
+      - http
+      - hpkp
+      - hsts
+      - ichigojam
+      - icon
+      - inform7
+      - ini
+      - io
+      - j
+      - java
+      - jolie
+      - json
+      - julia
+      - keyman
+      - kotlin
+      - latex
+      - less
+      - liquid
+      - lisp
+      - livescript
+      - lolcode
+      - lua
+      - makefile
+      - markdown
+      - markup-templating
+      - matlab
+      - mel
+      - mizar
+      - monkey
+      - n4js
+      - nasm
+      - nginx
+      - nim
+      - nix
+      - nsis
+      - objectivec
+      - ocaml
+      - opencl
+      - oz
+      - parigp
+      - parser
+      - pascal
+      - perl
+      - php
+      - php-extras
+      - plsql
+      - powershell
+      - processing
+      - prolog
+      - properties
+      - protobuf
+      - pug
+      - puppet
+      - pure
+      - python
+      - q
+      - qore
+      - r
+      - jsx
+      - tsx
+      - renpy
+      - reason
+      - rest
+      - rip
+      - roboconf
+      - ruby
+      - rust
+      - sas
+      - sass
+      - scss
+      - scala
+      - scheme
+      - smalltalk
+      - smarty
+      - sql
+      - soy
+      - stylus
+      - swift
+      - tap
+      - tcl
+      - textile
+      - tt2
+      - twig
+      - typescript
+      - vbnet
+      - velocity
+      - verilog
+      - vhdl
+      - vim
+      - visual-basic
+      - wasm
+      - wiki
+      - xeora
+      - xojo
+      - xquery
+      - yaml
     RangeAttributeConstraint:
       required:
       - type

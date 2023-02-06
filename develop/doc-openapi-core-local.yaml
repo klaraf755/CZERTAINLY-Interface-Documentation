@@ -35,34 +35,34 @@ paths:
               $ref: '#/components/schemas/AddUserRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "401":
           description: Unauthorized
-        "200":
-          description: Admin created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDetailDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Admin created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailDto'
 components:
   schemas:
     AddUserRequestDto:
@@ -174,6 +174,7 @@ components:
       - text
       - time
       - datetime
+      - codeblock
     AttributeType:
       type: string
       description: Type of the attribute. It is optional and must be set only if special
@@ -228,6 +229,7 @@ components:
       description: Base Attribute content definition
       oneOf:
       - $ref: '#/components/schemas/BooleanAttributeContent'
+      - $ref: '#/components/schemas/CodeBlockAttributeContent'
       - $ref: '#/components/schemas/CredentialAttributeContent'
       - $ref: '#/components/schemas/DateAttributeContent'
       - $ref: '#/components/schemas/DateTimeAttributeContent'
@@ -250,6 +252,26 @@ components:
         data:
           type: boolean
           description: Boolean attribute value
+    CodeBlockAttributeContent:
+      type: object
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          $ref: '#/components/schemas/CodeBlockAttributeContentData'
+    CodeBlockAttributeContentData:
+      required:
+      - code
+      - language
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ProgrammingLanguageEnum'
+        code:
+          type: string
+          description: Block of the code in Base64. Formatting of the code is specified
+            by variable language
     CredentialAttributeContent:
       required:
       - data
@@ -506,6 +528,162 @@ components:
         data:
           type: object
           description: Object attribute content data
+    ProgrammingLanguageEnum:
+      type: string
+      description: Definition of programming languages used for code
+      example: "JAVA, PHP, C, etc"
+      enum:
+      - css
+      - clike
+      - javascript
+      - abap
+      - actionscript
+      - ada
+      - apacheconf
+      - apl
+      - applescript
+      - arduino
+      - arff
+      - asciidoc
+      - asm6502
+      - aspnet
+      - autohotkey
+      - autoit
+      - bash
+      - basic
+      - batch
+      - bison
+      - brainfuck
+      - bro
+      - c
+      - csharp
+      - cpp
+      - coffeescript
+      - clojure
+      - crystal
+      - csp
+      - css-extras
+      - d
+      - dart
+      - diff
+      - django
+      - docker
+      - eiffel
+      - elixir
+      - elm
+      - erb
+      - erlang
+      - fsharp
+      - flow
+      - fortran
+      - gedcom
+      - gherkin
+      - git
+      - glsl
+      - gml
+      - go
+      - graphql
+      - groovy
+      - haml
+      - handlebars
+      - haskell
+      - haxe
+      - http
+      - hpkp
+      - hsts
+      - ichigojam
+      - icon
+      - inform7
+      - ini
+      - io
+      - j
+      - java
+      - jolie
+      - json
+      - julia
+      - keyman
+      - kotlin
+      - latex
+      - less
+      - liquid
+      - lisp
+      - livescript
+      - lolcode
+      - lua
+      - makefile
+      - markdown
+      - markup-templating
+      - matlab
+      - mel
+      - mizar
+      - monkey
+      - n4js
+      - nasm
+      - nginx
+      - nim
+      - nix
+      - nsis
+      - objectivec
+      - ocaml
+      - opencl
+      - oz
+      - parigp
+      - parser
+      - pascal
+      - perl
+      - php
+      - php-extras
+      - plsql
+      - powershell
+      - processing
+      - prolog
+      - properties
+      - protobuf
+      - pug
+      - puppet
+      - pure
+      - python
+      - q
+      - qore
+      - r
+      - jsx
+      - tsx
+      - renpy
+      - reason
+      - rest
+      - rip
+      - roboconf
+      - ruby
+      - rust
+      - sas
+      - sass
+      - scss
+      - scala
+      - scheme
+      - smalltalk
+      - smarty
+      - sql
+      - soy
+      - stylus
+      - swift
+      - tap
+      - tcl
+      - textile
+      - tt2
+      - twig
+      - typescript
+      - vbnet
+      - velocity
+      - verilog
+      - vhdl
+      - vim
+      - visual-basic
+      - wasm
+      - wiki
+      - xeora
+      - xojo
+      - xquery
+      - yaml
     RangeAttributeConstraint:
       required:
       - type
@@ -622,15 +800,6 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -648,6 +817,15 @@ components:
         message:
           type: string
           description: Exception message
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     ResponseAttributeDto:
       required:
       - contentType
