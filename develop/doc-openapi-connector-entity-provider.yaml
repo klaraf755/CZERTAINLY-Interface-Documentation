@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
-  version: 1.5.1-SNAPSHOT
+  version: 1.6.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -172,6 +172,17 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
+        "422":
+          description: Attribute validation failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "500":
           description: Internal Server Error
         "400":
@@ -186,17 +197,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Attribute validation failed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
   /v1/entityProvider/entities:
     get:
       tags:
@@ -245,6 +245,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EntityInstanceDto'
+        "422":
+          description: Attribute validation failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "500":
           description: Internal Server Error
         "400":
@@ -259,17 +270,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Attribute validation failed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
   /v1/entityProvider/entities/{entityUuid}/locations:
     post:
       tags:
@@ -382,18 +382,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate pushed to Location
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PushCertificateResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/entityProvider/entities/{entityUuid}/locations/push/attributes/validate:
     post:
       tags:
@@ -419,6 +419,17 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "400":
           description: Bad Request
           content:
@@ -431,17 +442,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "200":
           description: Attributes validated
         "204":
@@ -512,6 +512,17 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "400":
           description: Bad Request
           content:
@@ -524,17 +535,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "200":
           description: Attributes validated
         "204":
@@ -561,22 +561,6 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Entity Location Attributes validation completed
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Attribute validation failed
           content:
@@ -588,6 +572,22 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Entity Location Attributes validation completed
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: No Content
   /v1:
@@ -665,18 +665,18 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -737,6 +737,14 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "200":
+          description: CSR Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
         "400":
           description: Bad Request
           content:
@@ -749,14 +757,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: CSR Attributes retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
   /v1/entityProvider/entities/{entityUuid}/location/attributes:
     get:
       tags:

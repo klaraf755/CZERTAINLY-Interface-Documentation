@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
-  version: 1.5.1-SNAPSHOT
+  version: 1.6.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -54,6 +54,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "422":
           description: Unprocessable Entity
           content:
@@ -65,14 +67,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Certificate issued
           content:
@@ -91,12 +91,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/revoke:
@@ -137,16 +137,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Certificate revoked
         "401":
           description: Unauthorized
-        "404":
-          description: Not Found
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "204":
+          description: Certificate revoked
         "400":
           description: Bad Request
           content:
@@ -159,12 +159,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/renew:
@@ -205,6 +205,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "422":
           description: Unprocessable Entity
           content:
@@ -216,20 +218,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Certificate renewed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -242,12 +242,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/rekey:
@@ -282,18 +282,20 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRekeyRequestDto'
         required: true
       responses:
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate regenerated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "422":
           description: Unprocessable Entity
           content:
@@ -305,14 +307,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "400":
           description: Bad Request
           content:
@@ -325,12 +325,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke/validate:
@@ -369,12 +369,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "401":
           description: Unauthorized
-        "404":
-          description: Not Found
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "400":
           description: Bad Request
           content:
@@ -389,12 +389,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes validated
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue/validate:
@@ -431,6 +431,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "422":
           description: Unprocessable Entity
           content:
@@ -442,14 +444,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "400":
           description: Bad Request
           content:
@@ -464,12 +464,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes validated
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke:
@@ -508,12 +508,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "401":
           description: Unauthorized
-        "404":
-          description: Not Found
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "400":
           description: Bad Request
           content:
@@ -526,12 +526,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue:
@@ -560,6 +560,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "422":
           description: Unprocessable Entity
           content:
@@ -571,6 +573,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Attributes list obtained
           content:
@@ -579,14 +587,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -599,12 +599,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
 components:
