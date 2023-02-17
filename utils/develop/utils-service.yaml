@@ -55,14 +55,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ParseRequestResponseDto'
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -90,24 +90,24 @@ paths:
               $ref: '#/components/schemas/ParseCertificateRequestDto'
         required: true
       responses:
-        "200":
-          description: Certificate parsed and information retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParseCertificateResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponseDto'
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponseDto'
+        "200":
+          description: Certificate parsed and information retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseCertificateResponseDto'
   /v1/certificate/identify:
     post:
       tags:
@@ -127,14 +127,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IdentifyCertificateResponseDto'
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -160,14 +160,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OidInfoResponseDto'
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -189,6 +189,12 @@ paths:
           - X509
           - SSH
       responses:
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponseDto'
         "200":
           description: Certificate generated
           content:
@@ -197,12 +203,6 @@ paths:
                 $ref: '#/components/schemas/RandomCertificateResponseDto'
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponseDto'
-        "500":
-          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -424,7 +424,7 @@ components:
     RequestData:
       type: object
       description: Certification request data
-      anyOf:
+      oneOf:
       - $ref: '#/components/schemas/Pkcs10RequestBasicData'
       - $ref: '#/components/schemas/Pkcs10RequestExtendedData'
       - $ref: '#/components/schemas/Pkcs10RequestAsn1Data'
@@ -448,7 +448,7 @@ components:
     CertificateData:
       type: object
       description: Certificate data
-      anyOf:
+      oneOf:
       - $ref: '#/components/schemas/X509CertificateBasicData'
       - $ref: '#/components/schemas/X509CertificateExtendedData'
       - $ref: '#/components/schemas/X509CertificateAsn1Data'
