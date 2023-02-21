@@ -72,19 +72,6 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
-        "500":
-          description: Internal Server Error
-        "422":
-          description: Attribute validation failed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "400":
           description: Bad Request
           content:
@@ -97,6 +84,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Attribute validation failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
   /v1/complianceProvider/{kind}/compliance:
     post:
       tags:
@@ -123,8 +123,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComplianceResponseDto'
-        "500":
-          description: Internal Server Error
+        "422":
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "400":
           description: Bad Request
           content:
@@ -137,17 +146,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+        "500":
+          description: Internal Server Error
   /v1:
     get:
       tags:
@@ -156,8 +156,6 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -178,6 +176,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "500":
+          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -192,8 +192,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -214,6 +212,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
   /v1/health:
     get:
       tags:
@@ -221,8 +221,6 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "500":
-          description: Internal Server Error
         "200":
           description: Health check completed successfully
           content:
@@ -241,6 +239,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/complianceProvider/{kind}/rules:
     get:
       tags:
@@ -255,8 +255,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -277,6 +275,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "500":
+          description: Internal Server Error
   /v1/complianceProvider/{kind}/groups:
     get:
       tags:
@@ -291,8 +291,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -313,6 +311,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsResponseDto'
+        "500":
+          description: Internal Server Error
   /v1/complianceProvider/{kind}/groups/{uuid}:
     get:
       tags:
@@ -333,8 +333,6 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -355,6 +353,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     AttributeCallback:
