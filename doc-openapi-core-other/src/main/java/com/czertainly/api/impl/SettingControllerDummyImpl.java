@@ -11,11 +11,13 @@ import com.czertainly.api.model.core.setting.SectionSettingsDto;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class SettingControllerDummyImpl implements SettingController {
+
     @Override
-    public List<SectionDto> getSettingsSections() {
+    public List<SectionDto> getSections() {
         return null;
     }
 
@@ -30,17 +32,7 @@ public class SettingControllerDummyImpl implements SettingController {
     }
 
     @Override
-    public List<BaseAttribute> getSectionSettingsAttributes(Section section) throws NotFoundException {
-        return null;
-    }
-
-    @Override
-    public SectionSettingsDto getSectionSettings(Section section) throws NotFoundException {
-        return null;
-    }
-
-    @Override
-    public SectionSettingsDto updateSectionSettings(Section section, List<RequestAttributeDto> attributes) {
+    public List<SectionSettingsDto> updateSettings(Map<Section, List<RequestAttributeDto>> attributes) {
         return null;
     }
 }

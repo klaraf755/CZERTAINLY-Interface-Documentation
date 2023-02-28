@@ -4,6 +4,7 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.core.web.DiscoveryController;
+import com.czertainly.api.model.client.discovery.DiscoveryCertificateResponseDto;
 import com.czertainly.api.model.client.discovery.DiscoveryDto;
 import com.czertainly.api.model.client.discovery.DiscoveryHistoryDetailDto;
 import com.czertainly.api.model.client.discovery.DiscoveryHistoryDto;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 public class DiscoveryControllerDummyImpl implements DiscoveryController {
+
     @Override
     public List<DiscoveryHistoryDto> listDiscoveries() {
         return null;
@@ -22,6 +24,11 @@ public class DiscoveryControllerDummyImpl implements DiscoveryController {
 
     @Override
     public DiscoveryHistoryDetailDto getDiscovery(String uuid) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public DiscoveryCertificateResponseDto getDiscoveryCertificates(String uuid, Boolean newlyDiscovered, int itemsPerPage, int pageNumber) throws NotFoundException {
         return null;
     }
 
