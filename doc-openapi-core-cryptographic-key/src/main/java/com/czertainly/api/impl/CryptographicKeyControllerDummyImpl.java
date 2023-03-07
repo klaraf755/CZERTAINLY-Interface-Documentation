@@ -10,6 +10,7 @@ import com.czertainly.api.model.client.cryptography.CryptographicKeyResponseDto;
 import com.czertainly.api.model.client.cryptography.key.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.cryptography.key.*;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ import java.util.Optional;
 @RestController
 public class CryptographicKeyControllerDummyImpl implements CryptographicKeyController {
     @Override
-    public List<SearchFieldDataDto> getSearchableFieldInformation() {
+    public List<SearchFieldDataByGroupDto> getSearchableFieldInformation() {
         return null;
     }
 
