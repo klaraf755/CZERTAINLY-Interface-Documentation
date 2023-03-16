@@ -26,6 +26,11 @@ tags:
 - name: Certificate Utils API
   description: Certificate handling support tools that contains for example parsing
     of certificate in various formats.
+- name: Actuator
+  description: Monitor and interact
+  externalDocs:
+    description: Spring Boot Actuator Web API Documentation
+    url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
 paths:
   /v1/request/{requestType}/parse:
     post:
@@ -49,8 +54,8 @@ paths:
               $ref: '#/components/schemas/ParseRequestRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -61,8 +66,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ParseRequestResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -90,8 +95,8 @@ paths:
               $ref: '#/components/schemas/ParseCertificateRequestDto'
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -102,8 +107,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ParseCertificateResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -127,14 +132,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IdentifyCertificateResponseDto'
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -154,8 +159,8 @@ paths:
           type: string
         example: 2.5.4.3
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -166,8 +171,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OidInfoResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -189,8 +194,8 @@ paths:
           - X509
           - SSH
       responses:
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -201,12 +206,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RandomCertificateResponseDto'
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponseDto'
+  /health:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'health'
+      operationId: health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+  /health/**:
+    get:
+      tags:
+      - Actuator
+      summary: Actuator web endpoint 'health-path'
+      operationId: health-path
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
 components:
   schemas:
     ParseRequestRequestDto:
