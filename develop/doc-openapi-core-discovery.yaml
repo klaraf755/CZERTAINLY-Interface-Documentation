@@ -29,24 +29,14 @@ paths:
       summary: List Discovery
       operationId: listDiscoveries
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "502":
           description: Connector Error
           content:
@@ -61,12 +51,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DiscoveryHistoryDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "503":
           description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -83,38 +83,46 @@ paths:
               $ref: '#/components/schemas/DiscoveryDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "201":
           description: Discovery Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -126,14 +134,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Discovery Management
@@ -152,14 +152,16 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not Found
+        "401":
+          description: Unauthorized
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -170,20 +172,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "401":
-          description: Unauthorized
         "204":
           description: Discoveries deleted
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -202,14 +202,16 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "401":
+          description: Unauthorized
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -220,24 +222,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: Discovery details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryHistoryDetailDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -255,38 +255,38 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: Discovery deleted
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "503":
           description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -324,14 +324,16 @@ paths:
           format: int32
           default: 0
       responses:
-        "404":
-          description: Not Found
+        "401":
+          description: Unauthorized
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
@@ -342,24 +344,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "401":
-          description: Unauthorized
         "200":
           description: Discovery details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryCertificateResponseDto'
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1105,6 +1105,14 @@ components:
           type: string
           description: Error message detail
           example: Error message
+    UuidDto:
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -1122,14 +1130,6 @@ components:
         message:
           type: string
           description: Exception message
-    UuidDto:
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
     DiscoveryHistoryDto:
       required:
       - connectorName
