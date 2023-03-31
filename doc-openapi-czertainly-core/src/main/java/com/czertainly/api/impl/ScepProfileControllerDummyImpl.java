@@ -14,6 +14,7 @@ import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.acme.AcmeProfileDto;
 import com.czertainly.api.model.core.acme.AcmeProfileListDto;
+import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.scep.ScepProfileDetailDto;
 import com.czertainly.api.model.core.scep.ScepProfileDto;
 import org.springframework.http.ResponseEntity;
@@ -82,5 +83,10 @@ public class ScepProfileControllerDummyImpl implements ScepProfileController {
     @Override
     public void updateRaProfile(String uuid, String raProfileUuid) throws NotFoundException {
 
+    }
+
+    @Override
+    public List<CertificateDto> listScepCaCertificates() {
+        return null;
     }
 }
