@@ -36,14 +36,20 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authority instance details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EntityInstanceDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -52,12 +58,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -87,25 +87,20 @@ paths:
               $ref: '#/components/schemas/EntityInstanceUpdateRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authority instance details updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EntityInstanceDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -118,18 +113,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
     delete:
       tags:
       - Entity Management
@@ -143,6 +143,12 @@ paths:
         schema:
           type: string
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Entity instance deleted
         "500":
@@ -159,12 +165,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -172,46 +172,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
   /v1/entities:
-    get:
-      tags:
-      - Entity Management
-      summary: List Entity instances
-      operationId: listEntityInstances
-      responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: List of Entity instances
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EntityInstanceDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Entity Management
@@ -224,19 +184,20 @@ paths:
               $ref: '#/components/schemas/EntityInstanceRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "422":
-          description: Unprocessable Entity
+        "201":
+          description: Entity instance created
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/UuidDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -249,24 +210,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "201":
-          description: Entity instance created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
   /v1/entities/{entityUuid}/attributes/location/validate:
     post:
       tags:
@@ -289,19 +249,14 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-        "422":
-          description: Unprocessable Entity
+        "503":
+          description: Connector Communication Error
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -314,22 +269,72 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "200":
           description: Attributes validated
         "204":
           description: No Content
+  /v1/entities/list:
+    post:
+      tags:
+      - Entity Management
+      summary: List Entity instances
+      operationId: listEntityInstances
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequestDto'
+        required: true
+      responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: List of Entity instances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityInstanceResponseDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/entities/{entityUuid}/attributes/location:
     get:
       tags:
@@ -344,6 +349,12 @@ paths:
         schema:
           type: string
       responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "400":
@@ -354,12 +365,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -378,6 +383,47 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+  /v1/entities/search:
+    get:
+      tags:
+      - Entity Management
+      summary: Get Entities searchable fields information
+      operationId: getSearchableFieldInformation
+      responses:
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Entity searchable field information retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchFieldDataByGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeCallback:
@@ -1215,6 +1261,92 @@ components:
         uuid:
           type: string
           description: Object identifier
+    SearchCondition:
+      type: string
+      description: Condition for the search
+      enum:
+      - EQUALS
+      - NOT_EQUALS
+      - GREATER
+      - LESSER
+      - CONTAINS
+      - NOT_CONTAINS
+      - STARTS_WITH
+      - ENDS_WITH
+      - EMPTY
+      - NOT_EMPTY
+      - SUCCESS
+      - FAILED
+      - UNKNOWN
+      - NOT_CHECKED
+    SearchFilterRequestDto:
+      required:
+      - condition
+      - fieldIdentifier
+      - groupName
+      type: object
+      properties:
+        groupName:
+          type: string
+          description: Group to search
+        fieldIdentifier:
+          type: string
+          description: Field to search
+        condition:
+          $ref: '#/components/schemas/SearchCondition'
+        value:
+          type: object
+          description: Value to match
+      description: Certificate filter input
+    SearchRequestDto:
+      type: object
+      properties:
+        filters:
+          type: array
+          description: Certificate filter input
+          items:
+            $ref: '#/components/schemas/SearchFilterRequestDto'
+        itemsPerPage:
+          maximum: 1000
+          type: integer
+          description: Number of entries per page
+          format: int32
+          default: 10
+        pageNumber:
+          type: integer
+          description: Page number for the request
+          format: int32
+          default: 1
+    EntityInstanceResponseDto:
+      required:
+      - entities
+      - itemsPerPage
+      - pageNumber
+      - totalItems
+      - totalPages
+      type: object
+      properties:
+        entities:
+          type: array
+          description: Entities
+          items:
+            $ref: '#/components/schemas/EntityInstanceDto'
+        itemsPerPage:
+          type: integer
+          description: Number of entries per page
+          format: int32
+        pageNumber:
+          type: integer
+          description: Page number for the request
+          format: int32
+        totalPages:
+          type: integer
+          description: Number of pages available
+          format: int32
+        totalItems:
+          type: integer
+          description: Number of items available
+          format: int64
     BaseAttributeDto:
       required:
       - name
@@ -1480,3 +1612,102 @@ components:
           description: Boolean determining if the Metadata is a global metadata.
           default: false
       description: Properties of the Attributes
+    SearchFieldDataByGroupDto:
+      type: object
+      properties:
+        searchFieldData:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchFieldDataDto'
+        groupName:
+          type: string
+    SearchFieldDataDto:
+      required:
+      - conditions
+      - fieldIdentifier
+      - fieldLabel
+      - type
+      type: object
+      properties:
+        fieldIdentifier:
+          type: string
+          description: Identifier of field to search
+        fieldLabel:
+          type: string
+          description: Label for the field
+        type:
+          $ref: '#/components/schemas/SearchableFieldType'
+        conditions:
+          type: array
+          description: List of available conditions for the field
+          items:
+            $ref: '#/components/schemas/SearchCondition'
+        value:
+          type: object
+          description: Available values for the field
+        multiValue:
+          type: boolean
+          description: "Multivalue flag. true = yes, false = no"
+        field:
+          $ref: '#/components/schemas/SearchableFields'
+    SearchableFieldType:
+      type: string
+      description: Type of the field
+      enum:
+      - string
+      - number
+      - list
+      - date
+      - datetime
+      - boolean
+    SearchableFields:
+      type: string
+      enum:
+      - commonName
+      - serialNumber
+      - raProfile.name
+      - status
+      - complianceStatus
+      - group.name
+      - owner
+      - issuerCommonName
+      - signatureAlgorithm
+      - fingerprint
+      - notAfter
+      - notBefore
+      - publicKeyAlgorithm
+      - keySize
+      - keyUsage
+      - basicConstraints
+      - meta
+      - subjectAlternativeNames
+      - subjectDn
+      - issuerDn
+      - issuerSerialNumber
+      - ocspValidation
+      - crlValidation
+      - signatureValidation
+      - startTime
+      - endTime
+      - totalCertificatesDiscovered
+      - connectorName
+      - kind
+      - name
+      - cryptographicKey.group.name
+      - cryptographicKey.owner
+      - cryptographicKey.tokenProfile.name
+      - cryptographicKey.tokenInstanceReference.name
+      - type
+      - format
+      - state
+      - length
+      - usage
+      - cryptographicAlgorithm
+      - status
+      - entityInstanceReference.name
+      - entityInstanceReference.connectorName
+      - entityInstanceReference.kind
+      - entityInstanceName
+      - enabled
+      - supportMultipleEntries
+      - supportKeyManagement
