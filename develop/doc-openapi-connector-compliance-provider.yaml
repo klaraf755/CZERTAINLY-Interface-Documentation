@@ -123,6 +123,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComplianceResponseDto'
+        "422":
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "404":
           description: Not Found
           content:
@@ -137,17 +148,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "422":
-          description: Unprocessable entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
   /v1:
     get:
       tags:
@@ -221,6 +221,12 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
         "404":
           description: Not Found
           content:
@@ -233,12 +239,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Health check completed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthDto'
         "500":
           description: Internal Server Error
   /v1/complianceProvider/{kind}/rules:
