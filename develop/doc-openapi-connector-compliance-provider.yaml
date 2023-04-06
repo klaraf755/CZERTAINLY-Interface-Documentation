@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.7.1-SNAPSHOT
+  version: 2.7.2-SNAPSHOT
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -72,12 +72,6 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -97,6 +91,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/compliance:
     post:
       tags:
@@ -123,6 +123,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComplianceResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable entity
           content:
@@ -140,14 +148,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1:
     get:
       tags:
@@ -156,12 +156,6 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -178,6 +172,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -192,12 +192,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -214,6 +208,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -227,12 +227,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -241,6 +235,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/rules:
     get:
       tags:
@@ -255,12 +255,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -277,6 +271,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/groups:
     get:
       tags:
@@ -291,12 +291,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -313,6 +307,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/groups/{uuid}:
     get:
       tags:
@@ -333,12 +333,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -355,6 +349,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeCallback:
@@ -729,7 +729,8 @@ components:
           type: string
           description: Name of the file
         mimeType:
-          $ref: '#/components/schemas/MimeType'
+          type: string
+          description: Type of the file uploaded
       description: File attribute content data
     FloatAttributeContent:
       required:
@@ -755,28 +756,6 @@ components:
           type: integer
           description: Integer attribute value
           format: int32
-    MimeType:
-      type: object
-      properties:
-        type:
-          type: string
-        subtype:
-          type: string
-        parameters:
-          type: object
-          additionalProperties:
-            type: string
-        wildcardType:
-          type: boolean
-        wildcardSubtype:
-          type: boolean
-        subtypeSuffix:
-          type: string
-        concrete:
-          type: boolean
-        charset:
-          type: string
-      description: Type of the file uploaded
     ObjectAttributeContent:
       required:
       - data

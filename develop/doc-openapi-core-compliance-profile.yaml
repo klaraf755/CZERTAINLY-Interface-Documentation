@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.7.1-SNAPSHOT
+  version: 2.7.2-SNAPSHOT
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -29,14 +29,12 @@ paths:
       summary: List of available Compliance Profiles
       operationId: listComplianceProfiles
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Compliance Profiles retrieved
           content:
@@ -57,14 +55,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -83,14 +83,12 @@ paths:
               $ref: '#/components/schemas/ComplianceProfileRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -109,12 +107,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -128,6 +120,14 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -152,22 +152,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -180,20 +166,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BulkActionMessageDto'
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -205,6 +189,22 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/complianceProfiles/{uuid}/rules:
     post:
       tags:
@@ -225,14 +225,12 @@ paths:
               $ref: '#/components/schemas/ComplianceRuleAdditionRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -241,12 +239,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -264,18 +256,26 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: New rule added to the profile
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComplianceProfileRuleDto'
+        "500":
+          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     delete:
       tags:
       - Compliance Profile Management
@@ -295,14 +295,12 @@ paths:
               $ref: '#/components/schemas/ComplianceRuleDeletionRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -311,12 +309,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -332,16 +324,24 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "204":
+          description: New group is added to the profile
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "204":
-          description: New group is added to the profile
   /v1/complianceProfiles/{uuid}/groups:
     post:
       tags:
@@ -362,14 +362,12 @@ paths:
               $ref: '#/components/schemas/ComplianceGroupRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -378,12 +376,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -401,6 +393,14 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -428,14 +428,12 @@ paths:
               $ref: '#/components/schemas/ComplianceGroupRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -448,12 +446,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: New rule is added to the profile
         "422":
           description: Unprocessable Entity
           content:
@@ -465,10 +459,16 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "204":
-          description: New rule is added to the profile
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -494,14 +494,14 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "204":
+          description: Compliance check initiated
         "400":
           description: Bad Request
           content:
@@ -514,16 +514,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Compliance check initiated
-        "503":
-          description: Connector Communication Error
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -550,14 +550,12 @@ paths:
               $ref: '#/components/schemas/RaProfileAssociationRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -566,12 +564,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -589,14 +581,22 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: RA Profile disassociation successful
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: RA Profile disassociation successful
         "204":
           description: No Content
   /v1/complianceProfiles/{uuid}/raProfiles/associate:
@@ -619,14 +619,12 @@ paths:
               $ref: '#/components/schemas/RaProfileAssociationRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -641,12 +639,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: RA Profile association successful
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -660,6 +652,14 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -682,14 +682,18 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: Compliance Profile details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceProfileDto'
         "400":
           description: Bad Request
           content:
@@ -702,20 +706,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Compliance Profile details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ComplianceProfileDto'
-        "503":
-          description: Connector Communication Error
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -735,14 +735,14 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "204":
+          description: Compliance Profile deleted
         "400":
           description: Bad Request
           content:
@@ -755,16 +755,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Compliance Profile deleted
-        "503":
-          description: Connector Communication Error
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -785,14 +785,12 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: RA Profiles retrieved
           content:
@@ -813,14 +811,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -852,14 +852,12 @@ paths:
           items:
             $ref: '#/components/schemas/CertificateType'
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -868,12 +866,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -891,6 +883,14 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -923,14 +923,12 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -939,12 +937,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "502":
           description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -960,14 +952,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Compliance groups retrieved
           content:
@@ -976,6 +960,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsListResponseDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/complianceProfiles/force:
     delete:
       tags:
@@ -991,14 +991,12 @@ paths:
                 type: string
         required: true
       responses:
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Compliance Profiles forced to delete
           content:
@@ -1019,20 +1017,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -1044,6 +1028,22 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
 components:
   schemas:
     AttributeCallback:
@@ -1484,7 +1484,8 @@ components:
           type: string
           description: Name of the file
         mimeType:
-          $ref: '#/components/schemas/MimeType'
+          type: string
+          description: Type of the file uploaded
       description: File attribute content data
     FloatAttributeContent:
       required:
@@ -1510,28 +1511,6 @@ components:
           type: integer
           description: Integer attribute value
           format: int32
-    MimeType:
-      type: object
-      properties:
-        type:
-          type: string
-        subtype:
-          type: string
-        parameters:
-          type: object
-          additionalProperties:
-            type: string
-        wildcardType:
-          type: boolean
-        wildcardSubtype:
-          type: boolean
-        subtypeSuffix:
-          type: string
-        concrete:
-          type: boolean
-        charset:
-          type: string
-      description: Type of the file uploaded
     ObjectAttributeContent:
       required:
       - data

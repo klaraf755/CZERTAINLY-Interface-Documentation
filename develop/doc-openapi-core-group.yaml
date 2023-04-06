@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.7.1-SNAPSHOT
+  version: 2.7.2-SNAPSHOT
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -35,28 +35,28 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Group details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -82,8 +82,6 @@ paths:
               $ref: '#/components/schemas/GroupRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
         "403":
           description: Forbidden
           content:
@@ -104,6 +102,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -123,24 +123,24 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "204":
+          description: Group deleted
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Group deleted
         "500":
           description: Internal Server Error
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -154,8 +154,6 @@ paths:
       summary: List Groups
       operationId: listGroups
       responses:
-        "401":
-          description: Unauthorized
         "403":
           description: Forbidden
           content:
@@ -170,6 +168,8 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -196,8 +196,6 @@ paths:
               $ref: '#/components/schemas/GroupRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
         "403":
           description: Forbidden
           content:
@@ -212,18 +210,20 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "201":
-          description: Group created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "201":
+          description: Group created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
     delete:
       tags:
       - Certificate & Key Group
@@ -242,8 +242,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "401":
-          description: Unauthorized
         "403":
           description: Forbidden
           content:
@@ -258,14 +256,16 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "204":
-          description: Groups deleted
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Groups deleted
 components:
   schemas:
     AttributeCallback:
@@ -640,7 +640,8 @@ components:
           type: string
           description: Name of the file
         mimeType:
-          $ref: '#/components/schemas/MimeType'
+          type: string
+          description: Type of the file uploaded
       description: File attribute content data
     FloatAttributeContent:
       required:
@@ -682,28 +683,6 @@ components:
           type: integer
           description: Integer attribute value
           format: int32
-    MimeType:
-      type: object
-      properties:
-        type:
-          type: string
-        subtype:
-          type: string
-        parameters:
-          type: object
-          additionalProperties:
-            type: string
-        wildcardType:
-          type: boolean
-        wildcardSubtype:
-          type: boolean
-        subtypeSuffix:
-          type: string
-        concrete:
-          type: boolean
-        charset:
-          type: string
-      description: Type of the file uploaded
     ObjectAttributeContent:
       required:
       - data
