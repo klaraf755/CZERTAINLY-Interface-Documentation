@@ -7,6 +7,7 @@ import com.czertainly.api.interfaces.core.client.ClientOperationController;
 import com.czertainly.api.model.client.authority.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
 
@@ -14,12 +15,12 @@ import java.util.List;
 public class ClientOperationControllerDummyImpl implements ClientOperationController {
 
     @Override
-    public ClientCertificateSignResponseDto issueCertificate(String raProfileName, ClientCertificateSignRequestDto request) throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException {
+    public ClientCertificateSignResponseDto issueCertificate(String raProfileName, LegacyClientCertificateSignRequestDto request) throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException, NoSuchAlgorithmException {
         return null;
     }
 
     @Override
-    public void revokeCertificate(String raProfileName, ClientCertificateRevocationDto request) throws NotFoundException, ConnectorException {
+    public void revokeCertificate(String raProfileName, LegacyClientCertificateRevocationDto request) throws NotFoundException, ConnectorException {
 
     }
 
