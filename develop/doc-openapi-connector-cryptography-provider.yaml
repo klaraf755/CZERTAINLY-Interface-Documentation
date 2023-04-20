@@ -72,18 +72,6 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "422":
@@ -97,6 +85,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens:
     get:
       tags:
@@ -112,20 +112,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TokenInstanceDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Token Management
@@ -138,18 +138,6 @@ paths:
               $ref: '#/components/schemas/TokenInstanceRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -158,6 +146,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenInstanceDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}:
     get:
       tags:
@@ -172,12 +172,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Token instance retrieved
           content:
@@ -190,8 +186,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Token Management
@@ -211,26 +211,26 @@ paths:
               $ref: '#/components/schemas/TokenInstanceRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Token instance updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenInstanceDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Token Management
@@ -244,12 +244,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Token instance removed
         "400":
@@ -258,8 +254,12 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/tokenProfile/attributes/validate:
     post:
       tags:
@@ -282,20 +282,20 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Token Profile Attributes validated
   /v1/cryptographyProvider/tokens/{uuid}/keys/{keyUuid}/verify:
@@ -324,26 +324,8 @@ paths:
               $ref: '#/components/schemas/VerifyDataRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: Data decrypted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VerifyDataResponseDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -355,6 +337,24 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Data decrypted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyDataResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/{keyUuid}/sign:
     post:
       tags:
@@ -387,18 +387,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SignDataResponseDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "422":
@@ -412,6 +400,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/{keyUuid}/encrypt:
     post:
       tags:
@@ -438,26 +438,14 @@ paths:
               $ref: '#/components/schemas/CipherDataRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Data encrypted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EncryptDataResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -469,6 +457,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/{keyUuid}/decrypt:
     post:
       tags:
@@ -495,26 +495,8 @@ paths:
               $ref: '#/components/schemas/CipherDataRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: Data decrypted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DecryptDataResponseDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -526,6 +508,24 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Data decrypted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecryptDataResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/secret:
     post:
       tags:
@@ -546,18 +546,6 @@ paths:
               $ref: '#/components/schemas/CreateKeyRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -577,6 +565,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/secret/attributes/validate:
     post:
       tags:
@@ -599,20 +599,8 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "422":
@@ -626,6 +614,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/random:
     post:
       tags:
@@ -646,26 +646,8 @@ paths:
               $ref: '#/components/schemas/RandomDataRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: Random data generated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RandomDataResponseDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -677,6 +659,24 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Random data generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RandomDataResponseDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/random/attributes/validate:
     post:
       tags:
@@ -699,20 +699,8 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "422":
@@ -726,6 +714,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/pair:
     post:
       tags:
@@ -746,26 +746,14 @@ paths:
               $ref: '#/components/schemas/CreateKeyRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Key Pair created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/KeyPairDataResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -777,6 +765,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/pair/attributes/validate:
     post:
       tags:
@@ -799,20 +799,8 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Attributes validated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "422":
@@ -826,6 +814,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/activate/attributes/validate:
     post:
       tags:
@@ -848,22 +848,22 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Token activation Attributes validated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Token activation Attributes validated
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/deactivate:
     patch:
       tags:
@@ -878,12 +878,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Token deactivated
         "400":
@@ -892,8 +888,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/activate:
     patch:
       tags:
@@ -916,22 +916,22 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Token activated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Token activated
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1:
     get:
       tags:
@@ -940,18 +940,6 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -962,6 +950,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -976,18 +976,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -998,6 +986,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -1005,12 +1005,8 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Health check completed successfully
           content:
@@ -1023,8 +1019,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/tokenProfile/attributes:
     get:
       tags:
@@ -1039,12 +1039,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Token Profile Attributes retrieved
           content:
@@ -1059,8 +1055,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/status:
     get:
       tags:
@@ -1077,26 +1077,26 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Token instance status retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenInstanceStatusDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys:
     get:
       tags:
@@ -1111,18 +1111,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -1144,6 +1132,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/{keyUuid}:
     get:
       tags:
@@ -1164,26 +1164,14 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Key data retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/KeyDataResponseDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -1195,6 +1183,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Key Management
@@ -1214,22 +1214,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "204":
-          description: Key destroyed
         "422":
           description: Unprocessable Entity
           content:
@@ -1241,6 +1227,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Key destroyed
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/secret/attributes:
     get:
       tags:
@@ -1255,12 +1255,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of Attributes retrieved
           content:
@@ -1269,14 +1263,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/random/attributes:
     get:
       tags:
@@ -1291,12 +1291,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of Attributes retrieved
           content:
@@ -1305,14 +1299,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/keys/pair/attributes:
     get:
       tags:
@@ -1327,12 +1327,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of Attributes retrieved
           content:
@@ -1341,14 +1335,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/cryptographyProvider/tokens/{uuid}/activate/attributes:
     get:
       tags:
@@ -1363,12 +1363,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Token activation Attributes retrieved
           content:
@@ -1383,8 +1379,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeCallback:
@@ -1442,43 +1442,43 @@ components:
       type: string
       description: Attribute Constraint Type
       enum:
-      - REGEXP
-      - RANGE
-      - DATETIME
+      - regExp
+      - range
+      - dateTime
     AttributeContentType:
       type: string
       description: 'Type of the attribute content. '
       enum:
-      - STRING
-      - TEXT
-      - INTEGER
-      - BOOLEAN
-      - FLOAT
-      - DATE
-      - TIME
-      - DATETIME
-      - SECRET
-      - FILE
-      - CREDENTIAL
-      - CODEBLOCK
-      - OBJECT
+      - string
+      - text
+      - integer
+      - boolean
+      - float
+      - date
+      - time
+      - datetime
+      - secret
+      - file
+      - credential
+      - codeblock
+      - object
     AttributeType:
       type: string
       description: Type of the attribute. It is optional and must be set only if special
         behaviour is needed.
       enum:
-      - DATA
-      - GROUP
-      - INFO
-      - META
-      - CUSTOM
+      - data
+      - group
+      - info
+      - meta
+      - custom
     AttributeValueTarget:
       type: string
       description: Set of targets for propagating value.
       enum:
-      - PATH_VARIABLE
-      - REQUEST_PARAMETER
-      - BODY
+      - pathVariable
+      - requestParameter
+      - body
     BaseAttributeConstraint:
       required:
       - data
@@ -1802,47 +1802,47 @@ components:
       description: Definition of programming languages used for code
       example: "JAVA, PHP, C, etc"
       enum:
-      - APACHE_CONFIGURATION
-      - BASH
-      - BASIC
-      - C
-      - C_SHARP
-      - CPP
-      - CSS
-      - DOCKER
-      - F_SHARP
-      - GHERKIN
-      - GIT
-      - GO
-      - GRAPHQL
-      - HTML
-      - HTTP
-      - INI
-      - JAVA
-      - JAVASCRIPT
-      - JSON
-      - KOTLIN
-      - LATEX
-      - LISP
-      - MAKEFILE
-      - MARKDOWN
-      - MATLAB
-      - NGINX
-      - OBJECTIVE_C
-      - PERL
-      - PHP
-      - POWERSHELL
-      - PROPERTIES
-      - PYTHON
-      - RUBY
-      - RUST
-      - SMALLTALK
-      - SQL
-      - TYPESCRIPT
-      - VB_NET
-      - XQUERY
-      - XML
-      - YAML
+      - apacheconf
+      - bash
+      - basic
+      - c
+      - csharp
+      - cpp
+      - css
+      - docker
+      - fsharp
+      - gherkin
+      - git
+      - go
+      - graphql
+      - html
+      - http
+      - ini
+      - java
+      - javascript
+      - json
+      - kotlin
+      - latex
+      - lisp
+      - makefile
+      - markdown
+      - matlab
+      - nginx
+      - objectivec
+      - perl
+      - php
+      - powershell
+      - properties
+      - python
+      - ruby
+      - rust
+      - smalltalk
+      - sql
+      - typescript
+      - vbnet
+      - xquery
+      - xml
+      - yaml
     RangeAttributeConstraint:
       required:
       - type
@@ -2279,8 +2279,8 @@ components:
       - RSA
       - ECDSA
       - FALCON
-      - DILITHIUM
-      - SPHINCSPLUS
+      - CRYSTALS-Dilithium
+      - SPHINCS+
     CustomKeyValue:
       required:
       - values
@@ -2358,19 +2358,19 @@ components:
       type: string
       description: Format of the Key
       enum:
-      - RAW
-      - SPKI
-      - PRKI
-      - EPRKI
-      - CUSTOM
+      - Raw
+      - SubjectPublicKeyInfo
+      - PrivateKeyInfo
+      - EncryptedPrivateKeyInfo
+      - Custom
     KeyType:
       type: string
       description: Type of the Key
       enum:
-      - SECRET_KEY
-      - PUBLIC_KEY
-      - PRIVATE_KEY
-      - SPLIT_KEY
+      - secret
+      - public
+      - private
+      - split
     KeyValue:
       type: object
       description: Value of the Key
@@ -2474,13 +2474,13 @@ components:
       type: string
       description: Enumerated code of functional group
       enum:
-      - CREDENTIAL_PROVIDER
-      - LEGACY_AUTHORITY_PROVIDER
-      - AUTHORITY_PROVIDER
-      - DISCOVERY_PROVIDER
-      - ENTITY_PROVIDER
-      - COMPLIANCE_PROVIDER
-      - CRYPTOGRAPHY_PROVIDER
+      - credentialProvider
+      - legacyAuthorityProvider
+      - authorityProvider
+      - discoveryProvider
+      - entityProvider
+      - complianceProvider
+      - cryptographyProvider
     InfoResponse:
       required:
       - endPoints
@@ -2730,19 +2730,19 @@ components:
       type: string
       description: Current connector operational status
       enum:
-      - OK
-      - NOK
-      - UNKNOWN
+      - ok
+      - nok
+      - unknown
     TokenInstanceStatus:
       type: string
       description: Token instance component status
       enum:
-      - CONNECTED
-      - DISCONNECTED
-      - ACTIVATED
-      - DEACTIVATED
-      - WARNING
-      - UNKNOWN
+      - Connected
+      - Disconnected
+      - Activated
+      - Deactivated
+      - Warning
+      - Unknown
     TokenInstanceStatusComponent:
       required:
       - status

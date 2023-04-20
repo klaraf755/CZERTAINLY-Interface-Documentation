@@ -36,8 +36,16 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -48,14 +56,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "401":
+          description: Unauthorized
         "200":
           description: Certificate validation detail retrieved
           content:
@@ -64,8 +66,6 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/CertificateValidationDto'
-        "401":
-          description: Unauthorized
     put:
       tags:
       - Certificate Inventory
@@ -79,6 +79,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -87,20 +89,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate validation initiated
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
   /v1/certificates/validate:
@@ -110,6 +110,8 @@ paths:
       summary: Validate Certificates of Status Unknown
       operationId: validateAllCertificate
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -118,20 +120,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Certificate Validation Initiated
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
   /v1/certificates:
@@ -147,8 +147,16 @@ paths:
               $ref: '#/components/schemas/SearchRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -159,14 +167,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -194,8 +194,16 @@ paths:
               $ref: '#/components/schemas/MultipleCertificateObjectUpdateDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -206,18 +214,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Certificate objects updated
         "401":
           description: Unauthorized
+        "204":
+          description: Certificate objects updated
   /v1/certificates/upload:
     post:
       tags:
@@ -231,8 +231,16 @@ paths:
               $ref: '#/components/schemas/UploadCertificateRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -243,22 +251,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
         "201":
           description: Certificate uploaded
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
+        "401":
+          description: Unauthorized
   /v1/certificates/delete:
     post:
       tags:
@@ -285,8 +285,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BulkOperationResponse'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -297,14 +305,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
   /v1/certificates/create:
@@ -320,6 +320,8 @@ paths:
               $ref: '#/components/schemas/ClientCertificateRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: CSR Generated and ready to be issued
           content:
@@ -332,20 +334,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
   /v1/certificates/content:
@@ -367,17 +367,8 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "422":
-          description: Unprocessible Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -392,22 +383,31 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CertificateContentDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
+        "422":
+          description: Unprocessible Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
   /v1/certificates/compliance:
     post:
       tags:
@@ -421,6 +421,8 @@ paths:
               $ref: '#/components/schemas/CertificateComplianceCheckDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -429,20 +431,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Compliance check initiated
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
   /v1/certificates/{uuid}:
@@ -465,8 +465,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateDetailDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -477,14 +485,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
     delete:
@@ -500,8 +500,16 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -512,18 +520,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Certificate deleted
         "401":
           description: Unauthorized
+        "204":
+          description: Certificate deleted
     patch:
       tags:
       - Certificate Inventory
@@ -543,8 +543,16 @@ paths:
               $ref: '#/components/schemas/CertificateUpdateObjectsDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -555,18 +563,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Certificate objects updated
         "401":
           description: Unauthorized
+        "204":
+          description: Certificate objects updated
   /v1/certificates/{uuid}/history:
     get:
       tags:
@@ -581,6 +581,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -595,20 +597,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CertificateEventHistoryDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
   /v1/certificates/{certificateUuid}/locations:
@@ -625,18 +625,20 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Locations retrieved
           content:
@@ -645,14 +647,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LocationDto'
-        "404":
-          description: Not Found
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
   /v1/certificates/search:
@@ -662,6 +662,8 @@ paths:
       summary: Get Certificate searchable fields information
       operationId: getSearchableFieldInformation
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -676,20 +678,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SearchFieldDataByGroupDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
   /v1/certificates/csr/attributes:
@@ -699,8 +699,16 @@ paths:
       summary: Get CSR Generation Attributes
       operationId: getCsrGenerationAttributes
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -711,14 +719,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: CSR Generation attributes retrieved
           content:
@@ -799,9 +799,9 @@ components:
       type: string
       description: Group to search
       enum:
-      - META
-      - CUSTOM
-      - PROPERTY
+      - meta
+      - custom
+      - property
     SearchRequestDto:
       type: object
       properties:
@@ -876,43 +876,43 @@ components:
       type: string
       description: Attribute Constraint Type
       enum:
-      - REGEXP
-      - RANGE
-      - DATETIME
+      - regExp
+      - range
+      - dateTime
     AttributeContentType:
       type: string
       description: 'Type of the attribute content. '
       enum:
-      - STRING
-      - TEXT
-      - INTEGER
-      - BOOLEAN
-      - FLOAT
-      - DATE
-      - TIME
-      - DATETIME
-      - SECRET
-      - FILE
-      - CREDENTIAL
-      - CODEBLOCK
-      - OBJECT
+      - string
+      - text
+      - integer
+      - boolean
+      - float
+      - date
+      - time
+      - datetime
+      - secret
+      - file
+      - credential
+      - codeblock
+      - object
     AttributeType:
       type: string
       description: Type of the attribute. It is optional and must be set only if special
         behaviour is needed.
       enum:
-      - DATA
-      - GROUP
-      - INFO
-      - META
-      - CUSTOM
+      - data
+      - group
+      - info
+      - meta
+      - custom
     AttributeValueTarget:
       type: string
       description: Set of targets for propagating value.
       enum:
-      - PATH_VARIABLE
-      - REQUEST_PARAMETER
-      - BODY
+      - pathVariable
+      - requestParameter
+      - body
     BaseAttributeConstraint:
       required:
       - data
@@ -1078,18 +1078,18 @@ components:
       type: string
       description: Status of the Certificate
       enum:
-      - UNKNOWN
-      - NEW
-      - VALID
-      - INVALID
-      - REVOKED
-      - EXPIRING
-      - EXPIRED
+      - unknown
+      - new
+      - valid
+      - invalid
+      - revoked
+      - expiring
+      - expired
     CertificateType:
       type: string
       description: Certificate type
       enum:
-      - X509
+      - X.509
       - SSH
     CodeBlockAttributeContent:
       required:
@@ -1118,9 +1118,9 @@ components:
       type: string
       description: Certificate compliance status
       enum:
-      - OK
-      - NOK
-      - NA
+      - ok
+      - nok
+      - na
     CredentialAttributeContent:
       required:
       - data
@@ -1384,47 +1384,47 @@ components:
       description: Definition of programming languages used for code
       example: "JAVA, PHP, C, etc"
       enum:
-      - APACHE_CONFIGURATION
-      - BASH
-      - BASIC
-      - C
-      - C_SHARP
-      - CPP
-      - CSS
-      - DOCKER
-      - F_SHARP
-      - GHERKIN
-      - GIT
-      - GO
-      - GRAPHQL
-      - HTML
-      - HTTP
-      - INI
-      - JAVA
-      - JAVASCRIPT
-      - JSON
-      - KOTLIN
-      - LATEX
-      - LISP
-      - MAKEFILE
-      - MARKDOWN
-      - MATLAB
-      - NGINX
-      - OBJECTIVE_C
-      - PERL
-      - PHP
-      - POWERSHELL
-      - PROPERTIES
-      - PYTHON
-      - RUBY
-      - RUST
-      - SMALLTALK
-      - SQL
-      - TYPESCRIPT
-      - VB_NET
-      - XQUERY
-      - XML
-      - YAML
+      - apacheconf
+      - bash
+      - basic
+      - c
+      - csharp
+      - cpp
+      - css
+      - docker
+      - fsharp
+      - gherkin
+      - git
+      - go
+      - graphql
+      - html
+      - http
+      - ini
+      - java
+      - javascript
+      - json
+      - kotlin
+      - latex
+      - lisp
+      - makefile
+      - markdown
+      - matlab
+      - nginx
+      - objectivec
+      - perl
+      - php
+      - powershell
+      - properties
+      - python
+      - ruby
+      - rust
+      - smalltalk
+      - sql
+      - typescript
+      - vbnet
+      - xquery
+      - xml
+      - yaml
     RangeAttributeConstraint:
       required:
       - type
@@ -1884,9 +1884,9 @@ components:
       description: Status of the rule
       example: nok
       enum:
-      - OK
-      - NOK
-      - NA
+      - ok
+      - nok
+      - na
     CryptographicAlgorithm:
       type: string
       description: Key Algorithm
@@ -1894,8 +1894,8 @@ components:
       - RSA
       - ECDSA
       - FALCON
-      - DILITHIUM
-      - SPHINCSPLUS
+      - CRYSTALS-Dilithium
+      - SPHINCS+
     KeyDto:
       required:
       - creationTime
@@ -1954,11 +1954,11 @@ components:
       type: string
       description: Key Format
       enum:
-      - RAW
-      - SPKI
-      - PRKI
-      - EPRKI
-      - CUSTOM
+      - Raw
+      - SubjectPublicKeyInfo
+      - PrivateKeyInfo
+      - EncryptedPrivateKeyInfo
+      - Custom
     KeyItemDto:
       required:
       - creationTime
@@ -2044,30 +2044,30 @@ components:
       type: string
       description: Key State
       enum:
-      - PRE_ACTIVE
-      - ACTIVE
-      - DEACTIVATED
-      - COMPROMISED
-      - DESTROYED
-      - COMPROMISED_DESTROYED
+      - pre-active
+      - active
+      - deactivated
+      - compromised
+      - destroyed
+      - compromisedDestroyed
     KeyType:
       type: string
       description: Type of the Key
       enum:
-      - SECRET_KEY
-      - PUBLIC_KEY
-      - PRIVATE_KEY
-      - SPLIT_KEY
+      - secret
+      - public
+      - private
+      - split
     KeyUsage:
       type: string
       description: Key Usages
       enum:
-      - SIGN
-      - VERIFY
-      - ENCRYPT
-      - DECRYPT
-      - WRAP
-      - UNWRAP
+      - sign
+      - verify
+      - encrypt
+      - decrypt
+      - wrap
+      - unwrap
     LocationDto:
       required:
       - attributes
@@ -2276,14 +2276,14 @@ components:
     CertificateValidationStatus:
       type: string
       enum:
-      - SUCCESS
-      - FAILED
-      - WARNING
-      - REVOKED
-      - NOT_CHECKED
-      - INVALID
-      - EXPIRING
-      - EXPIRED
+      - success
+      - failed
+      - warning
+      - revoked
+      - not_checked
+      - invalid
+      - expiring
+      - expired
     CertificateEventHistoryDto:
       required:
       - certificateUuid
@@ -2343,44 +2343,47 @@ components:
       type: string
       description: Platform enum of the field values
       enum:
-      - RESOURCE
-      - SEARCH_CONDITION
-      - SEARCH_FIELD_TYPE
-      - SEARCH_GROUP
-      - SETTINGS_SECTION
-      - AUTH_TYPE
-      - HEALTH_STATUS
-      - CONNECTOR_STATUS
-      - CONNECTOR_FUNCTION_GROUP
-      - CERTIFICATE_TYPE
-      - CERTIFICATE_STATUS
-      - CERTIFICATE_VALIDATION_STATUS
-      - DISCOVERY_STATUS
-      - CRYPTOGRAPHIC_ALGORITHM
-      - KEY_FORMAT
-      - KEY_STATE
-      - KEY_TYPE
-      - KEY_USAGE
-      - KEY_REQUEST_TYPE
-      - KEY_COMPROMISE_REASON
-      - TOKEN_STATUS
-      - COMPLIANCE_STATUS
-      - COMPLIANCE_RULE_STATUS
-      - ACME_ACCOUNT_STATUS
-      - ATTRIBUTE_TYPE
-      - ATTRIBUTE_CONTENT_TYPE
-      - ATTRIBUTE_CONSTRAINT_TYPE
-      - ATTRIBUTE_CALLBACK_VALUE_TARGET
-      - PROGRAMMING_LANGUAGE
+      - Resource
+      - SearchCondition
+      - SearchableFieldType
+      - SearchGroup
+      - SettingsSection
+      - AuthType
+      - HealthStatus
+      - ConnectorStatus
+      - FunctionGroupCode
+      - CertificateType
+      - CertificateStatus
+      - CertificateValidationStatus
+      - DiscoveryStatus
+      - CryptographicAlgorithm
+      - KeyFormat
+      - KeyState
+      - KeyType
+      - KeyUsage
+      - KeyRequestType
+      - KeyCompromiseReason
+      - TokenInstanceStatus
+      - ComplianceStatus
+      - ComplianceRuleStatus
+      - AccountStatus
+      - AttributeType
+      - AttributeContentType
+      - AttributeConstraintType
+      - AttributeValueTarget
+      - ProgrammingLanguageEnum
     SearchFieldDataByGroupDto:
+      required:
+      - searchGroup
       type: object
       properties:
-        searchFieldData:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchFieldDataDto'
         searchGroup:
           $ref: '#/components/schemas/SearchGroup'
+        searchFieldData:
+          type: array
+          description: List of search fields for specified search group
+          items:
+            $ref: '#/components/schemas/SearchFieldDataDto'
     SearchFieldDataDto:
       required:
       - conditions
@@ -2410,16 +2413,17 @@ components:
         multiValue:
           type: boolean
           description: "Multivalue flag. true = yes, false = no"
+      description: List of search fields for specified search group
     SearchableFieldType:
       type: string
       description: Type of the field
       enum:
-      - STRING
-      - NUMBER
-      - LIST
-      - DATE
-      - DATETIME
-      - BOOLEAN
+      - string
+      - number
+      - list
+      - date
+      - datetime
+      - boolean
     BaseAttributeDto:
       required:
       - name

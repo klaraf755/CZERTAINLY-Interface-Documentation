@@ -35,18 +35,24 @@ paths:
               $ref: '#/components/schemas/DiscoveryDto'
         required: true
       responses:
-        "201":
-          description: Discovery Created
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UuidDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -55,14 +61,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
+        "201":
+          description: Discovery Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+                $ref: '#/components/schemas/UuidDto'
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -80,12 +86,6 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Discovery Management
@@ -104,12 +104,24 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -118,14 +130,8 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -134,12 +140,6 @@ paths:
           description: Discoveries deleted
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/discoveries/list:
     post:
       tags:
@@ -153,18 +153,30 @@ paths:
               $ref: '#/components/schemas/SearchRequestDto'
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: List of available Discoveries
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscoveryResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -173,26 +185,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/discoveries/{uuid}:
     get:
       tags:
@@ -207,12 +207,24 @@ paths:
         schema:
           type: string
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -221,14 +233,8 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -241,12 +247,6 @@ paths:
                 $ref: '#/components/schemas/DiscoveryHistoryDetailDto'
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Discovery Management
@@ -260,14 +260,26 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: Discovery deleted
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "204":
-          description: Discovery deleted
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -276,26 +288,14 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/discoveries/{uuid}/certificates:
     get:
       tags:
@@ -329,12 +329,24 @@ paths:
           format: int32
           default: 0
       responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -343,14 +355,8 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -363,12 +369,6 @@ paths:
                 $ref: '#/components/schemas/DiscoveryCertificateResponseDto'
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/discoveries/search:
     get:
       tags:
@@ -376,18 +376,6 @@ paths:
       summary: Get Discovery searchable fields information
       operationId: getSearchableFieldInformation
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Discovery searchable field information retrieved
           content:
@@ -396,28 +384,40 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SearchFieldDataByGroupDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
 components:
   schemas:
     AttributeCallback:
@@ -475,43 +475,43 @@ components:
       type: string
       description: Attribute Constraint Type
       enum:
-      - REGEXP
-      - RANGE
-      - DATETIME
+      - regExp
+      - range
+      - dateTime
     AttributeContentType:
       type: string
       description: 'Type of the attribute content. '
       enum:
-      - STRING
-      - TEXT
-      - INTEGER
-      - BOOLEAN
-      - FLOAT
-      - DATE
-      - TIME
-      - DATETIME
-      - SECRET
-      - FILE
-      - CREDENTIAL
-      - CODEBLOCK
-      - OBJECT
+      - string
+      - text
+      - integer
+      - boolean
+      - float
+      - date
+      - time
+      - datetime
+      - secret
+      - file
+      - credential
+      - codeblock
+      - object
     AttributeType:
       type: string
       description: Type of the attribute. It is optional and must be set only if special
         behaviour is needed.
       enum:
-      - DATA
-      - GROUP
-      - INFO
-      - META
-      - CUSTOM
+      - data
+      - group
+      - info
+      - meta
+      - custom
     AttributeValueTarget:
       type: string
       description: Set of targets for propagating value.
       enum:
-      - PATH_VARIABLE
-      - REQUEST_PARAMETER
-      - BODY
+      - pathVariable
+      - requestParameter
+      - body
     BaseAttributeConstraint:
       required:
       - data
@@ -862,47 +862,47 @@ components:
       description: Definition of programming languages used for code
       example: "JAVA, PHP, C, etc"
       enum:
-      - APACHE_CONFIGURATION
-      - BASH
-      - BASIC
-      - C
-      - C_SHARP
-      - CPP
-      - CSS
-      - DOCKER
-      - F_SHARP
-      - GHERKIN
-      - GIT
-      - GO
-      - GRAPHQL
-      - HTML
-      - HTTP
-      - INI
-      - JAVA
-      - JAVASCRIPT
-      - JSON
-      - KOTLIN
-      - LATEX
-      - LISP
-      - MAKEFILE
-      - MARKDOWN
-      - MATLAB
-      - NGINX
-      - OBJECTIVE_C
-      - PERL
-      - PHP
-      - POWERSHELL
-      - PROPERTIES
-      - PYTHON
-      - RUBY
-      - RUST
-      - SMALLTALK
-      - SQL
-      - TYPESCRIPT
-      - VB_NET
-      - XQUERY
-      - XML
-      - YAML
+      - apacheconf
+      - bash
+      - basic
+      - c
+      - csharp
+      - cpp
+      - css
+      - docker
+      - fsharp
+      - gherkin
+      - git
+      - go
+      - graphql
+      - html
+      - http
+      - ini
+      - java
+      - javascript
+      - json
+      - kotlin
+      - latex
+      - lisp
+      - makefile
+      - markdown
+      - matlab
+      - nginx
+      - objectivec
+      - perl
+      - php
+      - powershell
+      - properties
+      - python
+      - ruby
+      - rust
+      - smalltalk
+      - sql
+      - typescript
+      - vbnet
+      - xquery
+      - xml
+      - yaml
     RangeAttributeConstraint:
       required:
       - type
@@ -1019,14 +1019,15 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
-    UuidDto:
+    ErrorMessageDto:
       required:
-      - uuid
+      - message
       type: object
       properties:
-        uuid:
+        message:
           type: string
-          description: Object identifier
+          description: Error message detail
+          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -1044,15 +1045,14 @@ components:
         message:
           type: string
           description: Exception message
-    ErrorMessageDto:
+    UuidDto:
       required:
-      - message
+      - uuid
       type: object
       properties:
-        message:
+        uuid:
           type: string
-          description: Error message detail
-          example: Error message
+          description: Object identifier
     SearchCondition:
       type: string
       description: Condition for the search
@@ -1095,9 +1095,9 @@ components:
       type: string
       description: Group to search
       enum:
-      - META
-      - CUSTOM
-      - PROPERTY
+      - meta
+      - custom
+      - property
     SearchRequestDto:
       type: object
       properties:
@@ -1197,10 +1197,10 @@ components:
       type: string
       description: Status of Discovery
       enum:
-      - IN_PROGRESS
-      - FAILED
-      - COMPLETED
-      - WARNING
+      - inProgress
+      - failed
+      - completed
+      - warning
     DiscoveryHistoryDetailDto:
       required:
       - attributes
@@ -1450,44 +1450,47 @@ components:
       type: string
       description: Platform enum of the field values
       enum:
-      - RESOURCE
-      - SEARCH_CONDITION
-      - SEARCH_FIELD_TYPE
-      - SEARCH_GROUP
-      - SETTINGS_SECTION
-      - AUTH_TYPE
-      - HEALTH_STATUS
-      - CONNECTOR_STATUS
-      - CONNECTOR_FUNCTION_GROUP
-      - CERTIFICATE_TYPE
-      - CERTIFICATE_STATUS
-      - CERTIFICATE_VALIDATION_STATUS
-      - DISCOVERY_STATUS
-      - CRYPTOGRAPHIC_ALGORITHM
-      - KEY_FORMAT
-      - KEY_STATE
-      - KEY_TYPE
-      - KEY_USAGE
-      - KEY_REQUEST_TYPE
-      - KEY_COMPROMISE_REASON
-      - TOKEN_STATUS
-      - COMPLIANCE_STATUS
-      - COMPLIANCE_RULE_STATUS
-      - ACME_ACCOUNT_STATUS
-      - ATTRIBUTE_TYPE
-      - ATTRIBUTE_CONTENT_TYPE
-      - ATTRIBUTE_CONSTRAINT_TYPE
-      - ATTRIBUTE_CALLBACK_VALUE_TARGET
-      - PROGRAMMING_LANGUAGE
+      - Resource
+      - SearchCondition
+      - SearchableFieldType
+      - SearchGroup
+      - SettingsSection
+      - AuthType
+      - HealthStatus
+      - ConnectorStatus
+      - FunctionGroupCode
+      - CertificateType
+      - CertificateStatus
+      - CertificateValidationStatus
+      - DiscoveryStatus
+      - CryptographicAlgorithm
+      - KeyFormat
+      - KeyState
+      - KeyType
+      - KeyUsage
+      - KeyRequestType
+      - KeyCompromiseReason
+      - TokenInstanceStatus
+      - ComplianceStatus
+      - ComplianceRuleStatus
+      - AccountStatus
+      - AttributeType
+      - AttributeContentType
+      - AttributeConstraintType
+      - AttributeValueTarget
+      - ProgrammingLanguageEnum
     SearchFieldDataByGroupDto:
+      required:
+      - searchGroup
       type: object
       properties:
-        searchFieldData:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchFieldDataDto'
         searchGroup:
           $ref: '#/components/schemas/SearchGroup'
+        searchFieldData:
+          type: array
+          description: List of search fields for specified search group
+          items:
+            $ref: '#/components/schemas/SearchFieldDataDto'
     SearchFieldDataDto:
       required:
       - conditions
@@ -1517,13 +1520,14 @@ components:
         multiValue:
           type: boolean
           description: "Multivalue flag. true = yes, false = no"
+      description: List of search fields for specified search group
     SearchableFieldType:
       type: string
       description: Type of the field
       enum:
-      - STRING
-      - NUMBER
-      - LIST
-      - DATE
-      - DATETIME
-      - BOOLEAN
+      - string
+      - number
+      - list
+      - date
+      - datetime
+      - boolean
