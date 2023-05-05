@@ -4,7 +4,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.interfaces.core.web.CryptographicOperationsController;
 import com.czertainly.api.model.client.cryptography.operations.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
+import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class CryptographicOperationControllerDummyImpl implements CryptographicO
 
 
     @Override
-    public List<BaseAttribute> listCipherAttributes(String tokenInstanceUuid, String tokenProfileUuid, String uuid, String keyItemUuid, CryptographicAlgorithm algorithm) throws ConnectorException {
+    public List<BaseAttribute> listCipherAttributes(String tokenInstanceUuid, String tokenProfileUuid, String uuid, String keyItemUuid, KeyAlgorithm algorithm) throws ConnectorException {
         return null;
     }
 
@@ -29,7 +29,7 @@ public class CryptographicOperationControllerDummyImpl implements CryptographicO
     }
 
     @Override
-    public List<BaseAttribute> listSignatureAttributes(String tokenInstanceUuid, String tokenProfileUuid, String uuid, String keyItemUuid, CryptographicAlgorithm algorithm) throws ConnectorException {
+    public List<BaseAttribute> listSignatureAttributes(String tokenInstanceUuid, String tokenProfileUuid, String uuid, String keyItemUuid, KeyAlgorithm algorithm) throws ConnectorException {
         return null;
     }
 
