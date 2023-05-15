@@ -62,8 +62,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -87,18 +87,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Data decrypted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/VerifyDataResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/operations/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/sign:
     post:
       tags:
@@ -145,8 +145,8 @@ paths:
                 $ref: '#/components/schemas/SignDataResponseDto'
         "401":
           description: Unauthorized
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -170,8 +170,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -216,18 +216,18 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Data encrypted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EncryptDataResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
@@ -247,8 +247,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -293,8 +293,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -318,18 +318,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Data decrypted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DecryptDataResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/operations/tokens/{tokenInstanceUuid}/random:
     post:
       tags:
@@ -352,8 +352,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -377,8 +377,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -437,8 +437,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -451,8 +451,8 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -505,8 +505,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -519,8 +519,8 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -549,8 +549,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -563,8 +563,8 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -1159,13 +1159,14 @@ components:
           description: Time attribute value in format HH:mm:ss
     VerifyDataRequestDto:
       required:
+      - data
       - signatureAttributes
       - signatures
       type: object
       properties:
         signatureAttributes:
           type: array
-          description: List of cipher Attributes
+          description: List of signature Attributes
           items:
             $ref: '#/components/schemas/RequestAttributeDto'
         data:
@@ -1233,12 +1234,13 @@ components:
             $ref: '#/components/schemas/VerificationResponseData'
     SignDataRequestDto:
       required:
+      - data
       - signatureAttributes
       type: object
       properties:
         signatureAttributes:
           type: array
-          description: List of cipher Attributes
+          description: List of signature Attributes
           items:
             $ref: '#/components/schemas/RequestAttributeDto'
         data:
