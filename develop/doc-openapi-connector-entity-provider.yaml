@@ -70,14 +70,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Entity instance retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EntityInstanceDto'
+        "500":
+          description: Internal Server Error
     put:
       tags:
       - Entity Management
@@ -109,14 +109,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Entity instance updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EntityInstanceDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Entity Management
@@ -172,17 +172,6 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
-        "422":
-          description: Attribute validation failed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "404":
           description: Not Found
           content:
@@ -195,6 +184,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Attribute validation failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "500":
           description: Internal Server Error
   /v1/entityProvider/entities:
@@ -217,8 +217,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Entity instances retrieved
           content:
@@ -227,6 +225,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/EntityInstanceDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - Entity Management
@@ -245,17 +245,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EntityInstanceDto'
-        "422":
-          description: Attribute validation failed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
         "404":
           description: Not Found
           content:
@@ -268,6 +257,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "422":
+          description: Attribute validation failed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "500":
           description: Internal Server Error
   /v1/entityProvider/entities/{entityUuid}/locations:
@@ -298,18 +298,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Location detail and content retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LocationDetailResponseDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Location detail and content retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationDetailResponseDto'
         "500":
           description: Internal Server Error
   /v1/entityProvider/entities/{entityUuid}/locations/remove:
@@ -374,12 +374,6 @@ paths:
               $ref: '#/components/schemas/PushCertificateRequestDto'
         required: true
       responses:
-        "200":
-          description: Certificate pushed to Location
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PushCertificateResponseDto'
         "404":
           description: Not Found
           content:
@@ -392,6 +386,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate pushed to Location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PushCertificateResponseDto'
         "500":
           description: Internal Server Error
   /v1/entityProvider/entities/{entityUuid}/locations/push/attributes/validate:
@@ -429,10 +429,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Attributes validated
         "422":
           description: Unprocessable Entity
           content:
@@ -444,6 +440,10 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "200":
+          description: Attributes validated
+        "500":
+          description: Internal Server Error
         "204":
           description: No Content
   /v1/entityProvider/entities/{entityUuid}/locations/csr:
@@ -467,12 +467,6 @@ paths:
               $ref: '#/components/schemas/GenerateCsrRequestDto'
         required: true
       responses:
-        "200":
-          description: CSR generated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenerateCsrResponseDto'
         "404":
           description: Not Found
           content:
@@ -485,6 +479,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: CSR generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateCsrResponseDto'
         "500":
           description: Internal Server Error
   /v1/entityProvider/entities/{entityUuid}/locations/csr/attributes/validate:
@@ -522,10 +522,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Attributes validated
         "422":
           description: Unprocessable Entity
           content:
@@ -537,6 +533,10 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "200":
+          description: Attributes validated
+        "500":
+          description: Internal Server Error
         "204":
           description: No Content
   /v1/entityProvider/entities/{entityUuid}/location/attributes/validate:
@@ -561,8 +561,20 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Entity Location Attributes validation completed
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Attribute validation failed
           content:
@@ -574,18 +586,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "204":
@@ -604,6 +604,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Functions found
           content:
@@ -612,12 +618,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes:
@@ -640,6 +640,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes retrieved
           content:
@@ -648,12 +654,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1/health:
@@ -663,18 +663,18 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "200":
-          description: Health check completed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
         "400":
           description: Bad Request
           content:
@@ -698,14 +698,6 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Attributes for push retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
         "404":
           description: Not Found
           content:
@@ -718,6 +710,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attributes for push retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
         "500":
           description: Internal Server Error
   /v1/entityProvider/entities/{entityUuid}/locations/csr/attributes:
@@ -735,14 +735,6 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: CSR Attributes retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
         "404":
           description: Not Found
           content:
@@ -755,6 +747,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: CSR Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
         "500":
           description: Internal Server Error
   /v1/entityProvider/entities/{entityUuid}/location/attributes:
@@ -783,8 +783,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Entity Location Attributes retrieved
           content:
@@ -793,6 +791,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     AttributeCallback:
