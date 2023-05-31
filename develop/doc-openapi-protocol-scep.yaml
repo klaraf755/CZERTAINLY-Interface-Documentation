@@ -36,6 +36,9 @@ paths:
       tags:
       - SCEP operations
       summary: SCEP Get Operations
+      externalDocs:
+        description: "RFC 8894, section 4.1"
+        url: https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1
       operationId: doGet
       parameters:
       - name: scepProfileName
@@ -50,18 +53,12 @@ paths:
           type: string
       - name: message
         in: query
+        description: Base64 encoded CMS data
         required: false
         schema:
           type: string
+          description: Base64 encoded CMS data
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -73,17 +70,30 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+                description: "Response structure defined in RFC 8894, section 4"
+                format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
         "403":
           description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - SCEP operations
       summary: SCEP Post Operations
+      externalDocs:
+        description: "RFC 8894, section 4.1"
+        url: https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1
       operationId: doPost
       parameters:
       - name: scepProfileName
@@ -100,39 +110,11 @@ paths:
         content:
           '*/*':
             schema:
-              type: object
-              properties:
-                short:
-                  type: integer
-                  format: int32
-                char:
-                  type: string
-                int:
-                  type: integer
-                  format: int32
-                long:
-                  type: integer
-                  format: int64
-                float:
-                  type: number
-                  format: float
-                double:
-                  type: number
-                  format: double
-                direct:
-                  type: boolean
-                readOnly:
-                  type: boolean
+              type: string
+              description: Binary CMS data
+              format: binary
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -144,18 +126,31 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+                description: "Response structure defined in RFC 8894, section 4"
+                format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
         "403":
           description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
   /v1/protocols/scep/raProfile/{raProfileName}/pkiclient.exe:
     get:
       tags:
       - SCEP RA Profile
       summary: SCEP Get Operations
+      externalDocs:
+        description: "RFC 8894, section 4.1"
+        url: https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1
       operationId: doGet_1
       parameters:
       - name: raProfileName
@@ -170,18 +165,12 @@ paths:
           type: string
       - name: message
         in: query
+        description: Base64 encoded CMS data
         required: false
         schema:
           type: string
+          description: Base64 encoded CMS data
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -193,17 +182,30 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+                description: "Response structure defined in RFC 8894, section 4"
+                format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
         "403":
           description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - SCEP RA Profile
       summary: SCEP Post Operations
+      externalDocs:
+        description: "RFC 8894, section 4.1"
+        url: https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1
       operationId: doPost_1
       parameters:
       - name: raProfileName
@@ -220,39 +222,11 @@ paths:
         content:
           '*/*':
             schema:
-              type: object
-              properties:
-                short:
-                  type: integer
-                  format: int32
-                char:
-                  type: string
-                int:
-                  type: integer
-                  format: int32
-                long:
-                  type: integer
-                  format: int64
-                float:
-                  type: number
-                  format: float
-                double:
-                  type: number
-                  format: double
-                direct:
-                  type: boolean
-                readOnly:
-                  type: boolean
+              type: string
+              description: Binary CMS data
+              format: binary
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -264,13 +238,23 @@ paths:
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+                description: "Response structure defined in RFC 8894, section 4"
+                format: binary
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
         "403":
           description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     ProblemDocument:
