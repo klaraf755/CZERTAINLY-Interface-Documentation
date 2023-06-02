@@ -4,10 +4,13 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.interfaces.core.web.EntityInstanceController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.certificate.EntityInstanceResponseDto;
+import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.entity.EntityInstanceDto;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +19,12 @@ import java.util.List;
 @RestController
 public class EntityInstanceControllerDummyImpl implements EntityInstanceController {
     @Override
-    public List<EntityInstanceDto> listEntityInstances() {
+    public EntityInstanceResponseDto listEntityInstances(SearchRequestDto request) {
+        return null;
+    }
+
+    @Override
+    public List<SearchFieldDataByGroupDto> getSearchableFieldInformation() {
         return null;
     }
 
