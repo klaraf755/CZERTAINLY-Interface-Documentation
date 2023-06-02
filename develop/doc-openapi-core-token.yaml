@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.7.2-SNAPSHOT
+  version: 2.8.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -36,8 +36,22 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Token Instance Detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInstanceDetailDto'
         "404":
           description: Not Found
           content:
@@ -50,20 +64,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Token Instance Detail retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenInstanceDetailDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
     put:
       tags:
       - Token Instance Controller
@@ -83,26 +83,6 @@ paths:
               $ref: '#/components/schemas/TokenInstanceRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "200":
-          description: Token Instance Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenInstanceDetailDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -120,8 +100,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "200":
+          description: Token Instance Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInstanceDetailDto'
         "500":
           description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Token Instance Controller
@@ -135,10 +135,18 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: Token Instance deleted
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -151,14 +159,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
     patch:
       tags:
       - Token Instance Controller
@@ -178,8 +178,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenInstanceDetailDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -192,14 +200,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/tokens:
     get:
       tags:
@@ -207,16 +207,18 @@ paths:
       summary: List Token Instances
       operationId: listTokenInstances
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -229,14 +231,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TokenInstanceDto'
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Token Instance Controller
@@ -249,26 +249,6 @@ paths:
               $ref: '#/components/schemas/TokenInstanceRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "201":
-          description: Token Instance Created Successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenInstanceDetailDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -286,8 +266,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
         "500":
           description: Internal Server Error
+        "201":
+          description: Token Instance Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInstanceDetailDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/tokens/{uuid}/deactivate:
     patch:
       tags:
@@ -302,30 +302,30 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Token Instance Deactivated
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
         "500":
           description: Internal Server Error
+        "204":
+          description: Token Instance Deactivated
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/tokens/{uuid}/activate:
     patch:
       tags:
@@ -348,8 +348,18 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Token Instance Activated
         "404":
           description: Not Found
           content:
@@ -362,16 +372,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Token Instance Activated
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/tokens/{uuid}/tokenProfiles/attributes:
     get:
       tags:
@@ -386,8 +386,12 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Token Profile Attributes retrieved
           content:
@@ -396,6 +400,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -408,14 +416,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/tokens/{uuid}/activate/attributes:
     get:
       tags:
@@ -430,8 +430,12 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Token activation Attributes retrieved
           content:
@@ -440,6 +444,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -452,14 +460,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/tokens/delete:
     delete:
       tags:
@@ -479,8 +479,16 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "401":
           description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -493,16 +501,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: Token Instances deleted
-        "500":
-          description: Internal Server Error
 components:
   schemas:
     AttributeCallback:
@@ -1108,15 +1108,6 @@ components:
           description: Attributes for Token Instance
           items:
             $ref: '#/components/schemas/RequestAttributeDto'
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -1134,6 +1125,15 @@ components:
         message:
           type: string
           description: Exception message
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     MetadataResponseDto:
       required:
       - connectorName
