@@ -38,16 +38,24 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "200":
+          description: Global Metadata details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalMetadataDefinitionDetailDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -58,14 +66,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: Global Metadata details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GlobalMetadataDefinitionDetailDto'
-        "500":
-          description: Internal Server Error
     put:
       tags:
       - Global Metadata
@@ -85,6 +85,8 @@ paths:
               $ref: '#/components/schemas/GlobalMetadataUpdateRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: Global Metadata updated
           content:
@@ -93,14 +95,14 @@ paths:
                 $ref: '#/components/schemas/GlobalMetadataDefinitionDetailDto'
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -111,8 +113,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - Global Metadata
@@ -126,16 +126,18 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -146,8 +148,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: Global Metadata deleted
   /v1/attributes/custom/{uuid}:
@@ -163,6 +163,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: Custom Attribute details retrieved
           content:
@@ -171,14 +173,14 @@ paths:
                 $ref: '#/components/schemas/CustomAttributeDefinitionDetailDto'
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -189,8 +191,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
     put:
       tags:
       - Custom Attributes
@@ -210,34 +210,34 @@ paths:
               $ref: '#/components/schemas/CustomAttributeUpdateRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Custom Attribute updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CustomAttributeDefinitionDetailDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - Custom Attributes
@@ -251,16 +251,18 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -271,8 +273,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: Custom Attribute deleted
   /v1/attributes/metadata:
@@ -290,16 +290,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttributeDefinitionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -310,8 +312,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Global Metadata
@@ -324,16 +324,24 @@ paths:
               $ref: '#/components/schemas/GlobalMetadataCreateRequestDto'
         required: true
       responses:
+        "201":
+          description: Global Metadata created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -344,14 +352,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "201":
-          description: Global Metadata created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - Global Metadata
@@ -370,16 +370,18 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -390,8 +392,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: Global Metadata deleted
   /v1/attributes/metadata/promote:
@@ -407,6 +407,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "204":
           description: Connector Metadata retrieved
           content:
@@ -417,14 +419,14 @@ paths:
                   $ref: '#/components/schemas/ConnectorMetadataResponseDto'
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -435,8 +437,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Global Metadata
@@ -449,14 +449,10 @@ paths:
               $ref: '#/components/schemas/ConnectorMetadataPromotionRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Connector Metadata promoted to global metadata
           content:
@@ -469,14 +465,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/attributes/custom:
     get:
       tags:
@@ -484,20 +484,10 @@ paths:
       summary: List Custom Attributes
       operationId: listCustomAttributes
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: list of available Custom Attributes
           content:
@@ -506,14 +496,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CustomAttributeDefinitionDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Custom Attributes
@@ -526,16 +526,24 @@ paths:
               $ref: '#/components/schemas/CustomAttributeCreateRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "201":
+          description: Custom Attribute created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -546,14 +554,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "201":
-          description: Custom Attribute created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - Custom Attributes
@@ -572,30 +572,30 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Custom Attributes deleted
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Custom Attributes deleted
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/attributes/custom/{uuid}/resources:
     patch:
       tags:
@@ -622,18 +622,20 @@ paths:
             - authorities
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "204":
           description: Custom Attribute associated to the resources
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -644,8 +646,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/attributes/custom/{uuid}/enable:
     patch:
       tags:
@@ -660,18 +660,20 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Custom Attribute enabled
         "404":
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -682,8 +684,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/attributes/custom/{uuid}/disable:
     patch:
       tags:
@@ -700,16 +700,18 @@ paths:
       responses:
         "204":
           description: Custom Attribute disabled
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -720,8 +722,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/attributes/custom/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}:
     delete:
       tags:
@@ -748,16 +748,26 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "200":
+          description: Custom Attribute value deleted
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResponseAttributeDto'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -768,16 +778,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: Custom Attribute value deleted
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ResponseAttributeDto'
-        "500":
-          description: Internal Server Error
     patch:
       tags:
       - Custom Attributes
@@ -811,16 +811,26 @@ paths:
                 $ref: '#/components/schemas/BaseAttributeContentDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "200":
+          description: Custom Attribute value updated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResponseAttributeDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -831,16 +841,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Custom Attribute value updated
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ResponseAttributeDto'
   /v1/attributes/custom/enable:
     patch:
       tags:
@@ -860,18 +860,20 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "204":
           description: Custom Attributes enabled
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -882,8 +884,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/attributes/custom/disable:
     patch:
       tags:
@@ -903,18 +903,20 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "204":
           description: Custom Attributes disabled
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -925,8 +927,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
   /v1/attributes/custom/resources:
     get:
       tags:
@@ -934,28 +934,16 @@ paths:
       summary: Get available resources for Custom Attributes
       operationId: getResources
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Custom Attribute retrieved
           content:
@@ -964,6 +952,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Resource'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/attributes/custom/resources/{resource}:
     get:
       tags:
@@ -978,16 +978,26 @@ paths:
         schema:
           $ref: '#/components/schemas/Resource'
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "200":
+          description: Custom Attribute retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomAttribute'
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -998,16 +1008,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Custom Attribute retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CustomAttribute'
 components:
   schemas:
     GlobalMetadataUpdateRequestDto:
