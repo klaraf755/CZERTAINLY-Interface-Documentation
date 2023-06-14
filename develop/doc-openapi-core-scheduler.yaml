@@ -154,6 +154,7 @@ components:
       - cronExpression
       - enabled
       - jobName
+      - lastExecutionStatus
       - oneShotOnly
       - uuid
       type: object
@@ -175,6 +176,8 @@ components:
         oneShotOnly:
           type: boolean
           description: Is scheduled job triggered only once
+        lastExecutionStatus:
+          $ref: '#/components/schemas/SchedulerJobExecutionStatus'
       description: Scheduled jobs
     ScheduledJobsResponseDto:
       required:
@@ -206,11 +209,19 @@ components:
           description: Scheduled jobs
           items:
             $ref: '#/components/schemas/ScheduledJobDto'
+    SchedulerJobExecutionStatus:
+      type: string
+      description: Execution status of last job triggered task
+      enum:
+      - started
+      - succeeded
+      - failed
     ScheduledJobDetailDto:
       required:
       - cronExpression
       - enabled
       - jobName
+      - lastExecutionStatus
       - oneShotOnly
       - system
       - uuid
@@ -233,6 +244,8 @@ components:
         oneShotOnly:
           type: boolean
           description: Is scheduled job triggered only once
+        lastExecutionStatus:
+          $ref: '#/components/schemas/SchedulerJobExecutionStatus'
         userUuid:
           type: string
           format: uuid
@@ -244,23 +257,28 @@ components:
         objectData:
           type: object
     ScheduledJobHistoryDto:
+      required:
+      - startTime
+      - status
       type: object
       properties:
         jobUuid:
           type: string
+          description: Scheduled job UUID
           format: uuid
         startTime:
           type: string
+          description: Start time of triggered task
           format: date-time
         endTime:
           type: string
+          description: End time of triggered task
           format: date-time
         status:
+          $ref: '#/components/schemas/SchedulerJobExecutionStatus'
+        errorMessage:
           type: string
-          enum:
-          - SUCCESS
-          - FAILED
-          - UNKNOWN
+          description: Error message if triggered task failed
       description: Scheduled job history
     ScheduledJobHistoryResponseDto:
       required:
