@@ -154,8 +154,10 @@ components:
       - cronExpression
       - enabled
       - jobName
+      - jobType
       - lastExecutionStatus
-      - oneShotOnly
+      - oneTime
+      - system
       - uuid
       type: object
       properties:
@@ -166,6 +168,9 @@ components:
         jobName:
           type: string
           description: Name of the scheduled job
+        jobType:
+          type: string
+          description: Type of scheduled job (job processor name)
         cronExpression:
           type: string
           description: CRON expression representing configuration of pattern how to
@@ -173,9 +178,12 @@ components:
         enabled:
           type: boolean
           description: "Status of the scheduled job. True = Enabled, False = Disabled"
-        oneShotOnly:
+        oneTime:
           type: boolean
           description: Is scheduled job triggered only once
+        system:
+          type: boolean
+          description: Is system scheduled job
         lastExecutionStatus:
           $ref: '#/components/schemas/SchedulerJobExecutionStatus'
       description: Scheduled jobs
@@ -221,8 +229,9 @@ components:
       - cronExpression
       - enabled
       - jobName
+      - jobType
       - lastExecutionStatus
-      - oneShotOnly
+      - oneTime
       - system
       - uuid
       type: object
@@ -234,6 +243,9 @@ components:
         jobName:
           type: string
           description: Name of the scheduled job
+        jobType:
+          type: string
+          description: Type of scheduled job (job processor name)
         cronExpression:
           type: string
           description: CRON expression representing configuration of pattern how to
@@ -241,21 +253,47 @@ components:
         enabled:
           type: boolean
           description: "Status of the scheduled job. True = Enabled, False = Disabled"
-        oneShotOnly:
+        oneTime:
           type: boolean
           description: Is scheduled job triggered only once
+        system:
+          type: boolean
+          description: Is system scheduled job
         lastExecutionStatus:
           $ref: '#/components/schemas/SchedulerJobExecutionStatus'
         userUuid:
           type: string
           format: uuid
-        jobClassName:
-          type: string
-        system:
-          type: boolean
-          description: Is system scheduled job
         objectData:
           type: object
+    Resource:
+      type: string
+      description: Result object type
+      enum:
+      - NONE
+      - dashboard
+      - settings
+      - auditLogs
+      - credentials
+      - connectors
+      - attributes
+      - jobs
+      - users
+      - roles
+      - acmeAccounts
+      - acmeProfiles
+      - scepProfiles
+      - authorities
+      - raProfiles
+      - certificates
+      - groups
+      - complianceProfiles
+      - discoveries
+      - entities
+      - locations
+      - tokenProfiles
+      - tokens
+      - keys
     ScheduledJobHistoryDto:
       required:
       - startTime
@@ -276,9 +314,17 @@ components:
           format: date-time
         status:
           $ref: '#/components/schemas/SchedulerJobExecutionStatus'
-        errorMessage:
+        resultMessage:
           type: string
-          description: Error message if triggered task failed
+          description: Message explaining result status
+        resultObjectType:
+          $ref: '#/components/schemas/Resource'
+        resultObjectIdentification:
+          type: array
+          description: Result object identification (UUID)
+          items:
+            type: string
+            description: Result object identification (UUID)
       description: Scheduled job history
     ScheduledJobHistoryResponseDto:
       required:
