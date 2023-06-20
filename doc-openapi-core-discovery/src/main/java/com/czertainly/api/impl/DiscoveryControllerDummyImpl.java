@@ -56,7 +56,7 @@ public class DiscoveryControllerDummyImpl implements DiscoveryController {
     }
 
     @Override
-    public void scheduleDiscovery(ScheduleDiscoveryDto scheduleDiscoveryDto) throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException {
-
+    public ResponseEntity<?> scheduleDiscovery(ScheduleDiscoveryDto scheduleDiscoveryDto) throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException {
+        return null;
     }
 }
