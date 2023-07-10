@@ -42,28 +42,24 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Location detail retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -82,6 +78,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
     put:
       tags:
       - Location Management
@@ -107,22 +107,29 @@ paths:
               $ref: '#/components/schemas/EditLocationRequestDto'
         required: true
       responses:
+        "422":
+          description: Unprocessible Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -141,23 +148,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Location updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
-        "422":
-          description: Unprocessible Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+        "401":
+          description: Unauthorized
     delete:
       tags:
       - Location Management
@@ -183,16 +183,12 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -211,8 +207,12 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Location deleted
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/sync:
     put:
       tags:
@@ -239,16 +239,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -267,12 +263,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Content updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}:
     put:
       tags:
@@ -305,28 +305,24 @@ paths:
               $ref: '#/components/schemas/PushToLocationRequestDto'
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Certificate pushed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -345,6 +341,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
     delete:
       tags:
       - Location Management
@@ -382,16 +382,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -410,6 +406,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
     patch:
       tags:
       - Location Management
@@ -441,16 +441,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -469,12 +465,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Content updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "401":
+          description: Unauthorized
   /v1/locations:
     post:
       tags:
@@ -494,8 +494,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
@@ -508,8 +506,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationsResponseDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -528,6 +524,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations:
     post:
       tags:
@@ -548,39 +548,24 @@ paths:
               $ref: '#/components/schemas/AddLocationRequestDto'
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "401":
-          description: Unauthorized
         "201":
           description: Location added
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -599,6 +584,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/certificates:
     post:
       tags:
@@ -631,16 +631,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -659,12 +655,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Certificate issued
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/enable:
     patch:
       tags:
@@ -691,16 +691,12 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -713,14 +709,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Location enabled
         "404":
           description: Not Found
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Location enabled
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/disable:
     patch:
       tags:
@@ -747,16 +747,12 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -775,8 +771,12 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "204":
           description: Location disabled
+        "401":
+          description: Unauthorized
   /v1/search:
     get:
       tags:
@@ -790,16 +790,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -818,6 +814,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Locations searchable field information retrieved
           content:
@@ -826,6 +824,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SearchFieldDataByGroupDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/attributes/push:
     get:
       tags:
@@ -852,16 +852,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -880,6 +876,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Push attributes list obtained
           content:
@@ -888,6 +886,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "401":
+          description: Unauthorized
   /v1/entities/{entityUuid}/locations/{locationUuid}/attributes/issue:
     get:
       tags:
@@ -908,12 +908,6 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: CSR Attributes list obtained
           content:
@@ -922,16 +916,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -950,6 +946,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
 components:
   schemas:
     AttributeCallback:

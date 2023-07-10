@@ -1,0 +1,241 @@
+openapi: 3.0.1
+info:
+  title: CZERTAINLY Notification API
+  description: REST API for notifications in the platform
+  contact:
+    name: CZERTAINLY
+    url: https://www.czertainly.com
+    email: getinfo@czertainly.com
+  license:
+    name: MIT License
+    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+  version: 2.8.2-SNAPSHOT
+  x-logo:
+    url: images/czertainly_color_H.svg
+externalDocs:
+  description: CZERTAINLY Documentation
+  url: https://docs.czertainly.com
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Notifications
+  description: Notifications API
+paths:
+  /v1/notifications/{uuid}:
+    delete:
+      tags:
+      - Notifications
+      summary: Delete a notification for logged user
+      operationId: deleteNotification
+      parameters:
+      - name: uuid
+        in: path
+        description: Notification UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Notification deleted
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+    patch:
+      tags:
+      - Notifications
+      summary: Mark notification as read for logged user
+      operationId: markNotificationAsRead
+      parameters:
+      - name: uuid
+        in: path
+        description: Notification UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Notification marked as read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationDto'
+        "500":
+          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /v1/notifications:
+    get:
+      tags:
+      - Notifications
+      summary: List notifications for logged user
+      operationId: listNotifications
+      parameters:
+      - name: request
+        in: query
+        description: Show only unread notifications
+        required: true
+        schema:
+          $ref: '#/components/schemas/NotificationRequestDto'
+      responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationResponseDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+components:
+  schemas:
+    AuthenticationServiceExceptionDto:
+      required:
+      - code
+      - message
+      - statusCode
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          description: Status code of the HTTP Request
+          format: int32
+        code:
+          type: string
+          description: Code of the result
+        message:
+          type: string
+          description: Exception message
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
+    NotificationDto:
+      required:
+      - message
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Notification UUID
+          format: uuid
+        message:
+          type: string
+          description: Notification message
+        detail:
+          type: string
+          description: Notification message detail
+        readAt:
+          type: string
+          description: Notification read date
+          format: date-time
+    NotificationRequestDto:
+      type: object
+      properties:
+        itemsPerPage:
+          maximum: 1000
+          type: integer
+          description: Number of entries per page
+          format: int32
+          default: 10
+        pageNumber:
+          type: integer
+          description: Page number for the request
+          format: int32
+          default: 1
+        unread:
+          type: boolean
+          description: Show only unread notifications
+          default: false
+    NotificationResponseDto:
+      required:
+      - items
+      - itemsPerPage
+      - pageNumber
+      - totalItems
+      - totalPages
+      type: object
+      properties:
+        itemsPerPage:
+          type: integer
+          description: Number of entries per page
+          format: int32
+        pageNumber:
+          type: integer
+          description: Page number for the request
+          format: int32
+        totalPages:
+          type: integer
+          description: Number of pages available
+          format: int32
+        totalItems:
+          type: integer
+          description: Number of items available
+          format: int64
+        items:
+          type: array
+          description: Notifications
+          items:
+            $ref: '#/components/schemas/NotificationDto'
