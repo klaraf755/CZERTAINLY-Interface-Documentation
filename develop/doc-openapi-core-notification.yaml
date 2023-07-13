@@ -36,30 +36,30 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Notification deleted
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Notification deleted
     patch:
       tags:
       - Notifications
@@ -73,22 +73,22 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "200":
           description: Notification marked as read
           content:
@@ -115,28 +115,28 @@ paths:
         schema:
           $ref: '#/components/schemas/NotificationRequestDto'
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: List of notifications
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotificationResponseDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
+        "200":
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationResponseDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -174,6 +174,7 @@ components:
     NotificationDto:
       required:
       - message
+      - sentAt
       - uuid
       type: object
       properties:
@@ -191,6 +192,46 @@ components:
           type: string
           description: Notification read date
           format: date-time
+        sentAt:
+          type: string
+          description: Notification sent date
+          format: date-time
+        targetObjectType:
+          $ref: '#/components/schemas/Resource'
+        targetObjectIdentification:
+          type: array
+          description: Target object identification (UUID)
+          items:
+            type: string
+            description: Target object identification (UUID)
+    Resource:
+      type: string
+      description: Target object type
+      enum:
+      - NONE
+      - dashboard
+      - settings
+      - auditLogs
+      - credentials
+      - connectors
+      - attributes
+      - jobs
+      - users
+      - roles
+      - acmeAccounts
+      - acmeProfiles
+      - scepProfiles
+      - authorities
+      - raProfiles
+      - certificates
+      - groups
+      - complianceProfiles
+      - discoveries
+      - entities
+      - locations
+      - tokenProfiles
+      - tokens
+      - keys
     NotificationRequestDto:
       type: object
       properties:
