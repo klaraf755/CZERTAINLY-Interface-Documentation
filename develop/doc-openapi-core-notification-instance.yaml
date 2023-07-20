@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY Legacy Client Operations API
-  description: REST API for Legacy Client Operations
+  title: CZERTAINLY Authority API
+  description: REST API for managing Authorities in the platform
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -19,47 +19,33 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Legacy Client Operations
-  description: Client API for managing End Entities and Certificates
+- name: Notification Management
+  description: Notification Management API
 paths:
-  /v1/operations/{raProfileName}/endentity/{username}/resetPassword:
-    put:
+  /v1/notificationInstances/{uuid}:
+    get:
       tags:
-      - Legacy Client Operations
-      summary: Reset password for End Entity
-      operationId: resetPassword
+      - Notification Management
+      summary: Details of an Notification instance
+      operationId: getNotificationInstance
       parameters:
-      - name: raProfileName
+      - name: uuid
         in: path
-        description: RA Profile name
-        required: true
-        schema:
-          type: string
-      - name: username
-        in: path
-        description: Username
+        description: Notification instance UUID
         required: true
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
+        "200":
+          description: Notification instance details retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: End Entity password reset
+                $ref: '#/components/schemas/NotificationInstanceDto'
+        "401":
+          description: Unauthorized
         "503":
           description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -70,283 +56,115 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/operations/{raProfileName}/endentity:
-    get:
-      tags:
-      - Legacy Client Operations
-      summary: List all End Entities
-      operationId: listEntities
-      parameters:
-      - name: raProfileName
-        in: path
-        description: RA Profile name
-        required: true
-        schema:
-          type: string
-      responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - Notification Management
+      summary: Edit Notification instance
+      operationId: editNotificationInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Notification instance UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationInstanceUpdateRequestDto'
+        required: true
+      responses:
+        "401":
+          description: Unauthorized
+        "200":
+          description: Notification instance details updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationInstanceDto'
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: List of entities retrieved
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "422":
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ClientEndEntityDto'
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    post:
-      tags:
-      - Legacy Client Operations
-      summary: Add End Entity
-      operationId: addEndEntity
-      parameters:
-      - name: raProfileName
-        in: path
-        description: RA Profile name
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
-        required: true
-      responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity added
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/operations/{raProfileName}/endentity/{username}:
-    get:
-      tags:
-      - Legacy Client Operations
-      summary: Get End Entity information
-      operationId: getEndEntity
-      parameters:
-      - name: raProfileName
-        in: path
-        description: RA Profile name
-        required: true
-        schema:
-          type: string
-      - name: username
-        in: path
-        description: Username
-        required: true
-        schema:
-          type: string
-      responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity detail retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientEndEntityDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-    post:
-      tags:
-      - Legacy Client Operations
-      summary: Edit End Entity
-      operationId: editEndEntity
-      parameters:
-      - name: raProfileName
-        in: path
-        description: RA Profile name
-        required: true
-        schema:
-          type: string
-      - name: username
-        in: path
-        description: Username
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
-        required: true
-      responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity edited
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
-      - Legacy Client Operations
-      summary: Revoke all Certificates and delete End Entity
-      operationId: revokeAndDeleteEndEntity
+      - Notification Management
+      summary: Delete Notification instance
+      operationId: deleteNotificationInstance
       parameters:
-      - name: raProfileName
+      - name: uuid
         in: path
-        description: RA Profile name
-        required: true
-        schema:
-          type: string
-      - name: username
-        in: path
-        description: Username
+        description: Notification instance UUID
         required: true
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "204":
+          description: Notification instance deleted
+        "401":
+          description: Unauthorized
         "503":
           description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity revoked and deleted
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -357,52 +175,97 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/operations/{raProfileName}/certificate/revoke:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+  /v1/notificationInstances:
+    get:
+      tags:
+      - Notification Management
+      summary: List of available Notification instances
+      operationId: listNotificationInstances
+      responses:
+        "200":
+          description: List of Notification instances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationInstanceDto'
+        "401":
+          description: Unauthorized
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
-      - Legacy Client Operations
-      summary: Revoke Certificate
-      operationId: revokeCertificate
-      parameters:
-      - name: raProfileName
-        in: path
-        description: RA Profile name
-        required: true
-        schema:
-          type: string
+      - Notification Management
+      summary: Add Notification instance
+      operationId: createNotificationInstance
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LegacyClientCertificateRevocationDto'
+              $ref: '#/components/schemas/NotificationInstanceRequestDto'
         required: true
       responses:
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
+        "201":
+          description: New Notification instance added
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: '#/components/schemas/UuidDto'
         "503":
           description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate revoked
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -413,56 +276,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/operations/{raProfileName}/certificate/issue:
-    post:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
+  /v1/notificationInstances/{kind}/attributes/mapping:
+    get:
       tags:
-      - Legacy Client Operations
-      summary: Issue Certificate
-      operationId: issueCertificate
+      - Notification Management
+      summary: List of mapping attributes
+      operationId: listMappingAttributes
       parameters:
-      - name: raProfileName
+      - name: kind
         in: path
-        description: RA Profile name
+        description: Kind
         required: true
         schema:
           type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LegacyClientCertificateSignRequestDto'
-        required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
         "503":
           description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate issued
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -473,42 +335,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "200":
+          description: List of mapping attributes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataAttribute'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
-    AuthenticationServiceExceptionDto:
-      required:
-      - code
-      - message
-      - statusCode
-      type: object
-      properties:
-        statusCode:
-          type: integer
-          description: Status code of the HTTP Request
-          format: int32
-        code:
-          type: string
-          description: Code of the result
-        message:
-          type: string
-          description: Exception message
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     AttributeCallback:
       required:
       - callbackContext
@@ -584,6 +440,24 @@ components:
       - credential
       - codeblock
       - object
+    AttributeMappingDto:
+      required:
+      - customAttributeUuid
+      - mappingAttributeName
+      - mappingAttributeUuid
+      type: object
+      properties:
+        mappingAttributeUuid:
+          type: string
+          description: Mapping Attribute UUID
+        mappingAttributeName:
+          type: string
+          description: Mapping Attribute Name
+        customAttributeUuid:
+          type: string
+          description: Custom Attribute Uuid
+      description: List of attribute mappings between mapping attributes and (recipient)
+        custom attributes
     AttributeType:
       type: string
       description: Type of the attribute. It is optional and must be set only if special
@@ -661,36 +535,6 @@ components:
         data:
           type: boolean
           description: Boolean attribute value
-    ClientAddEndEntityRequestDto:
-      required:
-      - password
-      - raProfile
-      - subjectDN
-      - username
-      type: object
-      properties:
-        raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
-        email:
-          type: string
-          description: End Entity email
-        extensionData:
-          type: array
-          description: End Entity extension data
-          items:
-            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
-        password:
-          type: string
-          description: End Entity password
-        subjectAltName:
-          type: string
-          description: End Entity Subject alternative name
-        subjectDN:
-          type: string
-          description: End Entity subject domain name
-        username:
-          type: string
-          description: End Entity name
     CodeBlockAttributeContent:
       required:
       - data
@@ -887,14 +731,6 @@ components:
           type: string
           description: DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX
           format: date-time
-    EndEntityExtendedInfoDto:
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-      description: End Entity extension data
     FileAttributeContent:
       required:
       - data
@@ -946,6 +782,25 @@ components:
           type: integer
           description: Integer attribute value
           format: int32
+    NotificationInstanceUpdateRequestDto:
+      required:
+      - attributes
+      type: object
+      properties:
+        description:
+          type: string
+          description: Notification instance description
+        attributes:
+          type: array
+          description: List of Notification instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        attributeMappings:
+          type: array
+          description: List of attribute mappings between mapping attributes and (recipient)
+            custom attributes
+          items:
+            $ref: '#/components/schemas/AttributeMappingDto'
     ObjectAttributeContent:
       required:
       - data
@@ -1003,53 +858,6 @@ components:
       - xquery
       - xml
       - yaml
-    RaProfileDto:
-      required:
-      - attributes
-      - authorityInstanceName
-      - authorityInstanceUuid
-      - enabled
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of RA Profile
-        authorityInstanceUuid:
-          type: string
-          description: UUID of Authority provider
-        authorityInstanceName:
-          type: string
-          description: Name of Authority instance
-        attributes:
-          type: array
-          description: List of RA Profiles attributes
-          items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
-        customAttributes:
-          type: array
-          description: List of Custom Attributes
-          items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-        enabledProtocols:
-          type: array
-          description: List of protocols enabled
-          items:
-            type: string
-            description: List of protocols enabled
-      description: RA profile related to End Entity
     RangeAttributeConstraint:
       required:
       - type
@@ -1093,12 +901,10 @@ components:
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
-    ResponseAttributeDto:
+    RequestAttributeDto:
       required:
-      - contentType
-      - label
+      - content
       - name
-      - type
       type: object
       properties:
         uuid:
@@ -1109,20 +915,12 @@ components:
           type: string
           description: Name of the Attribute
           example: Attribute
-        label:
-          type: string
-          description: Label of the the Attribute
-          example: Attribute Name
-        type:
-          $ref: '#/components/schemas/AttributeType'
-        contentType:
-          $ref: '#/components/schemas/AttributeContentType'
         content:
           type: array
           description: Content of the Attribute
           items:
             $ref: '#/components/schemas/BaseAttributeContentDto'
-      description: Response attribute with content for object it belongs to
+      description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
       - data
@@ -1176,131 +974,139 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
-    ClientEditEndEntityRequestDto:
+    ErrorMessageDto:
       required:
-      - password
-      - raProfile
-      - status
-      - subjectDN
+      - message
       type: object
       properties:
-        raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
-        email:
+        message:
           type: string
-          description: End Entity email
-        extensionData:
+          description: Error message detail
+          example: Error message
+    AuthenticationServiceExceptionDto:
+      required:
+      - code
+      - message
+      - statusCode
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          description: Status code of the HTTP Request
+          format: int32
+        code:
+          type: string
+          description: Code of the result
+        message:
+          type: string
+          description: Exception message
+    NotificationInstanceDto:
+      required:
+      - attributes
+      - connectorName
+      - connectorUuid
+      - kind
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Notification instance description
+        connectorUuid:
+          type: string
+          description: UUID of Notification provider
+        connectorName:
+          type: string
+          description: Name of Notification provider
+        kind:
+          type: string
+          description: Notification Instance Kind
+        attributes:
           type: array
-          description: End Entity extension data
+          description: List of Notification instance Attributes
           items:
-            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
-        password:
-          type: string
-          description: End Entity password
-        subjectAltName:
-          type: string
-          description: End Entity Subject alternative name
-        subjectDN:
-          type: string
-          description: End Entity subject domain name
-        status:
-          type: string
-          description: End Entity Subject domain name
-          enum:
-          - NEW
-          - FAILED
-          - INITIALIZED
-          - IN_PROCESS
-          - GENERATED
-          - REVOKED
-          - HISTORICAL
-          - KEY_RECOVERY
-          - WAITING_FOR_ADD_APPROVAL
-    LegacyClientCertificateRevocationDto:
-      required:
-      - certificateSN
-      - issuerDN
-      - reason
-      type: object
-      properties:
-        certificateSN:
-          type: string
-          description: Certificate serial number
-        issuerDN:
-          type: string
-          description: Issuer domain name
-        reason:
-          type: string
-          description: Revocation reason
-          enum:
-          - UNSPECIFIED
-          - KEY_COMPROMISE
-          - CA_COMPROMISE
-          - AFFILIATION_CHANGED
-          - SUPERSEDED
-          - CESSATION_OF_OPERATION
-          - CERTIFICATE_HOLD
-          - REMOVE_FROM_CRL
-          - PRIVILEGES_WITHDRAWN
-          - AA_COMPROMISE
-    LegacyClientCertificateSignRequestDto:
-      required:
-      - password
-      - pkcs10
-      - username
-      type: object
-      properties:
-        password:
-          type: string
-          description: End Entity password
-        pkcs10:
-          type: string
-          description: Certificate sign request (PKCS#10) encoded as Base64 string
-        username:
-          type: string
-          description: End Entity username
-    ClientCertificateSignResponseDto:
-      required:
-      - certificateData
-      type: object
-      properties:
-        certificateData:
-          type: string
-          description: Date of signed certificate
-    ClientEndEntityDto:
-      required:
-      - status
-      - subjectDN
-      - username
-      type: object
-      properties:
-        subjectDN:
-          type: string
-          description: End Entity subject domain name
-        email:
-          type: string
-          description: End Entity email
-        extensionData:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        attributeMappings:
           type: array
-          description: End Entity extension data
+          description: List of attribute mappings between mapping attributes and (recipient)
+            custom attributes
           items:
-            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
-        subjectAltName:
+            $ref: '#/components/schemas/AttributeMappingDto'
+    ResponseAttributeDto:
+      required:
+      - contentType
+      - label
+      - name
+      - type
+      type: object
+      properties:
+        uuid:
           type: string
-          description: End Entity Subject alternative name
-        status:
+          description: UUID of the Attribute
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
           type: string
-          description: End Entity Subject domain name
-          enum:
-          - NEW
-          - FAILED
-          - INITIALIZED
-          - IN_PROCESS
-          - GENERATED
-          - REVOKED
-          - HISTORICAL
-          - KEY_RECOVERY
-          - WAITING_FOR_ADD_APPROVAL
-        username:
+          description: Name of the Attribute
+          example: Attribute
+        label:
           type: string
-          description: End Entity name
+          description: Label of the the Attribute
+          example: Attribute Name
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        contentType:
+          $ref: '#/components/schemas/AttributeContentType'
+        content:
+          type: array
+          description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttributeContentDto'
+      description: Response attribute with content for object it belongs to
+    NotificationInstanceRequestDto:
+      required:
+      - attributes
+      - connectorUuid
+      - kind
+      - name
+      type: object
+      properties:
+        description:
+          type: string
+          description: Notification instance description
+        attributes:
+          type: array
+          description: List of Notification instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        attributeMappings:
+          type: array
+          description: List of attribute mappings between mapping attributes and (recipient)
+            custom attributes
+          items:
+            $ref: '#/components/schemas/AttributeMappingDto'
+        name:
+          type: string
+          description: Notification instance name
+        connectorUuid:
+          type: string
+          description: UUID of Notification provider
+        kind:
+          type: string
+          description: Notification instance Kind
+    UuidDto:
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
