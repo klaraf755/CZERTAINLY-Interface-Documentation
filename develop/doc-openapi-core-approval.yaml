@@ -21,6 +21,8 @@ servers:
 tags:
 - name: Approval profile Inventory
   description: Approval profile Inventory API
+- name: Approval Inventory
+  description: Approval Inventory API
 paths:
   /v1/approvalProfiles/{uuid}:
     get:
@@ -35,25 +37,15 @@ paths:
         required: true
         schema:
           type: string
+      - name: approvalProfileForVersionDto
+        in: query
+        description: Select specific version of the approval profile
+        required: true
+        schema:
+          $ref: '#/components/schemas/ApprovalProfileForVersionDto'
       responses:
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Approval profile retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApprovalProfileDetailDto'
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -64,6 +56,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Approval profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalProfileDetailDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
     put:
       tags:
       - Approval profile Inventory
@@ -83,10 +91,28 @@ paths:
               $ref: '#/components/schemas/ApprovalProfileUpdateRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Approval profile updated
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -104,24 +130,6 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
-        "200":
-          description: Approval profile updated
-          content:
-            application/json:
-              schema:
-                type: object
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     delete:
       tags:
       - Approval profile Inventory
@@ -135,30 +143,30 @@ paths:
         schema:
           type: string
       responses:
-        "204":
-          description: Approval profile deleted
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Approval profile deleted
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/approvalProfiles:
     get:
       tags:
@@ -172,16 +180,20 @@ paths:
         schema:
           $ref: '#/components/schemas/PaginationRequestDto'
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -194,12 +206,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApprovalProfileResponseDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
     post:
       tags:
       - Approval profile Inventory
@@ -212,10 +220,28 @@ paths:
               $ref: '#/components/schemas/ApprovalProfileRequestDto'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "200":
+          description: New Approval profile created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UuidDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -233,24 +259,170 @@ paths:
               - Error Message 2
         "401":
           description: Unauthorized
-        "200":
-          description: New Approval profile created
+  /v1/approvals/{uuid}/reject:
+    patch:
+      tags:
+      - Approval Inventory
+      summary: Rejecting of the Approval
+      operationId: rejectApproval
+      parameters:
+      - name: uuid
+        in: path
+        description: Approval UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
+            '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
-            application/json:
+            '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Approval rejected
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+  /v1/approvals/{uuid}/rejectRecipient:
+    patch:
+      tags:
+      - Approval Inventory
+      summary: Rejecting of Recipient of the Approval
+      operationId: rejectApprovalRecipient
+      parameters:
+      - name: uuid
+        in: path
+        description: Approval UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserApprovalDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Approval Recipient rejected
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+  /v1/approvals/{uuid}/approve:
+    patch:
+      tags:
+      - Approval Inventory
+      summary: Approving of the Approval
+      operationId: approveApproval
+      parameters:
+      - name: uuid
+        in: path
+        description: Approval UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Approval approved
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+  /v1/approvals/{uuid}/approveRecipient:
+    patch:
+      tags:
+      - Approval Inventory
+      summary: Approving of Recipient of the Approval
+      operationId: approveApprovalRecipient
+      parameters:
+      - name: uuid
+        in: path
+        description: Approval UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserApprovalDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Approval Recipient approved
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
   /v1/approvalProfiles/{uuid}/enable:
     patch:
       tags:
@@ -265,16 +437,20 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -283,12 +459,8 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Approval profile enabled
-        "403":
-          description: Forbidden
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
   /v1/approvalProfiles/{uuid}/disable:
     patch:
       tags:
@@ -303,20 +475,8 @@ paths:
         schema:
           type: string
       responses:
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "204":
-          description: Approval profile disabled
-        "404":
-          description: Not Found
           content:
             '*/*':
               schema:
@@ -327,6 +487,148 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Approval profile disabled
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+  /v1/approvals:
+    get:
+      tags:
+      - Approval Inventory
+      summary: List of Approvals
+      operationId: listApprovals
+      parameters:
+      - name: paginationRequestDto
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/PaginationRequestDto'
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: List of all approvals
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponseDto'
+        "401":
+          description: Unauthorized
+  /v1/approvals/{uuid}:
+    get:
+      tags:
+      - Approval Inventory
+      summary: Get Approval Detail
+      operationId: getApproval
+      parameters:
+      - name: uuid
+        in: path
+        description: Approval UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Approval detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalDetailDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+  /v1/approvals/user:
+    get:
+      tags:
+      - Approval Inventory
+      summary: List of User's Approvals
+      operationId: listUserApprovals
+      parameters:
+      - name: paginationRequestDto
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/PaginationRequestDto'
+      - name: approvalUserDto
+        in: query
+        description: Select if you want to list all history of approvals by user
+        required: true
+        schema:
+          $ref: '#/components/schemas/ApprovalUserDto'
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: List of all approvals
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalResponseDto'
+        "401":
+          description: Unauthorized
 components:
   schemas:
     ApprovalProfileUpdateRequestDto:
@@ -443,6 +745,11 @@ components:
         uuid:
           type: string
           description: Object identifier
+    UserApprovalDto:
+      type: object
+      properties:
+        comment:
+          type: string
     PaginationRequestDto:
       type: object
       properties:
@@ -457,6 +764,264 @@ components:
           description: Page number for the request
           format: int32
           default: 1
+    ApprovalDto:
+      required:
+      - approvalProfileName
+      - approvalProfileUuid
+      - approvalUuid
+      - createdAt
+      - objectUuid
+      - resource
+      - resourceAction
+      - status
+      - version
+      type: object
+      properties:
+        approvalUuid:
+          type: string
+          description: UUID of the Approval
+        version:
+          type: integer
+          description: Version of the Approval profile
+          format: int32
+        createdAt:
+          type: string
+          description: Creation date of the Approval
+          format: date-time
+        closedAt:
+          type: string
+          description: Date of resolution of the Approval
+          format: date-time
+        status:
+          type: string
+          description: Status of the Approval
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - EXPIRED
+        resource:
+          $ref: '#/components/schemas/Resource'
+        resourceAction:
+          type: string
+          description: Resource action of the Approval
+        objectUuid:
+          type: string
+          description: UUID of the target object of the Approval
+        approvalProfileName:
+          type: string
+          description: Name of the Approval profile
+        approvalProfileUuid:
+          type: string
+          description: UUID of the Approval profile
+      description: List of the Approvals
+    ApprovalResponseDto:
+      required:
+      - approvals
+      - itemsPerPage
+      - pageNumber
+      - totalItems
+      - totalPages
+      type: object
+      properties:
+        itemsPerPage:
+          type: integer
+          description: Number of entries per page
+          format: int32
+        pageNumber:
+          type: integer
+          description: Page number for the request
+          format: int32
+        totalPages:
+          type: integer
+          description: Number of pages available
+          format: int32
+        totalItems:
+          type: integer
+          description: Number of items available
+          format: int64
+        approvals:
+          type: array
+          description: List of the Approvals
+          items:
+            $ref: '#/components/schemas/ApprovalDto'
+    Resource:
+      type: string
+      description: Resource of the Approval
+      enum:
+      - NONE
+      - dashboard
+      - settings
+      - auditLogs
+      - credentials
+      - connectors
+      - attributes
+      - jobs
+      - users
+      - roles
+      - acmeAccounts
+      - acmeProfiles
+      - scepProfiles
+      - authorities
+      - raProfiles
+      - certificates
+      - groups
+      - complianceProfiles
+      - discoveries
+      - entities
+      - locations
+      - tokenProfiles
+      - tokens
+      - keys
+    ApprovalDetailDto:
+      required:
+      - approvalProfileName
+      - approvalProfileUuid
+      - approvalSteps
+      - approvalUuid
+      - createdAt
+      - creatorUuid
+      - expiry
+      - objectUuid
+      - resource
+      - resourceAction
+      - status
+      - version
+      type: object
+      properties:
+        approvalUuid:
+          type: string
+          description: UUID of the Approval
+        version:
+          type: integer
+          description: Version of the Approval profile
+          format: int32
+        createdAt:
+          type: string
+          description: Creation date of the Approval
+          format: date-time
+        closedAt:
+          type: string
+          description: Date of resolution of the Approval
+          format: date-time
+        status:
+          type: string
+          description: Status of the Approval
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - EXPIRED
+        resource:
+          $ref: '#/components/schemas/Resource'
+        resourceAction:
+          type: string
+          description: Resource action of the Approval
+        objectUuid:
+          type: string
+          description: UUID of the target object of the Approval
+        approvalProfileName:
+          type: string
+          description: Name of the Approval profile
+        approvalProfileUuid:
+          type: string
+          description: UUID of the Approval profile
+        creatorUuid:
+          type: string
+          description: UUID of the creator
+        expiry:
+          type: integer
+          description: Expiration in hours
+          format: int32
+        description:
+          type: string
+          description: Description of the Approval
+        approvalSteps:
+          type: array
+          description: List of Approval steps related to this Approval
+          items:
+            $ref: '#/components/schemas/ApprovalDetailStepDto'
+    ApprovalDetailStepDto:
+      required:
+      - approvalStepRecipients
+      - approvalStepUuid
+      - order
+      type: object
+      properties:
+        userUuid:
+          type: string
+          description: Reference to responsible user to Approved the action
+          format: uuid
+        roleUuid:
+          type: string
+          description: Reference to responsible role of the users to Approved the
+            action
+          format: uuid
+        groupUuid:
+          type: string
+          description: Reference to responsible group of the users to Approved the
+            action
+          format: uuid
+        description:
+          type: string
+          description: Description of the Approval step
+        order:
+          type: integer
+          description: Order of the position in the approval steps flow
+          format: int32
+        requiredApprovals:
+          type: integer
+          description: "Count of the required approvals for the Approval step, by\
+            \ default there is 1 approval needed."
+          format: int32
+        approvalStepUuid:
+          type: string
+          description: UUID of the Approval step
+        approvalStepRecipients:
+          type: array
+          description: List of the approval recipient related for this step
+          items:
+            $ref: '#/components/schemas/ApprovalStepRecipientDto'
+      description: List of Approval steps related to this Approval
+    ApprovalStepRecipientDto:
+      required:
+      - approvalRecipientUuid
+      - createdAt
+      - status
+      - userUuid
+      type: object
+      properties:
+        approvalRecipientUuid:
+          type: string
+          description: UUID of the approval recipient
+        userUuid:
+          type: string
+          description: UUID of the user
+        createdAt:
+          type: string
+          description: Creating date of the approval recipient
+          format: date-time
+        closedAt:
+          type: string
+          description: Resolution date of the approval recipient
+          format: date-time
+        status:
+          type: string
+          description: Status of the approval recipient
+          enum:
+          - PENDING
+          - APPROVED
+          - REJECTED
+          - EXPIRED
+        comment:
+          type: string
+          description: Comment of the approval recipient
+      description: List of the approval recipient related for this step
+    ApprovalUserDto:
+      type: object
+      properties:
+        history:
+          type: boolean
     ApprovalProfileDto:
       required:
       - enabled
@@ -524,6 +1089,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApprovalProfileDto'
+    ApprovalProfileForVersionDto:
+      type: object
+      properties:
+        version:
+          type: integer
+          format: int32
     ApprovalProfileDetailDto:
       required:
       - approvalSteps
