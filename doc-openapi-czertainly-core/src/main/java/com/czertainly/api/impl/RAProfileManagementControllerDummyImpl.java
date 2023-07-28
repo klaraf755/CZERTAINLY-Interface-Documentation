@@ -5,12 +5,11 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.RAProfileManagementController;
-import com.czertainly.api.model.client.approvalprofile.ApprovalProfileResponseDto;
+import com.czertainly.api.model.client.approvalprofile.ApprovalProfileDto;
 import com.czertainly.api.model.client.compliance.SimplifiedComplianceProfileDto;
 import com.czertainly.api.model.client.raprofile.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
-import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -130,7 +129,7 @@ public class RAProfileManagementControllerDummyImpl implements RAProfileManageme
     }
 
     @Override
-    public ApprovalProfileResponseDto getAssociatedApprovalProfile(String authorityUuid, String raProfileUuid, PaginationRequestDto paginationRequestDto) {
+    public List<ApprovalProfileDto> getAssociatedApprovalProfiles(String authorityUuid, String raProfileUuid) throws NotFoundException {
         return null;
     }
 
