@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY Discovery API
-  description: REST API for managing Discoveries in the platform
+  title: CZERTAINLY Notification Provider API
+  description: REST API for implementations of custom Notification Provider
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -19,55 +19,44 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Discovery Management
-  description: Discovery Management API
+- name: Notification instances Management
+  description: Notification instances Management API
+- name: Connector Info
+  description: "Connector Information API. Each connector may have multiple functions\
+    \ represented by FunctionGroupCode. For each FunctionGroupCode there is a list\
+    \ of implemented end points. These endpoints must be according the specified interface,\
+    \ this is validated by the core. You can also implement helper end points that\
+    \ are used for callbacks and other relevant operations specific to implementation."
+- name: Health check
+  description: "Connector Health check API. Connector returns own status and in some\
+    \ cases can return status of services on which it depends like database, HSM and\
+    \ so on."
+- name: Connector Attributes
+  description: Connector Attributes API. Provides information about supported Attributes
+    of the connector. Attributes are specific to implementation and gives information
+    about the data that can be exchanged and properly parsed by the connector. Part
+    of this API is validation of the Attributes.
 paths:
-  /v1/discoveries:
-    post:
+  /v1/notificationProvider/notifications/{uuid}:
+    get:
       tags:
-      - Discovery Management
-      summary: Create Discovery
-      operationId: createDiscovery
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DiscoveryDto'
+      - Notification instances Management
+      summary: Get Notification instance
+      operationId: getNotificationInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Notification Instance UUID
         required: true
+        schema:
+          type: string
       responses:
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
+        "200":
+          description: Notification instance retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "201":
-          description: Discovery Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/NotificationProviderInstanceDto'
         "400":
           description: Bad Request
           content:
@@ -80,103 +69,108 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+      - Notification instances Management
+      summary: Update Notification instance
+      operationId: updateNotificationInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Notification Instance UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationProviderInstanceRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Notification instance updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProviderInstanceDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
-      - Discovery Management
-      summary: Delete Multiple Discoveries
-      operationId: bulkDeleteDiscovery
+      - Notification instances Management
+      summary: Remove Notification instance
+      operationId: removeNotificationInstance
+      parameters:
+      - name: uuid
+        in: path
+        description: Notification Instance UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Notification instance removed
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/{functionalGroup}/{kind}/attributes/validate:
+    post:
+      tags:
+      - Connector Attributes
+      summary: Validate Attributes
+      operationId: validateAttributes
+      parameters:
+      - name: kind
+        in: path
+        description: Kind
+        required: true
+        schema:
+          type: string
       requestBody:
-        description: Discovery UUIDs
         content:
           application/json:
             schema:
               type: array
               items:
-                type: string
-            example:
-            - c2f685d4-6a3e-11ec-90d6-0242ac120003
-            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+                $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+        "200":
+          description: Attribute validation completed
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Discoveries deleted
-  /v1/discoveries/schedule:
-    post:
-      tags:
-      - Discovery Management
-      summary: Schedule Discovery
-      operationId: scheduleDiscovery
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScheduleDiscoveryDto'
-        required: true
-      responses:
-        "201":
-          description: Discovery Scheduled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
-          description: Unprocessable Entity
+          description: Attribute validation failed
           content:
             application/json:
               schema:
@@ -186,284 +180,29 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/discoveries/list:
-    post:
-      tags:
-      - Discovery Management
-      summary: List Discovery
-      operationId: listDiscoveries
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchRequestDto'
-        required: true
-      responses:
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: List of available Discoveries
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryResponseDto'
-        "503":
-          description: Connector Communication Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/discoveries/{uuid}:
+  /v1/notificationProvider/notifications:
     get:
       tags:
-      - Discovery Management
-      summary: Discovery Details
-      operationId: getDiscovery
-      parameters:
-      - name: uuid
-        in: path
-        description: Discovery UUID
-        required: true
-        schema:
-          type: string
+      - Notification instances Management
+      summary: List Notification instances
+      operationId: listNotificationInstances
       responses:
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
-          description: Discovery details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryHistoryDetailDto'
-    delete:
-      tags:
-      - Discovery Management
-      summary: Delete Discovery
-      operationId: deleteDiscovery
-      parameters:
-      - name: uuid
-        in: path
-        description: Discovery UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "204":
-          description: Discovery deleted
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-  /v1/discoveries/{uuid}/certificates:
-    get:
-      tags:
-      - Discovery Management
-      summary: Discovery Details
-      operationId: getDiscoveryCertificates
-      parameters:
-      - name: uuid
-        in: path
-        description: Discovery UUID
-        required: true
-        schema:
-          type: string
-      - name: newlyDiscovered
-        in: query
-        required: false
-        schema:
-          type: boolean
-      - name: itemsPerPage
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: pageNumber
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-          default: 0
-      responses:
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Discovery details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryCertificateResponseDto'
-  /v1/discoveries/search:
-    get:
-      tags:
-      - Discovery Management
-      summary: Get Discovery searchable fields information
-      operationId: getSearchableFieldInformation
-      responses:
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: Discovery searchable field information retrieved
+          description: Notification instance list retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SearchFieldDataByGroupDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                  $ref: '#/components/schemas/NotificationProviderInstanceDto'
         "400":
           description: Bad Request
           content:
@@ -476,12 +215,205 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "500":
+          description: Internal Server Error
+    post:
+      tags:
+      - Notification instances Management
+      summary: Create Notification instance
+      operationId: createNotificationInstance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationProviderInstanceRequestDto'
+        required: true
+      responses:
+        "200":
+          description: Notification instance created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProviderInstanceDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/notificationProvider/notifications/{uuid}/notify:
+    post:
+      tags:
+      - Notification instances Management
+      summary: Notify by Notification instance
+      operationId: sendNotification
+      parameters:
+      - name: uuid
+        in: path
+        description: Notification Instance UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationProviderNotifyRequestDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Notification sent
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1:
+    get:
+      tags:
+      - Connector Info
+      summary: List supported functions of the connector
+      description: Returns map of functional code and implemented end points
+      operationId: listSupportedFunctions
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Functions found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InfoResponse'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/{functionalGroup}/{kind}/attributes:
+    get:
+      tags:
+      - Connector Attributes
+      summary: List available Attributes
+      operationId: listAttributeDefinitions
+      parameters:
+      - name: kind
+        in: path
+        description: Kind
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/notificationProvider/{kind}/attributes/mapping:
+    get:
+      tags:
+      - Notification instances Management
+      summary: List of mapping attributes
+      operationId: listMappingAttributes
+      parameters:
+      - name: kind
+        in: path
+        description: Kind
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: List of mapping attributes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataAttribute'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/health:
+    get:
+      tags:
+      - Health check
+      summary: Health check
+      operationId: checkHealth
+      responses:
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     AttributeCallback:
@@ -832,33 +764,6 @@ components:
           type: string
           description: DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX
           format: date-time
-    DiscoveryDto:
-      required:
-      - attributes
-      - connectorUuid
-      - kind
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Discovery name
-        attributes:
-          type: array
-          description: List of Attributes for Discovery
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        customAttributes:
-          type: array
-          description: List of Custom Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        connectorUuid:
-          type: string
-          description: Discovery Provider UUID
-        kind:
-          type: string
-          description: Discovery Kind
     FileAttributeContent:
       required:
       - data
@@ -910,6 +815,24 @@ components:
           type: integer
           description: Integer attribute value
           format: int32
+    NotificationProviderInstanceRequestDto:
+      required:
+      - attributes
+      - kind
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Notification instance name
+        kind:
+          type: string
+          description: Kind of Notification instance
+        attributes:
+          type: array
+          description: List of Notification instance Attributes
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
     ObjectAttributeContent:
       required:
       - data
@@ -1083,31 +1006,6 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
-    AuthenticationServiceExceptionDto:
-      required:
-      - code
-      - message
-      - statusCode
-      type: object
-      properties:
-        statusCode:
-          type: integer
-          description: Status code of the HTTP Request
-          format: int32
-        code:
-          type: string
-          description: Code of the result
-        message:
-          type: string
-          description: Exception message
-    UuidDto:
-      required:
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
     ErrorMessageDto:
       required:
       - message
@@ -1117,173 +1015,275 @@ components:
           type: string
           description: Error message detail
           example: Error message
-    ScheduleDiscoveryDto:
-      type: object
-      properties:
-        jobName:
-          type: string
-        cronExpression:
-          type: string
-        oneTime:
-          type: boolean
-        request:
-          $ref: '#/components/schemas/DiscoveryDto'
-    SearchCondition:
-      type: string
-      description: Condition for the search
-      enum:
-      - EQUALS
-      - NOT_EQUALS
-      - GREATER
-      - GREATER_OR_EQUAL
-      - LESSER
-      - LESSER_OR_EQUAL
-      - CONTAINS
-      - NOT_CONTAINS
-      - STARTS_WITH
-      - ENDS_WITH
-      - EMPTY
-      - NOT_EMPTY
-      - SUCCESS
-      - FAILED
-      - UNKNOWN
-      - NOT_CHECKED
-    SearchFilterRequestDto:
+    BaseAttributeDto:
       required:
-      - condition
-      - fieldIdentifier
-      - searchGroup
-      type: object
-      properties:
-        searchGroup:
-          $ref: '#/components/schemas/SearchGroup'
-        fieldIdentifier:
-          type: string
-          description: Field to search
-        condition:
-          $ref: '#/components/schemas/SearchCondition'
-        value:
-          type: object
-          description: Value to match
-      description: Certificate filter input
-    SearchGroup:
-      type: string
-      description: Group to search
-      enum:
-      - meta
-      - custom
-      - property
-    SearchRequestDto:
-      type: object
-      properties:
-        filters:
-          type: array
-          description: Certificate filter input
-          items:
-            $ref: '#/components/schemas/SearchFilterRequestDto'
-        itemsPerPage:
-          maximum: 1000
-          type: integer
-          description: Number of entries per page
-          format: int32
-          default: 10
-        pageNumber:
-          type: integer
-          description: Page number for the request
-          format: int32
-          default: 1
-    DiscoveryHistoryDto:
-      required:
-      - connectorName
-      - connectorUuid
-      - kind
       - name
-      - status
+      - type
       - uuid
       type: object
       properties:
         uuid:
           type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
         name:
           type: string
-          description: Object Name
-          example: Name
-        kind:
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
           type: string
-          description: Discovery Kind
-          example: IP-HostName
-        status:
-          $ref: '#/components/schemas/DiscoveryStatus'
-        startTime:
-          type: string
-          description: Date and time when Discovery started
-          format: date-time
-          nullable: true
-        endTime:
-          type: string
-          description: Date and time when Discovery finished
-          format: date-time
-          nullable: true
-        totalCertificatesDiscovered:
-          type: integer
-          description: Number of certificates that are discovered
-          format: int32
-          default: 0
-        connectorUuid:
-          type: string
-          description: UUID of the Discovery Provider
-        connectorName:
-          type: string
-          description: Name of the Discovery Provider
-      description: Discoveries
-    DiscoveryResponseDto:
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        content:
+          type: object
+          description: Content of the Attribute
+      description: Base Attribute definition
+      discriminator:
+        propertyName: type
+        mapping:
+          data: '#/components/schemas/DataAttribute'
+          info: '#/components/schemas/InfoAttribute'
+          group: '#/components/schemas/GroupAttribute'
+          meta: '#/components/schemas/MetadataAttribute'
+          custom: '#/components/schemas/CustomAttribute'
+      oneOf:
+      - $ref: '#/components/schemas/DataAttribute'
+      - $ref: '#/components/schemas/InfoAttribute'
+      - $ref: '#/components/schemas/GroupAttribute'
+      - $ref: '#/components/schemas/MetadataAttribute'
+      - $ref: '#/components/schemas/CustomAttribute'
+    CustomAttribute:
       required:
-      - discoveries
-      - itemsPerPage
-      - pageNumber
-      - totalItems
-      - totalPages
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
       type: object
       properties:
-        discoveries:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
           type: array
-          description: Discoveries
+          description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/DiscoveryHistoryDto'
-        itemsPerPage:
-          type: integer
-          description: Number of entries per page
-          format: int32
-        pageNumber:
-          type: integer
-          description: Page number for the request
-          format: int32
-        totalPages:
-          type: integer
-          description: Number of pages available
-          format: int32
-        totalItems:
-          type: integer
-          description: Number of items available
-          format: int64
-    DiscoveryStatus:
-      type: string
-      description: Status of Discovery
-      enum:
-      - inProgress
-      - failed
-      - completed
-      - warning
-    DiscoveryHistoryDetailDto:
+            $ref: '#/components/schemas/BaseAttributeContentDto'
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        contentType:
+          $ref: '#/components/schemas/AttributeContentType'
+        properties:
+          $ref: '#/components/schemas/CustomAttributeProperties'
+      description: Custom attribute allows to store and transfer dynamic data. Its
+        content can be edited and send in requests to store.
+    CustomAttributeProperties:
+      required:
+      - label
+      - list
+      - multiSelect
+      - readOnly
+      - required
+      - visible
+      type: object
+      properties:
+        label:
+          type: string
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        group:
+          type: string
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
+        required:
+          type: boolean
+          description: "Boolean determining if the Attribute is required. If true,\
+            \ the Attribute must be provided."
+          default: false
+        readOnly:
+          type: boolean
+          description: "Boolean determining if the Attribute is read only. If true,\
+            \ the Attribute content cannot be changed."
+          default: false
+        list:
+          type: boolean
+          description: Boolean determining if the Attribute contains list of values
+            in the content
+          default: false
+        multiSelect:
+          type: boolean
+          description: Boolean determining if the Attribute can have multiple values
+          default: false
+      description: Properties of the Attributes
+    GroupAttribute:
+      required:
+      - name
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          description: List of all different types of attributes
+          items:
+            $ref: '#/components/schemas/BaseAttributeDto'
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        attributeCallback:
+          $ref: '#/components/schemas/AttributeCallback'
+      description: Group attribute and its content represents dynamic list of additional
+        attributes retrieved by callback. Its content can not be edited and is not
+        send in requests to store.
+    InfoAttribute:
+      required:
+      - content
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttributeContentDto'
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        contentType:
+          $ref: '#/components/schemas/AttributeContentType'
+        properties:
+          $ref: '#/components/schemas/InfoAttributeProperties'
+      description: Info attribute contains content that is for information purpose
+        or represents additional information for object (metadata). Its content can
+        not be edited and is not send in requests to store.
+    InfoAttributeProperties:
+      required:
+      - label
+      - visible
+      type: object
+      properties:
+        label:
+          type: string
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        group:
+          type: string
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
+      description: Properties of the Attributes
+    MetadataAttribute:
+      required:
+      - content
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Attribute for unique identification
+          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
+        name:
+          type: string
+          description: Name of the Attribute that is used for identification
+          example: Attribute
+        description:
+          type: string
+          description: "Optional description of the Attribute, should contain helper\
+            \ text on what is expected"
+        content:
+          type: array
+          description: Content of the Attribute
+          items:
+            $ref: '#/components/schemas/BaseAttributeContentDto'
+        type:
+          $ref: '#/components/schemas/AttributeType'
+        contentType:
+          $ref: '#/components/schemas/AttributeContentType'
+        properties:
+          $ref: '#/components/schemas/MetadataAttributeProperties'
+      description: Info attribute contains content that is for metadata. Its content
+        can not be edited and is not send in requests to store.
+    MetadataAttributeProperties:
+      required:
+      - label
+      - visible
+      type: object
+      properties:
+        label:
+          type: string
+          description: Friendly name of the the Attribute
+          example: Attribute Name
+        visible:
+          type: boolean
+          description: "Boolean determining if the Attribute is visible and can be\
+            \ displayed, otherwise it should be hidden to the user."
+          default: true
+        group:
+          type: string
+          description: "Group of the Attribute, used for the logical grouping of the\
+            \ Attribute"
+          example: requiredAttributes
+        global:
+          type: boolean
+          description: Boolean determining if the Metadata is a global metadata.
+          default: false
+      description: Properties of the Attributes
+    NotificationProviderInstanceDto:
       required:
       - attributes
-      - connectorName
-      - connectorUuid
-      - kind
       - name
-      - status
       - uuid
       type: object
       properties:
@@ -1295,74 +1295,91 @@ components:
           type: string
           description: Object Name
           example: Name
-        kind:
-          type: string
-          description: Discovery Kind
-          example: IP-HostName
-        status:
-          $ref: '#/components/schemas/DiscoveryStatus'
-        message:
-          type: string
-          description: Failure/Success Messages
-          example: Failed due to network connectivity issues
-        startTime:
-          type: string
-          description: Date and time when Discovery started
-          format: date-time
-          nullable: true
-        endTime:
-          type: string
-          description: Date and time when Discovery finished
-          format: date-time
-          nullable: true
-        totalCertificatesDiscovered:
-          type: integer
-          description: Number of certificates that are discovered
-          format: int32
-          default: 0
-        connectorUuid:
-          type: string
-          description: UUID of the Discovery Provider
-        connectorName:
-          type: string
-          description: Name of the Discovery Provider
         attributes:
           type: array
-          description: List of Discovery Attributes
+          description: List of Notification instance Attributes
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
-        customAttributes:
-          type: array
-          description: List of Custom Attributes
-          items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
-        metadata:
-          type: array
-          description: Metadata of the Discovery
-          items:
-            $ref: '#/components/schemas/MetadataResponseDto'
-    MetadataResponseDto:
+            $ref: '#/components/schemas/BaseAttributeDto'
+    NotificationProviderNotifyRequestDto:
       required:
-      - connectorName
-      - connectorUuid
-      - items
+      - eventType
+      - recipients
       type: object
       properties:
-        connectorUuid:
-          type: string
-          description: UUID of the Connector
-        connectorName:
-          type: string
-          description: Name of the Connector
-        items:
+        recipients:
           type: array
-          description: List of Metadata
+          description: List of notification recipients
           items:
-            $ref: '#/components/schemas/ResponseMetadataDto'
-      description: Metadata response attributes with their source connector
-    NameAndUuidDto:
+            $ref: '#/components/schemas/NotificationRecipientDto'
+        eventType:
+          type: string
+          description: Event type that happened to trigger the notification
+          enum:
+          - text
+          - certificate_status_changed
+          - scheduled_job_completed
+          - approval_requested
+          - approval_closed
+        resource:
+          $ref: '#/components/schemas/Resource'
+        notificationData:
+          type: object
+          description: Data associated with notification event and resource
+    NotificationRecipientDto:
       required:
       - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Recipient name
+        email:
+          type: string
+          description: Recipient email
+        mappedAttributes:
+          type: array
+          description: Mapped attributes values for recipient
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+      description: List of notification recipients
+    Resource:
+      type: string
+      description: Resource which is represented by data
+      example: certificate
+      enum:
+      - NONE
+      - dashboard
+      - settings
+      - auditLogs
+      - credentials
+      - connectors
+      - attributes
+      - jobs
+      - notificationInstances
+      - users
+      - roles
+      - acmeAccounts
+      - acmeProfiles
+      - scepProfiles
+      - authorities
+      - raProfiles
+      - certificates
+      - groups
+      - complianceProfiles
+      - discoveries
+      - entities
+      - locations
+      - tokenProfiles
+      - tokens
+      - keys
+      - approvalProfiles
+      - approvals
+    EndpointDto:
+      required:
+      - context
+      - method
+      - name
+      - required
       - uuid
       type: object
       properties:
@@ -1374,241 +1391,75 @@ components:
           type: string
           description: Object Name
           example: Name
-      description: Source Objects
-    ResponseAttributeDto:
-      required:
-      - contentType
-      - label
-      - name
-      - type
-      type: object
-      properties:
-        uuid:
+        context:
           type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
+          description: Context of the Endpoint
+          example: /v1
+        method:
           type: string
-          description: Name of the Attribute
-          example: Attribute
-        label:
-          type: string
-          description: Label of the the Attribute
-          example: Attribute Name
-        type:
-          $ref: '#/components/schemas/AttributeType'
-        contentType:
-          $ref: '#/components/schemas/AttributeContentType'
-        content:
-          type: array
-          description: Content of the Attribute
-          items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
-      description: Response attribute with content for object it belongs to
-    ResponseMetadataDto:
-      required:
-      - contentType
-      - label
-      - name
-      - type
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Attribute
-          example: 166b5cf52-63f2-11ec-90d6-0242ac120003
-        name:
-          type: string
-          description: Name of the Attribute
-          example: Attribute
-        label:
-          type: string
-          description: Label of the the Attribute
-          example: Attribute Name
-        type:
-          $ref: '#/components/schemas/AttributeType'
-        contentType:
-          $ref: '#/components/schemas/AttributeContentType'
-        content:
-          type: array
-          description: Content of the Attribute
-          items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
-        sourceObjectType:
-          type: string
-          description: Source Object Type
-        sourceObjects:
-          type: array
-          description: Source Objects
-          items:
-            $ref: '#/components/schemas/NameAndUuidDto'
-      description: Response metadata attribute instance with content
-    DiscoveryCertificateDto:
-      required:
-      - certificateContent
-      - commonName
-      - fingerprint
-      - issuerCommonName
-      - newlyDiscovered
-      - notAfter
-      - notBefore
-      - serialNumber
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the Certificate
-        inventoryUuid:
-          type: string
-          description: UUID of the Certificate in Certificate inventory
-        commonName:
-          type: string
-          description: Certificate common name
-        serialNumber:
-          type: string
-          description: Certificate Serial Number
-        issuerCommonName:
-          type: string
-          description: Issuer common name
-        notBefore:
-          type: string
-          description: Certificate validity start date
-          format: date-time
-        notAfter:
-          type: string
-          description: Certificate expiration date
-          format: date-time
-        fingerprint:
-          type: string
-          description: SHA256 thumbprint of the certificate
-        certificateContent:
-          type: string
-          description: Base64 encoded Certificate content
-        newlyDiscovered:
+          description: Method to be used for the Endpoint
+          example: POST
+        required:
           type: boolean
-          description: Boolean representing if the certificate is newly discovered.
-            True - Certificate is newly discoveredfalse - Certificate was already
-            available in the inventory
-      description: Certificates
-    DiscoveryCertificateResponseDto:
-      required:
-      - certificates
-      - itemsPerPage
-      - pageNumber
-      - totalItems
-      - totalPages
-      type: object
-      properties:
-        certificates:
-          type: array
-          description: Certificates
-          items:
-            $ref: '#/components/schemas/DiscoveryCertificateDto'
-        itemsPerPage:
-          type: integer
-          description: Number of entries per page
-          format: int32
-        pageNumber:
-          type: integer
-          description: Page number for the request
-          format: int32
-        totalPages:
-          type: integer
-          description: Number of pages available
-          format: int32
-        totalItems:
-          type: integer
-          description: Number of items available
-          format: int64
-    PlatformEnum:
+          description: True if the Endpoint is required for implementation
+          example: true
+      description: List of end points related to functional group
+    FunctionGroupCode:
       type: string
-      description: Platform enum of the field values
+      description: Enumerated code of functional group
       enum:
-      - Resource
-      - SearchCondition
-      - SearchableFieldType
-      - SearchGroup
-      - SettingsSection
-      - NotificationType
-      - AuthType
-      - HealthStatus
-      - ConnectorStatus
-      - FunctionGroupCode
-      - CertificateType
-      - CertificateStatus
-      - CertificateValidationStatus
-      - CertificateRequestFormat
-      - DiscoveryStatus
-      - KeyAlgorithm
-      - KeyFormat
-      - KeyState
-      - KeyType
-      - KeyUsage
-      - KeyRequestType
-      - KeyCompromiseReason
-      - TokenInstanceStatus
-      - DigestAlgorithm
-      - RsaSignatureScheme
-      - RsaEncryptionScheme
-      - ComplianceStatus
-      - ComplianceRuleStatus
-      - AccountStatus
-      - AttributeType
-      - AttributeContentType
-      - AttributeConstraintType
-      - AttributeValueTarget
-      - ProgrammingLanguageEnum
-      - SchedulerJobExecutionStatus
-    SearchFieldDataByGroupDto:
+      - credentialProvider
+      - legacyAuthorityProvider
+      - authorityProvider
+      - discoveryProvider
+      - entityProvider
+      - complianceProvider
+      - cryptographyProvider
+      - notificationProvider
+    InfoResponse:
       required:
-      - searchGroup
+      - endPoints
+      - functionGroupCode
+      - kinds
       type: object
       properties:
-        searchGroup:
-          $ref: '#/components/schemas/SearchGroup'
-        searchFieldData:
+        functionGroupCode:
+          $ref: '#/components/schemas/FunctionGroupCode'
+        kinds:
           type: array
-          description: List of search fields for specified search group
+          description: List of supported functional group kinds
+          example:
+          - SoftKeyStore
+          - Basic
+          - ApiKey
           items:
-            $ref: '#/components/schemas/SearchFieldDataDto'
-    SearchFieldDataDto:
+            type: string
+            description: List of supported functional group kinds
+            example: "[\"SoftKeyStore\",\"Basic\",\"ApiKey\"]"
+        endPoints:
+          type: array
+          description: List of end points related to functional group
+          items:
+            $ref: '#/components/schemas/EndpointDto'
+    HealthDto:
       required:
-      - conditions
-      - fieldIdentifier
-      - fieldLabel
-      - type
+      - status
       type: object
       properties:
-        fieldIdentifier:
+        status:
+          $ref: '#/components/schemas/HealthStatus'
+        description:
           type: string
-          description: Identifier of field to search
-        fieldLabel:
-          type: string
-          description: Label for the field
-        type:
-          $ref: '#/components/schemas/SearchableFieldType'
-        conditions:
-          type: array
-          description: List of available conditions for the field
-          items:
-            $ref: '#/components/schemas/SearchCondition'
-        platformEnum:
-          $ref: '#/components/schemas/PlatformEnum'
-        value:
+          description: Detailed status description
+        parts:
           type: object
-          description: Available values for the field
-        multiValue:
-          type: boolean
-          description: "Multivalue flag. true = yes, false = no"
-      description: List of search fields for specified search group
-    SearchableFieldType:
+          additionalProperties:
+            $ref: '#/components/schemas/HealthDto'
+          description: Nested status of services
+    HealthStatus:
       type: string
-      description: Type of the field
+      description: Current connector operational status
       enum:
-      - string
-      - number
-      - list
-      - date
-      - datetime
-      - boolean
+      - ok
+      - nok
+      - unknown
