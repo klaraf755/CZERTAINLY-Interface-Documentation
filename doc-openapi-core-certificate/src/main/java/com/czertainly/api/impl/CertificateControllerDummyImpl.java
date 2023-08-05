@@ -112,7 +112,7 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public CertificateDetailDto createCsr(ClientCertificateRequestDto request) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
+    public CertificateDetailDto submitCertificateRequest(ClientCertificateRequestDto request) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
         return null;
     }
 
