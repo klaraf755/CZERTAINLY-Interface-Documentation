@@ -36,20 +36,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "500":
           description: Internal Server Error
         "403":
@@ -58,8 +44,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: Notification deleted
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     patch:
       tags:
       - Notifications
@@ -73,34 +73,34 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "500":
           description: Internal Server Error
-        "200":
-          description: Notification marked as read
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotificationDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Notification marked as read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/notifications:
     get:
       tags:
@@ -115,12 +115,22 @@ paths:
         schema:
           $ref: '#/components/schemas/NotificationRequestDto'
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: List of notifications
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotificationResponseDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -133,27 +143,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
 components:
   schemas:
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -171,6 +162,15 @@ components:
         message:
           type: string
           description: Exception message
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     NotificationDto:
       required:
       - message
