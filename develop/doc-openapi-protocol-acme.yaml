@@ -69,14 +69,14 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "200":
+          description: Certificate revoked
         "401":
           description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-        "200":
-          description: Certificate revoked
   /v1/protocols/acme/{acmeProfileName}/orders/{accountId}:
     post:
       tags:
@@ -319,18 +319,18 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "201":
-          description: New Account created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
         "403":
           description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "201":
+          description: New Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
         "400":
           description: Bad Request
           content:
@@ -662,14 +662,14 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "200":
+          description: Certificate revoked
         "401":
           description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-        "200":
-          description: Certificate revoked
   /v1/protocols/acme/raProfile/{raProfileName}/orders/{accountId}:
     post:
       tags:
@@ -912,18 +912,18 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "201":
-          description: New Account created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
         "403":
           description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "201":
+          description: New Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
         "400":
           description: Bad Request
           content:
@@ -1282,14 +1282,14 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "200":
+          description: New Nonce retrieved
         "401":
           description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-        "200":
-          description: New Nonce retrieved
   /v1/protocols/acme/raProfile/{raProfileName}/new-nonce:
     get:
       tags:
@@ -1359,14 +1359,14 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "200":
+          description: New Nonce retrieved
         "401":
           description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-        "200":
-          description: New Nonce retrieved
   /v1/protocols/acme/{acmeProfileName}/directory:
     get:
       tags:
@@ -1458,7 +1458,6 @@ components:
     CertificateRevocationRequest:
       required:
       - certificate
-      - reason
       type: object
       properties:
         certificate:
@@ -1466,20 +1465,13 @@ components:
           description: Certificate in base64url-encoded version of DER format
           example: <base64url-encoded version of the DER format>
         reason:
-          type: string
-          description: Reason for revocation
-          example: "1"
-          enum:
-          - UNSPECIFIED
-          - KEY_COMPROMISE
-          - CA_COMPROMISE
-          - AFFILIATION_CHANGED
-          - SUPERSEDED
-          - CESSATION_OF_OPERATION
-          - CERTIFICATE_HOLD
-          - REMOVE_FROM_CRL
-          - PRIVILEGES_WITHDRAWN
-          - AA_COMPROMISE
+          type: integer
+          description: Revocation reason code
+          format: int32
+          example: 1
+          externalDocs:
+            description: "RFC 5280, section 5.3.1"
+            url: https://datatracker.ietf.org/doc/html/rfc5280#section-5.3.1
     ProblemDocument:
       required:
       - detail
