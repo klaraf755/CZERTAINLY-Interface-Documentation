@@ -44,6 +44,14 @@ paths:
         schema:
           $ref: '#/components/schemas/ApprovalProfileForVersionDto'
       responses:
+        "401":
+          description: Unauthorized
+        "200":
+          description: Approval profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalProfileDetailDto'
         "400":
           description: Bad Request
           content:
@@ -56,22 +64,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "200":
-          description: Approval profile retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApprovalProfileDetailDto'
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
     put:
       tags:
       - Approval profile Inventory
@@ -91,22 +91,14 @@ paths:
               $ref: '#/components/schemas/ApprovalProfileUpdateRequestDto'
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
         "200":
           description: Approval profile updated
           content:
@@ -124,12 +116,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
       - Approval profile Inventory
@@ -143,30 +143,30 @@ paths:
         schema:
           type: string
       responses:
+        "204":
+          description: Approval profile deleted
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Approval profile deleted
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvalProfiles:
     get:
       tags:
@@ -180,6 +180,8 @@ paths:
         schema:
           $ref: '#/components/schemas/PaginationRequestDto'
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -192,10 +194,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
         "200":
           description: List of all the approval profiles
           content:
@@ -208,6 +206,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
       - Approval profile Inventory
@@ -220,28 +220,20 @@ paths:
               $ref: '#/components/schemas/ApprovalProfileRequestDto'
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
         "200":
           description: New Approval profile created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UuidDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -253,12 +245,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvals/{uuid}/reject:
     patch:
       tags:
@@ -273,6 +273,10 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
+        "204":
+          description: Approval rejected
         "400":
           description: Bad Request
           content:
@@ -285,18 +289,14 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "204":
-          description: Approval rejected
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvals/{uuid}/rejectRecipient:
     patch:
       tags:
@@ -317,30 +317,30 @@ paths:
               $ref: '#/components/schemas/UserApprovalDto'
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Approval Recipient rejected
         "404":
           description: Not Found
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Approval Recipient rejected
         "403":
           description: Forbidden
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvals/{uuid}/approve:
     patch:
       tags:
@@ -355,30 +355,30 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Approval approved
         "404":
           description: Not Found
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Approval approved
         "403":
           description: Forbidden
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvals/{uuid}/approveRecipient:
     patch:
       tags:
@@ -399,30 +399,30 @@ paths:
               $ref: '#/components/schemas/UserApprovalDto'
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Approval Recipient approved
         "404":
           description: Not Found
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Approval Recipient approved
         "403":
           description: Forbidden
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvalProfiles/{uuid}/enable:
     patch:
       tags:
@@ -437,6 +437,8 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -449,10 +451,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
         "204":
           description: Approval profile enabled
         "403":
@@ -461,6 +459,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvalProfiles/{uuid}/disable:
     patch:
       tags:
@@ -475,30 +475,30 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Approval profile disabled
         "404":
           description: Not Found
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Approval profile disabled
         "403":
           description: Forbidden
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvals:
     get:
       tags:
@@ -512,6 +512,8 @@ paths:
         schema:
           $ref: '#/components/schemas/PaginationRequestDto'
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -524,10 +526,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
         "200":
           description: List of all approvals
           content:
@@ -540,6 +538,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvals/{uuid}:
     get:
       tags:
@@ -554,6 +554,14 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
+        "200":
+          description: Approval detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalDetailDto'
         "400":
           description: Bad Request
           content:
@@ -566,22 +574,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "200":
-          description: Approval detail retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApprovalDetailDto'
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
   /v1/approvals/user:
     get:
       tags:
@@ -601,6 +601,8 @@ paths:
         schema:
           $ref: '#/components/schemas/ApprovalUserDto'
       responses:
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -613,10 +615,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
         "200":
           description: List of all approvals
           content:
@@ -629,6 +627,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     ApprovalProfileUpdateRequestDto:
