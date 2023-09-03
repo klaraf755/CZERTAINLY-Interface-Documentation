@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.8.2-SNAPSHOT
+  version: 2.9.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -69,22 +69,22 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: End Entity password reset
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity password reset
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
       tags:
@@ -109,14 +109,10 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -132,8 +128,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities:
     get:
       tags:
@@ -149,6 +149,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -161,8 +163,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - Authority Management
@@ -175,26 +175,26 @@ paths:
               $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Authority instance created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}:
     get:
       tags:
@@ -209,14 +209,10 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -227,8 +223,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - Authority Management
@@ -248,14 +248,10 @@ paths:
               $ref: '#/components/schemas/AuthorityProviderInstanceRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -266,8 +262,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - Authority Management
@@ -281,22 +281,22 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Authority instance removed
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance removed
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: No Content
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes/validate:
@@ -321,22 +321,22 @@ paths:
                 $ref: '#/components/schemas/RequestAttributeDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: RA Profile Attributes information validated
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: RA Profile Attributes information validated
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities:
     get:
       tags:
@@ -357,14 +357,10 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -377,8 +373,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/EndEntityDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     post:
       tags:
       - End Entity Management
@@ -404,6 +404,8 @@ paths:
               $ref: '#/components/schemas/AddEndEntityRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: End Entity created
         "400":
@@ -418,8 +420,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities/{endEntityName}:
     get:
       tags:
@@ -446,6 +446,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "200":
           description: End Entity retrieved
           content:
@@ -464,8 +466,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
     post:
       tags:
       - End Entity Management
@@ -497,22 +497,22 @@ paths:
               $ref: '#/components/schemas/EditEndEntityRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity updated
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: End Entity updated
-        "500":
-          description: Internal Server Error
     delete:
       tags:
       - End Entity Management
@@ -538,22 +538,22 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: End Entity removed
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: End Entity removed
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates/revoke:
     post:
       tags:
@@ -580,22 +580,22 @@ paths:
               $ref: '#/components/schemas/CertRevocationDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Certificate revoked
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Certificate revoked
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates/issue:
     post:
       tags:
@@ -622,14 +622,10 @@ paths:
               $ref: '#/components/schemas/CertificateSignRequestDto'
         required: true
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -640,8 +636,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateSignResponseDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1:
     get:
       tags:
@@ -650,14 +650,10 @@ paths:
       description: Returns map of functional code and implemented end points
       operationId: listSupportedFunctions
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -670,8 +666,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -686,14 +686,10 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -706,8 +702,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -715,6 +715,8 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -733,8 +735,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes:
     get:
       tags:
@@ -757,6 +757,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -769,8 +771,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles:
     get:
       tags:
@@ -785,6 +785,8 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -805,8 +807,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileId}/certificateprofiles:
     get:
       tags:
@@ -828,14 +828,10 @@ paths:
           type: integer
           format: int32
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -848,8 +844,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/NameAndIdDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileId}/cas:
     get:
       tags:
@@ -871,14 +871,10 @@ paths:
           type: integer
           format: int32
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
           content:
             application/json:
               schema:
@@ -891,8 +887,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/NameAndIdDto'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}/connect:
     get:
       tags:
@@ -907,22 +907,22 @@ paths:
         schema:
           type: string
       responses:
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Authority instance connected
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Authority instance connected
-        "500":
-          description: Internal Server Error
 components:
   schemas:
     ErrorMessageDto:
