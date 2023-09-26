@@ -67,12 +67,6 @@ paths:
           description: Attribute validation completed
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Attribute validation failed
           content:
@@ -84,6 +78,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -105,12 +105,12 @@ paths:
       responses:
         "500":
           description: Internal Server Error
-        "404":
-          description: Not Found
+        "200":
+          description: Discovery initiated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/DiscoveryProviderDto'
         "422":
           description: Unprocessable entity
           content:
@@ -122,12 +122,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "200":
-          description: Discovery initiated
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -162,18 +162,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Discovery details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Discovery details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscoveryProviderDto'
     delete:
       tags:
       - Discovery
@@ -189,14 +189,14 @@ paths:
       responses:
         "500":
           description: Internal Server Error
+        "204":
+          description: Discovery information deleted
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Discovery information deleted
         "400":
           description: Bad Request
           content:
@@ -276,6 +276,12 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
         "500":
           description: Internal Server Error
         "404":
@@ -284,12 +290,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Health check completed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthDto'
         "400":
           description: Bad Request
           content:
