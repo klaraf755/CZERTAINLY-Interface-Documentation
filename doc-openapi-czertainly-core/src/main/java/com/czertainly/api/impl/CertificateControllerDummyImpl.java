@@ -22,7 +22,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class CertificateControllerDummyImpl implements CertificateController {
@@ -83,7 +82,7 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public Map<CertificateValidationCheck, CertificateValidationDto> getCertificateValidationResult(String uuid) throws NotFoundException, CertificateException {
+    public CertificateValidationResultDto getCertificateValidationResult(String uuid) throws NotFoundException, CertificateException {
         return null;
     }
 
