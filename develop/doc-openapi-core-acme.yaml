@@ -46,6 +46,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profile details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcmeProfileDto'
         "404":
           description: Not Found
           content:
@@ -60,12 +66,6 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: ACME Profile details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AcmeProfileDto'
     put:
       tags:
       - ACME Profile Management
@@ -85,14 +85,14 @@ paths:
               $ref: '#/components/schemas/AcmeProfileEditRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: ACME Profile updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AcmeProfileDto'
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -134,6 +134,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME Profile deleted
         "404":
           description: Not Found
           content:
@@ -146,8 +148,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "204":
-          description: ACME Profile deleted
         "500":
           description: Internal Server Error
   /v1/acmeAccounts/revoke:
@@ -189,10 +189,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: ACME Accounts revoked
+        "500":
+          description: Internal Server Error
   /v1/acmeProfiles:
     get:
       tags:
@@ -200,8 +200,6 @@ paths:
       summary: Get list of ACME Profiles
       operationId: listAcmeProfiles
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: ACME Profile list retrieved
           content:
@@ -210,6 +208,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AcmeProfileListDto'
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -292,6 +292,12 @@ paths:
       responses:
         "401":
           description: Unauthorized
+        "200":
+          description: ACME Account details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcmeAccountResponseDto'
         "400":
           description: Bad Request
           content:
@@ -304,12 +310,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: ACME Account details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AcmeAccountResponseDto'
         "403":
           description: Forbidden
           content:
@@ -339,14 +339,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
+        "204":
+          description: ACME Account revoked
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: ACME Account revoked
         "404":
           description: Not Found
           content:
@@ -381,10 +381,10 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: RA Profile updated
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
           content:
@@ -463,14 +463,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
+        "200":
+          description: ACME Profile disabled
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: ACME Profile disabled
         "404":
           description: Not Found
           content:
@@ -553,6 +553,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
+        "204":
+          description: ACME Account disabled
         "400":
           description: Bad Request
           content:
@@ -565,8 +567,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: ACME Account disabled
         "403":
           description: Forbidden
           content:
@@ -602,6 +602,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profiles enabled
         "404":
           description: Not Found
           content:
@@ -616,8 +618,6 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: ACME Profiles enabled
         "204":
           description: No Content
   /v1/acmeProfiles/disable:
@@ -698,6 +698,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: ACME Accounts enabled
         "403":
           description: Forbidden
           content:
@@ -706,8 +708,6 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-        "204":
-          description: ACME Accounts enabled
   /v1/acmeAccounts/disable:
     patch:
       tags:
@@ -729,14 +729,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
+        "204":
+          description: ACME Accounts disabled
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: ACME Accounts disabled
         "404":
           description: Not Found
           content:
@@ -760,12 +760,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: ACME Accounts list retrieved
           content:
@@ -774,6 +768,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AcmeAccountListResponseDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "404":
           description: Not Found
           content:
@@ -864,6 +864,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: ACME Profiles forced to delete
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkActionMessageDto'
         "404":
           description: Not Found
           content:
@@ -878,14 +886,6 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: ACME Profiles forced to delete
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BulkActionMessageDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -1614,7 +1614,7 @@ components:
           description: DNS Resolver port number
           example: "53"
         raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
         retryInterval:
           type: integer
           description: Retry interval for ACME client requests
@@ -1660,55 +1660,6 @@ components:
           description: List of Custom Attributes
           items:
             $ref: '#/components/schemas/ResponseAttributeDto'
-    RaProfileDto:
-      required:
-      - authorityInstanceName
-      - authorityInstanceUuid
-      - enabled
-      - name
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of RA Profile
-        authorityInstanceUuid:
-          type: string
-          description: UUID of Authority provider
-        authorityInstanceName:
-          type: string
-          description: Name of Authority instance
-        legacyAuthority:
-          type: boolean
-          description: Has Authority of legacy authority provider
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-        attributes:
-          type: array
-          description: List of RA Profiles attributes
-          items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
-        customAttributes:
-          type: array
-          description: List of Custom Attributes
-          items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
-        enabledProtocols:
-          type: array
-          description: List of protocols enabled
-          items:
-            type: string
-            description: List of protocols enabled
-      description: RA Profile
     ResponseAttributeDto:
       required:
       - contentType
@@ -1739,6 +1690,28 @@ components:
           items:
             $ref: '#/components/schemas/BaseAttributeContentDto'
       description: Response attribute with content for object it belongs to
+    SimplifiedRaProfileDto:
+      required:
+      - enabled
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        authorityInstanceUuid:
+          type: string
+          description: Authority Instance UUID
+      description: RA Profile
     AcmeProfileRequestDto:
       required:
       - issueCertificateAttributes
@@ -1844,14 +1817,8 @@ components:
           type: string
           description: ACME Profile description
           example: Some description
-        raProfileName:
-          type: string
-          description: Name of the RA Profile
-          example: RA Profile 1
-        raProfileUuid:
-          type: string
-          description: UUID of RA Profile
-          example: 6b55de1c-844f-11ec-a8a3-0242ac120002
+        raProfile:
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
         directoryUrl:
           type: string
           description: URL of the ACME Directory
@@ -1874,8 +1841,7 @@ components:
       - failedOrders
       - pendingOrders
       - processingOrders
-      - raProfileName
-      - raProfileUuid
+      - raProfile
       - status
       - successfulOrders
       - termsOfServiceAgreed
@@ -1940,14 +1906,8 @@ components:
           type: boolean
           description: Terms of Service Agreed
           example: true
-        raProfileName:
-          type: string
-          description: Name of the RA Profile
-          example: RA Profile 1
-        raProfileUuid:
-          type: string
-          description: UUID of the RA Profile
-          example: 6b55de1c-844f-11ec-a8a3-0242ac120002
+        raProfile:
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
         acmeProfileName:
           type: string
           description: Name of the ACME Profile
@@ -1962,7 +1922,7 @@ components:
       - acmeProfileName
       - acmeProfileUuid
       - enabled
-      - raProfileName
+      - raProfile
       - status
       - totalOrders
       - uuid
@@ -1987,10 +1947,8 @@ components:
           example: 4
         status:
           $ref: '#/components/schemas/AccountStatus'
-        raProfileName:
-          type: string
-          description: Name of the RA Profile
-          example: RAProfile1
+        raProfile:
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
         acmeProfileName:
           type: string
           description: Name of the ACME Profile
