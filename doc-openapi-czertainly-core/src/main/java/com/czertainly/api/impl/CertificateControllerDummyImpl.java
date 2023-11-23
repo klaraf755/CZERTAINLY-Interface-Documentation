@@ -8,14 +8,10 @@ import com.czertainly.api.model.client.approval.ApprovalResponseDto;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.core.certificate.CertificateContentDto;
-import com.czertainly.api.model.core.certificate.CertificateDetailDto;
-import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
-import com.czertainly.api.model.core.certificate.CertificateValidationDto;
+import com.czertainly.api.model.core.certificate.*;
 import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
-import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import com.czertainly.api.model.core.v2.ClientCertificateRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +22,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class CertificateControllerDummyImpl implements CertificateController {
@@ -48,11 +43,6 @@ public class CertificateControllerDummyImpl implements CertificateController {
 
     @Override
     public void updateCertificateObjects(String uuid, CertificateUpdateObjectsDto request) throws NotFoundException {
-
-    }
-
-    @Override
-    public void check(String uuid) throws CertificateException, IOException, NotFoundException {
 
     }
 
@@ -92,7 +82,7 @@ public class CertificateControllerDummyImpl implements CertificateController {
     }
 
     @Override
-    public Map<String, CertificateValidationDto> getCertificateValidationResult(String uuid) throws NotFoundException, CertificateException, IOException {
+    public CertificateValidationResultDto getCertificateValidationResult(String uuid) throws NotFoundException, CertificateException {
         return null;
     }
 
@@ -108,6 +98,16 @@ public class CertificateControllerDummyImpl implements CertificateController {
 
     @Override
     public CertificateDetailDto submitCertificateRequest(ClientCertificateRequestDto request) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
+        return null;
+    }
+
+    @Override
+    public CertificateChainResponseDto getCertificateChain(String uuid, boolean withEndCertificate) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public CertificateChainDownloadResponseDto downloadCertificateChain(String uuid, CertificateFormat certificateFormat, boolean withEndCertificate) throws NotFoundException, CertificateException {
         return null;
     }
 
