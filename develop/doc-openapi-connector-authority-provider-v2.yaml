@@ -9,7 +9,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.9.1-SNAPSHOT
+  version: 2.10.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
@@ -71,10 +71,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate revoked
         "422":
           description: Unprocessable Entity
           content:
@@ -86,6 +82,10 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Certificate revoked
   /v2/authorityProvider/authorities/{uuid}/certificates/revoke/attributes/validate:
     post:
       tags:
@@ -120,8 +120,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -133,6 +131,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "200":
           description: Attributes validated
   /v2/authorityProvider/authorities/{uuid}/certificates/renew:
@@ -167,14 +167,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Certificate renewed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CertificateDataResponseDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -186,6 +178,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Certificate renewed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CertificateDataResponseDto'
   /v2/authorityProvider/authorities/{uuid}/certificates/issue:
     post:
       tags:
@@ -218,8 +218,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -231,6 +229,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "200":
           description: Certificate issued
           content:
@@ -271,8 +271,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity
           content:
@@ -284,6 +282,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "200":
           description: Attributes validated
   /v2/authorityProvider/authorities/{uuid}/certificates/identify:
@@ -323,14 +323,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Unprocessable Entity. Certificate is found but not valid according
             to supplied RA attributes
@@ -343,6 +335,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
       tags:
@@ -545,14 +545,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance removed
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Authority instance removed
         "500":
           description: Internal Server Error
         "204":
@@ -591,10 +591,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: RA Profile Attributes information validated
+        "500":
+          description: Internal Server Error
   /v2/authorityProvider/authorities/{uuid}/certificates/revoke/attributes:
     get:
       tags:
@@ -621,16 +621,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Revoke certificate attribute list retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -642,6 +632,16 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "200":
+          description: Revoke certificate attribute list retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
   /v2/authorityProvider/authorities/{uuid}/certificates/issue/attributes:
     get:
       tags:
@@ -662,6 +662,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Issue certificate attribute list retrieved
           content:
@@ -670,12 +676,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
   /v1:
@@ -757,18 +757,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Health check completed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
         "500":
           description: Internal Server Error
   /v1/authorityProvider/authorities/{uuid}/raProfile/attributes:
@@ -833,10 +833,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: Authority instance connected
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     AttributeCallback:
