@@ -90,6 +90,12 @@ paths:
               $ref: '#/components/schemas/NotificationProviderInstanceRequestDto'
         required: true
       responses:
+        "200":
+          description: Notification instance updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationProviderInstanceDto'
         "404":
           description: Not Found
           content:
@@ -98,12 +104,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: Notification instance updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotificationProviderInstanceDto'
         "400":
           description: Bad Request
           content:
@@ -129,6 +129,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Notification instance removed
         "500":
           description: Internal Server Error
         "400":
@@ -137,8 +139,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Notification instance removed
   /v1/{functionalGroup}/{kind}/attributes/validate:
     post:
       tags:
@@ -163,14 +163,6 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "422":
           description: Attribute validation failed
           content:
@@ -182,6 +174,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -275,6 +275,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Notification sent
         "500":
           description: Internal Server Error
         "400":
@@ -283,8 +285,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Notification sent
   /v1:
     get:
       tags:
@@ -299,14 +299,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Functions found
           content:
@@ -315,6 +307,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -335,14 +335,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Attributes retrieved
           content:
@@ -351,6 +343,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/notificationProvider/{kind}/attributes/mapping:
     get:
       tags:
@@ -371,14 +371,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: List of mapping attributes
           content:
@@ -387,6 +379,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DataAttribute'
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -1312,15 +1312,7 @@ components:
           items:
             $ref: '#/components/schemas/NotificationRecipientDto'
         eventType:
-          type: string
-          description: Event type that happened to trigger the notification
-          enum:
-          - certificate_status_changed
-          - certificate_action_performed
-          - approval_requested
-          - approval_closed
-          - scheduled_job_completed
-          - other
+          $ref: '#/components/schemas/NotificationType'
         resource:
           $ref: '#/components/schemas/Resource'
         notificationData:
@@ -1343,6 +1335,16 @@ components:
           items:
             $ref: '#/components/schemas/RequestAttributeDto'
       description: List of notification recipients
+    NotificationType:
+      type: string
+      description: Event type that happened to trigger the notification
+      enum:
+      - certificate_status_changed
+      - certificate_action_performed
+      - approval_requested
+      - approval_closed
+      - scheduled_job_completed
+      - other
     Resource:
       type: string
       description: Resource which is represented by data
