@@ -1,0 +1,35 @@
+package com.czertainly.api.impl;
+
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.core.web.SignatureProfileController;
+import com.czertainly.api.interfaces.core.web.SigningEngineController;
+import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
+import com.czertainly.api.model.core.signature.AddSigningEngineDto;
+import com.czertainly.api.model.core.signature.SignatureProfileDto;
+import com.czertainly.api.model.core.signature.SigningEngineDto;
+
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+
+@RestController
+public class SigningEngineControllerDummy implements SigningEngineController {
+    @Override 
+    public List<SigningEngineDto> listSigningEngine() {
+    return null;
+    }
+
+    @Override 
+    public List<AddSigningEngineDto> createSigningEngineInstance() {
+    return null;
+    }
+
+    
+
+
+}
