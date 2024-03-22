@@ -35,8 +35,18 @@ paths:
               $ref: '#/components/schemas/AddUserRequestDto'
         required: true
       responses:
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
@@ -51,18 +61,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
 components:
   schemas:
     AddUserRequestDto:
@@ -605,7 +605,9 @@ components:
     RequestAttributeDto:
       required:
       - content
+      - contentType
       - name
+      - uuid
       type: object
       properties:
         uuid:
@@ -616,6 +618,8 @@ components:
           type: string
           description: Name of the Attribute
           example: Attribute
+        contentType:
+          $ref: '#/components/schemas/AttributeContentType'
         content:
           type: array
           description: Content of the Attribute
@@ -675,15 +679,6 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -701,6 +696,15 @@ components:
         message:
           type: string
           description: Exception message
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     ResponseAttributeDto:
       required:
       - contentType
