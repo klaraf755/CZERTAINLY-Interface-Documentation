@@ -48,18 +48,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Token Instance Detail retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenInstanceDetailDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Token Instance Detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInstanceDetailDto'
         "500":
           description: Internal Server Error
         "401":
@@ -83,6 +83,12 @@ paths:
               $ref: '#/components/schemas/TokenInstanceRequestDto'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -94,24 +100,18 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "200":
-          description: Token Instance Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenInstanceDetailDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Token Instance Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInstanceDetailDto'
         "400":
           description: Bad Request
           content:
@@ -135,8 +135,6 @@ paths:
         schema:
           type: string
       responses:
-        "204":
-          description: Token Instance deleted
         "403":
           description: Forbidden
           content:
@@ -149,6 +147,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Token Instance deleted
         "400":
           description: Bad Request
           content:
@@ -172,18 +172,18 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Token Instance Status Reloaded from Connector
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenInstanceDetailDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "200":
+          description: Token Instance Status Reloaded from Connector
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInstanceDetailDto'
         "404":
           description: Not Found
           content:
@@ -249,6 +249,12 @@ paths:
               $ref: '#/components/schemas/TokenInstanceRequestDto'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessible Entity
           content:
@@ -260,18 +266,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "201":
-          description: Token Instance Created Successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenInstanceDetailDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "404":
           description: Not Found
           content:
@@ -284,6 +278,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "201":
+          description: Token Instance Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInstanceDetailDto'
         "500":
           description: Internal Server Error
         "401":
@@ -302,8 +302,6 @@ paths:
         schema:
           type: string
       responses:
-        "204":
-          description: Token Instance Deactivated
         "403":
           description: Forbidden
           content:
@@ -322,6 +320,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Token Instance Deactivated
         "500":
           description: Internal Server Error
         "401":
@@ -360,14 +360,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Token Instance Activated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "204":
+          description: Token Instance Activated
         "500":
           description: Internal Server Error
         "401":
@@ -386,14 +386,6 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Token Profile Attributes retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
         "403":
           description: Forbidden
           content:
@@ -406,6 +398,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Token Profile Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
         "400":
           description: Bad Request
           content:
@@ -430,14 +430,6 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          description: Token activation Attributes retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
         "403":
           description: Forbidden
           content:
@@ -450,6 +442,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Token activation Attributes retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
         "400":
           description: Bad Request
           content:
@@ -1648,5 +1648,10 @@ components:
         global:
           type: boolean
           description: Boolean determining if the Metadata is a global metadata.
+          default: false
+        replaceContent:
+          type: boolean
+          description: Boolean determining if the new metadata content should be replaced
+            instead of appended.
           default: false
       description: Properties of the Attributes
