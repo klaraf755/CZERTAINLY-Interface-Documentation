@@ -78,12 +78,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "422":
@@ -97,6 +91,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/compliance:
     post:
       tags:
@@ -129,12 +129,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "422":
@@ -148,6 +142,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1:
     get:
       tags:
@@ -162,12 +162,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -178,6 +172,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -198,12 +198,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -214,6 +208,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/health:
     get:
       tags:
@@ -221,26 +221,26 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/rules:
     get:
       tags:
@@ -261,12 +261,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -277,6 +271,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/groups:
     get:
       tags:
@@ -297,12 +297,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -313,6 +307,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceGroupsResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/groups/{uuid}:
     get:
       tags:
@@ -339,12 +339,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "200":
@@ -355,6 +349,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeCallback:
@@ -1348,10 +1348,10 @@ components:
           type: boolean
           description: Boolean determining if the Metadata is a global metadata.
           default: false
-        replaceContent:
+        overwrite:
           type: boolean
-          description: Boolean determining if the new metadata content should be replaced
-            instead of appended.
+          description: Boolean determining if the new metadata content should overwrite
+            (replace) existing content instead of appending.
           default: false
       description: Properties of the Attributes
     HealthDto:
