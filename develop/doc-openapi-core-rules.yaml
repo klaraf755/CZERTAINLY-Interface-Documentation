@@ -36,8 +36,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -50,14 +50,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RuleDetailDto'
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
     put:
       tags:
       - Rules Management
@@ -77,8 +77,8 @@ paths:
               $ref: '#/components/schemas/UpdateRuleRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -91,14 +91,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RuleDetailDto'
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
     delete:
       tags:
       - Rules Management
@@ -112,8 +112,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -122,14 +122,14 @@ paths:
           description: Internal Server Error
         "204":
           description: Rule deleted
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
   /v1/rules/triggers/{triggerUuid}:
     get:
       tags:
@@ -150,22 +150,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RuleTriggerDetailDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     put:
       tags:
       - Rules Management
@@ -185,20 +185,14 @@ paths:
               $ref: '#/components/schemas/UpdateRuleTriggerRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -207,6 +201,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RuleTriggerDetailDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     delete:
       tags:
       - Rules Management
@@ -222,22 +222,22 @@ paths:
       responses:
         "204":
           description: Trigger deleted
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/rules/conditionGroups/{conditionGroupUuid}:
     get:
       tags:
@@ -252,20 +252,14 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -273,7 +267,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RuleConditionGroupDetailDto'
+                $ref: '#/components/schemas/RuleConditionGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     put:
       tags:
       - Rules Management
@@ -293,20 +293,14 @@ paths:
               $ref: '#/components/schemas/UpdateRuleConditionGroupRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -314,7 +308,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RuleConditionGroupDetailDto'
+                $ref: '#/components/schemas/RuleConditionGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     delete:
       tags:
       - Rules Management
@@ -328,24 +328,24 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "204":
           description: Condition group deleted
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/rules/actionGroups/{actionGroupUuid}:
     get:
       tags:
@@ -360,20 +360,14 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -381,7 +375,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RuleActionGroupDetailDto'
+                $ref: '#/components/schemas/RuleActionGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     put:
       tags:
       - Rules Management
@@ -401,20 +401,14 @@ paths:
               $ref: '#/components/schemas/UpdateRuleActionGroupRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -422,7 +416,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RuleActionGroupDetailDto'
+                $ref: '#/components/schemas/RuleActionGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     delete:
       tags:
       - Rules Management
@@ -436,8 +436,8 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -446,14 +446,14 @@ paths:
           description: Internal Server Error
         "204":
           description: Action group deleted
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
   /v1/rules:
     get:
       tags:
@@ -467,20 +467,14 @@ paths:
         schema:
           $ref: '#/components/schemas/Resource'
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -491,6 +485,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RuleDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     post:
       tags:
       - Rules Management
@@ -503,8 +503,8 @@ paths:
               $ref: '#/components/schemas/RuleRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -517,14 +517,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RuleDetailDto'
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
   /v1/rules/triggers:
     get:
       tags:
@@ -543,20 +543,14 @@ paths:
         schema:
           $ref: '#/components/schemas/Resource'
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -567,6 +561,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RuleTriggerDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     post:
       tags:
       - Rules Management
@@ -585,22 +585,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RuleTriggerDetailDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/rules/conditionGroups:
     get:
       tags:
@@ -614,20 +614,14 @@ paths:
         schema:
           $ref: '#/components/schemas/Resource'
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -638,6 +632,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RuleConditionGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     post:
       tags:
       - Rules Management
@@ -650,20 +650,14 @@ paths:
               $ref: '#/components/schemas/RuleConditionGroupRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "201":
@@ -671,7 +665,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RuleConditionGroupDetailDto'
+                $ref: '#/components/schemas/RuleConditionGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
   /v1/rules/actionGroups:
     get:
       tags:
@@ -685,20 +685,14 @@ paths:
         schema:
           $ref: '#/components/schemas/Resource'
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -709,6 +703,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RuleActionGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
     post:
       tags:
       - Rules Management
@@ -721,20 +721,14 @@ paths:
               $ref: '#/components/schemas/RuleActionGroupRequestDto'
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
         "201":
@@ -742,7 +736,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RuleActionGroupDetailDto'
+                $ref: '#/components/schemas/RuleActionGroupDto'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
 components:
   schemas:
     FilterConditionOperator:
@@ -773,59 +773,6 @@ components:
       - custom
       - data
       - property
-    Resource:
-      type: string
-      description: Resource associated with the Rule Condition Group
-      enum:
-      - NONE
-      - dashboard
-      - settings
-      - auditLogs
-      - credentials
-      - connectors
-      - attributes
-      - jobs
-      - notificationInstances
-      - users
-      - roles
-      - acmeAccounts
-      - acmeProfiles
-      - scepProfiles
-      - authorities
-      - raProfiles
-      - certificates
-      - certificateRequests
-      - groups
-      - complianceProfiles
-      - discoveries
-      - entities
-      - locations
-      - tokenProfiles
-      - tokens
-      - keys
-      - approvalProfiles
-      - approvals
-    RuleConditionGroupRequestDto:
-      required:
-      - conditions
-      - name
-      - resource
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the Rule Condition Group
-        description:
-          type: string
-          description: Description of the Rule Condition Group
-        resource:
-          $ref: '#/components/schemas/Resource'
-        conditions:
-          type: array
-          description: List of the Rule Conditions to add in the Rule Condition Group
-          items:
-            $ref: '#/components/schemas/RuleConditionRequestDto'
-      description: List of new condition groups to add in the Rule
     RuleConditionRequestDto:
       required:
       - fieldIdentifier
@@ -843,7 +790,7 @@ components:
         value:
           type: object
           description: Value of the Rule Condition
-      description: List of the Rule Conditions to add in the Rule Condition Group
+      description: List of conditions to add in the Rule
     UpdateRuleRequestDto:
       type: object
       properties:
@@ -861,11 +808,6 @@ components:
           description: List of conditions to add in the Rule
           items:
             $ref: '#/components/schemas/RuleConditionRequestDto'
-        conditionGroups:
-          type: array
-          description: List of new condition groups to add in the Rule
-          items:
-            $ref: '#/components/schemas/RuleConditionGroupRequestDto'
         conditionGroupsUuids:
           type: array
           description: List of UUIDs of existing condition groups to add in the Rule
@@ -1389,6 +1331,38 @@ components:
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
+    Resource:
+      type: string
+      description: Resource associated with the Rule Condition Group
+      enum:
+      - NONE
+      - dashboard
+      - settings
+      - auditLogs
+      - credentials
+      - connectors
+      - attributes
+      - jobs
+      - notificationInstances
+      - users
+      - roles
+      - acmeAccounts
+      - acmeProfiles
+      - scepProfiles
+      - authorities
+      - raProfiles
+      - certificates
+      - certificateRequests
+      - groups
+      - complianceProfiles
+      - discoveries
+      - entities
+      - locations
+      - tokenProfiles
+      - tokens
+      - keys
+      - approvalProfiles
+      - approvals
     ResponseAttributeDto:
       required:
       - contentType
@@ -1440,9 +1414,10 @@ components:
         value:
           type: object
           description: Value of the Rule Condition
-      description: List of conditions in the Rule
+      description: List of the Rule Conditions in the Rule Condition Group
     RuleConditionGroupDto:
       required:
+      - conditions
       - name
       - resource
       - uuid
@@ -1461,6 +1436,11 @@ components:
           description: Description of the Rule Condition Group
         resource:
           $ref: '#/components/schemas/Resource'
+        conditions:
+          type: array
+          description: List of the Rule Conditions in the Rule Condition Group
+          items:
+            $ref: '#/components/schemas/RuleConditionDto'
       description: List of condition groups in the Rule
     RuleDetailDto:
       required:
@@ -1562,27 +1542,6 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
-    RuleActionGroupRequestDto:
-      required:
-      - actions
-      - name
-      - resource
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the Rule Action Group
-        description:
-          type: string
-          description: Description of the Rule Action Group
-        resource:
-          $ref: '#/components/schemas/Resource'
-        actions:
-          type: array
-          description: List of new Rule Actions to add in the Rule Actions Group
-          items:
-            $ref: '#/components/schemas/RuleActionRequestDto'
-      description: List of new Action Groups to add in the Rule Trigger
     RuleActionRequestDto:
       required:
       - actionType
@@ -1605,44 +1564,6 @@ components:
       enum:
       - ignore
       - setField
-    RuleRequestDto:
-      required:
-      - name
-      - resource
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the Rule
-        description:
-          type: string
-          description: Description of the Rule
-        resource:
-          $ref: '#/components/schemas/Resource'
-        resourceType:
-          type: string
-          description: Type of the Resource associated with the Rule
-        resourceFormat:
-          type: string
-          description: Format of the Resource associated with the Rule
-        conditions:
-          type: array
-          description: List of conditions to add in the Rule
-          items:
-            $ref: '#/components/schemas/RuleConditionRequestDto'
-        conditionGroups:
-          type: array
-          description: List of new condition groups to add in the Rule
-          items:
-            $ref: '#/components/schemas/RuleConditionGroupRequestDto'
-        conditionGroupsUuids:
-          type: array
-          description: List of UUIDs of existing condition groups to add in the Rule
-          items:
-            type: string
-            description: List of UUIDs of existing condition groups to add in the
-              Rule
-      description: List of new Rules to add in the Rule Trigger
     RuleTriggerType:
       type: string
       description: Type of the Rule Trigger
@@ -1664,25 +1585,12 @@ components:
           description: Name of the event of the Rule Trigger
         triggerResource:
           $ref: '#/components/schemas/Resource'
-        triggerResourceUuid:
-          type: string
-          description: UUID of the the Rule Trigger event source object
-        rules:
-          type: array
-          description: List of new Rules to add in the Rule Trigger
-          items:
-            $ref: '#/components/schemas/RuleRequestDto'
         rulesUuids:
           type: array
           description: List of UUIDs of existing Rules to add in the Rule Trigger
           items:
             type: string
             description: List of UUIDs of existing Rules to add in the Rule Trigger
-        actionGroups:
-          type: array
-          description: List of new Action Groups to add in the Rule Trigger
-          items:
-            $ref: '#/components/schemas/RuleActionGroupRequestDto'
         actionGroupsUuids:
           type: array
           description: List of UUIDs of existing Action Groups to add in the Rule
@@ -1718,6 +1626,7 @@ components:
       description: List of Rule Actions in the Rule Trigger
     RuleActionGroupDto:
       required:
+      - actions
       - name
       - resource
       - uuid
@@ -1736,6 +1645,11 @@ components:
           description: Description of the Rule Action Group
         resource:
           $ref: '#/components/schemas/Resource'
+        actions:
+          type: array
+          description: List of Rule Actions in the Rule Actions Group
+          items:
+            $ref: '#/components/schemas/RuleActionDto'
       description: List of Action Groups in the Rule Trigger
     RuleDto:
       required:
@@ -1804,9 +1718,6 @@ components:
           $ref: '#/components/schemas/Resource'
         triggerResource:
           $ref: '#/components/schemas/Resource'
-        triggerResourceUuid:
-          type: string
-          description: UUID of the the Rule Trigger event source object
         rules:
           type: array
           description: List of Rules in the Rule Trigger
@@ -1835,32 +1746,6 @@ components:
           description: List of the Rule Conditions to add in the Rule Condition Group
           items:
             $ref: '#/components/schemas/RuleConditionRequestDto'
-    RuleConditionGroupDetailDto:
-      required:
-      - conditions
-      - name
-      - resource
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Rule Condition Group
-        resource:
-          $ref: '#/components/schemas/Resource'
-        conditions:
-          type: array
-          description: List of the Rule Conditions in the Rule Condition Group
-          items:
-            $ref: '#/components/schemas/RuleConditionDto'
     UpdateRuleActionGroupRequestDto:
       required:
       - actions
@@ -1874,32 +1759,38 @@ components:
           description: List of new Rule Actions to add in the Rule Actions Group
           items:
             $ref: '#/components/schemas/RuleActionRequestDto'
-    RuleActionGroupDetailDto:
+    RuleRequestDto:
       required:
-      - actions
       - name
       - resource
-      - uuid
       type: object
       properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
         name:
           type: string
-          description: Object Name
-          example: Name
+          description: Name of the Rule
         description:
           type: string
-          description: Description of the Rule Action Group
+          description: Description of the Rule
         resource:
           $ref: '#/components/schemas/Resource'
-        actions:
+        resourceType:
+          type: string
+          description: Type of the Resource associated with the Rule
+        resourceFormat:
+          type: string
+          description: Format of the Resource associated with the Rule
+        conditions:
           type: array
-          description: List of Rule Actions in the Rule Actions Group
+          description: List of conditions to add in the Rule
           items:
-            $ref: '#/components/schemas/RuleActionDto'
+            $ref: '#/components/schemas/RuleConditionRequestDto'
+        conditionGroupsUuids:
+          type: array
+          description: List of UUIDs of existing condition groups to add in the Rule
+          items:
+            type: string
+            description: List of UUIDs of existing condition groups to add in the
+              Rule
     RuleTriggerRequestDto:
       required:
       - name
@@ -1921,25 +1812,12 @@ components:
           $ref: '#/components/schemas/Resource'
         triggerResource:
           $ref: '#/components/schemas/Resource'
-        triggerResourceUuid:
-          type: string
-          description: UUID of the the Rule Trigger event source object
-        rules:
-          type: array
-          description: List of new Rules to add in the Rule Trigger
-          items:
-            $ref: '#/components/schemas/RuleRequestDto'
         rulesUuids:
           type: array
           description: List of UUIDs of existing Rules to add in the Rule Trigger
           items:
             type: string
             description: List of UUIDs of existing Rules to add in the Rule Trigger
-        actionGroups:
-          type: array
-          description: List of new Action Groups to add in the Rule Trigger
-          items:
-            $ref: '#/components/schemas/RuleActionGroupRequestDto'
         actionGroupsUuids:
           type: array
           description: List of UUIDs of existing Action Groups to add in the Rule
@@ -1951,6 +1829,46 @@ components:
         actions:
           type: array
           description: List of new Rule Actions to add in the Rule Trigger
+          items:
+            $ref: '#/components/schemas/RuleActionRequestDto'
+    RuleConditionGroupRequestDto:
+      required:
+      - conditions
+      - name
+      - resource
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Rule Condition Group
+        description:
+          type: string
+          description: Description of the Rule Condition Group
+        resource:
+          $ref: '#/components/schemas/Resource'
+        conditions:
+          type: array
+          description: List of the Rule Conditions to add in the Rule Condition Group
+          items:
+            $ref: '#/components/schemas/RuleConditionRequestDto'
+    RuleActionGroupRequestDto:
+      required:
+      - actions
+      - name
+      - resource
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Rule Action Group
+        description:
+          type: string
+          description: Description of the Rule Action Group
+        resource:
+          $ref: '#/components/schemas/Resource'
+        actions:
+          type: array
+          description: List of new Rule Actions to add in the Rule Actions Group
           items:
             $ref: '#/components/schemas/RuleActionRequestDto'
     RuleTriggerDto:
@@ -1981,6 +1899,3 @@ components:
           $ref: '#/components/schemas/Resource'
         triggerResource:
           $ref: '#/components/schemas/Resource'
-        triggerResourceUuid:
-          type: string
-          description: UUID of the the Rule Trigger event source object
