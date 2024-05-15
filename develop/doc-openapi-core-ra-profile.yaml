@@ -44,20 +44,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -82,6 +76,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     put:
       tags:
       - RA Profile Management
@@ -109,26 +109,31 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "204":
           description: RA Profile updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -147,17 +152,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - RA Profile Management
@@ -179,20 +179,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -211,6 +205,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profile deleted
   /v1/raProfiles/compliance:
@@ -236,20 +236,14 @@ paths:
           description: Unauthorized
         "204":
           description: Compliance check initiated
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -268,6 +262,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles:
     post:
       tags:
@@ -290,20 +290,31 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "201":
+          description: RA Profile added
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/UuidDto'
+        "422":
+          description: Unprocessible Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -322,23 +333,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "201":
-          description: RA Profile added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raProfiles/enable:
     patch:
       tags:
@@ -360,22 +360,16 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profiles enabled
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -394,6 +388,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raProfiles/disable:
     patch:
       tags:
@@ -415,20 +415,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -447,6 +441,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profiles disabled
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/scep/deactivate:
@@ -471,20 +471,25 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -505,17 +510,12 @@ paths:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: SCEP deactivated
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/scep/activate/{scepProfileUuid}:
     patch:
       tags:
@@ -550,26 +550,31 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "204":
           description: SCEP activated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileScepDetailResponseDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -588,17 +593,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/acme/deactivate:
     patch:
       tags:
@@ -623,20 +623,25 @@ paths:
           description: Unauthorized
         "204":
           description: ACME deactivated
-        "503":
-          description: Connector Communication Error
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -655,17 +660,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/acme/activate/{acmeProfileUuid}:
     patch:
       tags:
@@ -700,20 +700,25 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -732,17 +737,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: ACME activated
           content:
@@ -773,20 +773,14 @@ paths:
           description: Unauthorized
         "204":
           description: RA Profile enabled
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -805,6 +799,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/disable:
     patch:
       tags:
@@ -827,20 +827,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -859,6 +853,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profile disabled
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/approvalProfiles/{approvalProfileUuid}:
@@ -889,22 +889,16 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Approval profile disassociated from the RA profile
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -923,6 +917,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     patch:
       tags:
       - RA Profile Management
@@ -952,20 +952,14 @@ paths:
           description: Unauthorized
         "200":
           description: Approval profile associated with the RA profile
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -984,6 +978,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raProfiles:
     get:
       tags:
@@ -997,6 +997,8 @@ paths:
         schema:
           type: boolean
       responses:
+        "401":
+          description: Unauthorized
         "200":
           description: RA Profiles retrieved
           content:
@@ -1005,22 +1007,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RaProfileDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1039,6 +1033,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - RA Profile Management
@@ -1059,12 +1059,19 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -1073,8 +1080,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profiles deleted
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1093,17 +1098,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/raProfiles/{raProfileUuid}:
     get:
       tags:
@@ -1120,20 +1120,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1158,6 +1152,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
     delete:
       tags:
       - RA Profile Management
@@ -1173,20 +1173,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1205,6 +1199,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
           description: RA Profile deleted
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/scep:
@@ -1229,26 +1229,31 @@ paths:
       responses:
         "401":
           description: Unauthorized
+        "422":
+          description: Unprocessible Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
         "204":
           description: SCEP details retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RaProfileScepDetailResponseDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1267,17 +1272,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/acme:
     get:
       tags:
@@ -1300,20 +1300,25 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "422":
+          description: Unprocessible Entity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  type: string
+              example:
+              - Error Message 1
+              - Error Message 2
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "204":
           description: ACME details retrieved
           content:
@@ -1338,17 +1343,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "422":
-          description: Unprocessible Entity
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/complianceProfiles:
     get:
       tags:
@@ -1369,6 +1369,8 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "200":
           description: Compliance Profiles retrieved
           content:
@@ -1377,22 +1379,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SimplifiedComplianceProfileDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1411,6 +1405,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/caCertificates:
     get:
       tags:
@@ -1441,20 +1441,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CertificateDetailDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1473,6 +1467,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke:
     get:
       tags:
@@ -1493,6 +1493,8 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "200":
           description: Revocation attributes list obtained
           content:
@@ -1501,22 +1503,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1535,6 +1529,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue:
     get:
       tags:
@@ -1557,20 +1557,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -1589,6 +1583,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Issue certificate attributes list obtained
           content:
@@ -1619,20 +1619,14 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Approval profiles retrieved
           content:
@@ -1659,6 +1653,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeCallback:
@@ -2586,8 +2586,11 @@ components:
         fingerprint:
           type: string
           description: SHA256 fingerprint of the Certificate
-        group:
-          $ref: '#/components/schemas/GroupDto'
+        groups:
+          type: array
+          description: Groups associated to the Certificate
+          items:
+            $ref: '#/components/schemas/GroupDto'
         owner:
           type: string
           description: Certificate Owner
@@ -2738,8 +2741,11 @@ components:
         fingerprint:
           type: string
           description: SHA256 fingerprint of the Certificate
-        group:
-          $ref: '#/components/schemas/GroupDto'
+        groups:
+          type: array
+          description: Groups associated to the Certificate
+          items:
+            $ref: '#/components/schemas/GroupDto'
         owner:
           type: string
           description: Certificate Owner
@@ -2929,7 +2935,7 @@ components:
           description: List of Custom Attributes
           items:
             $ref: '#/components/schemas/ResponseAttributeDto'
-      description: Key Group
+      description: Groups associated to the Key
     KeyAlgorithm:
       type: string
       description: Key Algorithm
@@ -2984,8 +2990,11 @@ components:
         ownerUuid:
           type: string
           description: UUID of the owner of the Key
-        group:
-          $ref: '#/components/schemas/GroupDto'
+        groups:
+          type: array
+          description: Groups associated to the key
+          items:
+            $ref: '#/components/schemas/GroupDto'
         items:
           type: array
           description: Key Items
@@ -3059,8 +3068,11 @@ components:
         ownerUuid:
           type: string
           description: UUID of the owner of the Key
-        group:
-          $ref: '#/components/schemas/GroupDto'
+        groups:
+          type: array
+          description: Groups associated to the Key
+          items:
+            $ref: '#/components/schemas/GroupDto'
         associations:
           type: integer
           description: Number of associated objects
