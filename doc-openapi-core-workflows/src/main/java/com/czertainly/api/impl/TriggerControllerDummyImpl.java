@@ -38,7 +38,7 @@ public class TriggerControllerDummyImpl implements TriggerController {
     }
 
     @Override
-    public List<TriggerHistoryDto> getTriggerHistory(String triggerUuid, String triggerObjectUuid) {
+    public List<TriggerHistoryDto> getTriggerHistory(String triggerUuid, String associationObjectUuid) {
         return List.of();
     }
 
