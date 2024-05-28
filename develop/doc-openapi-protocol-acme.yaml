@@ -55,6 +55,16 @@ paths:
               $ref: '#/components/schemas/CertificateRevocationRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Certificate revoked
         "401":
           description: Unauthorized
           content:
@@ -67,16 +77,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "200":
-          description: Certificate revoked
   /v1/protocols/acme/{acmeProfileName}/orders/{accountId}:
     post:
       tags:
@@ -105,6 +105,14 @@ paths:
           application/jose+json: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -113,14 +121,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -161,22 +161,16 @@ paths:
           application/jose+json: {}
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
         "500":
           description: Internal Server Error
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
@@ -187,6 +181,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/{acmeProfileName}/order/{orderId}/finalize:
     post:
       tags:
@@ -217,6 +217,14 @@ paths:
               $ref: '#/components/schemas/CertificateFinalizeRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -225,14 +233,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -267,22 +267,16 @@ paths:
               $ref: '#/components/schemas/CertificateIssuanceRequest'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
         "500":
           description: Internal Server Error
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
@@ -293,6 +287,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/{acmeProfileName}/new-account:
     post:
       tags:
@@ -317,14 +317,8 @@ paths:
               $ref: '#/components/schemas/NewAccountRequest'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -337,8 +331,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
@@ -349,6 +343,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/{acmeProfileName}/key-change:
     post:
       tags:
@@ -373,20 +373,6 @@ paths:
               $ref: '#/components/schemas/KeyRollover'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -395,6 +381,20 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "409":
           description: Conflict. Key already exists
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -436,6 +436,14 @@ paths:
             example: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -444,14 +452,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -490,14 +490,8 @@ paths:
           application/jose+json: {}
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -506,8 +500,14 @@ paths:
           description: Certificate content retrieved
         "500":
           description: Internal Server Error
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -542,22 +542,16 @@ paths:
               type: string
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
         "500":
           description: Internal Server Error
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
@@ -568,6 +562,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Authorization'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/{acmeProfileName}/acct/{accountId}:
     post:
       tags:
@@ -604,6 +604,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -612,14 +620,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -648,6 +648,16 @@ paths:
               $ref: '#/components/schemas/CertificateRevocationRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
+        "200":
+          description: Certificate revoked
         "401":
           description: Unauthorized
           content:
@@ -660,16 +670,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "200":
-          description: Certificate revoked
   /v1/protocols/acme/raProfile/{raProfileName}/orders/{accountId}:
     post:
       tags:
@@ -698,6 +698,14 @@ paths:
           application/jose+json: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -706,14 +714,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -754,22 +754,16 @@ paths:
           application/jose+json: {}
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
         "500":
           description: Internal Server Error
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
@@ -780,6 +774,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/raProfile/{raProfileName}/order/{orderId}/finalize:
     post:
       tags:
@@ -810,6 +810,14 @@ paths:
               $ref: '#/components/schemas/CertificateFinalizeRequest'
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -818,14 +826,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -860,22 +860,16 @@ paths:
               $ref: '#/components/schemas/CertificateIssuanceRequest'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
         "500":
           description: Internal Server Error
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
@@ -886,6 +880,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/raProfile/{raProfileName}/new-account:
     post:
       tags:
@@ -910,14 +910,8 @@ paths:
               $ref: '#/components/schemas/NewAccountRequest'
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -930,8 +924,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
@@ -942,6 +936,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/raProfile/{raProfileName}/key-change:
     post:
       tags:
@@ -968,20 +968,6 @@ paths:
       responses:
         "200":
           description: Account key updated
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
@@ -990,6 +976,20 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "409":
           description: Conflict. Key already exists
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -1025,6 +1025,14 @@ paths:
             example: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -1033,14 +1041,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -1079,28 +1079,28 @@ paths:
           application/jose+json: {}
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "403":
           description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
         "200":
           description: Certificate content retrieved as file
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/raProfile/{raProfileName}/authz/{authorizationId}:
     post:
       tags:
@@ -1131,22 +1131,16 @@ paths:
               type: string
         required: true
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
         "500":
           description: Internal Server Error
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
@@ -1157,6 +1151,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Authorization'
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
   /v1/protocols/acme/raProfile/{raProfileName}/acct/{accountId}:
     post:
       tags:
@@ -1193,6 +1193,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Account'
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -1201,14 +1209,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -1230,14 +1230,8 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -1246,8 +1240,14 @@ paths:
           description: Internal Server Error
         "204":
           description: New Nonce retrieved
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -1268,8 +1268,16 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
         "200":
           description: New Nonce retrieved
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -1278,14 +1286,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -1307,14 +1307,8 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -1323,8 +1317,14 @@ paths:
           description: Internal Server Error
         "204":
           description: New Nonce retrieved
-        "403":
-          description: Forbidden
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -1345,8 +1345,16 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
         "200":
           description: New Nonce retrieved
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -1355,14 +1363,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -1390,6 +1390,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Directory'
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -1398,14 +1406,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -1433,6 +1433,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Directory'
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
@@ -1441,14 +1449,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDocument'
         "400":
           description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
           content:
             application/problem+json:
               schema:
