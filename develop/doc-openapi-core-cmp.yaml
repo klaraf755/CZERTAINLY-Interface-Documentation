@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY Credential API
-  description: REST API for managing Credentials in the platform
+  title: CZERTAINLY CMP API
+  description: REST API for managing CMP Profiles in the platform
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -19,53 +19,33 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: Credential Management
-  description: Credential Management API
+- name: CMP Profile Management
+  description: CMP Profile Management API
 paths:
-  /v1/credentials/{uuid}:
+  /v1/cmpProfiles/{cmpProfileUuid}:
     get:
       tags:
-      - Credential Management
-      summary: Details of a Credentials
-      operationId: getCredential
+      - CMP Profile Management
+      summary: Get details of CMP Profile
+      operationId: getCmpProfile
       parameters:
-      - name: uuid
+      - name: cmpProfileUuid
         in: path
-        description: Credential UUID
+        description: CMP Profile UUID
         required: true
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
-          description: Credential details retrieved
+          description: CMP Profile details retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CredentialDto'
-        "500":
-          description: Internal Server Error
+                $ref: '#/components/schemas/CmpProfileDetailDto'
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -76,15 +56,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     put:
       tags:
-      - Credential Management
-      summary: Edit Credential
-      operationId: editCredential
+      - CMP Profile Management
+      summary: Edit CMP Profile
+      operationId: editCmpProfile
       parameters:
-      - name: uuid
+      - name: cmpProfileUuid
         in: path
-        description: Credential UUID
+        description: CMP Profile UUID
         required: true
         schema:
           type: string
@@ -92,110 +80,56 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CredentialUpdateRequestDto'
+              $ref: '#/components/schemas/CmpProfileEditRequestDto'
         required: true
       responses:
+        "401":
+          description: Unauthorized
+        "200":
+          description: CMP Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CmpProfileDetailDto'
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Credential updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CredentialDto'
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
     delete:
       tags:
-      - Credential Management
-      summary: Delete Credential
-      operationId: deleteCredential
+      - CMP Profile Management
+      summary: Delete CMP Profile
+      operationId: deleteCmpProfile
       parameters:
-      - name: uuid
+      - name: cmpProfileUuid
         in: path
-        description: Credential UUID
+        description: CMP Profile UUID
         required: true
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "204":
-          description: Credential deleted
-        "422":
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
+          description: CMP Profile deleted
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -206,45 +140,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-  /v1/credentials:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/cmpProfiles:
     get:
       tags:
-      - Credential Management
-      summary: List of All Credentials
-      operationId: listCredentials
+      - CMP Profile Management
+      summary: Get list of CMP Profiles
+      operationId: listCmpProfiles
       responses:
-        "200":
-          description: List of all Credentials
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CredentialDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -255,18 +169,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: CMP Profile list retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CmpProfileDto'
+        "500":
+          description: Internal Server Error
     post:
       tags:
-      - Credential Management
-      summary: Add Credential
-      operationId: createCredential
+      - CMP Profile Management
+      summary: Create CMP Profile
+      operationId: createCmpProfile
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CredentialRequestDto'
+              $ref: '#/components/schemas/CmpProfileRequestDto'
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -274,40 +206,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "201":
-          description: New Credential added
+          description: CMP Profile created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UuidDto'
-        "422":
-          description: Unprocessable Entity
+                $ref: '#/components/schemas/CmpProfileDetailDto'
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-              example:
-              - Error Message 1
-              - Error Message 2
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
+        "500":
+          description: Internal Server Error
+  /v1/cmpProfiles/{cmpProfileUuid}/raProfiles/{raProfileUuid}:
+    patch:
+      tags:
+      - CMP Profile Management
+      summary: Update RA Profile for CMP Profile
+      operationId: updateRaProfile
+      parameters:
+      - name: cmpProfileUuid
+        in: path
+        description: CMP Profile UUID
+        required: true
+        schema:
+          type: string
+      - name: raProfileUuid
+        in: path
+        description: RA Profile UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "401":
+          description: Unauthorized
+        "200":
+          description: RA Profile updated
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -318,13 +261,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-    delete:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+        "204":
+          description: No Content
+  /v1/cmpProfiles/{cmpProfileUuid}/enable:
+    patch:
       tags:
-      - Credential Management
-      summary: Delete multiple Credentials
-      operationId: bulkDeleteCredential
+      - CMP Profile Management
+      summary: Enable CMP Profile
+      operationId: enableCmpProfile
+      parameters:
+      - name: cmpProfileUuid
+        in: path
+        description: CMP Profile UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "401":
+          description: Unauthorized
+        "204":
+          description: CMP Profile enabled
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/cmpProfiles/{cmpProfileUuid}/disable:
+    patch:
+      tags:
+      - CMP Profile Management
+      summary: Disable CMP Profile
+      operationId: disableCmpProfile
+      parameters:
+      - name: cmpProfileUuid
+        in: path
+        description: CMP Profile UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: CMP Profile disabled
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/cmpProfiles/enable:
+    patch:
+      tags:
+      - CMP Profile Management
+      summary: Enable multiple CMP Profiles
+      operationId: bulkEnableCmpProfile
       requestBody:
-        description: Credential UUIDs
+        description: CMP Profile UUIDs
         content:
           application/json:
             schema:
@@ -336,26 +366,208 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "204":
+          description: CMP Profiles enabled
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "200":
-          description: Credentials deleted
+  /v1/cmpProfiles/disable:
+    patch:
+      tags:
+      - CMP Profile Management
+      summary: Disable multiple CMP Profile
+      operationId: bulkDisableCmpProfile
+      requestBody:
+        description: CMP Profile UUIDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+        required: true
+      responses:
+        "204":
+          description: CMP Profiles disabled
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/cmpProfiles/signingCertificates:
+    get:
+      tags:
+      - CMP Profile Management
+      summary: Get list of certificates eligible for signing of CMP responses
+      operationId: listCmpSigningCertificates
+      responses:
+        "200":
+          description: List of signing certificates retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CertificateDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/cmpProfiles/delete:
+    delete:
+      tags:
+      - CMP Profile Management
+      summary: Delete multiple CMP Profiles
+      operationId: bulkDeleteCmpProfile
+      requestBody:
+        description: CMP Profile UUIDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+        required: true
+      responses:
+        "200":
+          description: CMP Profiles deleted
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkActionMessageDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
+  /v1/cmpProfiles/delete/force:
+    delete:
+      tags:
+      - CMP Profile Management
+      summary: Force delete multiple CMP Profiles
+      operationId: forceDeleteCmpProfiles
+      requestBody:
+        description: CMP Profile UUIDs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+            example:
+            - c2f685d4-6a3e-11ec-90d6-0242ac120003
+            - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
+        required: true
+      responses:
+        "200":
+          description: CMP Profiles forced to delete
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkActionMessageDto'
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "422":
-          description: Unprocessible Entity
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -365,126 +577,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "204":
-          description: No Content
-  /v1/credentials/{uuid}/enable:
-    patch:
-      tags:
-      - Credential Management
-      summary: Enable Credential
-      operationId: enableCredential
-      parameters:
-      - name: uuid
-        in: path
-        description: Credential UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "204":
-          description: Credential enabled
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-  /v1/credentials/{uuid}/disable:
-    patch:
-      tags:
-      - Credential Management
-      summary: Disable Credential
-      operationId: disableCredential
-      parameters:
-      - name: uuid
-        in: path
-        description: Credential UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Credential disabled
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
 components:
   schemas:
     AttributeCallback:
@@ -639,6 +733,54 @@ components:
         data:
           type: boolean
           description: Boolean attribute value
+    CmpProfileEditRequestDto:
+      required:
+      - name
+      - requestProtectionMethod
+      - responseProtectionMethod
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the CMP Profile
+          example: Sample text description
+        raProfileUuid:
+          type: string
+          description: RA Profile UUID that the CMP Profile is associated with
+          example: 6b55de1c-844f-11ec-a8a3-0242ac120002
+        issueCertificateAttributes:
+          type: array
+          description: List of Attributes to issue Certificate for the associated
+            RA Profile. Required when raProfileUuid is provided
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        revokeCertificateAttributes:
+          type: array
+          description: List of Attributes to revoke Certificate for the associated
+            RA Profile. Required when raProfileUuid is provided
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        customAttributes:
+          type: array
+          description: List of Custom Attributes for CMP Profile
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        requestProtectionMethod:
+          $ref: '#/components/schemas/ProtectionMethod'
+        responseProtectionMethod:
+          $ref: '#/components/schemas/ProtectionMethod'
+        sharedSecret:
+          type: string
+          description: Shared secret for the CMP Request. Required when requestProtectionMethod
+            is sharedSecret
+        signingCertificateUuid:
+          type: string
+          description: UUID of the Certificate to be used as signing certificate for
+            CMP responses. Required when responseProtectionMethod is signature
+        name:
+          type: string
+          description: Name of the CMP Profile
+          example: Example CMP Profile
     CodeBlockAttributeContent:
       required:
       - data
@@ -698,21 +840,6 @@ components:
           items:
             $ref: '#/components/schemas/DataAttribute'
       description: Credential attribute content data
-    CredentialUpdateRequestDto:
-      required:
-      - attributes
-      type: object
-      properties:
-        attributes:
-          type: array
-          description: List of Credential Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        customAttributes:
-          type: array
-          description: List of Custom Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
     DataAttribute:
       required:
       - contentType
@@ -958,6 +1085,12 @@ components:
       - xquery
       - xml
       - yaml
+    ProtectionMethod:
+      type: string
+      description: Protection Method for the CMP Response
+      enum:
+      - sharedSecret
+      - signature
     RangeAttributeConstraint:
       required:
       - type
@@ -1104,13 +1237,128 @@ components:
         message:
           type: string
           description: Exception message
-    CredentialDto:
+    CertificateDto:
       required:
-      - attributes
-      - connectorName
-      - connectorUuid
+      - commonName
+      - keySize
+      - privateKeyAvailability
+      - publicKeyAlgorithm
+      - signatureAlgorithm
+      - state
+      - subjectDn
+      - trustedCa
+      - uuid
+      - validationStatus
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the Certificate
+        commonName:
+          type: string
+          description: Certificate common name
+        serialNumber:
+          type: string
+          description: Certificate serial number
+        issuerCommonName:
+          type: string
+          description: Certificate issuer common name
+        issuerDn:
+          type: string
+          description: Issuer DN of the Certificate
+        subjectDn:
+          type: string
+          description: Subject DN of the Certificate
+        notBefore:
+          type: string
+          description: Certificate validity start date
+          format: date-time
+        notAfter:
+          type: string
+          description: Certificate expiration date
+          format: date-time
+        publicKeyAlgorithm:
+          type: string
+          description: Public key algorithm
+        signatureAlgorithm:
+          type: string
+          description: Certificate signature algorithm
+        keySize:
+          type: integer
+          description: Certificate key size
+          format: int32
+        state:
+          $ref: '#/components/schemas/CertificateState'
+        validationStatus:
+          $ref: '#/components/schemas/CertificateValidationStatus'
+        raProfile:
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
+        fingerprint:
+          type: string
+          description: SHA256 fingerprint of the Certificate
+        groups:
+          type: array
+          description: Groups associated to the Certificate
+          items:
+            $ref: '#/components/schemas/GroupDto'
+        owner:
+          type: string
+          description: Certificate Owner
+        ownerUuid:
+          type: string
+          description: Certificate Owner UUID
+        certificateType:
+          $ref: '#/components/schemas/CertificateType'
+        issuerSerialNumber:
+          type: string
+          description: Serial number of the issuer
+        complianceStatus:
+          $ref: '#/components/schemas/ComplianceStatus'
+        issuerCertificateUuid:
+          type: string
+          description: UUID of the issuer certificate
+        privateKeyAvailability:
+          type: boolean
+          description: Private Key Availability
+        trustedCa:
+          type: boolean
+          description: "Indicator whether CA is marked as trusted, set to null if\
+            \ certificate is not CA"
+      description: Signing certificate for the CMP responses
+    CertificateState:
+      type: string
+      description: State of the Certificate
+      enum:
+      - requested
+      - rejected
+      - pending_approval
+      - pending_issue
+      - pending_revoke
+      - failed
+      - issued
+      - revoked
+      - archived
+    CertificateType:
+      type: string
+      description: Certificate type
+      enum:
+      - X.509
+      - SSH
+    CertificateValidationStatus:
+      type: string
+      description: Current validation status of the certificate
+      enum:
+      - not_checked
+      - failed
+      - inactive
+      - invalid
+      - valid
+      - revoked
+      - expiring
+      - expired
+    CmpProfileDetailDto:
+      required:
       - enabled
-      - kind
       - name
       - uuid
       type: object
@@ -1123,29 +1371,76 @@ components:
           type: string
           description: Object Name
           example: Name
-        kind:
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        description:
           type: string
-          description: Credential Kind
-          example: "SoftKeyStore, Basic, ApiKey, etc"
-        attributes:
+          description: CMP Profile description
+          example: Sample text description
+        raProfile:
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
+        cmpUrl:
+          type: string
+          description: CMP URL
+          example: https://your-domain.com/api/v1/protocols/cmp/cmpProfile
+        issueCertificateAttributes:
           type: array
-          description: List of Credential Attributes
+          description: List of Attributes to issue a Certificate for the associated
+            RA Profile
           items:
             $ref: '#/components/schemas/ResponseAttributeDto'
+        revokeCertificateAttributes:
+          type: array
+          description: List of Attributes to revoke a Certificate for the associated
+            RA Profile
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        customAttributes:
+          type: array
+          description: List of Custom Attributes for CMP Profile
+          items:
+            $ref: '#/components/schemas/ResponseAttributeDto'
+        requestProtectionMethod:
+          $ref: '#/components/schemas/ProtectionMethod'
+        responseProtectionMethod:
+          $ref: '#/components/schemas/ProtectionMethod'
+        signingCertificate:
+          $ref: '#/components/schemas/CertificateDto'
+    ComplianceStatus:
+      type: string
+      description: Certificate compliance status
+      enum:
+      - not_checked
+      - ok
+      - nok
+      - na
+    GroupDto:
+      required:
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the Group
+        email:
+          type: string
+          description: Group contact email
         customAttributes:
           type: array
           description: List of Custom Attributes
           items:
             $ref: '#/components/schemas/ResponseAttributeDto'
-        enabled:
-          type: boolean
-          description: Enabled flag - true = enabled; false = disabled
-        connectorUuid:
-          type: string
-          description: UUID of Credential provider Connector
-        connectorName:
-          type: string
-          description: Name of Credential provider Connector
+      description: Groups associated to the Certificate
     ResponseAttributeDto:
       required:
       - contentType
@@ -1176,39 +1471,121 @@ components:
           items:
             $ref: '#/components/schemas/BaseAttributeContentDto'
       description: Response attribute with content for object it belongs to
-    CredentialRequestDto:
+    SimplifiedRaProfileDto:
       required:
-      - attributes
-      - connectorUuid
-      - kind
+      - enabled
       - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Credential name
-        kind:
-          type: string
-          description: Credential Kind
-          example: "SoftKeyStore, Basic, ApiKey, etc"
-        attributes:
-          type: array
-          description: List of Credential Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        customAttributes:
-          type: array
-          description: List of Custom Attributes
-          items:
-            $ref: '#/components/schemas/RequestAttributeDto'
-        connectorUuid:
-          type: string
-          description: UUID of Credential provider Connector
-    UuidDto:
-      required:
       - uuid
       type: object
       properties:
         uuid:
           type: string
           description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        authorityInstanceUuid:
+          type: string
+          description: Authority Instance UUID
+      description: RA Profile associated to the Certificate
+    CmpProfileRequestDto:
+      required:
+      - name
+      - requestProtectionMethod
+      - responseProtectionMethod
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the CMP Profile
+          example: Sample text description
+        raProfileUuid:
+          type: string
+          description: RA Profile UUID that the CMP Profile is associated with
+          example: 6b55de1c-844f-11ec-a8a3-0242ac120002
+        issueCertificateAttributes:
+          type: array
+          description: List of Attributes to issue Certificate for the associated
+            RA Profile. Required when raProfileUuid is provided
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        revokeCertificateAttributes:
+          type: array
+          description: List of Attributes to revoke Certificate for the associated
+            RA Profile. Required when raProfileUuid is provided
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        customAttributes:
+          type: array
+          description: List of Custom Attributes for CMP Profile
+          items:
+            $ref: '#/components/schemas/RequestAttributeDto'
+        requestProtectionMethod:
+          $ref: '#/components/schemas/ProtectionMethod'
+        responseProtectionMethod:
+          $ref: '#/components/schemas/ProtectionMethod'
+        sharedSecret:
+          type: string
+          description: Shared secret for the CMP Request. Required when requestProtectionMethod
+            is sharedSecret
+        signingCertificateUuid:
+          type: string
+          description: UUID of the Certificate to be used as signing certificate for
+            CMP responses. Required when responseProtectionMethod is signature
+        name:
+          type: string
+          description: Name of the CMP Profile
+          example: Example CMP Profile
+    CmpProfileDto:
+      required:
+      - enabled
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        enabled:
+          type: boolean
+          description: Enabled flag - true = enabled; false = disabled
+        description:
+          type: string
+          description: CMP Profile description
+          example: Sample text description
+        raProfile:
+          $ref: '#/components/schemas/SimplifiedRaProfileDto'
+        cmpUrl:
+          type: string
+          description: CMP URL
+          example: https://your-domain.com/api/v1/protocols/cmp/cmpProfile
+    BulkActionMessageDto:
+      required:
+      - message
+      - name
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        message:
+          type: string
+          description: Message describing the associations of the Objects which is
+            preventing the bulk operation
+          example: Object is associated with other items

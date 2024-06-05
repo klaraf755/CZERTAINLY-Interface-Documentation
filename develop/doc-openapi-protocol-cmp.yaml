@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: CZERTAINLY SCEP API
-  description: SCEP API according to the RFC 8894
+  title: CZERTAINLY CMP API
+  description: CMP API according to the RFC 4210
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
@@ -19,56 +19,41 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 tags:
-- name: SCEP RA Profile
-  description: Interfaces used by SCEP clients to request SCEP related operations
-    on top of RA Profile. SCEP Profile defines the behaviour for the specific SCEP
-    configuration. SCEP Profile is bound with specific RA Profile and it can be used
-    by the SCEP clients to request operations on their specific URL. These operations
-    are always specific only for the RA Profile.
-- name: SCEP operations
-  description: "Interfaces used by SCEP clients to request SCEP related operations.\
-    \ SCEP Profile defines the behaviour for the specific SCEP configuration. When\
-    \ the SCEP Profile contains default RA Profile, it can be used by the SCEP clients\
-    \ to request operations on their specific URL."
+- name: CMP RA Profile
+  description: Interfaces used by CMP clients to request CMP related operations on
+    top of RA Profile. CMP Profile defines the behaviour for the specific CMP configuration.
+    CMP Profile is bound with specific RA Profile and it can be used by the CMP clients
+    to request operations on their specific URL. These operations are always specific
+    only for the RA Profile.
+- name: CMP operations
+  description: "Interfaces used by CMP clients to request CMP related operations.\
+    \ CMP Profile defines the behaviour for the specific CMP configuration. When the\
+    \ CMP Profile contains default RA Profile, it can be used by the CMP clients to\
+    \ request operations on their specific URL."
 paths:
-  /v1/protocols/scep/{scepProfileName}/pkiclient.exe:
+  /v1/protocols/cmp/{cmpProfileName}:
     get:
       tags:
-      - SCEP operations
-      summary: SCEP Get Operations
-      externalDocs:
-        description: "RFC 8894, section 4.1"
-        url: https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1
+      - CMP operations
+      summary: CMP Get Operations
       operationId: doGet
       parameters:
-      - name: scepProfileName
+      - name: cmpProfileName
         in: path
-        required: true
-        schema:
-          type: string
-      - name: operation
-        in: query
         required: true
         schema:
           type: string
       - name: message
         in: query
-        description: Base64 encoded CMS data
+        description: DER encoded CMP data
         required: false
         schema:
           type: string
-          description: Base64 encoded CMS data
+          description: DER encoded CMP data
+          format: binary
       responses:
-        "200":
-          description: Operation executed
-          content:
-            '*/*':
-              schema:
-                type: string
-                description: "Response structure defined in RFC 8894, section 4"
-                format: binary
-        "401":
-          description: Unauthorized
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -79,78 +64,73 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
     post:
       tags:
-      - SCEP operations
-      summary: SCEP Post Operations
+      - CMP operations
+      summary: CMP Post Operation
       externalDocs:
-        description: "RFC 8894, section 4.1"
-        url: https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1
+        description: RFC 4210
+        url: https://www.rfc-editor.org/rfc/rfc4210
       operationId: doPost
       parameters:
-      - name: scepProfileName
+      - name: cmpProfileName
         in: path
-        required: true
-        schema:
-          type: string
-      - name: operation
-        in: query
         required: true
         schema:
           type: string
       requestBody:
         content:
-          '*/*':
+          application/pkixcmp:
             schema:
               type: string
-              description: Binary CMS data
+              description: Binary CMP data
               format: binary
         required: true
       responses:
-        "200":
-          description: Operation executed
-          content:
-            '*/*':
-              schema:
-                type: string
-                description: "Response structure defined in RFC 8894, section 4"
-                format: binary
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "403":
-          description: Forbidden
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-  /v1/protocols/scep/raProfile/{raProfileName}/pkiclient.exe:
+        "200":
+          description: Operation executed
+          content:
+            application/pkixcmp:
+              schema:
+                type: string
+                description: "Response structure(s) defined in RFC 4210, section 5.3"
+                format: binary
+                externalDocs:
+                  description: RFC 4210
+                  url: https://www.rfc-editor.org/rfc/rfc4210#section-5.3
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
+  /v1/protocols/cmp/raProfile/{raProfileName}:
     get:
       tags:
-      - SCEP RA Profile
-      summary: SCEP Get Operations
-      externalDocs:
-        description: "RFC 8894, section 4.1"
-        url: https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1
+      - CMP RA Profile
+      summary: CMP Get Operations
       operationId: doGet_1
       parameters:
       - name: raProfileName
@@ -158,29 +138,17 @@ paths:
         required: true
         schema:
           type: string
-      - name: operation
-        in: query
-        required: true
-        schema:
-          type: string
       - name: message
         in: query
-        description: Base64 encoded CMS data
+        description: DER encoded CMP data
         required: false
         schema:
           type: string
-          description: Base64 encoded CMS data
+          description: DER encoded CMP data
+          format: binary
       responses:
-        "200":
-          description: Operation executed
-          content:
-            '*/*':
-              schema:
-                type: string
-                description: "Response structure defined in RFC 8894, section 4"
-                format: binary
-        "401":
-          description: Unauthorized
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -191,21 +159,21 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
     post:
       tags:
-      - SCEP RA Profile
-      summary: SCEP Post Operations
+      - CMP RA Profile
+      summary: CMP Post Operation
       externalDocs:
-        description: "RFC 8894, section 4.1"
-        url: https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1
+        description: RFC 4210
+        url: https://www.rfc-editor.org/rfc/rfc4210
       operationId: doPost_1
       parameters:
       - name: raProfileName
@@ -213,48 +181,46 @@ paths:
         required: true
         schema:
           type: string
-      - name: operation
-        in: query
-        required: true
-        schema:
-          type: string
       requestBody:
         content:
-          '*/*':
+          application/pkixcmp:
             schema:
               type: string
-              description: Binary CMS data
+              description: Binary CMP data
               format: binary
         required: true
       responses:
-        "200":
-          description: Operation executed
-          content:
-            '*/*':
-              schema:
-                type: string
-                description: "Response structure defined in RFC 8894, section 4"
-                format: binary
-        "401":
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "403":
-          description: Forbidden
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDocument'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ProblemDocument'
+        "200":
+          description: Operation executed
+          content:
+            application/pkixcmp:
+              schema:
+                type: string
+                description: "Response structure(s) defined in RFC 4210, section 5.3"
+                format: binary
+                externalDocs:
+                  description: RFC 4210
+                  url: https://www.rfc-editor.org/rfc/rfc4210#section-5.3
+        "403":
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDocument'
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     ProblemDocument:
