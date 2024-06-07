@@ -76,10 +76,10 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "200":
-          description: Certificate revoked
         "500":
           description: Internal Server Error
+        "200":
+          description: Certificate revoked
         "400":
           description: Bad Request
           content:
@@ -127,14 +127,14 @@ paths:
               - Error Message 2
         "500":
           description: Internal Server Error
+        "200":
+          description: Attributes validated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes validated
   /v2/authorityProvider/authorities/{uuid}/certificates/renew:
     post:
       tags:
@@ -172,14 +172,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "200":
           description: Certificate renewed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateDataResponseDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -278,14 +278,14 @@ paths:
               - Error Message 2
         "500":
           description: Internal Server Error
+        "200":
+          description: Attributes validated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes validated
   /v2/authorityProvider/authorities/{uuid}/certificates/identify:
     post:
       tags:
@@ -323,6 +323,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable Entity. Certificate is found but not valid according
             to supplied RA attributes
@@ -335,8 +337,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -367,12 +367,6 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Attribute validation failed
           content:
@@ -384,6 +378,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "400":
@@ -441,18 +441,18 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Authority instance created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/authorityProvider/authorities/{uuid}:
     get:
       tags:
@@ -473,14 +473,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Authority instance retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -512,14 +512,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: Authority instance updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthorityProviderInstanceDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -539,14 +539,14 @@ paths:
         schema:
           type: string
       responses:
+        "200":
+          description: Authority instance removed
         "404":
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Authority instance removed
         "500":
           description: Internal Server Error
         "400":
@@ -624,14 +624,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "500":
+          description: Internal Server Error
         "200":
           description: CRL retrieved
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CertificateRevocationListResponseDto'
-        "500":
-          description: Internal Server Error
         "400":
           description: Bad Request
           content:
@@ -702,14 +702,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Revoke certificate attribute list retrieved
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -721,6 +713,14 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "200":
+          description: Revoke certificate attribute list retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseAttributeDto'
         "500":
           description: Internal Server Error
         "400":
