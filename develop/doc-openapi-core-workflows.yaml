@@ -1106,8 +1106,9 @@ components:
         message:
           type: string
           description: Exception message
-    ActionDto:
+    ActionDetailDto:
       required:
+      - executions
       - name
       - resource
       - uuid
@@ -1126,91 +1127,12 @@ components:
           description: Description of the action
         resource:
           $ref: '#/components/schemas/Resource'
+        executions:
+          type: array
+          description: List of executions
+          items:
+            $ref: '#/components/schemas/ExecutionDto'
       description: List of Action Groups in the Rule Trigger
-    RuleDto:
-      required:
-      - name
-      - resource
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the Rule
-        resource:
-          $ref: '#/components/schemas/Resource'
-      description: List of Rules in the Rule Trigger
-    TriggerDetailDto:
-      required:
-      - actions
-      - ignoreTrigger
-      - name
-      - resource
-      - rules
-      - type
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the trigger
-        type:
-          $ref: '#/components/schemas/TriggerType'
-        resource:
-          $ref: '#/components/schemas/Resource'
-        ignoreTrigger:
-          type: boolean
-          description: "Flag if to ignore object when trigger rules are matched and\
-            \ do not perform any actions and stop evaluating other triggers. Based\
-            \ on context could have other implications to object processing. If ignore\
-            \ is set, trigger does not have any actions."
-        event:
-          type: string
-          description: Event that should fire trigger
-          enum:
-          - discoveryFinished
-        eventResource:
-          $ref: '#/components/schemas/Resource'
-        rules:
-          type: array
-          description: List of Rules in the Rule Trigger
-          items:
-            $ref: '#/components/schemas/RuleDto'
-        actions:
-          type: array
-          description: List of Action Groups in the Rule Trigger
-          items:
-            $ref: '#/components/schemas/ActionDto'
-    UpdateRuleRequestDto:
-      required:
-      - conditionsUuids
-      type: object
-      properties:
-        description:
-          type: string
-          description: Description of the Rule
-        conditionsUuids:
-          type: array
-          description: List of UUIDs of existing conditions to add to the rule
-          items:
-            type: string
-            description: List of UUIDs of existing conditions to add to the rule
     ConditionDto:
       required:
       - items
@@ -1264,6 +1186,56 @@ components:
       description: Type of the condition
       enum:
       - checkField
+    ExecutionDto:
+      required:
+      - items
+      - name
+      - resource
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the execution
+        type:
+          $ref: '#/components/schemas/ExecutionType'
+        resource:
+          $ref: '#/components/schemas/Resource'
+        items:
+          type: array
+          description: List of the execution items
+          items:
+            $ref: '#/components/schemas/ExecutionItemDto'
+      description: List of executions
+    ExecutionItemDto:
+      required:
+      - fieldIdentifier
+      - fieldSource
+      type: object
+      properties:
+        fieldSource:
+          $ref: '#/components/schemas/FilterFieldSource'
+        fieldIdentifier:
+          type: string
+          description: Field identifier of the execution item
+        data:
+          type: object
+          description: Data of the execution item
+      description: List of the execution items
+    ExecutionType:
+      type: string
+      description: Type of the execution
+      enum:
+      - setField
     FilterConditionOperator:
       type: string
       description: Operator of the condition item
@@ -1286,7 +1258,7 @@ components:
       - NOT_CHECKED
     FilterFieldSource:
       type: string
-      description: Source of the field in the condition item
+      description: Source of the field in the execution item
       enum:
       - meta
       - custom
@@ -1318,6 +1290,70 @@ components:
           description: List of conditions in the Rule
           items:
             $ref: '#/components/schemas/ConditionDto'
+      description: List of Rules in the Rule Trigger
+    TriggerDetailDto:
+      required:
+      - actions
+      - ignoreTrigger
+      - name
+      - resource
+      - rules
+      - type
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the trigger
+        type:
+          $ref: '#/components/schemas/TriggerType'
+        resource:
+          $ref: '#/components/schemas/Resource'
+        ignoreTrigger:
+          type: boolean
+          description: "Flag if to ignore object when trigger rules are matched and\
+            \ do not perform any actions and stop evaluating other triggers. Based\
+            \ on context could have other implications to object processing. If ignore\
+            \ is set, trigger does not have any actions."
+        event:
+          type: string
+          description: Event that should fire trigger
+          enum:
+          - discoveryFinished
+        eventResource:
+          $ref: '#/components/schemas/Resource'
+        rules:
+          type: array
+          description: List of Rules in the Rule Trigger
+          items:
+            $ref: '#/components/schemas/RuleDetailDto'
+        actions:
+          type: array
+          description: List of Action Groups in the Rule Trigger
+          items:
+            $ref: '#/components/schemas/ActionDetailDto'
+    UpdateRuleRequestDto:
+      required:
+      - conditionsUuids
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the Rule
+        conditionsUuids:
+          type: array
+          description: List of UUIDs of existing conditions to add to the rule
+          items:
+            type: string
+            description: List of UUIDs of existing conditions to add to the rule
     ExecutionItemRequestDto:
       required:
       - fieldIdentifier
@@ -1346,55 +1382,6 @@ components:
           description: List of the execution items to add to execution
           items:
             $ref: '#/components/schemas/ExecutionItemRequestDto'
-    ExecutionDto:
-      required:
-      - items
-      - name
-      - resource
-      - type
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the execution
-        type:
-          $ref: '#/components/schemas/ExecutionType'
-        resource:
-          $ref: '#/components/schemas/Resource'
-        items:
-          type: array
-          description: List of the execution items
-          items:
-            $ref: '#/components/schemas/ExecutionItemDto'
-    ExecutionItemDto:
-      required:
-      - fieldIdentifier
-      - fieldSource
-      type: object
-      properties:
-        fieldSource:
-          $ref: '#/components/schemas/FilterFieldSource'
-        fieldIdentifier:
-          type: string
-          description: Field identifier of the execution item
-        data:
-          type: object
-          description: Data of the execution item
-      description: List of the execution items
-    ExecutionType:
-      type: string
-      description: Type of the execution
-      enum:
-      - setField
     ConditionItemRequestDto:
       required:
       - fieldIdentifier
@@ -1440,32 +1427,6 @@ components:
           items:
             type: string
             description: List of UUIDs of existing executions to add to the action
-    ActionDetailDto:
-      required:
-      - executions
-      - name
-      - resource
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: Object identifier
-          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
-        name:
-          type: string
-          description: Object Name
-          example: Name
-        description:
-          type: string
-          description: Description of the action
-        resource:
-          $ref: '#/components/schemas/Resource'
-        executions:
-          type: array
-          description: List of executions
-          items:
-            $ref: '#/components/schemas/ExecutionDto'
     TriggerRequestDto:
       required:
       - ignoreTrigger
@@ -1784,3 +1745,43 @@ components:
             on.
           items:
             $ref: '#/components/schemas/TriggerHistoryObjectSummaryDto'
+    RuleDto:
+      required:
+      - name
+      - resource
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the Rule
+        resource:
+          $ref: '#/components/schemas/Resource'
+    ActionDto:
+      required:
+      - name
+      - resource
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: Object identifier
+          example: 7b55ge1c-844f-11dc-a8a3-0242ac120002
+        name:
+          type: string
+          description: Object Name
+          example: Name
+        description:
+          type: string
+          description: Description of the action
+        resource:
+          $ref: '#/components/schemas/Resource'
