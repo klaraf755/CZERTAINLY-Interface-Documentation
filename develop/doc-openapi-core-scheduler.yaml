@@ -22,6 +22,66 @@ tags:
 - name: Scheduled Jobs Management
   description: Scheduled Jobs Management API
 paths:
+  /v1/scheduler/jobs/{uuid}:
+    get:
+      tags:
+      - Scheduled Jobs Management
+      summary: Scheduled job detail
+      operationId: getScheduledJobDetail
+      parameters:
+      - name: uuid
+        in: path
+        description: Scheduled job UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Scheduled job detail retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledJobDetailDto'
+    put:
+      tags:
+      - Scheduled Jobs Management
+      summary: Edit Scheduled job
+      operationId: updateScheduledJob
+      parameters:
+      - name: uuid
+        in: path
+        description: Scheduled job UUID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateScheduledJob'
+        required: true
+      responses:
+        "200":
+          description: Scheduled job updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledJobDetailDto'
+    delete:
+      tags:
+      - Scheduled Jobs Management
+      summary: Delete Scheduled job
+      operationId: deleteScheduledJob
+      parameters:
+      - name: uuid
+        in: path
+        description: Scheduled job UUID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Scheduled job deleted
   /v1/scheduler/jobs/{uuid}/enable:
     patch:
       tags:
@@ -73,41 +133,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduledJobsResponseDto'
-  /v1/scheduler/jobs/{uuid}:
-    get:
-      tags:
-      - Scheduled Jobs Management
-      summary: Scheduled job detail
-      operationId: getScheduledJobDetail
-      parameters:
-      - name: uuid
-        in: path
-        description: Scheduled job UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Scheduled job detail retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScheduledJobDetailDto'
-    delete:
-      tags:
-      - Scheduled Jobs Management
-      summary: Delete Scheduled job
-      operationId: deleteScheduledJob
-      parameters:
-      - name: uuid
-        in: path
-        description: Scheduled job UUID
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: Scheduled job deleted
   /v1/scheduler/jobs/{uuid}/history:
     get:
       tags:
@@ -135,6 +160,61 @@ paths:
                 $ref: '#/components/schemas/ScheduledJobHistoryResponseDto'
 components:
   schemas:
+    UpdateScheduledJob:
+      type: object
+      properties:
+        cronExpression:
+          type: string
+          description: Cron expression for job schedule
+    ScheduledJobDetailDto:
+      required:
+      - cronExpression
+      - enabled
+      - jobName
+      - jobType
+      - lastExecutionStatus
+      - oneTime
+      - system
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the scheduled job
+          format: uuid
+        jobName:
+          type: string
+          description: Name of the scheduled job
+        jobType:
+          type: string
+          description: Type of scheduled job (job processor name)
+        cronExpression:
+          type: string
+          description: CRON expression representing configuration of pattern how to
+            run scheduled job
+        enabled:
+          type: boolean
+          description: "Status of the scheduled job. True = Enabled, False = Disabled"
+        oneTime:
+          type: boolean
+          description: Is scheduled job triggered only once
+        system:
+          type: boolean
+          description: Is system scheduled job
+        lastExecutionStatus:
+          $ref: '#/components/schemas/SchedulerJobExecutionStatus'
+        userUuid:
+          type: string
+          format: uuid
+        objectData:
+          type: object
+    SchedulerJobExecutionStatus:
+      type: string
+      description: Execution status of last job triggered task
+      enum:
+      - started
+      - succeeded
+      - failed
     PaginationRequestDto:
       type: object
       properties:
@@ -217,55 +297,6 @@ components:
           description: Scheduled jobs
           items:
             $ref: '#/components/schemas/ScheduledJobDto'
-    SchedulerJobExecutionStatus:
-      type: string
-      description: Execution status of last job triggered task
-      enum:
-      - started
-      - succeeded
-      - failed
-    ScheduledJobDetailDto:
-      required:
-      - cronExpression
-      - enabled
-      - jobName
-      - jobType
-      - lastExecutionStatus
-      - oneTime
-      - system
-      - uuid
-      type: object
-      properties:
-        uuid:
-          type: string
-          description: UUID of the scheduled job
-          format: uuid
-        jobName:
-          type: string
-          description: Name of the scheduled job
-        jobType:
-          type: string
-          description: Type of scheduled job (job processor name)
-        cronExpression:
-          type: string
-          description: CRON expression representing configuration of pattern how to
-            run scheduled job
-        enabled:
-          type: boolean
-          description: "Status of the scheduled job. True = Enabled, False = Disabled"
-        oneTime:
-          type: boolean
-          description: Is scheduled job triggered only once
-        system:
-          type: boolean
-          description: Is system scheduled job
-        lastExecutionStatus:
-          $ref: '#/components/schemas/SchedulerJobExecutionStatus'
-        userUuid:
-          type: string
-          format: uuid
-        objectData:
-          type: object
     Resource:
       type: string
       description: Result object type
