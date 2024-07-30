@@ -5,10 +5,10 @@ info:
   contact:
     name: CZERTAINLY
     url: https://www.czertainly.com
-    email: getinfo@czertainly.com
+    email: info@czertainly.com
   license:
     name: MIT License
-    url: https://github.com/3KeyCompany/CZERTAINLY/blob/develop/LICENSE.md
+    url: https://github.com/CZERTAINLY/CZERTAINLY/blob/develop/LICENSE.md
   version: 2.12.1-SNAPSHOT
   x-logo:
     url: images/czertainly_color_H.svg
@@ -72,6 +72,12 @@ paths:
       responses:
         "200":
           description: Attribute validation completed
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Attribute validation failed
           content:
@@ -83,12 +89,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "500":
           description: Internal Server Error
         "404":
@@ -162,8 +162,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Functions found
           content:
@@ -172,6 +170,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InfoResponse'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -198,8 +198,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes retrieved
           content:
@@ -208,6 +206,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BaseAttributeDto'
+        "500":
+          description: Internal Server Error
         "404":
           description: Not Found
           content:
@@ -221,18 +221,18 @@ paths:
       summary: Health check
       operationId: checkHealth
       responses:
-        "200":
-          description: Health check completed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
+        "200":
+          description: Health check completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthDto'
         "500":
           description: Internal Server Error
         "404":
@@ -261,14 +261,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Rules retrieved successfully
           content:
@@ -277,6 +269,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
   /v1/complianceProvider/{kind}/groups:
     get:
       tags:
@@ -339,14 +339,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Rules retrieved successfully
           content:
@@ -355,6 +347,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComplianceRulesResponseDto'
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
     AttributeCallback:
