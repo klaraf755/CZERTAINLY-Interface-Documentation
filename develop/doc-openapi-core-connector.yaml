@@ -9,14 +9,14 @@ info:
   license:
     name: MIT License
     url: https://github.com/CZERTAINLY/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.12.1-SNAPSHOT
+  version: 2.13.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
   description: CZERTAINLY Documentation
   url: https://docs.czertainly.com
 servers:
-- url: http://localhost:8080
+- url: http://localhost:37867
   description: Generated server url
 tags:
 - name: Connector Management
@@ -42,46 +42,46 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Connector details retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConnectorDto'
-        "503":
-          description: Connector Communication Error
+                $ref: "#/components/schemas/ConnectorDto"
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     put:
       tags:
       - Connector Management
@@ -98,23 +98,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConnectorUpdateRequestDto'
+              $ref: "#/components/schemas/ConnectorUpdateRequestDto"
         required: true
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Connector updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConnectorDto'
+                $ref: "#/components/schemas/ConnectorDto"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -131,27 +131,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Connector Management
@@ -165,40 +165,40 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: Connector deleted
   /v1/connectors/{uuid}/reconnect:
@@ -215,14 +215,22 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
+        "200":
+          description: Reconnect to a Connector
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConnectDto"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -239,35 +247,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Reconnect to a Connector
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ConnectDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/{uuid}/approve:
     put:
       tags:
@@ -282,42 +282,42 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Connector Approved
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "200":
+          description: Connector Approved
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: No Content
   /v1/connectors/reconnect:
@@ -339,42 +339,42 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "204":
+          description: Reconnect multiple Connectors initiated
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Reconnect multiple Connectors initiated
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/connect:
     put:
       tags:
@@ -385,17 +385,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConnectRequestDto'
+              $ref: "#/components/schemas/ConnectRequestDto"
         required: true
       responses:
+        "200":
+          description: Connector connected
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConnectDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -407,40 +415,32 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "200":
-          description: Connector connected
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ConnectDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/approve:
     put:
       tags:
@@ -460,42 +460,42 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
+        "200":
+          description: Approve multiple Connectors
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "200":
-          description: Approve multiple Connectors
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: No Content
   /v1/{resource}/{parentObjectUuid}/callback:
@@ -511,7 +511,7 @@ paths:
         description: Name of the resource
         required: true
         schema:
-          $ref: '#/components/schemas/Resource'
+          $ref: "#/components/schemas/Resource"
       - name: parentObjectUuid
         in: path
         description: Parent Object UUID
@@ -522,7 +522,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestAttributeCallback'
+              $ref: "#/components/schemas/RequestAttributeCallback"
         required: true
       responses:
         "404":
@@ -530,33 +530,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Callback executed
           content:
             application/json:
               schema:
                 type: object
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors:
     get:
       tags:
@@ -568,7 +568,7 @@ paths:
         in: query
         required: false
         schema:
-          $ref: '#/components/schemas/FunctionGroupCode'
+          $ref: "#/components/schemas/FunctionGroupCode"
       - name: kind
         in: query
         required: false
@@ -578,16 +578,8 @@ paths:
         in: query
         required: false
         schema:
-          $ref: '#/components/schemas/ConnectorStatus'
+          $ref: "#/components/schemas/ConnectorStatus"
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: List all Connectors
           content:
@@ -595,33 +587,41 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ConnectorDto'
+                  $ref: "#/components/schemas/ConnectorDto"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     post:
       tags:
       - Connector Management
@@ -631,17 +631,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConnectorRequestDto'
+              $ref: "#/components/schemas/ConnectorRequestDto"
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "200":
+          description: New Connector created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UuidDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -658,33 +664,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "200":
-          description: New Connector created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Connector Management
@@ -710,41 +710,41 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BulkActionMessageDto'
+                  $ref: "#/components/schemas/BulkActionMessageDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessible Entity
           content:
@@ -787,45 +787,45 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/RequestAttributeDto'
+                $ref: "#/components/schemas/RequestAttributeDto"
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "200":
+          description: Attributes Validated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes Validated
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/{uuid}/{functionGroup}/{kind}/callback:
     post:
       tags:
@@ -856,7 +856,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestAttributeCallback'
+              $ref: "#/components/schemas/RequestAttributeCallback"
         required: true
       responses:
         "404":
@@ -864,33 +864,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Callback executed
           content:
             application/json:
               schema:
                 type: object
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/auth/attributes/jwt/validate:
     post:
       tags:
@@ -903,33 +903,33 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/RequestAttributeDto'
+                $ref: "#/components/schemas/RequestAttributeDto"
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: Attributes validated
+        "500":
+          description: Internal Server Error
   /v1/connectors/auth/attributes/certificate/validate:
     post:
       tags:
@@ -942,33 +942,33 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/RequestAttributeDto'
+                $ref: "#/components/schemas/RequestAttributeDto"
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: Attributes validated
+        "500":
+          description: Internal Server Error
   /v1/connectors/auth/attributes/basic/validate:
     post:
       tags:
@@ -981,33 +981,33 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/RequestAttributeDto'
+                $ref: "#/components/schemas/RequestAttributeDto"
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: Attributes validated
+        "500":
+          description: Internal Server Error
   /v1/connectors/auth/attributes/apiKey/validate:
     post:
       tags:
@@ -1020,33 +1020,33 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/RequestAttributeDto'
+                $ref: "#/components/schemas/RequestAttributeDto"
         required: true
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: Attributes validated
+        "500":
+          description: Internal Server Error
   /v1/connector/register:
     post:
       tags:
@@ -1057,7 +1057,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConnectorRequestDto'
+              $ref: "#/components/schemas/ConnectorRequestDto"
         required: true
       responses:
         "404":
@@ -1065,33 +1065,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Connector registration initiated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UuidDto'
+                $ref: "#/components/schemas/UuidDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/{uuid}/health:
     get:
       tags:
@@ -1106,46 +1106,46 @@ paths:
         schema:
           type: string
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Health check completed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthDto'
-        "503":
-          description: Connector Communication Error
+                $ref: "#/components/schemas/HealthDto"
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/{uuid}/attributes:
     get:
       tags:
@@ -1160,14 +1160,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes received
           content:
@@ -1179,33 +1171,41 @@ paths:
                   additionalProperties:
                     type: array
                     items:
-                      $ref: '#/components/schemas/BaseAttributeDto'
+                      $ref: "#/components/schemas/BaseAttributeDto"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/{uuid}/attributes/{functionGroup}/{kind}:
     get:
       tags:
@@ -1224,7 +1224,7 @@ paths:
         description: Function Group name
         required: true
         schema:
-          $ref: '#/components/schemas/FunctionGroupCode'
+          $ref: "#/components/schemas/FunctionGroupCode"
       - name: kind
         in: path
         description: Kind
@@ -1232,14 +1232,6 @@ paths:
         schema:
           type: string
       responses:
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
         "200":
           description: Attributes received
           content:
@@ -1247,33 +1239,41 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
+                  $ref: "#/components/schemas/BaseAttributeDto"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/connectors/auth/types:
     get:
       tags:
@@ -1281,6 +1281,8 @@ paths:
       summary: Get list of Authentication Types
       operationId: getAuthenticationTypes
       responses:
+        "401":
+          description: Unauthorized
         "200":
           description: Auth Types retrieved
           content:
@@ -1294,23 +1296,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
   /v1/connectors/auth/attributes/jwt:
     get:
       tags:
@@ -1318,22 +1318,26 @@ paths:
       summary: Get JWT auth Attributes
       operationId: getJWTAuthAttributes
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: Attributes retrieved
           content:
@@ -1341,13 +1345,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                  $ref: "#/components/schemas/BaseAttributeDto"
+        "500":
+          description: Internal Server Error
   /v1/connectors/auth/attributes/certificate:
     get:
       tags:
@@ -1355,22 +1355,26 @@ paths:
       summary: Get Attributes for certificate auth
       operationId: getCertificateAttributes
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: Attributes retrieved
           content:
@@ -1378,13 +1382,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                  $ref: "#/components/schemas/BaseAttributeDto"
+        "500":
+          description: Internal Server Error
   /v1/connectors/auth/attributes/basic:
     get:
       tags:
@@ -1392,22 +1392,26 @@ paths:
       summary: Get basic auth Attributes
       operationId: getBasicAuthAttributes
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: Attributes retrieved
           content:
@@ -1415,13 +1419,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                  $ref: "#/components/schemas/BaseAttributeDto"
+        "500":
+          description: Internal Server Error
   /v1/connectors/auth/attributes/apiKey:
     get:
       tags:
@@ -1429,22 +1429,26 @@ paths:
       summary: Get API Key auth Attributes
       operationId: getApiKeyAuthAttributes
       responses:
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: Attributes retrieved
           content:
@@ -1452,13 +1456,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                  $ref: "#/components/schemas/BaseAttributeDto"
+        "500":
+          description: Internal Server Error
   /v1/connectors/force:
     delete:
       tags:
@@ -1485,41 +1485,41 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BulkActionMessageDto'
+                  $ref: "#/components/schemas/BulkActionMessageDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessible Entity
           content:
@@ -1551,7 +1551,7 @@ components:
           type: array
           description: Mappings for the callback method
           items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
+            $ref: "#/components/schemas/AttributeCallbackMapping"
       description: Optional definition of callback for getting the content of the
         Attribute based on the action
     AttributeCallbackMapping:
@@ -1566,9 +1566,9 @@ components:
             path variable or request param or body field.It is optional and must be
             set only if value is not set.
         attributeType:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeContentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -1578,7 +1578,7 @@ components:
           type: array
           description: Set of targets for propagating value.
           items:
-            $ref: '#/components/schemas/AttributeValueTarget'
+            $ref: "#/components/schemas/AttributeValueTarget"
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
@@ -1648,16 +1648,16 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: object
           description: Attribute Constraint Data
       description: Optional regular expressions and constraints used for validating
         the Attribute content
       oneOf:
-      - $ref: '#/components/schemas/RegexpAttributeConstraint'
-      - $ref: '#/components/schemas/RangeAttributeConstraint'
-      - $ref: '#/components/schemas/DateTimeAttributeConstraint'
+      - $ref: "#/components/schemas/RegexpAttributeConstraint"
+      - $ref: "#/components/schemas/RangeAttributeConstraint"
+      - $ref: "#/components/schemas/DateTimeAttributeConstraint"
     BaseAttributeContentDto:
       required:
       - data
@@ -1671,19 +1671,19 @@ components:
           description: Content Data
       description: Base Attribute content definition
       oneOf:
-      - $ref: '#/components/schemas/BooleanAttributeContent'
-      - $ref: '#/components/schemas/CodeBlockAttributeContent'
-      - $ref: '#/components/schemas/CredentialAttributeContent'
-      - $ref: '#/components/schemas/DateAttributeContent'
-      - $ref: '#/components/schemas/DateTimeAttributeContent'
-      - $ref: '#/components/schemas/FileAttributeContent'
-      - $ref: '#/components/schemas/FloatAttributeContent'
-      - $ref: '#/components/schemas/IntegerAttributeContent'
-      - $ref: '#/components/schemas/ObjectAttributeContent'
-      - $ref: '#/components/schemas/SecretAttributeContent'
-      - $ref: '#/components/schemas/StringAttributeContent'
-      - $ref: '#/components/schemas/TextAttributeContent'
-      - $ref: '#/components/schemas/TimeAttributeContent'
+      - $ref: "#/components/schemas/BooleanAttributeContent"
+      - $ref: "#/components/schemas/CodeBlockAttributeContent"
+      - $ref: "#/components/schemas/CredentialAttributeContent"
+      - $ref: "#/components/schemas/DateAttributeContent"
+      - $ref: "#/components/schemas/DateTimeAttributeContent"
+      - $ref: "#/components/schemas/FileAttributeContent"
+      - $ref: "#/components/schemas/FloatAttributeContent"
+      - $ref: "#/components/schemas/IntegerAttributeContent"
+      - $ref: "#/components/schemas/ObjectAttributeContent"
+      - $ref: "#/components/schemas/SecretAttributeContent"
+      - $ref: "#/components/schemas/StringAttributeContent"
+      - $ref: "#/components/schemas/TextAttributeContent"
+      - $ref: "#/components/schemas/TimeAttributeContent"
     BooleanAttributeContent:
       required:
       - data
@@ -1704,7 +1704,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CodeBlockAttributeContentData'
+          $ref: "#/components/schemas/CodeBlockAttributeContentData"
     CodeBlockAttributeContentData:
       required:
       - code
@@ -1712,7 +1712,7 @@ components:
       type: object
       properties:
         language:
-          $ref: '#/components/schemas/ProgrammingLanguageEnum'
+          $ref: "#/components/schemas/ProgrammingLanguageEnum"
         code:
           type: string
           description: Block of the code in Base64. Formatting of the code is specified
@@ -1726,18 +1726,18 @@ components:
           description: URL of the Connector to connect
           example: http://network-discovery-provicer:8080
         authType:
-          $ref: '#/components/schemas/AuthType'
+          $ref: "#/components/schemas/AuthType"
         authAttributes:
           type: array
           description: List of authentication Attributes. Required if the authentication
             type is not NONE
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
         customAttributes:
           type: array
           description: List of Custom Attributes
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
     CredentialAttributeContent:
       required:
       - data
@@ -1747,7 +1747,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CredentialAttributeContentData'
+          $ref: "#/components/schemas/CredentialAttributeContentData"
     CredentialAttributeContentData:
       required:
       - attributes
@@ -1772,7 +1772,7 @@ components:
           type: array
           description: List of Credential Attributes
           items:
-            $ref: '#/components/schemas/DataAttribute'
+            $ref: "#/components/schemas/DataAttribute"
       description: Credential attribute content data
     DataAttribute:
       required:
@@ -1799,21 +1799,21 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/DataAttributeProperties'
+          $ref: "#/components/schemas/DataAttributeProperties"
         constraints:
           type: array
           description: Optional regular expressions and constraints used for validating
             the Attribute content
           items:
-            $ref: '#/components/schemas/BaseAttributeConstraint'
+            $ref: "#/components/schemas/BaseAttributeConstraint"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Data attribute allows to store and transfer dynamic data. Its content
         can be edited and send in requests to store.
     DataAttributeProperties:
@@ -1884,9 +1884,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/DateTimeAttributeConstraintData'
+          $ref: "#/components/schemas/DateTimeAttributeConstraintData"
     DateTimeAttributeConstraintData:
       type: object
       properties:
@@ -1920,7 +1920,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/FileAttributeContentData'
+          $ref: "#/components/schemas/FileAttributeContentData"
     FileAttributeContentData:
       required:
       - content
@@ -2031,9 +2031,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/RangeAttributeConstraintData'
+          $ref: "#/components/schemas/RangeAttributeConstraintData"
     RangeAttributeConstraintData:
       type: object
       properties:
@@ -2058,7 +2058,7 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
@@ -2079,12 +2079,12 @@ components:
           description: Name of the Attribute
           example: Attribute
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
@@ -2095,7 +2095,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/SecretAttributeContentData'
+          $ref: "#/components/schemas/SecretAttributeContentData"
     SecretAttributeContentData:
       type: object
       properties:
@@ -2187,25 +2187,25 @@ components:
           type: array
           description: List of Function Groups implemented by the Connector
           items:
-            $ref: '#/components/schemas/FunctionGroupDto'
+            $ref: "#/components/schemas/FunctionGroupDto"
         url:
           type: string
           description: URL of the Connector
           example: http://network-discovery-provider:8080
         authType:
-          $ref: '#/components/schemas/AuthType'
+          $ref: "#/components/schemas/AuthType"
         authAttributes:
           type: array
           description: List of Attributes for the authentication type
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
+            $ref: "#/components/schemas/ResponseAttributeDto"
         status:
-          $ref: '#/components/schemas/ConnectorStatus'
+          $ref: "#/components/schemas/ConnectorStatus"
         customAttributes:
           type: array
           description: List of Custom Attributes
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
+            $ref: "#/components/schemas/ResponseAttributeDto"
     ConnectorStatus:
       type: string
       description: Status of the Connector
@@ -2267,7 +2267,7 @@ components:
       type: object
       properties:
         functionGroupCode:
-          $ref: '#/components/schemas/FunctionGroupCode'
+          $ref: "#/components/schemas/FunctionGroupCode"
         kinds:
           type: array
           description: List of supported functional group kinds
@@ -2283,7 +2283,7 @@ components:
           type: array
           description: List of end points related to functional group
           items:
-            $ref: '#/components/schemas/EndpointDto'
+            $ref: "#/components/schemas/EndpointDto"
         uuid:
           type: string
           description: UUID of the Function Group
@@ -2313,14 +2313,14 @@ components:
           description: Label of the the Attribute
           example: Attribute Name
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Response attribute with content for object it belongs to
     ConnectDto:
       required:
@@ -2328,7 +2328,7 @@ components:
       type: object
       properties:
         functionGroup:
-          $ref: '#/components/schemas/FunctionGroupDto'
+          $ref: "#/components/schemas/FunctionGroupDto"
     ConnectRequestDto:
       required:
       - authType
@@ -2344,13 +2344,13 @@ components:
           description: UUID of the Connector. Mandatory if connection is needed for
             the same Connector
         authType:
-          $ref: '#/components/schemas/AuthType'
+          $ref: "#/components/schemas/AuthType"
         authAttributes:
           type: array
           description: List of authentication Attributes. Required if the authentication
             type is not NONE
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
     Resource:
       type: string
       enum:
@@ -2431,18 +2431,18 @@ components:
           description: URL of the Connector to connect
           example: http://network-discovery-provicer:8080
         authType:
-          $ref: '#/components/schemas/AuthType'
+          $ref: "#/components/schemas/AuthType"
         authAttributes:
           type: array
           description: List of authentication Attributes. Required if the authentication
             type is not NONE
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
         customAttributes:
           type: array
           description: List of Custom Attributes
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
     UuidDto:
       required:
       - uuid
@@ -2457,14 +2457,14 @@ components:
       type: object
       properties:
         status:
-          $ref: '#/components/schemas/HealthStatus'
+          $ref: "#/components/schemas/HealthStatus"
         description:
           type: string
           description: Detailed status description
         parts:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/HealthDto'
+            $ref: "#/components/schemas/HealthDto"
           description: Nested status of services
     HealthStatus:
       type: string
@@ -2493,7 +2493,7 @@ components:
           description: "Optional description of the Attribute, should contain helper\
             \ text on what is expected"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         content:
           type: object
           description: Content of the Attribute
@@ -2501,17 +2501,17 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          data: '#/components/schemas/DataAttribute'
-          info: '#/components/schemas/InfoAttribute'
-          group: '#/components/schemas/GroupAttribute'
-          meta: '#/components/schemas/MetadataAttribute'
-          custom: '#/components/schemas/CustomAttribute'
+          data: "#/components/schemas/DataAttribute"
+          info: "#/components/schemas/InfoAttribute"
+          group: "#/components/schemas/GroupAttribute"
+          meta: "#/components/schemas/MetadataAttribute"
+          custom: "#/components/schemas/CustomAttribute"
       oneOf:
-      - $ref: '#/components/schemas/DataAttribute'
-      - $ref: '#/components/schemas/InfoAttribute'
-      - $ref: '#/components/schemas/GroupAttribute'
-      - $ref: '#/components/schemas/MetadataAttribute'
-      - $ref: '#/components/schemas/CustomAttribute'
+      - $ref: "#/components/schemas/DataAttribute"
+      - $ref: "#/components/schemas/InfoAttribute"
+      - $ref: "#/components/schemas/GroupAttribute"
+      - $ref: "#/components/schemas/MetadataAttribute"
+      - $ref: "#/components/schemas/CustomAttribute"
     CustomAttribute:
       required:
       - contentType
@@ -2537,13 +2537,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/CustomAttributeProperties'
+          $ref: "#/components/schemas/CustomAttributeProperties"
       description: Custom attribute allows to store and transfer dynamic data. Its
         content can be edited and send in requests to store.
     CustomAttributeProperties:
@@ -2613,11 +2613,11 @@ components:
           type: array
           description: List of all different types of attributes
           items:
-            $ref: '#/components/schemas/BaseAttributeDto'
+            $ref: "#/components/schemas/BaseAttributeDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Group attribute and its content represents dynamic list of additional
         attributes retrieved by callback. Its content can not be edited and is not
         send in requests to store.
@@ -2647,13 +2647,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/InfoAttributeProperties'
+          $ref: "#/components/schemas/InfoAttributeProperties"
       description: Info attribute contains content that is for information purpose
         or represents additional information for object (metadata). Its content can
         not be edited and is not send in requests to store.
@@ -2704,13 +2704,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/MetadataAttributeProperties'
+          $ref: "#/components/schemas/MetadataAttributeProperties"
       description: Info attribute contains content that is for metadata. Its content
         can not be edited and is not send in requests to store.
     MetadataAttributeProperties:

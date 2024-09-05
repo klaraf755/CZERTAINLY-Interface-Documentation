@@ -9,14 +9,14 @@ info:
   license:
     name: MIT License
     url: https://github.com/CZERTAINLY/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.12.1-SNAPSHOT
+  version: 2.13.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
   description: CZERTAINLY Documentation
   url: https://docs.czertainly.com
 servers:
-- url: http://localhost:8080
+- url: http://localhost:36127
   description: Generated server url
 tags:
 - name: Compliance Profile Management
@@ -29,12 +29,6 @@ paths:
       summary: List of available Compliance Profiles
       operationId: listComplianceProfiles
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Compliance Profiles retrieved
           content:
@@ -42,35 +36,41 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ComplianceProfilesListDto'
-        "401":
-          description: Unauthorized
+                  $ref: "#/components/schemas/ComplianceProfilesListDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
     post:
       tags:
       - Compliance Profile Management
@@ -80,15 +80,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ComplianceProfileRequestDto'
+              $ref: "#/components/schemas/ComplianceProfileRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -100,40 +94,46 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "201":
-          description: New Compliance profile added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "201":
+          description: New Compliance profile added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UuidDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Compliance Profile Management
@@ -152,14 +152,18 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Compliance Profiles deleted
           content:
@@ -167,25 +171,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BulkActionMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                  $ref: "#/components/schemas/BulkActionMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessible Entity
           content:
@@ -197,14 +191,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/complianceProfiles/{uuid}/rules:
     post:
       tags:
@@ -222,15 +222,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ComplianceRuleAdditionRequestDto'
+              $ref: "#/components/schemas/ComplianceRuleAdditionRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -242,40 +236,46 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: New rule added to the profile
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ComplianceProfileRuleDto'
+                $ref: "#/components/schemas/ComplianceProfileRuleDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Compliance Profile Management
@@ -292,15 +292,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ComplianceRuleDeletionRequestDto'
+              $ref: "#/components/schemas/ComplianceRuleDeletionRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -312,36 +306,42 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: New group is added to the profile
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/complianceProfiles/{uuid}/groups:
     post:
       tags:
@@ -359,15 +359,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ComplianceGroupRequestDto'
+              $ref: "#/components/schemas/ComplianceGroupRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -379,36 +373,42 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
+        "204":
+          description: New group is deleted from the profile
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: New group is deleted from the profile
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Compliance Profile Management
@@ -425,15 +425,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ComplianceGroupRequestDto'
+              $ref: "#/components/schemas/ComplianceGroupRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -445,36 +439,42 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: New rule is added to the profile
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/complianceProfiles/compliance:
     post:
       tags:
@@ -494,42 +494,42 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
-        "204":
-          description: Compliance check initiated
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "204":
+          description: Compliance check initiated
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/complianceProfiles/{uuid}/raProfiles/disassociate:
     patch:
       tags:
@@ -547,15 +547,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RaProfileAssociationRequestDto'
+              $ref: "#/components/schemas/RaProfileAssociationRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -567,36 +561,42 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: RA Profile disassociation successful
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: No Content
   /v1/complianceProfiles/{uuid}/raProfiles/associate:
@@ -616,15 +616,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RaProfileAssociationRequestDto'
+              $ref: "#/components/schemas/RaProfileAssociationRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -636,36 +630,42 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "200":
-          description: RA Profile association successful
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "200":
+          description: RA Profile association successful
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: No Content
   /v1/complianceProfiles/{uuid}:
@@ -682,46 +682,46 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: Compliance Profile details retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ComplianceProfileDto'
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "200":
+          description: Compliance Profile details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComplianceProfileDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Compliance Profile Management
@@ -735,42 +735,42 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "401":
-          description: Unauthorized
-        "204":
-          description: Compliance Profile deleted
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "204":
+          description: Compliance Profile deleted
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/complianceProfiles/{uuid}/raProfiles:
     get:
       tags:
@@ -785,12 +785,6 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: RA Profiles retrieved
           content:
@@ -798,35 +792,41 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SimplifiedRaProfileDto'
-        "401":
-          description: Unauthorized
+                  $ref: "#/components/schemas/SimplifiedRaProfileDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/complianceProfiles/rules:
     get:
       tags:
@@ -850,14 +850,8 @@ paths:
         schema:
           type: array
           items:
-            $ref: '#/components/schemas/CertificateType'
+            $ref: "#/components/schemas/CertificateType"
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -869,32 +863,34 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "200":
           description: Compliance rules retrieved
           content:
@@ -902,9 +898,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ComplianceRulesListResponseDto'
-        "500":
-          description: Internal Server Error
+                  $ref: "#/components/schemas/ComplianceRulesListResponseDto"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/complianceProfiles/groups:
     get:
       tags:
@@ -923,12 +923,6 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -940,26 +934,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Compliance groups retrieved
           content:
@@ -967,15 +961,21 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ComplianceGroupsListResponseDto'
+                  $ref: "#/components/schemas/ComplianceGroupsListResponseDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/complianceProfiles/force:
     delete:
       tags:
@@ -991,12 +991,6 @@ paths:
                 type: string
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Compliance Profiles forced to delete
           content:
@@ -1004,27 +998,27 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BulkActionMessageDto'
-        "401":
-          description: Unauthorized
+                  $ref: "#/components/schemas/BulkActionMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessible Entity
           content:
@@ -1036,14 +1030,20 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
 components:
   schemas:
     AttributeCallback:
@@ -1064,7 +1064,7 @@ components:
           type: array
           description: Mappings for the callback method
           items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
+            $ref: "#/components/schemas/AttributeCallbackMapping"
       description: Optional definition of callback for getting the content of the
         Attribute based on the action
     AttributeCallbackMapping:
@@ -1079,9 +1079,9 @@ components:
             path variable or request param or body field.It is optional and must be
             set only if value is not set.
         attributeType:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeContentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -1091,7 +1091,7 @@ components:
           type: array
           description: Set of targets for propagating value.
           items:
-            $ref: '#/components/schemas/AttributeValueTarget'
+            $ref: "#/components/schemas/AttributeValueTarget"
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
@@ -1151,16 +1151,16 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: object
           description: Attribute Constraint Data
       description: Optional regular expressions and constraints used for validating
         the Attribute content
       oneOf:
-      - $ref: '#/components/schemas/RegexpAttributeConstraint'
-      - $ref: '#/components/schemas/RangeAttributeConstraint'
-      - $ref: '#/components/schemas/DateTimeAttributeConstraint'
+      - $ref: "#/components/schemas/RegexpAttributeConstraint"
+      - $ref: "#/components/schemas/RangeAttributeConstraint"
+      - $ref: "#/components/schemas/DateTimeAttributeConstraint"
     BaseAttributeContentDto:
       required:
       - data
@@ -1174,19 +1174,19 @@ components:
           description: Content Data
       description: Base Attribute content definition
       oneOf:
-      - $ref: '#/components/schemas/BooleanAttributeContent'
-      - $ref: '#/components/schemas/CodeBlockAttributeContent'
-      - $ref: '#/components/schemas/CredentialAttributeContent'
-      - $ref: '#/components/schemas/DateAttributeContent'
-      - $ref: '#/components/schemas/DateTimeAttributeContent'
-      - $ref: '#/components/schemas/FileAttributeContent'
-      - $ref: '#/components/schemas/FloatAttributeContent'
-      - $ref: '#/components/schemas/IntegerAttributeContent'
-      - $ref: '#/components/schemas/ObjectAttributeContent'
-      - $ref: '#/components/schemas/SecretAttributeContent'
-      - $ref: '#/components/schemas/StringAttributeContent'
-      - $ref: '#/components/schemas/TextAttributeContent'
-      - $ref: '#/components/schemas/TimeAttributeContent'
+      - $ref: "#/components/schemas/BooleanAttributeContent"
+      - $ref: "#/components/schemas/CodeBlockAttributeContent"
+      - $ref: "#/components/schemas/CredentialAttributeContent"
+      - $ref: "#/components/schemas/DateAttributeContent"
+      - $ref: "#/components/schemas/DateTimeAttributeContent"
+      - $ref: "#/components/schemas/FileAttributeContent"
+      - $ref: "#/components/schemas/FloatAttributeContent"
+      - $ref: "#/components/schemas/IntegerAttributeContent"
+      - $ref: "#/components/schemas/ObjectAttributeContent"
+      - $ref: "#/components/schemas/SecretAttributeContent"
+      - $ref: "#/components/schemas/StringAttributeContent"
+      - $ref: "#/components/schemas/TextAttributeContent"
+      - $ref: "#/components/schemas/TimeAttributeContent"
     BooleanAttributeContent:
       required:
       - data
@@ -1207,7 +1207,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CodeBlockAttributeContentData'
+          $ref: "#/components/schemas/CodeBlockAttributeContentData"
     CodeBlockAttributeContentData:
       required:
       - code
@@ -1215,7 +1215,7 @@ components:
       type: object
       properties:
         language:
-          $ref: '#/components/schemas/ProgrammingLanguageEnum'
+          $ref: "#/components/schemas/ProgrammingLanguageEnum"
         code:
           type: string
           description: Block of the code in Base64. Formatting of the code is specified
@@ -1239,12 +1239,12 @@ components:
           description: Rules to be associated with the Compliance Profile. Profiles
             can be created without rules and can be added later
           items:
-            $ref: '#/components/schemas/ComplianceProfileRulesRequestDto'
+            $ref: "#/components/schemas/ComplianceProfileRulesRequestDto"
         customAttributes:
           type: array
           description: List of Custom Attributes
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
     ComplianceProfileRulesRequestDto:
       required:
       - connectorUuid
@@ -1263,7 +1263,7 @@ components:
           type: array
           description: Rules for new Compliance Profiles
           items:
-            $ref: '#/components/schemas/ComplianceRequestRulesDto'
+            $ref: "#/components/schemas/ComplianceRequestRulesDto"
         groups:
           type: array
           description: Groups for Compliance Profile
@@ -1285,7 +1285,7 @@ components:
           type: array
           description: Attributes for the rule
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
       description: Rules for new Compliance Profiles
     CredentialAttributeContent:
       required:
@@ -1296,7 +1296,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CredentialAttributeContentData'
+          $ref: "#/components/schemas/CredentialAttributeContentData"
     CredentialAttributeContentData:
       required:
       - attributes
@@ -1321,7 +1321,7 @@ components:
           type: array
           description: List of Credential Attributes
           items:
-            $ref: '#/components/schemas/DataAttribute'
+            $ref: "#/components/schemas/DataAttribute"
       description: Credential attribute content data
     DataAttribute:
       required:
@@ -1348,21 +1348,21 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/DataAttributeProperties'
+          $ref: "#/components/schemas/DataAttributeProperties"
         constraints:
           type: array
           description: Optional regular expressions and constraints used for validating
             the Attribute content
           items:
-            $ref: '#/components/schemas/BaseAttributeConstraint'
+            $ref: "#/components/schemas/BaseAttributeConstraint"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Data attribute allows to store and transfer dynamic data. Its content
         can be edited and send in requests to store.
     DataAttributeProperties:
@@ -1433,9 +1433,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/DateTimeAttributeConstraintData'
+          $ref: "#/components/schemas/DateTimeAttributeConstraintData"
     DateTimeAttributeConstraintData:
       type: object
       properties:
@@ -1469,7 +1469,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/FileAttributeContentData'
+          $ref: "#/components/schemas/FileAttributeContentData"
     FileAttributeContentData:
       required:
       - content
@@ -1580,9 +1580,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/RangeAttributeConstraintData'
+          $ref: "#/components/schemas/RangeAttributeConstraintData"
     RangeAttributeConstraintData:
       type: object
       properties:
@@ -1607,7 +1607,7 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
@@ -1628,12 +1628,12 @@ components:
           description: Name of the Attribute
           example: Attribute
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
@@ -1644,7 +1644,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/SecretAttributeContentData'
+          $ref: "#/components/schemas/SecretAttributeContentData"
     SecretAttributeContentData:
       type: object
       properties:
@@ -1688,6 +1688,15 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -1705,15 +1714,6 @@ components:
         message:
           type: string
           description: Exception message
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     UuidDto:
       required:
       - uuid
@@ -1745,7 +1745,7 @@ components:
           type: array
           description: Attributes for the rule
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
     CertificateType:
       type: string
       description: Certificate type for the rule
@@ -1791,12 +1791,12 @@ components:
           type: string
           description: Group UUID
         certificateType:
-          $ref: '#/components/schemas/CertificateType'
+          $ref: "#/components/schemas/CertificateType"
         attributes:
           type: array
           description: List of attributes for the rule
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
+            $ref: "#/components/schemas/ResponseAttributeDto"
         complianceProfileUuid:
           type: string
           description: UUID of the Compliance Profile
@@ -1824,14 +1824,14 @@ components:
           description: Label of the the Attribute
           example: Attribute Name
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Response attribute with content for object it belongs to
     ComplianceGroupRequestDto:
       required:
@@ -1890,7 +1890,7 @@ components:
           type: array
           description: Rules summary
           items:
-            $ref: '#/components/schemas/ComplianceProviderSummaryDto'
+            $ref: "#/components/schemas/ComplianceProviderSummaryDto"
     ComplianceProviderSummaryDto:
       required:
       - connectorName
@@ -1924,7 +1924,7 @@ components:
           type: array
           description: Groups associated
           items:
-            $ref: '#/components/schemas/ComplianceGroupsDto'
+            $ref: "#/components/schemas/ComplianceGroupsDto"
       description: List of groups
     ComplianceConnectorAndRulesDto:
       type: object
@@ -1942,7 +1942,7 @@ components:
           type: array
           description: Rules associated
           items:
-            $ref: '#/components/schemas/ComplianceRulesDto'
+            $ref: "#/components/schemas/ComplianceRulesDto"
       description: List of rules
     ComplianceGroupsDto:
       required:
@@ -1986,22 +1986,22 @@ components:
           type: array
           description: List of rules
           items:
-            $ref: '#/components/schemas/ComplianceConnectorAndRulesDto'
+            $ref: "#/components/schemas/ComplianceConnectorAndRulesDto"
         groups:
           type: array
           description: List of groups
           items:
-            $ref: '#/components/schemas/ComplianceConnectorAndGroupsDto'
+            $ref: "#/components/schemas/ComplianceConnectorAndGroupsDto"
         raProfiles:
           type: array
           description: List of associated RA Profiles
           items:
-            $ref: '#/components/schemas/SimplifiedRaProfileDto'
+            $ref: "#/components/schemas/SimplifiedRaProfileDto"
         customAttributes:
           type: array
           description: List of Custom Attributes
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
+            $ref: "#/components/schemas/ResponseAttributeDto"
     ComplianceRulesDto:
       required:
       - certificateType
@@ -2022,12 +2022,12 @@ components:
           description: Description of the rule
           example: Sample rule description
         certificateType:
-          $ref: '#/components/schemas/CertificateType'
+          $ref: "#/components/schemas/CertificateType"
         attributes:
           type: array
           description: Attributes of the rule
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
+            $ref: "#/components/schemas/ResponseAttributeDto"
       description: Rules associated
     SimplifiedRaProfileDto:
       required:
@@ -2071,7 +2071,7 @@ components:
           description: "Optional description of the Attribute, should contain helper\
             \ text on what is expected"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         content:
           type: object
           description: Content of the Attribute
@@ -2079,17 +2079,17 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          data: '#/components/schemas/DataAttribute'
-          info: '#/components/schemas/InfoAttribute'
-          group: '#/components/schemas/GroupAttribute'
-          meta: '#/components/schemas/MetadataAttribute'
-          custom: '#/components/schemas/CustomAttribute'
+          data: "#/components/schemas/DataAttribute"
+          info: "#/components/schemas/InfoAttribute"
+          group: "#/components/schemas/GroupAttribute"
+          meta: "#/components/schemas/MetadataAttribute"
+          custom: "#/components/schemas/CustomAttribute"
       oneOf:
-      - $ref: '#/components/schemas/DataAttribute'
-      - $ref: '#/components/schemas/InfoAttribute'
-      - $ref: '#/components/schemas/GroupAttribute'
-      - $ref: '#/components/schemas/MetadataAttribute'
-      - $ref: '#/components/schemas/CustomAttribute'
+      - $ref: "#/components/schemas/DataAttribute"
+      - $ref: "#/components/schemas/InfoAttribute"
+      - $ref: "#/components/schemas/GroupAttribute"
+      - $ref: "#/components/schemas/MetadataAttribute"
+      - $ref: "#/components/schemas/CustomAttribute"
     ComplianceRulesListResponseDto:
       required:
       - connectorName
@@ -2114,7 +2114,7 @@ components:
           type: array
           description: Rules from Compliance Provider
           items:
-            $ref: '#/components/schemas/ComplianceRulesResponseDto'
+            $ref: "#/components/schemas/ComplianceRulesResponseDto"
     ComplianceRulesResponseDto:
       required:
       - certificateType
@@ -2135,12 +2135,12 @@ components:
           description: Name of the rule
           example: Rule1
         certificateType:
-          $ref: '#/components/schemas/CertificateType'
+          $ref: "#/components/schemas/CertificateType"
         attributes:
           type: array
           description: Rule attributes
           items:
-            $ref: '#/components/schemas/BaseAttributeDto'
+            $ref: "#/components/schemas/BaseAttributeDto"
         description:
           type: string
           description: Description of the rule
@@ -2171,13 +2171,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/CustomAttributeProperties'
+          $ref: "#/components/schemas/CustomAttributeProperties"
       description: Custom attribute allows to store and transfer dynamic data. Its
         content can be edited and send in requests to store.
     CustomAttributeProperties:
@@ -2247,11 +2247,11 @@ components:
           type: array
           description: List of all different types of attributes
           items:
-            $ref: '#/components/schemas/BaseAttributeDto'
+            $ref: "#/components/schemas/BaseAttributeDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Group attribute and its content represents dynamic list of additional
         attributes retrieved by callback. Its content can not be edited and is not
         send in requests to store.
@@ -2281,13 +2281,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/InfoAttributeProperties'
+          $ref: "#/components/schemas/InfoAttributeProperties"
       description: Info attribute contains content that is for information purpose
         or represents additional information for object (metadata). Its content can
         not be edited and is not send in requests to store.
@@ -2338,13 +2338,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/MetadataAttributeProperties'
+          $ref: "#/components/schemas/MetadataAttributeProperties"
       description: Info attribute contains content that is for metadata. Its content
         can not be edited and is not send in requests to store.
     MetadataAttributeProperties:
@@ -2401,7 +2401,7 @@ components:
           type: array
           description: Groups from Compliance Provider
           items:
-            $ref: '#/components/schemas/ComplianceGroupsResponseDto'
+            $ref: "#/components/schemas/ComplianceGroupsResponseDto"
     ComplianceGroupsResponseDto:
       required:
       - name

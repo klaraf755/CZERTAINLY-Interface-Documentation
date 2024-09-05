@@ -9,14 +9,14 @@ info:
   license:
     name: MIT License
     url: https://github.com/CZERTAINLY/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.12.1-SNAPSHOT
+  version: 2.13.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
   description: CZERTAINLY Documentation
   url: https://docs.czertainly.com
 servers:
-- url: http://localhost:8080
+- url: http://localhost:43763
   description: Generated server url
 tags:
 - name: Client Operations v2
@@ -44,42 +44,42 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+        "200":
+          description: End Entity password reset
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "200":
-          description: End Entity password reset
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates:
     post:
       tags:
@@ -103,35 +103,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientCertificateSignRequestDto'
+              $ref: "#/components/schemas/ClientCertificateSignRequestDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "200":
+          description: Certificate issued
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ClientCertificateDataResponseDto"
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -143,20 +137,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "200":
-          description: Certificate issued
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "503":
-          description: Connector Communication Error
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/revoke:
     post:
       tags:
@@ -186,45 +186,45 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientCertificateRevocationDto'
+              $ref: "#/components/schemas/ClientCertificateRevocationDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
+        "204":
+          description: Certificate revoked
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "204":
-          description: Certificate revoked
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/renew:
     post:
       tags:
@@ -254,35 +254,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientCertificateRenewRequestDto'
+              $ref: "#/components/schemas/ClientCertificateRenewRequestDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "200":
+          description: Certificate renewed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ClientCertificateDataResponseDto"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -294,20 +288,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "200":
-          description: Certificate renewed
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "503":
-          description: Connector Communication Error
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/rekey:
     post:
       tags:
@@ -337,41 +337,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientCertificateRekeyRequestDto'
+              $ref: "#/components/schemas/ClientCertificateRekeyRequestDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Certificate regenerated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
+                $ref: "#/components/schemas/ClientCertificateDataResponseDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -383,14 +371,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/certificates/{certificateUuid}/issue:
     post:
       tags:
@@ -417,32 +417,26 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "200":
+          description: Certificate issued
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ClientCertificateDataResponseDto"
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -454,20 +448,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "200":
-          description: Certificate issued
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientCertificateDataResponseDto'
-        "503":
-          description: Connector Communication Error
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke/validate:
     post:
       tags:
@@ -493,45 +493,45 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/RequestAttributeDto'
+                $ref: "#/components/schemas/RequestAttributeDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Attributes validated
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue/validate:
     post:
       tags:
@@ -557,35 +557,25 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/RequestAttributeDto'
+                $ref: "#/components/schemas/RequestAttributeDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "200":
+          description: Attributes validated
         "422":
           description: Unprocessable Entity
           content:
@@ -597,16 +587,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Attributes validated
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/operations/{raProfileName}/endentity:
     get:
       tags:
@@ -621,30 +621,8 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
+        "401":
+          description: Unauthorized
         "200":
           description: List of entities retrieved
           content:
@@ -652,17 +630,39 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ClientEndEntityDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                  $ref: "#/components/schemas/ClientEndEntityDto"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     post:
       tags:
       - Legacy Client Operations
@@ -679,37 +679,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientAddEndEntityRequestDto'
+              $ref: "#/components/schemas/ClientAddEndEntityRequestDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: End Entity added
         "503":
@@ -717,7 +697,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/operations/{raProfileName}/endentity/{username}:
     get:
       tags:
@@ -738,32 +738,6 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
         "401":
           description: Unauthorized
         "200":
@@ -771,13 +745,39 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientEndEntityDto'
+                $ref: "#/components/schemas/ClientEndEntityDto"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     post:
       tags:
       - Legacy Client Operations
@@ -800,37 +800,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClientEditEndEntityRequestDto'
+              $ref: "#/components/schemas/ClientEditEndEntityRequestDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: End Entity edited
         "503":
@@ -838,7 +818,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Legacy Client Operations
@@ -858,34 +858,14 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: End Entity revoked and deleted
         "503":
@@ -893,7 +873,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/operations/{raProfileName}/certificate/revoke:
     post:
       tags:
@@ -911,37 +911,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LegacyClientCertificateRevocationDto'
+              $ref: "#/components/schemas/LegacyClientCertificateRevocationDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Certificate revoked
         "503":
@@ -949,7 +929,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/operations/{raProfileName}/certificate/issue:
     post:
       tags:
@@ -967,49 +967,49 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LegacyClientCertificateSignRequestDto'
+              $ref: "#/components/schemas/LegacyClientCertificateSignRequestDto"
         required: true
       responses:
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Certificate issued
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientCertificateSignResponseDto'
+                $ref: "#/components/schemas/ClientCertificateSignResponseDto"
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke:
     get:
       tags:
@@ -1037,41 +1037,41 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                  $ref: "#/components/schemas/BaseAttributeDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
-        "401":
-          description: Unauthorized
+                $ref: "#/components/schemas/ErrorMessageDto"
         "503":
           description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue:
     get:
       tags:
@@ -1092,32 +1092,28 @@ paths:
         schema:
           type: string
       responses:
-        "400":
-          description: Bad Request
+        "401":
+          description: Unauthorized
+        "200":
+          description: Attributes list obtained
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                type: array
+                items:
+                  $ref: "#/components/schemas/BaseAttributeDto"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "403":
-          description: Forbidden
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -1129,22 +1125,26 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "200":
-          description: Attributes list obtained
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
-        "401":
-          description: Unauthorized
-        "503":
-          description: Connector Communication Error
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
 components:
   schemas:
     ErrorMessageDto:
@@ -1191,7 +1191,7 @@ components:
           type: array
           description: Mappings for the callback method
           items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
+            $ref: "#/components/schemas/AttributeCallbackMapping"
       description: Optional definition of callback for getting the content of the
         Attribute based on the action
     AttributeCallbackMapping:
@@ -1206,9 +1206,9 @@ components:
             path variable or request param or body field.It is optional and must be
             set only if value is not set.
         attributeType:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeContentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -1218,7 +1218,7 @@ components:
           type: array
           description: Set of targets for propagating value.
           items:
-            $ref: '#/components/schemas/AttributeValueTarget'
+            $ref: "#/components/schemas/AttributeValueTarget"
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
@@ -1278,16 +1278,16 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: object
           description: Attribute Constraint Data
       description: Optional regular expressions and constraints used for validating
         the Attribute content
       oneOf:
-      - $ref: '#/components/schemas/RegexpAttributeConstraint'
-      - $ref: '#/components/schemas/RangeAttributeConstraint'
-      - $ref: '#/components/schemas/DateTimeAttributeConstraint'
+      - $ref: "#/components/schemas/RegexpAttributeConstraint"
+      - $ref: "#/components/schemas/RangeAttributeConstraint"
+      - $ref: "#/components/schemas/DateTimeAttributeConstraint"
     BaseAttributeContentDto:
       required:
       - data
@@ -1301,19 +1301,19 @@ components:
           description: Content Data
       description: Base Attribute content definition
       oneOf:
-      - $ref: '#/components/schemas/BooleanAttributeContent'
-      - $ref: '#/components/schemas/CodeBlockAttributeContent'
-      - $ref: '#/components/schemas/CredentialAttributeContent'
-      - $ref: '#/components/schemas/DateAttributeContent'
-      - $ref: '#/components/schemas/DateTimeAttributeContent'
-      - $ref: '#/components/schemas/FileAttributeContent'
-      - $ref: '#/components/schemas/FloatAttributeContent'
-      - $ref: '#/components/schemas/IntegerAttributeContent'
-      - $ref: '#/components/schemas/ObjectAttributeContent'
-      - $ref: '#/components/schemas/SecretAttributeContent'
-      - $ref: '#/components/schemas/StringAttributeContent'
-      - $ref: '#/components/schemas/TextAttributeContent'
-      - $ref: '#/components/schemas/TimeAttributeContent'
+      - $ref: "#/components/schemas/BooleanAttributeContent"
+      - $ref: "#/components/schemas/CodeBlockAttributeContent"
+      - $ref: "#/components/schemas/CredentialAttributeContent"
+      - $ref: "#/components/schemas/DateAttributeContent"
+      - $ref: "#/components/schemas/DateTimeAttributeContent"
+      - $ref: "#/components/schemas/FileAttributeContent"
+      - $ref: "#/components/schemas/FloatAttributeContent"
+      - $ref: "#/components/schemas/IntegerAttributeContent"
+      - $ref: "#/components/schemas/ObjectAttributeContent"
+      - $ref: "#/components/schemas/SecretAttributeContent"
+      - $ref: "#/components/schemas/StringAttributeContent"
+      - $ref: "#/components/schemas/TextAttributeContent"
+      - $ref: "#/components/schemas/TimeAttributeContent"
     BooleanAttributeContent:
       required:
       - data
@@ -1342,17 +1342,17 @@ components:
           type: array
           description: List of attributes to create CSR. Required if CSR is not provided
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
         signatureAttributes:
           type: array
           description: List of attributes to sign the CSR
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
         request:
           type: string
           description: Certificate signing request encoded as Base64 string
         format:
-          $ref: '#/components/schemas/CertificateRequestFormat'
+          $ref: "#/components/schemas/CertificateRequestFormat"
         tokenProfileUuid:
           type: string
           description: Token Profile UUID. Required if CSR is not uploaded
@@ -1365,12 +1365,12 @@ components:
           type: array
           description: List of RA Profile related Attributes to issue Certificate
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
         customAttributes:
           type: array
           description: List of Custom Attributes
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
     CodeBlockAttributeContent:
       required:
       - data
@@ -1380,7 +1380,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CodeBlockAttributeContentData'
+          $ref: "#/components/schemas/CodeBlockAttributeContentData"
     CodeBlockAttributeContentData:
       required:
       - code
@@ -1388,7 +1388,7 @@ components:
       type: object
       properties:
         language:
-          $ref: '#/components/schemas/ProgrammingLanguageEnum'
+          $ref: "#/components/schemas/ProgrammingLanguageEnum"
         code:
           type: string
           description: Block of the code in Base64. Formatting of the code is specified
@@ -1403,7 +1403,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CredentialAttributeContentData'
+          $ref: "#/components/schemas/CredentialAttributeContentData"
     CredentialAttributeContentData:
       required:
       - attributes
@@ -1428,7 +1428,7 @@ components:
           type: array
           description: List of Credential Attributes
           items:
-            $ref: '#/components/schemas/DataAttribute'
+            $ref: "#/components/schemas/DataAttribute"
       description: Credential attribute content data
     DataAttribute:
       required:
@@ -1455,21 +1455,21 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/DataAttributeProperties'
+          $ref: "#/components/schemas/DataAttributeProperties"
         constraints:
           type: array
           description: Optional regular expressions and constraints used for validating
             the Attribute content
           items:
-            $ref: '#/components/schemas/BaseAttributeConstraint'
+            $ref: "#/components/schemas/BaseAttributeConstraint"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Data attribute allows to store and transfer dynamic data. Its content
         can be edited and send in requests to store.
     DataAttributeProperties:
@@ -1540,9 +1540,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/DateTimeAttributeConstraintData'
+          $ref: "#/components/schemas/DateTimeAttributeConstraintData"
     DateTimeAttributeConstraintData:
       type: object
       properties:
@@ -1576,7 +1576,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/FileAttributeContentData'
+          $ref: "#/components/schemas/FileAttributeContentData"
     FileAttributeContentData:
       required:
       - content
@@ -1687,9 +1687,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/RangeAttributeConstraintData'
+          $ref: "#/components/schemas/RangeAttributeConstraintData"
     RangeAttributeConstraintData:
       type: object
       properties:
@@ -1714,7 +1714,7 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
@@ -1735,12 +1735,12 @@ components:
           description: Name of the Attribute
           example: Attribute
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
@@ -1751,7 +1751,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/SecretAttributeContentData'
+          $ref: "#/components/schemas/SecretAttributeContentData"
     SecretAttributeContentData:
       type: object
       properties:
@@ -1826,12 +1826,12 @@ components:
       type: object
       properties:
         reason:
-          $ref: '#/components/schemas/CertificateRevocationReason'
+          $ref: "#/components/schemas/CertificateRevocationReason"
         attributes:
           type: array
           description: List of Attributes to revoke Certificate
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
         destroyKey:
           type: boolean
           description: Destroy Key upon successful revocation
@@ -1848,7 +1848,7 @@ components:
           description: "Certificate signing request encoded as Base64 string. If not\
             \ provided, Existing CSR will be used"
         format:
-          $ref: '#/components/schemas/CertificateRequestFormat'
+          $ref: "#/components/schemas/CertificateRequestFormat"
     ClientCertificateRekeyRequestDto:
       required:
       - keyUuid
@@ -1864,7 +1864,7 @@ components:
           description: "Certificate signing request encoded as Base64 string. If not\
             \ provided, CSR attributes will be used"
         format:
-          $ref: '#/components/schemas/CertificateRequestFormat'
+          $ref: "#/components/schemas/CertificateRequestFormat"
         keyUuid:
           type: string
           description: Key UUID
@@ -1878,7 +1878,7 @@ components:
           description: "Signature Attributes. If not provided, existing attributes\
             \ will be used to generate the new CSR"
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
     ClientAddEndEntityRequestDto:
       required:
       - password
@@ -1888,7 +1888,7 @@ components:
       type: object
       properties:
         raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
+          $ref: "#/components/schemas/RaProfileDto"
         email:
           type: string
           description: End Entity email
@@ -1896,7 +1896,7 @@ components:
           type: array
           description: End Entity extension data
           items:
-            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+            $ref: "#/components/schemas/EndEntityExtendedInfoDto"
         password:
           type: string
           description: End Entity password
@@ -1953,12 +1953,12 @@ components:
           type: array
           description: List of RA Profiles attributes
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
+            $ref: "#/components/schemas/ResponseAttributeDto"
         customAttributes:
           type: array
           description: List of Custom Attributes
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
+            $ref: "#/components/schemas/ResponseAttributeDto"
         enabledProtocols:
           type: array
           description: List of protocols enabled
@@ -1987,14 +1987,14 @@ components:
           description: Label of the the Attribute
           example: Attribute Name
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Response attribute with content for object it belongs to
     ClientEditEndEntityRequestDto:
       required:
@@ -2005,7 +2005,7 @@ components:
       type: object
       properties:
         raProfile:
-          $ref: '#/components/schemas/RaProfileDto'
+          $ref: "#/components/schemas/RaProfileDto"
         email:
           type: string
           description: End Entity email
@@ -2013,7 +2013,7 @@ components:
           type: array
           description: End Entity extension data
           items:
-            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+            $ref: "#/components/schemas/EndEntityExtendedInfoDto"
         password:
           type: string
           description: End Entity password
@@ -2050,7 +2050,7 @@ components:
           type: string
           description: Issuer domain name
         reason:
-          $ref: '#/components/schemas/CertificateRevocationReason'
+          $ref: "#/components/schemas/CertificateRevocationReason"
     LegacyClientCertificateSignRequestDto:
       required:
       - password
@@ -2095,7 +2095,7 @@ components:
           description: "Optional description of the Attribute, should contain helper\
             \ text on what is expected"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         content:
           type: object
           description: Content of the Attribute
@@ -2103,17 +2103,17 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          data: '#/components/schemas/DataAttribute'
-          info: '#/components/schemas/InfoAttribute'
-          group: '#/components/schemas/GroupAttribute'
-          meta: '#/components/schemas/MetadataAttribute'
-          custom: '#/components/schemas/CustomAttribute'
+          data: "#/components/schemas/DataAttribute"
+          info: "#/components/schemas/InfoAttribute"
+          group: "#/components/schemas/GroupAttribute"
+          meta: "#/components/schemas/MetadataAttribute"
+          custom: "#/components/schemas/CustomAttribute"
       oneOf:
-      - $ref: '#/components/schemas/DataAttribute'
-      - $ref: '#/components/schemas/InfoAttribute'
-      - $ref: '#/components/schemas/GroupAttribute'
-      - $ref: '#/components/schemas/MetadataAttribute'
-      - $ref: '#/components/schemas/CustomAttribute'
+      - $ref: "#/components/schemas/DataAttribute"
+      - $ref: "#/components/schemas/InfoAttribute"
+      - $ref: "#/components/schemas/GroupAttribute"
+      - $ref: "#/components/schemas/MetadataAttribute"
+      - $ref: "#/components/schemas/CustomAttribute"
     CustomAttribute:
       required:
       - contentType
@@ -2139,13 +2139,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/CustomAttributeProperties'
+          $ref: "#/components/schemas/CustomAttributeProperties"
       description: Custom attribute allows to store and transfer dynamic data. Its
         content can be edited and send in requests to store.
     CustomAttributeProperties:
@@ -2215,11 +2215,11 @@ components:
           type: array
           description: List of all different types of attributes
           items:
-            $ref: '#/components/schemas/BaseAttributeDto'
+            $ref: "#/components/schemas/BaseAttributeDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Group attribute and its content represents dynamic list of additional
         attributes retrieved by callback. Its content can not be edited and is not
         send in requests to store.
@@ -2249,13 +2249,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/InfoAttributeProperties'
+          $ref: "#/components/schemas/InfoAttributeProperties"
       description: Info attribute contains content that is for information purpose
         or represents additional information for object (metadata). Its content can
         not be edited and is not send in requests to store.
@@ -2306,13 +2306,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/MetadataAttributeProperties'
+          $ref: "#/components/schemas/MetadataAttributeProperties"
       description: Info attribute contains content that is for metadata. Its content
         can not be edited and is not send in requests to store.
     MetadataAttributeProperties:
@@ -2362,7 +2362,7 @@ components:
           type: array
           description: End Entity extension data
           items:
-            $ref: '#/components/schemas/EndEntityExtendedInfoDto'
+            $ref: "#/components/schemas/EndEntityExtendedInfoDto"
         subjectAltName:
           type: string
           description: End Entity Subject alternative name

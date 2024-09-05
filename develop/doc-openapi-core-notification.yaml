@@ -9,14 +9,14 @@ info:
   license:
     name: MIT License
     url: https://github.com/CZERTAINLY/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.12.1-SNAPSHOT
+  version: 2.13.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
   description: CZERTAINLY Documentation
   url: https://docs.czertainly.com
 servers:
-- url: http://localhost:8080
+- url: http://localhost:34983
   description: Generated server url
 tags:
 - name: Internal Notification
@@ -44,38 +44,38 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: Notification instance details retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotificationInstanceDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/NotificationInstanceDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
         "404":
@@ -83,7 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
     put:
       tags:
       - External Notification Management
@@ -100,49 +100,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NotificationInstanceUpdateRequestDto'
+              $ref: "#/components/schemas/NotificationInstanceUpdateRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "200":
-          description: Notification instance details updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotificationInstanceDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -154,6 +114,46 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "200":
+          description: Notification instance details updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationInstanceDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "401":
+          description: Unauthorized
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - External Notification Management
@@ -167,34 +167,34 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: Notification instance deleted
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
         "404":
@@ -202,7 +202,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/notificationInstances:
     get:
       tags:
@@ -210,12 +210,6 @@ paths:
       summary: List of available Notification instances
       operationId: listNotificationInstances
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: List of Notification instances
           content:
@@ -223,27 +217,33 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NotificationInstanceDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                  $ref: "#/components/schemas/NotificationInstanceDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
         "404":
@@ -251,7 +251,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
     post:
       tags:
       - External Notification Management
@@ -261,49 +261,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NotificationInstanceRequestDto'
+              $ref: "#/components/schemas/NotificationInstanceRequestDto"
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "502":
-          description: Connector Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "201":
-          description: New Notification instance added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UuidDto'
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "422":
           description: Unprocessable Entity
           content:
@@ -315,6 +275,46 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "401":
+          description: Unauthorized
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "201":
+          description: New Notification instance added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UuidDto"
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/notifications:
     get:
       tags:
@@ -327,28 +327,28 @@ paths:
         description: Show only unread notifications
         required: true
         schema:
-          $ref: '#/components/schemas/NotificationRequestDto'
+          $ref: "#/components/schemas/NotificationRequestDto"
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "200":
           description: List of notifications
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotificationResponseDto'
+                $ref: "#/components/schemas/NotificationResponseDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
         "404":
@@ -356,7 +356,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Internal Notification
@@ -375,20 +375,22 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "204":
+          description: Notifications deleted
         "500":
           description: Internal Server Error
         "404":
@@ -396,9 +398,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Notifications deleted
+                $ref: "#/components/schemas/ErrorMessageDto"
     patch:
       tags:
       - Internal Notification
@@ -417,12 +417,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: Notifications marked as read
         "400":
@@ -430,9 +424,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
         "404":
@@ -440,7 +440,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/notifications/{uuid}:
     delete:
       tags:
@@ -455,30 +455,30 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "204":
+          description: Notification deleted
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Notification deleted
+                $ref: "#/components/schemas/ErrorMessageDto"
     patch:
       tags:
       - Internal Notification
@@ -492,12 +492,6 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
         "204":
           description: Notification marked as read
         "400":
@@ -505,9 +499,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
         "404":
@@ -515,7 +515,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/notificationInstances/attributes/mapping/{connectorUuid}/{kind}:
     get:
       tags:
@@ -536,40 +536,32 @@ paths:
         schema:
           type: string
       responses:
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthenticationServiceExceptionDto'
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "401":
           description: Unauthorized
-        "500":
-          description: Internal Server Error
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "200":
           description: List of mapping attributes
           content:
@@ -577,7 +569,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataAttribute'
+                  $ref: "#/components/schemas/DataAttribute"
+        "500":
+          description: Internal Server Error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
 components:
   schemas:
     AttributeCallback:
@@ -598,7 +598,7 @@ components:
           type: array
           description: Mappings for the callback method
           items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
+            $ref: "#/components/schemas/AttributeCallbackMapping"
       description: Optional definition of callback for getting the content of the
         Attribute based on the action
     AttributeCallbackMapping:
@@ -613,9 +613,9 @@ components:
             path variable or request param or body field.It is optional and must be
             set only if value is not set.
         attributeType:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeContentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -625,7 +625,7 @@ components:
           type: array
           description: Set of targets for propagating value.
           items:
-            $ref: '#/components/schemas/AttributeValueTarget'
+            $ref: "#/components/schemas/AttributeValueTarget"
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
@@ -707,16 +707,16 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: object
           description: Attribute Constraint Data
       description: Optional regular expressions and constraints used for validating
         the Attribute content
       oneOf:
-      - $ref: '#/components/schemas/RegexpAttributeConstraint'
-      - $ref: '#/components/schemas/RangeAttributeConstraint'
-      - $ref: '#/components/schemas/DateTimeAttributeConstraint'
+      - $ref: "#/components/schemas/RegexpAttributeConstraint"
+      - $ref: "#/components/schemas/RangeAttributeConstraint"
+      - $ref: "#/components/schemas/DateTimeAttributeConstraint"
     BaseAttributeContentDto:
       required:
       - data
@@ -730,19 +730,19 @@ components:
           description: Content Data
       description: Base Attribute content definition
       oneOf:
-      - $ref: '#/components/schemas/BooleanAttributeContent'
-      - $ref: '#/components/schemas/CodeBlockAttributeContent'
-      - $ref: '#/components/schemas/CredentialAttributeContent'
-      - $ref: '#/components/schemas/DateAttributeContent'
-      - $ref: '#/components/schemas/DateTimeAttributeContent'
-      - $ref: '#/components/schemas/FileAttributeContent'
-      - $ref: '#/components/schemas/FloatAttributeContent'
-      - $ref: '#/components/schemas/IntegerAttributeContent'
-      - $ref: '#/components/schemas/ObjectAttributeContent'
-      - $ref: '#/components/schemas/SecretAttributeContent'
-      - $ref: '#/components/schemas/StringAttributeContent'
-      - $ref: '#/components/schemas/TextAttributeContent'
-      - $ref: '#/components/schemas/TimeAttributeContent'
+      - $ref: "#/components/schemas/BooleanAttributeContent"
+      - $ref: "#/components/schemas/CodeBlockAttributeContent"
+      - $ref: "#/components/schemas/CredentialAttributeContent"
+      - $ref: "#/components/schemas/DateAttributeContent"
+      - $ref: "#/components/schemas/DateTimeAttributeContent"
+      - $ref: "#/components/schemas/FileAttributeContent"
+      - $ref: "#/components/schemas/FloatAttributeContent"
+      - $ref: "#/components/schemas/IntegerAttributeContent"
+      - $ref: "#/components/schemas/ObjectAttributeContent"
+      - $ref: "#/components/schemas/SecretAttributeContent"
+      - $ref: "#/components/schemas/StringAttributeContent"
+      - $ref: "#/components/schemas/TextAttributeContent"
+      - $ref: "#/components/schemas/TimeAttributeContent"
     BooleanAttributeContent:
       required:
       - data
@@ -763,7 +763,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CodeBlockAttributeContentData'
+          $ref: "#/components/schemas/CodeBlockAttributeContentData"
     CodeBlockAttributeContentData:
       required:
       - code
@@ -771,7 +771,7 @@ components:
       type: object
       properties:
         language:
-          $ref: '#/components/schemas/ProgrammingLanguageEnum'
+          $ref: "#/components/schemas/ProgrammingLanguageEnum"
         code:
           type: string
           description: Block of the code in Base64. Formatting of the code is specified
@@ -786,7 +786,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CredentialAttributeContentData'
+          $ref: "#/components/schemas/CredentialAttributeContentData"
     CredentialAttributeContentData:
       required:
       - attributes
@@ -811,7 +811,7 @@ components:
           type: array
           description: List of Credential Attributes
           items:
-            $ref: '#/components/schemas/DataAttribute'
+            $ref: "#/components/schemas/DataAttribute"
       description: Credential attribute content data
     DataAttribute:
       required:
@@ -838,21 +838,21 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/DataAttributeProperties'
+          $ref: "#/components/schemas/DataAttributeProperties"
         constraints:
           type: array
           description: Optional regular expressions and constraints used for validating
             the Attribute content
           items:
-            $ref: '#/components/schemas/BaseAttributeConstraint'
+            $ref: "#/components/schemas/BaseAttributeConstraint"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Data attribute allows to store and transfer dynamic data. Its content
         can be edited and send in requests to store.
     DataAttributeProperties:
@@ -923,9 +923,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/DateTimeAttributeConstraintData'
+          $ref: "#/components/schemas/DateTimeAttributeConstraintData"
     DateTimeAttributeConstraintData:
       type: object
       properties:
@@ -959,7 +959,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/FileAttributeContentData'
+          $ref: "#/components/schemas/FileAttributeContentData"
     FileAttributeContentData:
       required:
       - content
@@ -1013,13 +1013,13 @@ components:
           type: array
           description: List of Notification instance Attributes
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
         attributeMappings:
           type: array
           description: List of attribute mappings between mapping attributes and (recipient)
             custom attributes
           items:
-            $ref: '#/components/schemas/AttributeMappingDto'
+            $ref: "#/components/schemas/AttributeMappingDto"
     ObjectAttributeContent:
       required:
       - data
@@ -1089,9 +1089,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/RangeAttributeConstraintData'
+          $ref: "#/components/schemas/RangeAttributeConstraintData"
     RangeAttributeConstraintData:
       type: object
       properties:
@@ -1116,7 +1116,7 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
@@ -1137,12 +1137,12 @@ components:
           description: Name of the Attribute
           example: Attribute
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
@@ -1153,7 +1153,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/SecretAttributeContentData'
+          $ref: "#/components/schemas/SecretAttributeContentData"
     SecretAttributeContentData:
       type: object
       properties:
@@ -1197,6 +1197,15 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
+    ErrorMessageDto:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message detail
+          example: Error message
     AuthenticationServiceExceptionDto:
       required:
       - code
@@ -1214,15 +1223,6 @@ components:
         message:
           type: string
           description: Exception message
-    ErrorMessageDto:
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message detail
-          example: Error message
     NotificationInstanceDto:
       required:
       - attributes
@@ -1257,13 +1257,13 @@ components:
           type: array
           description: List of Notification instance Attributes
           items:
-            $ref: '#/components/schemas/ResponseAttributeDto'
+            $ref: "#/components/schemas/ResponseAttributeDto"
         attributeMappings:
           type: array
           description: List of attribute mappings between mapping attributes and (recipient)
             custom attributes
           items:
-            $ref: '#/components/schemas/AttributeMappingDto'
+            $ref: "#/components/schemas/AttributeMappingDto"
     ResponseAttributeDto:
       required:
       - contentType
@@ -1285,14 +1285,14 @@ components:
           description: Label of the the Attribute
           example: Attribute Name
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Response attribute with content for object it belongs to
     NotificationInstanceRequestDto:
       required:
@@ -1309,13 +1309,13 @@ components:
           type: array
           description: List of Notification instance Attributes
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
         attributeMappings:
           type: array
           description: List of attribute mappings between mapping attributes and (recipient)
             custom attributes
           items:
-            $ref: '#/components/schemas/AttributeMappingDto'
+            $ref: "#/components/schemas/AttributeMappingDto"
         name:
           type: string
           description: Notification instance name
@@ -1377,7 +1377,7 @@ components:
           description: Notification sent date
           format: date-time
         targetObjectType:
-          $ref: '#/components/schemas/Resource'
+          $ref: "#/components/schemas/Resource"
         targetObjectIdentification:
           type: array
           description: Target object identification (UUID)
@@ -1414,7 +1414,7 @@ components:
           type: array
           description: Notifications
           items:
-            $ref: '#/components/schemas/NotificationDto'
+            $ref: "#/components/schemas/NotificationDto"
     Resource:
       type: string
       description: Target object type

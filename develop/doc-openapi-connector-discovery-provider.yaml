@@ -9,14 +9,14 @@ info:
   license:
     name: MIT License
     url: https://github.com/CZERTAINLY/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.12.1-SNAPSHOT
+  version: 2.13.0
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
   description: CZERTAINLY Documentation
   url: https://docs.czertainly.com
 servers:
-- url: http://localhost:8080
+- url: http://localhost:38447
   description: Generated server url
 tags:
 - name: Discovery
@@ -60,7 +60,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/RequestAttributeDto'
+                $ref: "#/components/schemas/RequestAttributeDto"
         required: true
       responses:
         "200":
@@ -70,9 +70,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Attribute validation failed
           content:
@@ -89,7 +87,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
   /v1/discoveryProvider/discover:
     post:
       tags:
@@ -100,9 +100,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DiscoveryRequestDto'
+              $ref: "#/components/schemas/DiscoveryRequestDto"
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "422":
           description: Unprocessable entity
           content:
@@ -114,26 +128,12 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
         "200":
           description: Discovery initiated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/DiscoveryProviderDto"
   /v1/discoveryProvider/discover/{uuid}:
     post:
       tags:
@@ -151,7 +151,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DiscoveryDataRequestDto'
+              $ref: "#/components/schemas/DiscoveryDataRequestDto"
         required: true
       responses:
         "404":
@@ -159,7 +159,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "500":
           description: Internal Server Error
         "200":
@@ -167,13 +173,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiscoveryProviderDto'
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/DiscoveryProviderDto"
     delete:
       tags:
       - Discovery
@@ -192,17 +192,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        "204":
-          description: Discovery information deleted
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
+        "204":
+          description: Discovery information deleted
   /v1:
     get:
       tags:
@@ -216,7 +216,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "200":
           description: Functions found
           content:
@@ -224,15 +232,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/InfoResponse'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                  $ref: "#/components/schemas/InfoResponse"
   /v1/{functionalGroup}/{kind}/attributes:
     get:
       tags:
@@ -252,7 +252,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
         "200":
           description: Attributes retrieved
           content:
@@ -260,15 +268,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BaseAttributeDto'
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                  $ref: "#/components/schemas/BaseAttributeDto"
   /v1/health:
     get:
       tags:
@@ -281,21 +281,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Health check completed successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthDto'
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/HealthDto"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessageDto'
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "500":
+          description: Internal Server Error
 components:
   schemas:
     AttributeCallback:
@@ -316,7 +316,7 @@ components:
           type: array
           description: Mappings for the callback method
           items:
-            $ref: '#/components/schemas/AttributeCallbackMapping'
+            $ref: "#/components/schemas/AttributeCallbackMapping"
       description: Optional definition of callback for getting the content of the
         Attribute based on the action
     AttributeCallbackMapping:
@@ -331,9 +331,9 @@ components:
             path variable or request param or body field.It is optional and must be
             set only if value is not set.
         attributeType:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeContentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         to:
           type: string
           description: Name of the path variable or request param or body field which
@@ -343,7 +343,7 @@ components:
           type: array
           description: Set of targets for propagating value.
           items:
-            $ref: '#/components/schemas/AttributeValueTarget'
+            $ref: "#/components/schemas/AttributeValueTarget"
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
@@ -403,16 +403,16 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: object
           description: Attribute Constraint Data
       description: Optional regular expressions and constraints used for validating
         the Attribute content
       oneOf:
-      - $ref: '#/components/schemas/RegexpAttributeConstraint'
-      - $ref: '#/components/schemas/RangeAttributeConstraint'
-      - $ref: '#/components/schemas/DateTimeAttributeConstraint'
+      - $ref: "#/components/schemas/RegexpAttributeConstraint"
+      - $ref: "#/components/schemas/RangeAttributeConstraint"
+      - $ref: "#/components/schemas/DateTimeAttributeConstraint"
     BaseAttributeContentDto:
       required:
       - data
@@ -426,19 +426,19 @@ components:
           description: Content Data
       description: Base Attribute content definition
       oneOf:
-      - $ref: '#/components/schemas/BooleanAttributeContent'
-      - $ref: '#/components/schemas/CodeBlockAttributeContent'
-      - $ref: '#/components/schemas/CredentialAttributeContent'
-      - $ref: '#/components/schemas/DateAttributeContent'
-      - $ref: '#/components/schemas/DateTimeAttributeContent'
-      - $ref: '#/components/schemas/FileAttributeContent'
-      - $ref: '#/components/schemas/FloatAttributeContent'
-      - $ref: '#/components/schemas/IntegerAttributeContent'
-      - $ref: '#/components/schemas/ObjectAttributeContent'
-      - $ref: '#/components/schemas/SecretAttributeContent'
-      - $ref: '#/components/schemas/StringAttributeContent'
-      - $ref: '#/components/schemas/TextAttributeContent'
-      - $ref: '#/components/schemas/TimeAttributeContent'
+      - $ref: "#/components/schemas/BooleanAttributeContent"
+      - $ref: "#/components/schemas/CodeBlockAttributeContent"
+      - $ref: "#/components/schemas/CredentialAttributeContent"
+      - $ref: "#/components/schemas/DateAttributeContent"
+      - $ref: "#/components/schemas/DateTimeAttributeContent"
+      - $ref: "#/components/schemas/FileAttributeContent"
+      - $ref: "#/components/schemas/FloatAttributeContent"
+      - $ref: "#/components/schemas/IntegerAttributeContent"
+      - $ref: "#/components/schemas/ObjectAttributeContent"
+      - $ref: "#/components/schemas/SecretAttributeContent"
+      - $ref: "#/components/schemas/StringAttributeContent"
+      - $ref: "#/components/schemas/TextAttributeContent"
+      - $ref: "#/components/schemas/TimeAttributeContent"
     BooleanAttributeContent:
       required:
       - data
@@ -459,7 +459,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CodeBlockAttributeContentData'
+          $ref: "#/components/schemas/CodeBlockAttributeContentData"
     CodeBlockAttributeContentData:
       required:
       - code
@@ -467,7 +467,7 @@ components:
       type: object
       properties:
         language:
-          $ref: '#/components/schemas/ProgrammingLanguageEnum'
+          $ref: "#/components/schemas/ProgrammingLanguageEnum"
         code:
           type: string
           description: Block of the code in Base64. Formatting of the code is specified
@@ -482,7 +482,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/CredentialAttributeContentData'
+          $ref: "#/components/schemas/CredentialAttributeContentData"
     CredentialAttributeContentData:
       required:
       - attributes
@@ -507,7 +507,7 @@ components:
           type: array
           description: List of Credential Attributes
           items:
-            $ref: '#/components/schemas/DataAttribute'
+            $ref: "#/components/schemas/DataAttribute"
       description: Credential attribute content data
     DataAttribute:
       required:
@@ -534,21 +534,21 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/DataAttributeProperties'
+          $ref: "#/components/schemas/DataAttributeProperties"
         constraints:
           type: array
           description: Optional regular expressions and constraints used for validating
             the Attribute content
           items:
-            $ref: '#/components/schemas/BaseAttributeConstraint'
+            $ref: "#/components/schemas/BaseAttributeConstraint"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Data attribute allows to store and transfer dynamic data. Its content
         can be edited and send in requests to store.
     DataAttributeProperties:
@@ -619,9 +619,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/DateTimeAttributeConstraintData'
+          $ref: "#/components/schemas/DateTimeAttributeConstraintData"
     DateTimeAttributeConstraintData:
       type: object
       properties:
@@ -655,7 +655,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/FileAttributeContentData'
+          $ref: "#/components/schemas/FileAttributeContentData"
     FileAttributeContentData:
       required:
       - content
@@ -766,9 +766,9 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
-          $ref: '#/components/schemas/RangeAttributeConstraintData'
+          $ref: "#/components/schemas/RangeAttributeConstraintData"
     RangeAttributeConstraintData:
       type: object
       properties:
@@ -793,7 +793,7 @@ components:
           type: string
           description: Error message to be displayed for wrong data
         type:
-          $ref: '#/components/schemas/AttributeConstraintType'
+          $ref: "#/components/schemas/AttributeConstraintType"
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
@@ -814,12 +814,12 @@ components:
           description: Name of the Attribute
           example: Attribute
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         content:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
       description: Request attribute to send attribute content for object
     SecretAttributeContent:
       required:
@@ -830,7 +830,7 @@ components:
           type: string
           description: Content Reference
         data:
-          $ref: '#/components/schemas/SecretAttributeContentData'
+          $ref: "#/components/schemas/SecretAttributeContentData"
     SecretAttributeContentData:
       type: object
       properties:
@@ -899,7 +899,7 @@ components:
           type: array
           description: Discovery Provider Attributes. Mandatory for creating new Discovery
           items:
-            $ref: '#/components/schemas/RequestAttributeDto'
+            $ref: "#/components/schemas/RequestAttributeDto"
     DiscoveryProviderCertificateDataDto:
       required:
       - base64Content
@@ -917,7 +917,7 @@ components:
           type: array
           description: Metadata for the Certificate
           items:
-            $ref: '#/components/schemas/MetadataAttribute'
+            $ref: "#/components/schemas/MetadataAttribute"
       description: Certificate data
     DiscoveryProviderDto:
       required:
@@ -937,7 +937,7 @@ components:
           description: Object Name
           example: Name
         status:
-          $ref: '#/components/schemas/DiscoveryStatus'
+          $ref: "#/components/schemas/DiscoveryStatus"
         totalCertificatesDiscovered:
           type: integer
           description: Number of Certificates discovered
@@ -947,12 +947,12 @@ components:
           type: array
           description: Certificate data
           items:
-            $ref: '#/components/schemas/DiscoveryProviderCertificateDataDto'
+            $ref: "#/components/schemas/DiscoveryProviderCertificateDataDto"
         meta:
           type: array
           description: Certificate Metadata
           items:
-            $ref: '#/components/schemas/MetadataAttribute'
+            $ref: "#/components/schemas/MetadataAttribute"
     DiscoveryStatus:
       type: string
       description: Status of Discovery
@@ -988,13 +988,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/MetadataAttributeProperties'
+          $ref: "#/components/schemas/MetadataAttributeProperties"
       description: Info attribute contains content that is for metadata. Its content
         can not be edited and is not send in requests to store.
     MetadataAttributeProperties:
@@ -1099,7 +1099,7 @@ components:
       type: object
       properties:
         functionGroupCode:
-          $ref: '#/components/schemas/FunctionGroupCode'
+          $ref: "#/components/schemas/FunctionGroupCode"
         kinds:
           type: array
           description: List of supported functional group kinds
@@ -1115,7 +1115,7 @@ components:
           type: array
           description: List of end points related to functional group
           items:
-            $ref: '#/components/schemas/EndpointDto'
+            $ref: "#/components/schemas/EndpointDto"
     BaseAttributeDto:
       required:
       - name
@@ -1136,7 +1136,7 @@ components:
           description: "Optional description of the Attribute, should contain helper\
             \ text on what is expected"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         content:
           type: object
           description: Content of the Attribute
@@ -1144,17 +1144,17 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          data: '#/components/schemas/DataAttribute'
-          info: '#/components/schemas/InfoAttribute'
-          group: '#/components/schemas/GroupAttribute'
-          meta: '#/components/schemas/MetadataAttribute'
-          custom: '#/components/schemas/CustomAttribute'
+          data: "#/components/schemas/DataAttribute"
+          info: "#/components/schemas/InfoAttribute"
+          group: "#/components/schemas/GroupAttribute"
+          meta: "#/components/schemas/MetadataAttribute"
+          custom: "#/components/schemas/CustomAttribute"
       oneOf:
-      - $ref: '#/components/schemas/DataAttribute'
-      - $ref: '#/components/schemas/InfoAttribute'
-      - $ref: '#/components/schemas/GroupAttribute'
-      - $ref: '#/components/schemas/MetadataAttribute'
-      - $ref: '#/components/schemas/CustomAttribute'
+      - $ref: "#/components/schemas/DataAttribute"
+      - $ref: "#/components/schemas/InfoAttribute"
+      - $ref: "#/components/schemas/GroupAttribute"
+      - $ref: "#/components/schemas/MetadataAttribute"
+      - $ref: "#/components/schemas/CustomAttribute"
     CustomAttribute:
       required:
       - contentType
@@ -1180,13 +1180,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/CustomAttributeProperties'
+          $ref: "#/components/schemas/CustomAttributeProperties"
       description: Custom attribute allows to store and transfer dynamic data. Its
         content can be edited and send in requests to store.
     CustomAttributeProperties:
@@ -1256,11 +1256,11 @@ components:
           type: array
           description: List of all different types of attributes
           items:
-            $ref: '#/components/schemas/BaseAttributeDto'
+            $ref: "#/components/schemas/BaseAttributeDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         attributeCallback:
-          $ref: '#/components/schemas/AttributeCallback'
+          $ref: "#/components/schemas/AttributeCallback"
       description: Group attribute and its content represents dynamic list of additional
         attributes retrieved by callback. Its content can not be edited and is not
         send in requests to store.
@@ -1290,13 +1290,13 @@ components:
           type: array
           description: Content of the Attribute
           items:
-            $ref: '#/components/schemas/BaseAttributeContentDto'
+            $ref: "#/components/schemas/BaseAttributeContentDto"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         contentType:
-          $ref: '#/components/schemas/AttributeContentType'
+          $ref: "#/components/schemas/AttributeContentType"
         properties:
-          $ref: '#/components/schemas/InfoAttributeProperties'
+          $ref: "#/components/schemas/InfoAttributeProperties"
       description: Info attribute contains content that is for information purpose
         or represents additional information for object (metadata). Its content can
         not be edited and is not send in requests to store.
@@ -1327,14 +1327,14 @@ components:
       type: object
       properties:
         status:
-          $ref: '#/components/schemas/HealthStatus'
+          $ref: "#/components/schemas/HealthStatus"
         description:
           type: string
           description: Detailed status description
         parts:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/HealthDto'
+            $ref: "#/components/schemas/HealthDto"
           description: Nested status of services
     HealthStatus:
       type: string
