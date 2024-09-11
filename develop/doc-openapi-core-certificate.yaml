@@ -16,7 +16,7 @@ externalDocs:
   description: CZERTAINLY Documentation
   url: https://docs.czertainly.com
 servers:
-- url: http://localhost:35001
+- url: http://localhost:44221
   description: Generated server url
 tags:
 - name: Certificate Inventory
@@ -37,12 +37,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -63,6 +57,12 @@ paths:
                 $ref: "#/components/schemas/CertificateResponseDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     patch:
       tags:
       - Certificate Inventory
@@ -84,12 +84,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -106,6 +100,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/upload:
     post:
       tags:
@@ -119,14 +119,14 @@ paths:
               $ref: "#/components/schemas/UploadCertificateRequestDto"
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "400":
-          description: Bad Request
+        "201":
+          description: Certificate uploaded
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
+                $ref: "#/components/schemas/UuidDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -139,14 +139,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
-        "201":
-          description: Certificate uploaded
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UuidDto"
-        "500":
-          description: Internal Server Error
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/delete:
     post:
       tags:
@@ -175,12 +175,6 @@ paths:
                 $ref: "#/components/schemas/BulkOperationResponse"
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -195,6 +189,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/create:
     post:
       tags:
@@ -210,12 +210,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -228,6 +222,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: "Certificate request submit, certificate created and ready\
             \ to be issued"
@@ -235,8 +237,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CertificateDetailDto"
-        "500":
-          description: Internal Server Error
   /v1/certificates/content:
     post:
       tags:
@@ -258,8 +258,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -272,18 +272,20 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CertificateContentDto"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "422":
           description: Unprocessable Entity
           content:
@@ -295,8 +297,6 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "500":
-          description: Internal Server Error
   /v1/certificates/compliance:
     post:
       tags:
@@ -310,16 +310,10 @@ paths:
               $ref: "#/components/schemas/CertificateComplianceCheckDto"
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: Compliance check initiated
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -334,6 +328,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/{uuid}:
     get:
       tags:
@@ -356,12 +356,6 @@ paths:
                 $ref: "#/components/schemas/CertificateDetailDto"
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -376,6 +370,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     delete:
       tags:
       - Certificate Inventory
@@ -391,12 +391,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -413,6 +407,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
     patch:
       tags:
       - Certificate Inventory
@@ -434,12 +434,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -456,6 +450,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/{uuid}/{certificateFormat}:
     get:
       tags:
@@ -483,8 +483,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -495,12 +495,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CertificateDownloadResponseDto"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
@@ -509,6 +503,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/{uuid}/validate:
     get:
       tags:
@@ -525,12 +525,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -551,6 +545,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/{uuid}/history:
     get:
       tags:
@@ -565,8 +565,6 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: Certificate event history retrieved
           content:
@@ -575,12 +573,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CertificateEventHistoryDto"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -595,6 +589,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/{uuid}/chain:
     get:
       tags:
@@ -619,20 +619,14 @@ paths:
         schema:
           type: boolean
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: Certificate chain retrieved
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/CertificateChainResponseDto"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -647,6 +641,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/{uuid}/chain/{certificateFormat}:
     get:
       tags:
@@ -679,12 +679,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -705,6 +699,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/{uuid}/approvals:
     get:
       tags:
@@ -726,12 +726,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -744,14 +738,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+        "500":
+          description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: List of all approvals for the certificate
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApprovalResponseDto"
-        "500":
-          description: Internal Server Error
   /v1/certificates/{certificateUuid}/locations:
     get:
       tags:
@@ -768,8 +768,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -782,12 +782,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/LocationDto"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "403":
           description: Forbidden
           content:
@@ -796,6 +790,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/search:
     get:
       tags:
@@ -803,14 +803,6 @@ paths:
       summary: Get Certificate searchable fields information
       operationId: getSearchableFieldInformation
       responses:
-        "401":
-          description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Certificate searchable field information retrieved
           content:
@@ -819,6 +811,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SearchFieldDataByGroupDto"
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
           content:
@@ -833,6 +827,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
   /v1/certificates/csr/attributes:
     get:
       tags:
@@ -842,12 +842,6 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "404":
           description: Not Found
           content:
@@ -870,6 +864,12 @@ paths:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
         "500":
           description: Internal Server Error
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
 components:
   schemas:
     FilterConditionOperator:
