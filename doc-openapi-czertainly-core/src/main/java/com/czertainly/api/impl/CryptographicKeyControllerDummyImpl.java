@@ -66,12 +66,7 @@ public class CryptographicKeyControllerDummyImpl implements CryptographicKeyCont
     public KeyItemDetailDto editKeyItem(String uuid, String keyItemUuid, EditKeyItemDto request) throws NotFoundException {
         return null;
     }
-
-    @Override
-    public KeyDetailDto editKey(String tokenInstanceUuid, String uuid, EditKeyRequestDto request) throws ConnectorException {
-        return null;
-    }
-
+    
     @Override
     public void syncKeys(String tokenInstanceUuid) throws ConnectorException {
 

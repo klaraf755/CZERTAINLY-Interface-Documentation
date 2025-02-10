@@ -67,11 +67,6 @@ public class CryptographicKeyControllerDummyImpl implements CryptographicKeyCont
     }
 
     @Override
-    public KeyDetailDto editKey(String tokenInstanceUuid, String uuid, EditKeyRequestDto request) throws ConnectorException {
-        return null;
-    }
-
-    @Override
     public void syncKeys(String tokenInstanceUuid) throws ConnectorException {
 
     }
