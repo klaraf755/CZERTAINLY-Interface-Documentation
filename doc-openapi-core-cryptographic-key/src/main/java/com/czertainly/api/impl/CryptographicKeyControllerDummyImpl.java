@@ -1,9 +1,6 @@
 package com.czertainly.api.impl;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.core.web.CryptographicKeyController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.cryptography.CryptographicKeyResponseDto;
@@ -40,12 +37,32 @@ public class CryptographicKeyControllerDummyImpl implements CryptographicKeyCont
     }
 
     @Override
+    public KeyDetailDto getKey(String uuid) throws NotFoundException {
+        return null;
+    }
+
+    @Override
+    public KeyItemDetailDto getKeyItem(String uuid, String keyItemUuid) throws NotFoundException {
+        return null;
+    }
+
+    @Override
     public KeyItemDetailDto getKeyItem(String tokenInstanceUuid, String uuid, String keyItemUuid) throws NotFoundException {
         return null;
     }
 
     @Override
     public KeyDetailDto createKey(String tokenInstanceUuid, String tokenProfileUuid, KeyRequestType type, KeyRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException {
+        return null;
+    }
+
+    @Override
+    public KeyDetailDto editKey(String uuid, EditKeyRequestDto request) throws ConnectorException, AttributeException {
+        return null;
+    }
+
+    @Override
+    public KeyItemDetailDto editKeyItem(String uuid, String keyItemUuid, EditKeyItemDto request) throws NotFoundException {
         return null;
     }
 
@@ -86,6 +103,11 @@ public class CryptographicKeyControllerDummyImpl implements CryptographicKeyCont
 
     @Override
     public void destroyKeyItems(List<String> keyItemUuids) throws ConnectorException {
+
+    }
+
+    @Override
+    public void deleteKey(String uuid, List<String> keyItemUuids) throws ConnectorException {
 
     }
 
