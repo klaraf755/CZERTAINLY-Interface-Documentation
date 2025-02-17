@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
   title: CZERTAINLY CMP API
   description: CMP API according to the RFC 4210
@@ -9,14 +9,14 @@ info:
   license:
     name: MIT License
     url: https://github.com/CZERTAINLY/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.14.0
+  version: 2.14.1-SNAPSHOT
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
   description: CZERTAINLY Documentation
   url: https://docs.czertainly.com
 servers:
-- url: http://localhost:45227
+- url: http://localhost:37083
   description: Generated server url
 tags:
 - name: CMP RA Profile
@@ -49,25 +49,25 @@ paths:
         required: false
         schema:
           type: string
-          description: DER encoded CMP data
           format: binary
+          description: DER encoded CMP data
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/ProblemDocument"
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/ProblemDocument"
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -91,35 +91,35 @@ paths:
           application/pkixcmp:
             schema:
               type: string
-              description: Binary CMP data
               format: binary
+              description: Binary CMP data
         required: true
       responses:
-        "200":
-          description: Operation executed
-          content:
-            application/pkixcmp:
-              schema:
-                type: string
-                description: "Response structure(s) defined in RFC 4210, section 5.3"
-                format: binary
-                externalDocs:
-                  description: RFC 4210
-                  url: https://www.rfc-editor.org/rfc/rfc4210#section-5.3
         "401":
           description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/ProblemDocument"
-        "400":
-          description: Bad Request
+        "200":
+          description: Operation executed
+          content:
+            application/pkixcmp:
+              schema:
+                type: string
+                format: binary
+                description: "Response structure(s) defined in RFC 4210, section 5.3"
+                externalDocs:
+                  description: RFC 4210
+                  url: https://www.rfc-editor.org/rfc/rfc4210#section-5.3
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/ProblemDocument"
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -144,25 +144,25 @@ paths:
         required: false
         schema:
           type: string
-          description: DER encoded CMP data
           format: binary
+          description: DER encoded CMP data
       responses:
+        "500":
+          description: Internal Server Error
         "401":
           description: Unauthorized
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/ProblemDocument"
-        "500":
-          description: Internal Server Error
-        "400":
-          description: Bad Request
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/ProblemDocument"
-        "403":
-          description: Forbidden
+        "400":
+          description: Bad Request
           content:
             application/problem+json:
               schema:
@@ -186,23 +186,29 @@ paths:
           application/pkixcmp:
             schema:
               type: string
-              description: Binary CMP data
               format: binary
+              description: Binary CMP data
         required: true
       responses:
+        "401":
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDocument"
         "200":
           description: Operation executed
           content:
             application/pkixcmp:
               schema:
                 type: string
-                description: "Response structure(s) defined in RFC 4210, section 5.3"
                 format: binary
+                description: "Response structure(s) defined in RFC 4210, section 5.3"
                 externalDocs:
                   description: RFC 4210
                   url: https://www.rfc-editor.org/rfc/rfc4210#section-5.3
-        "401":
-          description: Unauthorized
+        "403":
+          description: Forbidden
           content:
             application/problem+json:
               schema:
@@ -213,21 +219,11 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/ProblemDocument"
-        "403":
-          description: Forbidden
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/ProblemDocument"
         "500":
           description: Internal Server Error
 components:
   schemas:
     ProblemDocument:
-      required:
-      - detail
-      - instance
-      - type
       type: object
       properties:
         type:
@@ -257,5 +253,7 @@ components:
           example: ES256
           items:
             type: string
-            description: List of supported algorithms
-            example: ES256
+      required:
+      - detail
+      - instance
+      - type

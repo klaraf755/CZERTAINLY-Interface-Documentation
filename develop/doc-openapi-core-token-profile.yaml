@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
   title: CZERTAINLY Token Profile API
   description: REST API for managing Token Profiles in the platform
@@ -9,14 +9,14 @@ info:
   license:
     name: MIT License
     url: https://github.com/CZERTAINLY/CZERTAINLY/blob/develop/LICENSE.md
-  version: 2.14.0
+  version: 2.14.1-SNAPSHOT
   x-logo:
     url: images/czertainly_color_H.svg
 externalDocs:
   description: CZERTAINLY Documentation
   url: https://docs.czertainly.com
 servers:
-- url: http://localhost:45439
+- url: http://localhost:45505
   description: Generated server url
 tags:
 - name: Token Profile Management
@@ -42,22 +42,22 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "200":
           description: Token Profile details retrieved
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/TokenProfileDetailDto"
-        "503":
-          description: Connector Communication Error
+        "401":
+          description: Unauthorized
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -68,8 +68,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -107,14 +107,6 @@ paths:
               $ref: "#/components/schemas/EditTokenProfileRequestDto"
         required: true
       responses:
-        "401":
-          description: Unauthorized
-        "204":
-          description: Token Profile updated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TokenProfileDetailDto"
         "422":
           description: Unprocessible Entity
           content:
@@ -126,14 +118,22 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "503":
-          description: Connector Communication Error
+        "204":
+          description: Token Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenProfileDetailDto"
+        "401":
+          description: Unauthorized
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -144,8 +144,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -179,14 +179,16 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "204":
+          description: Token Profile deleted
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -197,10 +199,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "204":
-          description: Token Profile deleted
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -241,20 +241,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
-        "502":
-          description: Connector Error
           content:
             application/json:
               schema:
@@ -265,6 +253,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "204":
+          description: Key Usages Updated
         "500":
           description: Internal Server Error
         "403":
@@ -273,8 +275,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
-        "204":
-          description: Key Usages Updated
   /v1/tokens/usages:
     put:
       tags:
@@ -290,20 +290,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
-        "502":
-          description: Connector Error
           content:
             application/json:
               schema:
@@ -314,6 +302,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "204":
+          description: Key Usages Updated
         "500":
           description: Internal Server Error
         "403":
@@ -322,8 +324,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
-        "204":
-          description: Key Usages Updated
   /v1/tokens/{tokenInstanceUuid}/tokenProfiles:
     post:
       tags:
@@ -344,8 +344,6 @@ paths:
               $ref: "#/components/schemas/AddTokenProfileRequestDto"
         required: true
       responses:
-        "401":
-          description: Unauthorized
         "422":
           description: Unprocessible Entity
           content:
@@ -357,12 +355,8 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
+        "401":
+          description: Unauthorized
         "201":
           description: Token Profile added
           content:
@@ -375,14 +369,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "502":
           description: Connector Error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -415,18 +415,18 @@ paths:
         schema:
           type: string
       responses:
-        "401":
-          description: Unauthorized
         "204":
           description: Token Profile enabled
-        "503":
-          description: Connector Communication Error
+        "401":
+          description: Unauthorized
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -437,8 +437,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -473,20 +473,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
-        "502":
-          description: Connector Error
           content:
             application/json:
               schema:
@@ -497,16 +485,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "500":
           description: Internal Server Error
+        "204":
+          description: Token Profile disabled
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
-        "204":
-          description: Token Profile disabled
   /v1/tokenProfiles/enable:
     patch:
       tags:
@@ -528,16 +528,16 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "204":
           description: Token Profiles enabled
         "400":
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -548,8 +548,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -583,20 +583,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
-        "502":
-          description: Connector Error
           content:
             application/json:
               schema:
@@ -607,6 +595,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "204":
+          description: Token Profiles disabled
         "500":
           description: Internal Server Error
         "403":
@@ -615,8 +617,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
-        "204":
-          description: Token Profiles disabled
   /v1/tokenProfiles:
     get:
       tags:
@@ -632,20 +632,8 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
-        "502":
-          description: Connector Error
           content:
             application/json:
               schema:
@@ -656,14 +644,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "500":
-          description: Internal Server Error
-        "403":
-          description: Forbidden
+        "502":
+          description: Connector Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
         "200":
           description: Token Profiles retrieved
           content:
@@ -672,6 +664,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/TokenProfileDto"
+        "500":
+          description: Internal Server Error
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
     delete:
       tags:
       - Token Profile Management
@@ -690,8 +690,6 @@ paths:
             - b9b09548-a97c-4c6a-a06a-e4ee6fc2da98
         required: true
       responses:
-        "401":
-          description: Unauthorized
         "422":
           description: Unprocessible Entity
           content:
@@ -703,20 +701,10 @@ paths:
               example:
               - Error Message 1
               - Error Message 2
-        "503":
-          description: Connector Communication Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
+        "401":
+          description: Unauthorized
         "400":
           description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorMessageDto"
-        "502":
-          description: Connector Error
           content:
             application/json:
               schema:
@@ -727,6 +715,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
+        "502":
+          description: Connector Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "503":
+          description: Connector Communication Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        "204":
+          description: Token Profiles deleted
         "500":
           description: Internal Server Error
         "403":
@@ -735,8 +737,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthenticationServiceExceptionDto"
-        "204":
-          description: Token Profiles deleted
   /v1/tokenProfiles/{uuid}:
     delete:
       tags:
@@ -753,14 +753,16 @@ paths:
       responses:
         "401":
           description: Unauthorized
-        "503":
-          description: Connector Communication Error
+        "204":
+          description: Token Profile deleted
+        "400":
+          description: Bad Request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "400":
-          description: Bad Request
+        "404":
+          description: Not Found
           content:
             application/json:
               schema:
@@ -771,10 +773,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorMessageDto"
-        "204":
-          description: Token Profile deleted
-        "404":
-          description: Not Found
+        "503":
+          description: Connector Communication Error
           content:
             application/json:
               schema:
@@ -790,10 +790,6 @@ paths:
 components:
   schemas:
     AttributeCallback:
-      required:
-      - callbackContext
-      - callbackMethod
-      - mappings
       type: object
       properties:
         callbackContext:
@@ -803,17 +799,16 @@ components:
           type: string
           description: HTTP method of the callback
         mappings:
-          uniqueItems: true
           type: array
           description: Mappings for the callback method
           items:
             $ref: "#/components/schemas/AttributeCallbackMapping"
-      description: Optional definition of callback for getting the content of the
-        Attribute based on the action
-    AttributeCallbackMapping:
+          uniqueItems: true
       required:
-      - targets
-      - to
+      - callbackContext
+      - callbackMethod
+      - mappings
+    AttributeCallbackMapping:
       type: object
       properties:
         from:
@@ -823,33 +818,36 @@ components:
             set only if value is not set.
         attributeType:
           $ref: "#/components/schemas/AttributeType"
+          description: Type of the attribute. It is optional and must be set only
+            if special behaviour is needed.
         attributeContentType:
           $ref: "#/components/schemas/AttributeContentType"
+          description: 'Type of the attribute content. '
         to:
           type: string
           description: Name of the path variable or request param or body field which
             is to be used to assign value of attribute
         targets:
-          uniqueItems: true
           type: array
           description: Set of targets for propagating value.
           items:
             $ref: "#/components/schemas/AttributeValueTarget"
+          uniqueItems: true
         value:
           type: object
           description: Static value to be propagated to targets. It is optional and
             is set only if the value is known at attribute creation time.
-      description: Mappings for the callback method
+      required:
+      - targets
+      - to
     AttributeConstraintType:
       type: string
-      description: Attribute Constraint Type
       enum:
       - regExp
       - range
       - dateTime
     AttributeContentType:
       type: string
-      description: 'Type of the attribute content. '
       enum:
       - string
       - text
@@ -866,8 +864,6 @@ components:
       - object
     AttributeType:
       type: string
-      description: Type of the attribute. It is optional and must be set only if special
-        behaviour is needed.
       enum:
       - data
       - group
@@ -876,16 +872,18 @@ components:
       - custom
     AttributeValueTarget:
       type: string
-      description: Set of targets for propagating value.
       enum:
       - pathVariable
       - requestParameter
       - body
     BaseAttributeConstraint:
-      required:
-      - data
-      - type
       type: object
+      description: Optional regular expressions and constraints used for validating
+        the Attribute content
+      oneOf:
+      - $ref: "#/components/schemas/RegexpAttributeConstraint"
+      - $ref: "#/components/schemas/RangeAttributeConstraint"
+      - $ref: "#/components/schemas/DateTimeAttributeConstraint"
       properties:
         description:
           type: string
@@ -895,26 +893,15 @@ components:
           description: Error message to be displayed for wrong data
         type:
           $ref: "#/components/schemas/AttributeConstraintType"
+          description: Attribute Constraint Type
         data:
           type: object
           description: Attribute Constraint Data
-      description: Optional regular expressions and constraints used for validating
-        the Attribute content
-      oneOf:
-      - $ref: "#/components/schemas/RegexpAttributeConstraint"
-      - $ref: "#/components/schemas/RangeAttributeConstraint"
-      - $ref: "#/components/schemas/DateTimeAttributeConstraint"
-    BaseAttributeContentDto:
       required:
       - data
+      - type
+    BaseAttributeContentDto:
       type: object
-      properties:
-        reference:
-          type: string
-          description: Content Reference
-        data:
-          type: object
-          description: Content Data
       description: Base Attribute content definition
       oneOf:
       - $ref: "#/components/schemas/BooleanAttributeContent"
@@ -930,9 +917,16 @@ components:
       - $ref: "#/components/schemas/StringAttributeContent"
       - $ref: "#/components/schemas/TextAttributeContent"
       - $ref: "#/components/schemas/TimeAttributeContent"
-    BooleanAttributeContent:
+      properties:
+        reference:
+          type: string
+          description: Content Reference
+        data:
+          type: object
+          description: Content Data
       required:
       - data
+    BooleanAttributeContent:
       type: object
       properties:
         reference:
@@ -941,9 +935,9 @@ components:
         data:
           type: boolean
           description: Boolean attribute value
-    CodeBlockAttributeContent:
       required:
       - data
+    CodeBlockAttributeContent:
       type: object
       properties:
         reference:
@@ -951,22 +945,24 @@ components:
           description: Content Reference
         data:
           $ref: "#/components/schemas/CodeBlockAttributeContentData"
-    CodeBlockAttributeContentData:
+          description: CodeBlock attribute content data
       required:
-      - code
-      - language
+      - data
+    CodeBlockAttributeContentData:
       type: object
       properties:
         language:
           $ref: "#/components/schemas/ProgrammingLanguageEnum"
+          description: Definition of programming languages used for code
+          example: "JAVA, PHP, C, etc"
         code:
           type: string
           description: Block of the code in Base64. Formatting of the code is specified
             by variable language
-      description: CodeBlock attribute content data
-    CredentialAttributeContent:
       required:
-      - data
+      - code
+      - language
+    CredentialAttributeContent:
       type: object
       properties:
         reference:
@@ -974,12 +970,10 @@ components:
           description: Content Reference
         data:
           $ref: "#/components/schemas/CredentialAttributeContentData"
-    CredentialAttributeContentData:
+          description: Credential attribute content data
       required:
-      - attributes
-      - kind
-      - name
-      - uuid
+      - data
+    CredentialAttributeContentData:
       type: object
       properties:
         uuid:
@@ -999,16 +993,22 @@ components:
           description: List of Credential Attributes
           items:
             $ref: "#/components/schemas/DataAttribute"
-      description: Credential attribute content data
-    DataAttribute:
       required:
-      - contentType
+      - attributes
+      - kind
       - name
-      - properties
-      - type
       - uuid
+    DataAttribute:
       type: object
+      description: Data attribute allows to store and transfer dynamic data. Its content
+        can be edited and send in requests to store.
       properties:
+        version:
+          type: integer
+          format: int32
+          default: "2"
+          description: Version of the Attribute
+          example: 2
         uuid:
           type: string
           description: UUID of the Attribute for unique identification
@@ -1026,30 +1026,51 @@ components:
           description: Content of the Attribute
           items:
             $ref: "#/components/schemas/BaseAttributeContentDto"
+          oneOf:
+          - $ref: "#/components/schemas/BooleanAttributeContent"
+          - $ref: "#/components/schemas/CodeBlockAttributeContent"
+          - $ref: "#/components/schemas/CredentialAttributeContent"
+          - $ref: "#/components/schemas/DateAttributeContent"
+          - $ref: "#/components/schemas/DateTimeAttributeContent"
+          - $ref: "#/components/schemas/FileAttributeContent"
+          - $ref: "#/components/schemas/FloatAttributeContent"
+          - $ref: "#/components/schemas/IntegerAttributeContent"
+          - $ref: "#/components/schemas/ObjectAttributeContent"
+          - $ref: "#/components/schemas/SecretAttributeContent"
+          - $ref: "#/components/schemas/StringAttributeContent"
+          - $ref: "#/components/schemas/TextAttributeContent"
+          - $ref: "#/components/schemas/TimeAttributeContent"
         type:
           $ref: "#/components/schemas/AttributeType"
+          default: data
+          description: Type of the Attribute
         contentType:
           $ref: "#/components/schemas/AttributeContentType"
+          description: Type of the Content
         properties:
           $ref: "#/components/schemas/DataAttributeProperties"
+          description: Properties of the Attributes
         constraints:
           type: array
           description: Optional regular expressions and constraints used for validating
             the Attribute content
           items:
             $ref: "#/components/schemas/BaseAttributeConstraint"
+          oneOf:
+          - $ref: "#/components/schemas/RegexpAttributeConstraint"
+          - $ref: "#/components/schemas/RangeAttributeConstraint"
+          - $ref: "#/components/schemas/DateTimeAttributeConstraint"
         attributeCallback:
           $ref: "#/components/schemas/AttributeCallback"
-      description: Data attribute allows to store and transfer dynamic data. Its content
-        can be edited and send in requests to store.
-    DataAttributeProperties:
+          description: Optional definition of callback for getting the content of
+            the Attribute based on the action
       required:
-      - label
-      - list
-      - multiSelect
-      - readOnly
-      - required
-      - visible
+      - contentType
+      - name
+      - properties
+      - type
+      - uuid
+    DataAttributeProperties:
       type: object
       properties:
         label:
@@ -1058,9 +1079,9 @@ components:
           example: Attribute Name
         visible:
           type: boolean
+          default: "true"
           description: "Boolean determining if the Attribute is visible and can be\
             \ displayed, otherwise it should be hidden to the user."
-          default: true
         group:
           type: string
           description: "Group of the Attribute, used for the logical grouping of the\
@@ -1068,27 +1089,31 @@ components:
           example: requiredAttributes
         required:
           type: boolean
+          default: "false"
           description: "Boolean determining if the Attribute is required. If true,\
             \ the Attribute must be provided."
-          default: false
         readOnly:
           type: boolean
+          default: "false"
           description: "Boolean determining if the Attribute is read only. If true,\
             \ the Attribute content cannot be changed."
-          default: false
         list:
           type: boolean
+          default: "false"
           description: Boolean determining if the Attribute contains list of values
             in the content
-          default: false
         multiSelect:
           type: boolean
+          default: "false"
           description: Boolean determining if the Attribute can have multiple values
-          default: false
-      description: Properties of the Attributes
-    DateAttributeContent:
       required:
-      - data
+      - label
+      - list
+      - multiSelect
+      - readOnly
+      - required
+      - visible
+    DateAttributeContent:
       type: object
       properties:
         reference:
@@ -1096,11 +1121,11 @@ components:
           description: Content Reference
         data:
           type: string
-          description: Date attribute value in format yyyy-MM-dd
           format: date
-    DateTimeAttributeConstraint:
+          description: Date attribute value in format yyyy-MM-dd
       required:
-      - type
+      - data
+    DateTimeAttributeConstraint:
       type: object
       properties:
         description:
@@ -1111,23 +1136,24 @@ components:
           description: Error message to be displayed for wrong data
         type:
           $ref: "#/components/schemas/AttributeConstraintType"
+          description: Attribute Constraint Type
         data:
           $ref: "#/components/schemas/DateTimeAttributeConstraintData"
+          description: DateTime Range Attribute Constraint Data
+      required:
+      - type
     DateTimeAttributeConstraintData:
       type: object
       properties:
         from:
           type: string
-          description: Start of the datetime for validation
           format: date-time
+          description: Start of the datetime for validation
         to:
           type: string
-          description: End of the datetime for validation
           format: date-time
-      description: DateTime Range Attribute Constraint Data
+          description: End of the datetime for validation
     DateTimeAttributeContent:
-      required:
-      - data
       type: object
       properties:
         reference:
@@ -1135,11 +1161,11 @@ components:
           description: Content Reference
         data:
           type: string
-          description: DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX
           format: date-time
-    EditTokenProfileRequestDto:
+          description: DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX
       required:
-      - attributes
+      - data
+    EditTokenProfileRequestDto:
       type: object
       properties:
         description:
@@ -1163,9 +1189,9 @@ components:
           description: Usages for the Key
           items:
             $ref: "#/components/schemas/KeyUsage"
-    FileAttributeContent:
       required:
-      - data
+      - attributes
+    FileAttributeContent:
       type: object
       properties:
         reference:
@@ -1173,11 +1199,10 @@ components:
           description: Content Reference
         data:
           $ref: "#/components/schemas/FileAttributeContentData"
-    FileAttributeContentData:
+          description: File attribute content data
       required:
-      - content
-      - fileName
-      - mimeType
+      - data
+    FileAttributeContentData:
       type: object
       properties:
         content:
@@ -1189,10 +1214,11 @@ components:
         mimeType:
           type: string
           description: Type of the file uploaded
-      description: File attribute content data
-    FloatAttributeContent:
       required:
-      - data
+      - content
+      - fileName
+      - mimeType
+    FloatAttributeContent:
       type: object
       properties:
         reference:
@@ -1200,11 +1226,11 @@ components:
           description: Content Reference
         data:
           type: number
-          description: Float attribute value
           format: float
-    IntegerAttributeContent:
+          description: Float attribute value
       required:
       - data
+    IntegerAttributeContent:
       type: object
       properties:
         reference:
@@ -1212,11 +1238,12 @@ components:
           description: Content Reference
         data:
           type: integer
-          description: Integer attribute value
           format: int32
+          description: Integer attribute value
+      required:
+      - data
     KeyUsage:
       type: string
-      description: Usages for the Key
       enum:
       - sign
       - verify
@@ -1225,8 +1252,6 @@ components:
       - wrap
       - unwrap
     ObjectAttributeContent:
-      required:
-      - data
       type: object
       properties:
         reference:
@@ -1235,10 +1260,10 @@ components:
         data:
           type: object
           description: Object attribute content data
+      required:
+      - data
     ProgrammingLanguageEnum:
       type: string
-      description: Definition of programming languages used for code
-      example: "JAVA, PHP, C, etc"
       enum:
       - apacheconf
       - bash
@@ -1282,8 +1307,6 @@ components:
       - xml
       - yaml
     RangeAttributeConstraint:
-      required:
-      - type
       type: object
       properties:
         description:
@@ -1294,23 +1317,24 @@ components:
           description: Error message to be displayed for wrong data
         type:
           $ref: "#/components/schemas/AttributeConstraintType"
+          description: Attribute Constraint Type
         data:
           $ref: "#/components/schemas/RangeAttributeConstraintData"
+          description: Integer Range Attribute Constraint Data
+      required:
+      - type
     RangeAttributeConstraintData:
       type: object
       properties:
         from:
           type: integer
-          description: Start of the range for validation
           format: int32
+          description: Start of the range for validation
         to:
           type: integer
-          description: End of the range for validation
           format: int32
-      description: Integer Range Attribute Constraint Data
+          description: End of the range for validation
     RegexpAttributeConstraint:
-      required:
-      - type
       type: object
       properties:
         description:
@@ -1321,16 +1345,15 @@ components:
           description: Error message to be displayed for wrong data
         type:
           $ref: "#/components/schemas/AttributeConstraintType"
+          description: Attribute Constraint Type
         data:
           type: string
           description: Regular Expression Attribute Constraint Data
-    RequestAttributeDto:
       required:
-      - content
-      - contentType
-      - name
-      - uuid
+      - type
+    RequestAttributeDto:
       type: object
+      description: Request attribute to send attribute content for object
       properties:
         uuid:
           type: string
@@ -1342,15 +1365,33 @@ components:
           example: Attribute
         contentType:
           $ref: "#/components/schemas/AttributeContentType"
+          description: Content Type of the Attribute
+          example: Attribute
         content:
           type: array
           description: Content of the Attribute
           items:
             $ref: "#/components/schemas/BaseAttributeContentDto"
-      description: Request attribute to send attribute content for object
-    SecretAttributeContent:
+          oneOf:
+          - $ref: "#/components/schemas/BooleanAttributeContent"
+          - $ref: "#/components/schemas/CodeBlockAttributeContent"
+          - $ref: "#/components/schemas/CredentialAttributeContent"
+          - $ref: "#/components/schemas/DateAttributeContent"
+          - $ref: "#/components/schemas/DateTimeAttributeContent"
+          - $ref: "#/components/schemas/FileAttributeContent"
+          - $ref: "#/components/schemas/FloatAttributeContent"
+          - $ref: "#/components/schemas/IntegerAttributeContent"
+          - $ref: "#/components/schemas/ObjectAttributeContent"
+          - $ref: "#/components/schemas/SecretAttributeContent"
+          - $ref: "#/components/schemas/StringAttributeContent"
+          - $ref: "#/components/schemas/TextAttributeContent"
+          - $ref: "#/components/schemas/TimeAttributeContent"
       required:
-      - data
+      - content
+      - contentType
+      - name
+      - uuid
+    SecretAttributeContent:
       type: object
       properties:
         reference:
@@ -1358,6 +1399,9 @@ components:
           description: Content Reference
         data:
           $ref: "#/components/schemas/SecretAttributeContentData"
+          description: Secret attribute content data
+      required:
+      - data
     SecretAttributeContentData:
       type: object
       properties:
@@ -1367,10 +1411,7 @@ components:
         protectionLevel:
           type: string
           description: Level of protection of the data
-      description: Secret attribute content data
     StringAttributeContent:
-      required:
-      - data
       type: object
       properties:
         reference:
@@ -1379,9 +1420,9 @@ components:
         data:
           type: string
           description: String attribute value
-    TextAttributeContent:
       required:
       - data
+    TextAttributeContent:
       type: object
       properties:
         reference:
@@ -1390,9 +1431,9 @@ components:
         data:
           type: string
           description: Text attribute value
-    TimeAttributeContent:
       required:
       - data
+    TimeAttributeContent:
       type: object
       properties:
         reference:
@@ -1401,39 +1442,37 @@ components:
         data:
           type: string
           description: Time attribute value in format HH:mm:ss
-    ErrorMessageDto:
       required:
-      - message
+      - data
+    ErrorMessageDto:
       type: object
       properties:
         message:
           type: string
           description: Error message detail
           example: Error message
-    AuthenticationServiceExceptionDto:
       required:
-      - code
       - message
-      - statusCode
+    AuthenticationServiceExceptionDto:
       type: object
       properties:
         statusCode:
           type: integer
-          description: Status code of the HTTP Request
           format: int32
+          description: Status code of the HTTP Request
         code:
           type: string
           description: Code of the result
         message:
           type: string
           description: Exception message
-    ResponseAttributeDto:
       required:
-      - contentType
-      - label
-      - name
-      - type
+      - code
+      - message
+      - statusCode
+    ResponseAttributeDto:
       type: object
+      description: Response attribute with content for object it belongs to
       properties:
         uuid:
           type: string
@@ -1449,17 +1488,37 @@ components:
           example: Attribute Name
         type:
           $ref: "#/components/schemas/AttributeType"
+          description: Type of the Attribute
         contentType:
           $ref: "#/components/schemas/AttributeContentType"
+          description: Content Type of the Attribute
+          example: Attribute
         content:
           type: array
           description: Content of the Attribute
           items:
             $ref: "#/components/schemas/BaseAttributeContentDto"
-      description: Response attribute with content for object it belongs to
+          oneOf:
+          - $ref: "#/components/schemas/BooleanAttributeContent"
+          - $ref: "#/components/schemas/CodeBlockAttributeContent"
+          - $ref: "#/components/schemas/CredentialAttributeContent"
+          - $ref: "#/components/schemas/DateAttributeContent"
+          - $ref: "#/components/schemas/DateTimeAttributeContent"
+          - $ref: "#/components/schemas/FileAttributeContent"
+          - $ref: "#/components/schemas/FloatAttributeContent"
+          - $ref: "#/components/schemas/IntegerAttributeContent"
+          - $ref: "#/components/schemas/ObjectAttributeContent"
+          - $ref: "#/components/schemas/SecretAttributeContent"
+          - $ref: "#/components/schemas/StringAttributeContent"
+          - $ref: "#/components/schemas/TextAttributeContent"
+          - $ref: "#/components/schemas/TimeAttributeContent"
+      required:
+      - contentType
+      - label
+      - name
+      - type
     TokenInstanceStatus:
       type: string
-      description: Token Instance Status
       enum:
       - Connected
       - Disconnected
@@ -1468,15 +1527,6 @@ components:
       - Warning
       - Unknown
     TokenProfileDetailDto:
-      required:
-      - attributes
-      - enabled
-      - name
-      - tokenInstanceName
-      - tokenInstanceStatus
-      - tokenInstanceUuid
-      - usages
-      - uuid
       type: object
       properties:
         uuid:
@@ -1508,6 +1558,7 @@ components:
             $ref: "#/components/schemas/ResponseAttributeDto"
         tokenInstanceStatus:
           $ref: "#/components/schemas/TokenInstanceStatus"
+          description: Token Instance Status
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
@@ -1516,9 +1567,16 @@ components:
           description: Usages for the Keys assoiated to the profile
           items:
             $ref: "#/components/schemas/KeyUsage"
-    TokenProfileKeyUsageRequestDto:
       required:
-      - usage
+      - attributes
+      - enabled
+      - name
+      - tokenInstanceName
+      - tokenInstanceStatus
+      - tokenInstanceUuid
+      - usages
+      - uuid
+    TokenProfileKeyUsageRequestDto:
       type: object
       properties:
         usage:
@@ -1526,10 +1584,9 @@ components:
           description: Usages for the Key
           items:
             $ref: "#/components/schemas/KeyUsage"
-    BulkTokenProfileKeyUsageRequestDto:
       required:
       - usage
-      - uuids
+    BulkTokenProfileKeyUsageRequestDto:
       type: object
       properties:
         usage:
@@ -1542,12 +1599,11 @@ components:
           description: Token Profile UUIDs
           items:
             type: string
-            description: Token Profile UUIDs
             format: uuid
-    AddTokenProfileRequestDto:
       required:
-      - attributes
-      - name
+      - usage
+      - uuids
+    AddTokenProfileRequestDto:
       type: object
       properties:
         name:
@@ -1568,22 +1624,17 @@ components:
             $ref: "#/components/schemas/RequestAttributeDto"
         enabled:
           type: boolean
+          default: "false"
           description: Enabled flag - true = enabled; false = disabled
-          default: false
         usage:
           type: array
           description: Usages for the Key
           items:
             $ref: "#/components/schemas/KeyUsage"
-    TokenProfileDto:
       required:
-      - enabled
+      - attributes
       - name
-      - tokenInstanceName
-      - tokenInstanceStatus
-      - tokenInstanceUuid
-      - usages
-      - uuid
+    TokenProfileDto:
       type: object
       properties:
         uuid:
@@ -1605,6 +1656,7 @@ components:
           description: Name of Token instance
         tokenInstanceStatus:
           $ref: "#/components/schemas/TokenInstanceStatus"
+          description: Token Instance Status
         enabled:
           type: boolean
           description: Enabled flag - true = enabled; false = disabled
@@ -1613,3 +1665,11 @@ components:
           description: Usages for the Keys assoiated to the profile
           items:
             $ref: "#/components/schemas/KeyUsage"
+      required:
+      - enabled
+      - name
+      - tokenInstanceName
+      - tokenInstanceStatus
+      - tokenInstanceUuid
+      - usages
+      - uuid
