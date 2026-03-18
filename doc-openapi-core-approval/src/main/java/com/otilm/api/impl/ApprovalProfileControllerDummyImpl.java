@@ -5,9 +5,15 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.ApprovalProfileController;
 import com.czertainly.api.model.client.approvalprofile.*;
+import com.czertainly.api.model.core.auth.Resource;
+import com.czertainly.api.model.core.compliance.v2.ComplianceProfileListDto;
+import com.czertainly.api.model.core.other.ResourceObjectDto;
 import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class ApprovalProfileControllerDummyImpl implements ApprovalProfileController {
@@ -35,5 +41,25 @@ public class ApprovalProfileControllerDummyImpl implements ApprovalProfileContro
     @Override
     public ResponseEntity<?> editApprovalProfile(String uuid, ApprovalProfileUpdateRequestDto approvalProfileUpdateRequestDto) throws NotFoundException {
         return null;
+    }
+
+    @Override
+    public List<ResourceObjectDto> getAssociations(UUID uuid) throws NotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public void associateApprovalProfile(UUID uuid, Resource resource, UUID associationObjectUuid) throws NotFoundException, AlreadyExistException {
+
+    }
+
+    @Override
+    public void disassociateApprovalProfile(UUID uuid, Resource resource, UUID associationObjectUuid) throws NotFoundException {
+
+    }
+
+    @Override
+    public List<ComplianceProfileListDto> getAssociatedApprovalProfiles(Resource resource, UUID associationObjectUuid) throws NotFoundException {
+        return List.of();
     }
 }
