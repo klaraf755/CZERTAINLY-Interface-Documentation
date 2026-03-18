@@ -6,7 +6,6 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.core.web.ApprovalProfileController;
 import com.czertainly.api.model.client.approvalprofile.*;
 import com.czertainly.api.model.core.auth.Resource;
-import com.czertainly.api.model.core.compliance.v2.ComplianceProfileListDto;
 import com.czertainly.api.model.core.other.ResourceObjectDto;
 import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +62,7 @@ public class ApprovalProfileControllerDummyImpl implements ApprovalProfileContro
     }
 
     @Override
-    public List<ComplianceProfileListDto> getAssociatedApprovalProfiles(Resource resource, UUID associationObjectUuid) throws NotFoundException {
+    public List<ApprovalProfileDto> getAssociatedApprovalProfiles(Resource resource, UUID associationObjectUuid) throws NotFoundException {
         return List.of();
     }
 }
